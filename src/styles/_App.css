@@ -326,9 +326,7 @@
 ::-webkit-scrollbar {
 	width: 8px;
 	height: 10px;
-	@apply bg-darks-200;
 }
 ::-webkit-scrollbar-thumb {
 	border-radius: 8px;
-	@apply bg-lights-300;
 }

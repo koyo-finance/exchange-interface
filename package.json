@@ -23,9 +23,10 @@
     "@fortawesome/free-solid-svg-icons": "^6.0.0",
     "@fortawesome/react-fontawesome": "^0.1.17",
     "@headlessui/react": "^1.5.0",
+    "@rainbow-me/rainbowkit": "^0.1.0",
     "babel-plugin-macros": "^3.1.0",
     "daisyui": "1.23.0",
-    "ethers": "^5.6.4",
+    "ethers": "^5.6.5",
     "formik": "^2.2.9",
     "ms.macro": "^2.0.0",
     "next": "12.1.0",
@@ -40,7 +41,8 @@
     "react-query": "^3.38.1",
     "react-tippy": "^1.4.0",
     "ts-node": "^10.7.0",
-    "tw-elements": "^1.0.0-alpha9"
+    "tw-elements": "^1.0.0-alpha9",
+    "wagmi": "^0.3.4"
   },
   "devDependencies": {
     "@sapphire/eslint-config": "4.0.8",
