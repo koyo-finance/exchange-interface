@@ -12,6 +12,12 @@ module.exports = {
 				chain: {
 					ethereum: '#627eea',
 					boba: '#d7fe44'
+				},
+				lights: {
+					200: '#F9F3E5'
+				},
+				darks: {
+					500: '#300729'
 				}
 			},
 			fontSize: {

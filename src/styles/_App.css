@@ -9,6 +9,8 @@
 	}
 
 	body {
+		@apply font-sora;
+
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
 		scrollbar-width: thin;
@@ -326,7 +328,9 @@
 ::-webkit-scrollbar {
 	width: 8px;
 	height: 10px;
+	@apply bg-lights-200;
 }
 ::-webkit-scrollbar-thumb {
 	border-radius: 8px;
+	@apply bg-darks-500;
 }

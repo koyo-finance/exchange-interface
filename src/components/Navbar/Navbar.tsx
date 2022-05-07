@@ -9,7 +9,7 @@ const Navbar: React.FC = () => {
 	return (
 		<>
 			<header className="sticky top-0 z-20 w-full">
-				<Disclosure as="nav" className="border-b-2 font-semibold dark:text-white">
+				<Disclosure as="nav" className="border-b-2 border-darks-500 bg-lights-200 font-semibold text-black">
 					{({ open }) => (
 						<>
 							<div className="container mx-auto px-8 py-2">
