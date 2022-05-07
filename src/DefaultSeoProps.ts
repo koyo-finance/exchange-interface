@@ -1,6 +1,7 @@
+import { ROOT } from 'constants/links';
 import type { DefaultSeoProps as DefaultSeoPropsType } from 'next-seo';
 
-export const BaseUrl = '';
+export const BaseUrl = ROOT;
 export const Summary = '';
 
 export const DefaultSeoProps: DefaultSeoPropsType = {

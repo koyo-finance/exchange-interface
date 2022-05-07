@@ -1,6 +1,6 @@
-import { faDiscord, faGithub, faTelegram, faTwitter } from '@fortawesome/free-brands-svg-icons';
+import { faDiscord, faGithub, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { DISCORD_LINK, GITHUB_LINK, TELEGRAM_LINK, TWITTER_LINK } from 'constants/links';
+import { DISCORD_LINK, GITHUB_LINK, TWITTER_LINK } from 'constants/links';
 import React from 'react';
 
 const Footer: React.FC = () => {
@@ -10,7 +10,7 @@ const Footer: React.FC = () => {
 				<div className="container">
 					<div className="footer p-10">
 						<div>
-							<img src="/wide.svg" alt="Koyo wide logo" />
+							<img src="/wide.svg" alt="Koyo wide logo" className="max-h-9" />
 						</div>
 						<div>
 							<span className="footer-title">Developers</span>
@@ -32,10 +32,6 @@ const Footer: React.FC = () => {
 								<a href={DISCORD_LINK} target="_blank" rel="noopener noreferrer">
 									{/* @ts-expect-error This is quite odd */}
 									<FontAwesomeIcon icon={faDiscord} />
-								</a>
-								<a href={TELEGRAM_LINK} target="_blank" rel="noopener noreferrer">
-									{/* @ts-expect-error This is quite odd */}
-									<FontAwesomeIcon icon={faTelegram} />
 								</a>
 							</div>
 						</div>

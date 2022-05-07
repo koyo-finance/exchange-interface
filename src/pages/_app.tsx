@@ -18,6 +18,7 @@ import DefaultSeoProps from '../DefaultSeoProps';
 
 import 'styles/_App.css';
 import '@rainbow-me/rainbowkit/styles.css';
+import { ROOT } from 'constants/links';
 
 config.autoAddCss = false;
 
@@ -28,7 +29,7 @@ const App: NextPage<AppProps> = ({ Component, pageProps }) => {
 				<WagmiProvider client={wagmiClient}>
 					<RainbowKitProvider chains={chains} showRecentTransactions={true} coolMode={true}>
 						<QueryClientProvider client={queryClient}>
-							<PlausibleProvider domain="">
+							<PlausibleProvider domain={ROOT}>
 								<Head>
 									<meta httpEquiv="Content-Type" content="text/html; charset=UTF-8" />
 									<meta httpEquiv="X-UA-Compatible" content="ie=edge" />

@@ -18,18 +18,18 @@ const Navbar: React.FC = () => {
 									<div className="flex items-stretch justify-start pl-0">
 										<div className="flex flex-shrink-0 items-center">
 											<Link href="/">
-												<img src="/wide.svg" alt="Koyo logo" className="cursor-pointer" />
+												<img src="/wide.svg" alt="Koyo logo" className="max-h-9 cursor-pointer" />
 											</Link>
 										</div>
 									</div>
 
 									{/* Center */}
-									<div className="flex gap-16 justify-self-center">
+									<div className="flex justify-self-center">
 										<Link href="/swap">Swap</Link>
 									</div>
 
 									{/* Right */}
-									<div className="static inset-auto right-0 ml-6 flex items-center pr-0">
+									<div className="static inset-auto right-0 flex items-center pr-0">
 										<div className="ml-6 block w-full content-center">
 											<div className="hidden md:block">
 												<div className="flex justify-end space-x-4">
@@ -54,8 +54,10 @@ const Navbar: React.FC = () => {
 							</div>
 
 							<Disclosure.Panel className="md:hidden">
-								<div className="space-y-1 px-2 pt-2 pb-3 shadow-lg">
-									<ConnectButton />
+								<div className="w-full space-y-1 px-2 pt-2 pb-3 shadow-lg">
+									<div className="justify-content-evenly flex w-full">
+										<ConnectButton />
+									</div>
 								</div>
 							</Disclosure.Panel>
 						</>
