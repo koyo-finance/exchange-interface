@@ -3,6 +3,7 @@ import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import Footer from 'components/Footer/Footer';
 import Navbar from 'components/Navbar/Navbar';
 import PinnedComponents from 'components/PinnedComponents';
+import { ROOT } from 'constants/links';
 import { chains, wagmiClient } from 'core/wallet';
 import { queryClient } from 'core/query';
 import type { NextPage } from 'next';
@@ -18,7 +19,6 @@ import DefaultSeoProps from '../DefaultSeoProps';
 
 import 'styles/_App.css';
 import '@rainbow-me/rainbowkit/styles.css';
-import { ROOT } from 'constants/links';
 
 config.autoAddCss = false;
 
