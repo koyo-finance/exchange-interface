@@ -24,7 +24,7 @@ const Navbar: React.FC = () => {
 									</div>
 
 									{/* Center */}
-									<div className="flex justify-self-center">
+									<div className="absolute left-1/2 hidden justify-self-center md:flex">
 										<Link href="/swap">Swap</Link>
 									</div>
 
@@ -56,7 +56,10 @@ const Navbar: React.FC = () => {
 							<Disclosure.Panel className="md:hidden">
 								<div className="w-full space-y-1 px-2 pt-2 pb-3 shadow-lg">
 									<div className="justify-content-evenly flex w-full">
-										<ConnectButton />
+										<div className="flex flex-col gap-y-4 text-center">
+											<Link href="/swap">Swap</Link>
+											<ConnectButton />
+										</div>
 									</div>
 								</div>
 							</Disclosure.Panel>

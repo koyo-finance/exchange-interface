@@ -1,9 +1,9 @@
-import { ROOT } from 'constants/links';
+import { ROOT_WITH_PROTOCOL } from 'constants/links';
 import sitemapGenerator from 'nextjs-sitemap-generator';
 import path from 'path';
 
 export async function generateSitemap(srcPath: string) {
-	const baseUrl = ROOT;
+	const baseUrl = ROOT_WITH_PROTOCOL;
 
 	await sitemapGenerator({
 		baseUrl,
