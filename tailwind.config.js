@@ -14,7 +14,8 @@ module.exports = {
 					boba: '#d7fe44'
 				},
 				lights: {
-					200: '#F9F3E5'
+					200: '#F9F3E5',
+					300: '#D58A9F'
 				},
 				darks: {
 					500: '#300729'

@@ -24,8 +24,13 @@ const Navbar: React.FC = () => {
 									</div>
 
 									{/* Center */}
-									<div className="absolute left-1/2 hidden justify-self-center md:flex">
-										<Link href="/swap">Swap</Link>
+									<div className="absolute hidden min-w-full justify-self-center text-center md:block">
+										<Link href="/swap">
+											<span className="cursor-pointer px-4">Swap</span>
+										</Link>
+										<Link href="/deposit">
+											<span className="cursor-pointer px-4">Deposit</span>
+										</Link>
 									</div>
 
 									{/* Right */}
@@ -58,6 +63,7 @@ const Navbar: React.FC = () => {
 									<div className="justify-content-evenly flex w-full">
 										<div className="flex flex-col gap-y-4 text-center">
 											<Link href="/swap">Swap</Link>
+											<Link href="/deposit">Deposit</Link>
 											<ConnectButton />
 										</div>
 									</div>

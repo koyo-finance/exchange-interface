@@ -16,6 +16,10 @@
 		scrollbar-width: thin;
 	}
 
+	.content-without-nav {
+		min-height: calc(100vh - 66px);
+	}
+
 	.unreset {
 		html {
 			box-sizing: content-box;

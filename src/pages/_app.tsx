@@ -49,7 +49,7 @@ const App: NextPage<AppProps> = ({ Component, pageProps }) => {
 										<div className="min-h-screen">
 											<Navbar />
 
-											<main className="min-h-screen bg-lights-200 text-black">
+											<main className="content-without-nav bg-lights-200 text-black">
 												<Component {...pageProps} />
 											</main>
 
