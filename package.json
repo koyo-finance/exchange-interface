@@ -10,7 +10,7 @@
     "storybook:build": "build-storybook",
     "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx src",
     "postinstall": "yarn generate:typechain:exchange",
-    "generate:typechain:exchange": "typechain --target ethers-v5 --always-generate-overloads --discriminate-types --out-dir ./src/types/contracts/exchange './src/abis/exchange/*.json'"
+    "generate:typechain:exchange": "typechain --target ethers-v5 --always-generate-overloads --discriminate-types --out-dir ./src/types/contracts/exchange './src/constants/abis/exchange/*.json'"
   },
   "dependencies": {
     "@elementfi/elf-council-typechain": "^1.0.2",
