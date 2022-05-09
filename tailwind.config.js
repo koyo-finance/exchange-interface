@@ -1,6 +1,5 @@
 module.exports = {
-	mode: 'jit',
-	purge: ['./src/pages/**/*.{js,ts,jsx,tsx}', './src/components/**/*.{js,ts,jsx,tsx}', './node_modules/tw-elements/dist/js/**/*.js'],
+	content: ['./src/**/*.{js,ts,jsx,tsx}'],
 	darkMode: 'class', // or 'media' or 'class'
 	theme: {
 		container: {
@@ -8,7 +7,6 @@ module.exports = {
 		},
 		extend: {
 			colors: {
-				...require('daisyui/colors'),
 				chain: {
 					ethereum: '#627eea',
 					boba: '#d7fe44'
@@ -30,8 +28,5 @@ module.exports = {
 			}
 		}
 	},
-	variants: {
-		extend: {}
-	},
-	plugins: [require('daisyui'), require('tw-elements/dist/plugin')]
+	plugins: [require('daisyui'), require('tailwindcss-border-gradient-radius')]
 };
