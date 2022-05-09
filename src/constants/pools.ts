@@ -45,8 +45,8 @@ export const pools: Pool[] = [
 		wrapped_contract: 'ERC20Mock',
 		swap_constructor: {
 			_A: 100,
-			_fee: 4000000,
-			_admin_fee: 0
+			_fee: 4000000, // 0,030%
+			_admin_fee: 0 // 0% of 0,030%
 		},
 		lp_constructor: {
 			name: 'Koyo.finance FRAX/DAI/USDC/USDT',
