@@ -1,11 +1,10 @@
 import { config } from '@fortawesome/fontawesome-svg-core';
 import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
-import Footer from 'components/Footer/Footer';
 import Navbar from 'components/Navbar/Navbar';
 import PinnedComponents from 'components/PinnedComponents';
 import { ROOT } from 'constants/links';
-import { chains, wagmiClient } from 'core/wallet';
 import { queryClient } from 'core/query';
+import { chains, wagmiClient } from 'core/wallet';
 import type { NextPage } from 'next';
 import PlausibleProvider from 'next-plausible';
 import { DefaultSeo } from 'next-seo';
@@ -53,9 +52,9 @@ const App: NextPage<AppProps> = ({ Component, pageProps }) => {
 												<Component {...pageProps} />
 											</main>
 
-											<footer>
+											{/* <footer>
 												<Footer />
-											</footer>
+											</footer> */}
 										</div>
 									</PinnedComponents>
 								</>
