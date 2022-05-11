@@ -8,18 +8,13 @@ import { Case, Default, Switch } from 'react-if';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
 
 const SwapIndexPage: ExtendedNextPage = () => {
-
 	return (
 		<>
-        <SwapLayoutCard>
-            <div className="px-2">
-                Hi
-            </div>
-            <div className="flex flex-col gap-3">
-
-            </div>
-        </SwapLayoutCard>
-        </>
+			<SwapLayoutCard>
+				<div className="px-2">Hi</div>
+				<div className="flex flex-col gap-3"></div>
+			</SwapLayoutCard>
+		</>
 	);
 };
 SwapIndexPage.Layout = SwapLayout('swap-page');

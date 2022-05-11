@@ -19,12 +19,31 @@ module.exports = {
 					500: '#300729'
 				}
 			},
-			fontSize: {
-				xxs: '0.5rem'
+			lineHeight: {
+				'48px': '48px'
 			},
 			fontFamily: {
 				sora: ["'Sora'", 'sans-serif'],
 				inter: ["'Inter'", 'sans-serif']
+			},
+			fontSize: {
+				xxs: '0.5rem',
+				hero: [
+					'48px',
+					{
+						letterSpacing: '-0.02em;',
+						lineHeight: '96px',
+						fontWeight: 700
+					}
+				]
+			},
+			borderRadius: {
+				none: '0',
+				px: '1px',
+				DEFAULT: '0.625rem'
+			},
+			screens: {
+				'3xl': '1600px'
 			}
 		}
 	},
