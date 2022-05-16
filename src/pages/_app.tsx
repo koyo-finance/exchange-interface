@@ -1,5 +1,5 @@
 import { config } from '@fortawesome/fontawesome-svg-core';
-import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import { darkTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import { ROOT } from 'constants/links';
 import { queryClient } from 'core/query';
 import { chains, wagmiClient } from 'core/wallet';
@@ -31,7 +31,12 @@ const App: NextPage<AppProps> = ({ Component, pageProps }) => {
 		<>
 			<React.StrictMode>
 				<WagmiProvider client={wagmiClient}>
-					<RainbowKitProvider chains={chains} showRecentTransactions={true} coolMode={true}>
+					<RainbowKitProvider
+						chains={chains}
+						showRecentTransactions={true}
+						coolMode={true}
+						theme={darkTheme({ accentColor: '#F0932C', accentColorForeground: '#000' })}
+					>
 						<QueryClientProvider client={queryClient}>
 							<PlausibleProvider domain={ROOT}>
 								<>

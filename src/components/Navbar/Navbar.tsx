@@ -18,7 +18,7 @@ const Navbar: React.FC = () => {
 							<div className="container mx-auto px-8 py-2">
 								<div className="relative flex h-12 items-center justify-between">
 									{/* Left */}
-									<div className="flex items-stretch justify-start pl-0">
+									<div className="z-40 flex items-stretch justify-start pl-0">
 										<div className="flex items-center">
 											<Link href="/">
 												<img src="/wide.svg" alt="Koyo logo" className="max-h-12 cursor-pointer" />
@@ -27,38 +27,38 @@ const Navbar: React.FC = () => {
 									</div>
 
 									{/* Center */}
-									<div className="absolute flex w-full flex-row items-center justify-center">
+									<div className="absolute z-0 flex w-full flex-row items-center justify-center">
 										<div className="relative hidden flex-row items-center rounded-2xl bg-black bg-opacity-50 p-0 text-center text-white lg:flex lg:w-1/4 ">
-											<div className={`z-[1] w-1/3 rounded-2xl py-2 `}>
+											<div className={`z-10 w-1/3 rounded-2xl py-2 `}>
 												<Link href="/swap">
 													<span className="cursor-pointer px-4">Swap</span>
 												</Link>
 											</div>
-											<div className={`z-[1] w-1/3 rounded-2xl py-2 `}>
+											<div className={`z-10 w-1/3 rounded-2xl py-2 `}>
 												<Link href="/deposit">
 													<span className="cursor-pointer px-4">Deposit</span>
 												</Link>
 											</div>
-											<div className={`z-[1] w-1/3 rounded-2xl py-2`}>
+											<div className={`z-10 w-1/3 rounded-2xl py-2`}>
 												<Link href="/withdraw">
 													<span className="cursor-pointer px-4">Withdraw</span>
 												</Link>
 											</div>
 											<div
-												className={`absolute left-0 z-[-1] h-10 w-1/3 transform rounded-2xl bg-darks-200 bg-opacity-100 duration-150 ${
+												className={`absolute left-0 z-0 h-10 w-1/3 transform rounded-2xl bg-darks-200 bg-opacity-100 duration-200 ${
 													router.pathname === '/swap' ? ' translate-x-0' : ''
 												} ${router.pathname === '/deposit' ? ' ml-0 translate-x-[100%]' : ''} ${
 													router.pathname === '/withdraw' ? 'ml-0 translate-x-[200%]' : ''
-												}`}
+												} ${router.pathname === '/' ? ' -translate-x-[100%] opacity-0' : ''}`}
 											></div>
 										</div>
 									</div>
 
 									{/* Right */}
-									<div className="static inset-auto right-0 flex items-center pr-0">
+									<div className="static right-0 z-40 flex items-center pr-0">
 										<div className="ml-6 block w-full content-center">
 											<div className="hidden md:block">
-												<div className="flex justify-end space-x-4">
+												<div className=" flex justify-end space-x-4">
 													<ConnectButton />
 												</div>
 											</div>

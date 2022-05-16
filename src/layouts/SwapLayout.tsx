@@ -1,4 +1,3 @@
-import Container from 'components/Container';
 import React from 'react';
 import { classNames } from 'utils/styling';
 import DefaultLayout from './DefaultLayout';
@@ -13,7 +12,12 @@ export interface LayoutProps {
 
 export const SwapLayoutCard: React.FC<SwapLayoutCardProps> = ({ children, className }) => {
 	return (
-		<div className={classNames('bg-dark-800 shadow-dark-1000 flex flex-col gap-3 rounded-[24px] p-2 pt-4 shadow-md md:p-4', className)}>
+		<div
+			className={classNames(
+				'flex w-[30rem] transform-gpu animate-fade-in flex-col gap-2  rounded-xl bg-black bg-opacity-50 py-4 px-6',
+				className
+			)}
+		>
 			{children}
 		</div>
 	);

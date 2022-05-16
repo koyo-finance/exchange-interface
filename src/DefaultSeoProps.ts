@@ -5,7 +5,7 @@ export const BaseUrl = ROOT_WITH_PROTOCOL;
 export const Summary = '';
 
 export const DefaultSeoProps: DefaultSeoPropsType = {
-	titleTemplate: ' | %s',
+	titleTemplate: 'Kōyō | %s',
 	title: 'Home',
 	description: Summary,
 	canonical: BaseUrl,

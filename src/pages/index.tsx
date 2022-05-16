@@ -6,7 +6,7 @@ import React from 'react';
 const IndexPage: NextPage = () => {
 	return (
 		<>
-			<div>Hi</div>
+			<div className="flex h-screen w-full items-center justify-center">Hi</div>
 		</>
 	);
 };
