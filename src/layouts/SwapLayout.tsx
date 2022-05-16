@@ -22,9 +22,9 @@ export const SwapLayoutCard: React.FC<SwapLayoutCardProps> = ({ children, classN
 export const Layout: React.FC<LayoutProps> = ({ children, id }) => {
 	return (
 		<DefaultLayout>
-			<Container id={id} className="py-4 px-2 md:py-12 lg:py-[120px]" maxWidth="md">
+			<div id={id} className="w-full">
 				{children}
-			</Container>
+			</div>
 		</DefaultLayout>
 	);
 };

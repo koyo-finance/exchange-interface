@@ -18,6 +18,7 @@ import 'styles/_App.css';
 import '@rainbow-me/rainbowkit/styles.css';
 import DefaultLayout from 'layouts/DefaultLayout';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
+import Navbar from 'components/Navbar/Navbar';
 
 config.autoAddCss = false;
 
@@ -50,6 +51,7 @@ const App: NextPage<AppProps> = ({ Component, pageProps }) => {
 								</>
 
 								<>
+									<Navbar />
 									<Layout>
 										<ExtendedPage {...pageProps} />
 									</Layout>

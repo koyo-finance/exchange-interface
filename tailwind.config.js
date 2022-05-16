@@ -33,7 +33,8 @@ module.exports = {
 			},
 			fontFamily: {
 				sora: ["'Sora'", 'sans-serif'],
-				inter: ["'Inter'", 'sans-serif']
+				inter: ["'Inter'", 'sans-serif'],
+				jtm: ['JetBrains Mono', 'monospace']
 			},
 			fontSize: {
 				xxs: '0.5rem',
@@ -45,6 +46,9 @@ module.exports = {
 						fontWeight: 700
 					}
 				]
+			},
+			animation: {
+				'fade-in': 'fade-in 800 linear'
 			},
 			borderRadius: {
 				none: '0',

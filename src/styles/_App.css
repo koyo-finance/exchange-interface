@@ -9,7 +9,7 @@
 	}
 
 	body {
-		@apply font-sora;
+		@apply bg-darks-500 font-sora;
 
 		-webkit-font-smoothing: antialiased;
 		-moz-osx-font-smoothing: grayscale;
