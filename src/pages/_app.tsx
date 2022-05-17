@@ -19,6 +19,8 @@ import '@rainbow-me/rainbowkit/styles.css';
 import DefaultLayout from 'layouts/DefaultLayout';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
 import Navbar from 'components/Navbar/Navbar';
+import { Provider } from 'react-redux';
+import { store } from 'state';
 
 config.autoAddCss = false;
 
@@ -39,28 +41,30 @@ const App: NextPage<AppProps> = ({ Component, pageProps }) => {
 					>
 						<QueryClientProvider client={queryClient}>
 							<PlausibleProvider domain={ROOT}>
-								<>
-									<Head>
-										<meta httpEquiv="Content-Type" content="text/html; charset=UTF-8" />
-										<meta httpEquiv="X-UA-Compatible" content="ie=edge" />
-										<meta httpEquiv="Expires" content="1y" />
-										<meta httpEquiv="Pragma" content="1y" />
-										<meta httpEquiv="Cache-Control" content="1y" />
+								<Provider store={store}>
+									<>
+										<Head>
+											<meta httpEquiv="Content-Type" content="text/html; charset=UTF-8" />
+											<meta httpEquiv="X-UA-Compatible" content="ie=edge" />
+											<meta httpEquiv="Expires" content="1y" />
+											<meta httpEquiv="Pragma" content="1y" />
+											<meta httpEquiv="Cache-Control" content="1y" />
 
-										<meta httpEquiv="Page-Enter" content="RevealTrans(Duration=2.0,Transition=2)" />
-										<meta httpEquiv="Page-Exit" content="RevealTrans(Duration=3.0,Transition=12)" />
+											<meta httpEquiv="Page-Enter" content="RevealTrans(Duration=2.0,Transition=2)" />
+											<meta httpEquiv="Page-Exit" content="RevealTrans(Duration=3.0,Transition=12)" />
 
-										<link rel="shortcut icon" href="/favicon.ico" />
-									</Head>
-									<DefaultSeo {...DefaultSeoProps} />
-								</>
+											<link rel="shortcut icon" href="/favicon.ico" />
+										</Head>
+										<DefaultSeo {...DefaultSeoProps} />
+									</>
 
-								<>
-									<Navbar />
-									<Layout>
-										<ExtendedPage {...pageProps} />
-									</Layout>
-								</>
+									<>
+										<Navbar />
+										<Layout>
+											<ExtendedPage {...pageProps} />
+										</Layout>
+									</>
+								</Provider>
 							</PlausibleProvider>
 
 							<ReactQueryDevtools />
