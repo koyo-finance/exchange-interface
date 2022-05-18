@@ -1,4 +1,4 @@
-import { ChainId } from '@koyofinance/core-sdk';
+import { ChainId, reconstructTokenListToLowerCase } from '@koyofinance/core-sdk';
 import { AugmentedPool } from '@koyofinance/swap-sdk';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
@@ -29,7 +29,7 @@ export const fetchTokenLists = createAsyncThunk('tokens/fetchTokenList', async (
 	const tokenListPromises = await Promise.allSettled(state.lists.lists.map((list) => fetch<TokenList>(list, 'json' as FetchResultTypes.JSON)));
 	const tokenLists = tokenListPromises.filter((promise) => promise.status === 'fulfilled') as PromiseFulfilledResult<TokenList>[];
 
-	return tokenLists.map((promiseResult) => promiseResult.value);
+	return tokenLists.map((promiseResult) => promiseResult.value).map(reconstructTokenListToLowerCase);
 });
 
 export const fetchPoolLists = createAsyncThunk('tokens/fetchPoolList', async (_, { getState }) => {

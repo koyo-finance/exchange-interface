@@ -2030,11 +2030,12 @@
     tslib "^2.4.0"
     wagmi "^0.3.5"
 
-"@koyofinance/core-sdk@^0.2.0-next.8f35cd3.0":
-  version "0.2.0-next.8f35cd3.0"
-  resolved "https://registry.yarnpkg.com/@koyofinance/core-sdk/-/core-sdk-0.2.0-next.8f35cd3.0.tgz#c1d983f8d267fcfde1953f3ff3bc099f7f4cbfe7"
-  integrity sha512-gasPJiEbQ4tyQzrlvV+bmYqRu/2LnQIP+F2eZYurPzJV5GNsQ4Sqo1BOksYCsY1i/Kw1UNiMmut6XOoxom/wPg==
+"@koyofinance/core-sdk@^0.2.0-next.74a4e8c.0":
+  version "0.2.0-next.74a4e8c.0"
+  resolved "https://registry.yarnpkg.com/@koyofinance/core-sdk/-/core-sdk-0.2.0-next.74a4e8c.0.tgz#591f8896cc8d691c41491404b166adb070deabaa"
+  integrity sha512-Ab5PbG+h5YITZ0g3O9eepAQpzjqYzEx9ihvJ/KZdJPNbkdSwiQQ09mLwmxD1LewXK0BdOc+MIQ/KYZnoos+NBg==
   dependencies:
+    "@uniswap/token-lists" "^1.0.0-beta.28"
     ethers "^5.6.6"
     tslib "^2.4.0"
     wagmi "^0.3.5"
