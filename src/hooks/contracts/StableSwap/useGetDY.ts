@@ -9,10 +9,13 @@ export default function useGetDY(
 	dx: BigNumberish | null | undefined,
 	swap: string
 ): QueryObserverResult<BigNumberish> {
+	const iValid = i !== undefined && i !== null;
+	const jValid = j !== undefined && j !== null;
+
 	const swapContract = swapContracts.get(swap);
 
 	return useSmartContractReadCall(swapContract, 'get_dy', {
 		callArgs: [i as BigNumberish, j as BigNumberish, dx as BigNumberish],
-		enabled: Boolean(i && j && dx && swapContract)
+		enabled: Boolean(iValid && jValid && dx && swapContract)
 	});
 }

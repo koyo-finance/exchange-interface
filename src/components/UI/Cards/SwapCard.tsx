@@ -1,7 +1,7 @@
 import { formatBalance } from '@koyofinance/core-sdk';
 import { TokenInfo } from '@uniswap/token-lists';
 import useTokenBalance from 'hooks/contracts/useTokenBalance';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { RiArrowDownSLine } from 'react-icons/ri';
 import { useAccount } from 'wagmi';
 
@@ -48,7 +48,7 @@ const SwapCard: React.FC<SwapCardProps> = (props) => {
 						min={0}
 						step={0.1}
 						onChange={(e) => {
-							props.setInputAmount(+e.target.value);
+							props.setInputAmount(Number(e.target.value));
 						}}
 						className=" w-2/3
 				  border-0 border-b-2 border-darks-200 bg-darks-500 font-jtm text-4xl font-extralight text-white outline-none"

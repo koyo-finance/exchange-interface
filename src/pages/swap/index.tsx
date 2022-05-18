@@ -1,5 +1,4 @@
 import { ChainId, fromBigNumber, toBigNumber } from '@koyofinance/core-sdk';
-import { pools } from '@koyofinance/swap-sdk';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { TokenInfo } from '@uniswap/token-lists';
 import SwapCard from 'components/UI/Cards/SwapCard';
@@ -11,7 +10,7 @@ import { BsFillGearFill } from 'react-icons/bs';
 import { IoSwapVertical } from 'react-icons/io5';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from 'state/hooks';
-import { fetchPoolLists, fetchTokenLists, selectAllPoolsByChainId, selectAllTokensByChainId } from 'state/reducers/lists';
+import { fetchPoolLists, fetchTokenLists, selectPoolBySwapAndChainId } from 'state/reducers/lists';
 import { selectAmount, selectTokenOne, selectTokenTwo, setAmount, setTokenOne, setTokenTwo } from 'state/reducers/selectedTokens';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
 import { useAccount } from 'wagmi';
@@ -34,8 +33,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 	const tokenOne = useSelector(selectTokenOne);
 	const tokenTwo = useSelector(selectTokenTwo);
 	const inputAmount = useSelector(selectAmount);
-	const POOLS = useSelector(selectAllPoolsByChainId(ChainId.BOBA));
-	const TOKENS = useSelector(selectAllTokensByChainId(ChainId.BOBA));
+	const pool = useSelector(selectPoolBySwapAndChainId(tokenTwo.poolAddress, ChainId.BOBA))!;
 
 	const openTokenModalHandler = (tokenNum: number) => {
 		setActiveToken(tokenNum);
@@ -65,42 +63,12 @@ const SwapIndexPage: ExtendedNextPage = () => {
 		dispatch(setTokenTwo(tokenTwoTransformed));
 	};
 
-	// const findTokenInPool = (token) => {
-	// 	POOLS.find((pool) => token === pool.addresses.swap)?.coins?.findIndex(
-	// 		(token) => token.address.toLowerCase() === tokenOne.address.toLowerCase()
-	// 	);
-	// };
-
 	const { data: calculatedAmount = 0 } = useGetDY(
-		POOLS.find((pool) => tokenTwo.poolAddress === pool.addresses.swap)?.coins?.findIndex(
-			(token) => token.address.toLowerCase() === tokenOne.address.toLowerCase()
-		),
-		POOLS.find((pool) => tokenTwo.poolAddress === pool.addresses.swap)?.coins?.findIndex(
-			(token) => token.address.toLowerCase() === tokenTwo.tokenData.address.toLowerCase()
-		),
+		pool.coins.findIndex((token) => token.address.toLowerCase() === tokenOne.address.toLowerCase()),
+		pool.coins.findIndex((token) => token.address.toLowerCase() === tokenTwo.tokenData.address.toLowerCase()),
 		toBigNumber(inputAmount, tokenOne.decimals),
-		POOLS[0].id
+		pool.id
 	);
-
-	console.log(
-		POOLS.find((pool) => tokenTwo.poolAddress === pool.addresses.swap)?.coins?.findIndex(
-			(token) => token.address.toLowerCase() === tokenOne.address.toLowerCase()
-		)
-	);
-	console.log(
-		POOLS.find((pool) => tokenTwo.poolAddress === pool.addresses.swap)?.coins?.findIndex(
-			(token) => token.address.toLowerCase() === tokenTwo.tokenData.address.toLowerCase()
-		)
-	);
-
-	console.log(TOKENS);
-	console.log(POOLS);
-	// console.log(findTokenInPool(tokenTwo));
-
-	const calculateConvertAmount = (amount: number) => {
-		dispatch(setAmount({ amount: amount }));
-		// console.log(calculatedAmount);
-	};
 
 	return (
 		<div className=" flex h-screen w-full items-center justify-center">
@@ -125,7 +93,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 					token={tokenOne}
 					convertedAmount={0}
 					openTokenModal={openTokenModalHandler}
-					setInputAmount={calculateConvertAmount}
+					setInputAmount={(amount: number) => dispatch(setAmount({ amount }))}
 				/>
 				<div className=" flex h-6 w-full cursor-pointer items-center justify-center text-3xl text-white" onClick={swapTokensHandler}>
 					<IoSwapVertical />
@@ -136,7 +104,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 					token={tokenTwo.tokenData}
 					convertedAmount={fromBigNumber(calculatedAmount, tokenTwo.tokenData.decimals)}
 					openTokenModal={openTokenModalHandler}
-					setInputAmount={calculateConvertAmount}
+					setInputAmount={(amount: number) => dispatch(setAmount({ amount }))}
 				/>
 				{account && <button className="btn mt-2 w-full bg-lights-400 text-black hover:bg-lights-200">SWAP</button>}
 				{!account && (

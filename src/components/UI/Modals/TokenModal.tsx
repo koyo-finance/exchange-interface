@@ -4,8 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { FiEdit } from 'react-icons/fi';
 import { useSelector } from 'react-redux';
-import { selectAllPoolsByChainId, selectAllTokensByChainId } from 'state/reducers/lists';
-import { selectTokenOne } from 'state/reducers/selectedTokens';
+import { selectAllTokensByChainId } from 'state/reducers/lists';
 
 export interface TokenModalProps {
 	tokenNum: number;
@@ -16,16 +15,13 @@ export interface TokenModalProps {
 
 const TokenModal: React.FC<TokenModalProps> = (props) => {
 	const TOKENS = useSelector(selectAllTokensByChainId(ChainId.BOBA));
-	const POOLS = useSelector(selectAllPoolsByChainId(ChainId.BOBA));
 
 	const [tokenList, setTokenList] = useState(TOKENS);
 
 	useEffect(() => {
 		const newTokenList = tokenList.filter((token) => token.address !== props.oppositeToken.address);
-		// const
-
 		setTokenList(newTokenList);
-	}, []);
+	}, [props.oppositeToken.address, tokenList]);
 
 	const setToken = (symbol: string) => {
 		props.setToken(TOKENS.find((token) => token.symbol === symbol)!, props.tokenNum);

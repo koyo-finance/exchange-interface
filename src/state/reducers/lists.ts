@@ -69,7 +69,10 @@ export const { setLists } = listsSlice.actions;
 
 export const selectAllTokens = () => (state: RootState) => state.lists.tokens;
 export const selectAllTokensByChainId = (chainId: ChainId) => (state: RootState) => state.lists.tokens.filter((token) => token.chainId === chainId);
+
 export const selectAllPools = () => (state: RootState) => state.lists.pools;
+export const selectPoolBySwapAndChainId = (swap: string, chainId: ChainId) => (state: RootState) =>
+	state.lists.pools.find((pool) => pool.addresses.swap === swap && pool.chainId === chainId);
 export const selectAllPoolsByChainId = (chainId: ChainId) => (state: RootState) => state.lists.pools.filter((pool) => pool.chainId === chainId);
 
 export default listsSlice.reducer;
