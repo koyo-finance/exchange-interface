@@ -3,6 +3,7 @@ import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import reducer from './reducer';
 import { listsSlice } from './reducers/lists';
+import { selectedTokensSlice } from './reducers/selectedTokens';
 
 const PERSISTED_KEYS: string[] = ['lists'];
 
@@ -19,7 +20,8 @@ export const store = configureStore({
 	reducer: persistedReducer,
 	devTools: {
 		actionCreators: {
-			...listsSlice.actions
+			...listsSlice.actions,
+			...selectedTokensSlice.actions
 		}
 	},
 	middleware: (getDefaultMiddleware) =>

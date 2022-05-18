@@ -1,45 +1,41 @@
+import { ChainId, fromBigNumber, toBigNumber } from '@koyofinance/core-sdk';
+import { pools } from '@koyofinance/swap-sdk';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { TokenInfo } from '@uniswap/token-lists';
 import SwapCard from 'components/UI/Cards/SwapCard';
 import TokenModal from 'components/UI/Modals/TokenModal';
+import useGetDY from 'hooks/contracts/StableSwap/useGetDY';
 import { SwapLayout, SwapLayoutCard } from 'layouts/SwapLayout';
 import React, { useEffect, useState } from 'react';
 import { BsFillGearFill } from 'react-icons/bs';
 import { IoSwapVertical } from 'react-icons/io5';
+import { useSelector } from 'react-redux';
 import { useAppDispatch } from 'state/hooks';
-import { fetchTokenLists } from 'state/reducers/lists';
+import { fetchPoolLists, fetchTokenLists, selectAllPoolsByChainId, selectAllTokensByChainId } from 'state/reducers/lists';
+import { selectAmount, selectTokenOne, selectTokenTwo, setAmount, setTokenOne, setTokenTwo } from 'state/reducers/selectedTokens';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
 import { useAccount } from 'wagmi';
 
 const SwapIndexPage: ExtendedNextPage = () => {
 	const dispatch = useAppDispatch();
-	const [tokenModalOneIsOpen, setTokenModalIsOpen] = useState(false);
-	const [tokenOne, setTokenOne] = useState<TokenInfo>({
-		name: 'Dai',
-		address: '0xf74195Bb8a5cf652411867c5C2C5b8C2a402be35',
-		symbol: 'DAI',
-		decimals: 18,
-		chainId: 288,
-		logoURI: 'https://tassets.koyo.finance/logos/DAI/512x512.png'
-	});
-	const [tokenTwo, setTokenTwo] = useState<TokenInfo>({
-		name: 'Frax',
-		address: '0x7562F525106F5d54E891e005867Bf489B5988CD9',
-		symbol: 'FRAX',
-		decimals: 18,
-		chainId: 288,
-		logoURI: 'https://tassets.koyo.finance/logos/FRAX/512x512.png'
-	});
 
+	const [tokenModalOneIsOpen, setTokenModalIsOpen] = useState(false);
 	const [activeToken, setActiveToken] = useState(1);
-	// const [isInital, setIsInitial] = useState(false);
+
+	const { data: account } = useAccount();
 
 	useEffect(() => {
+		dispatch(fetchPoolLists());
 		dispatch(fetchTokenLists());
+
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	const { data: account } = useAccount();
+	const tokenOne = useSelector(selectTokenOne);
+	const tokenTwo = useSelector(selectTokenTwo);
+	const inputAmount = useSelector(selectAmount);
+	const POOLS = useSelector(selectAllPoolsByChainId(ChainId.BOBA));
+	const TOKENS = useSelector(selectAllTokensByChainId(ChainId.BOBA));
 
 	const openTokenModalHandler = (tokenNum: number) => {
 		setActiveToken(tokenNum);
@@ -52,20 +48,70 @@ const SwapIndexPage: ExtendedNextPage = () => {
 
 	const setTokenHandler = (token: TokenInfo, tokenNum: number) => {
 		if (tokenNum === 1) {
-			setTokenOne(token);
+			dispatch(setTokenOne(token));
 			return;
 		}
-		setTokenTwo(token);
+		const tokenTwoFormatted = { tokenData: token, poolAddress: '0x9f0a572be1fcfe96e94c0a730c5f4bc2993fe3f6' };
+		dispatch(setTokenTwo(tokenTwoFormatted));
 	};
 
 	const swapTokensHandler = () => {
-		setTokenOne(tokenTwo);
-		setTokenTwo(tokenOne);
+		const tokenOneTransformed = tokenTwo.tokenData;
+		const tokenTwoTransformed = {
+			tokenData: tokenOne,
+			poolAddress: '0x9f0a572be1fcfe96e94c0a730c5f4bc2993fe3f6'
+		};
+		dispatch(setTokenOne(tokenOneTransformed));
+		dispatch(setTokenTwo(tokenTwoTransformed));
+	};
+
+	// const findTokenInPool = (token) => {
+	// 	POOLS.find((pool) => token === pool.addresses.swap)?.coins?.findIndex(
+	// 		(token) => token.address.toLowerCase() === tokenOne.address.toLowerCase()
+	// 	);
+	// };
+
+	const { data: calculatedAmount = 0 } = useGetDY(
+		POOLS.find((pool) => tokenTwo.poolAddress === pool.addresses.swap)?.coins?.findIndex(
+			(token) => token.address.toLowerCase() === tokenOne.address.toLowerCase()
+		),
+		POOLS.find((pool) => tokenTwo.poolAddress === pool.addresses.swap)?.coins?.findIndex(
+			(token) => token.address.toLowerCase() === tokenTwo.tokenData.address.toLowerCase()
+		),
+		toBigNumber(inputAmount, tokenOne.decimals),
+		POOLS[0].id
+	);
+
+	console.log(
+		POOLS.find((pool) => tokenTwo.poolAddress === pool.addresses.swap)?.coins?.findIndex(
+			(token) => token.address.toLowerCase() === tokenOne.address.toLowerCase()
+		)
+	);
+	console.log(
+		POOLS.find((pool) => tokenTwo.poolAddress === pool.addresses.swap)?.coins?.findIndex(
+			(token) => token.address.toLowerCase() === tokenTwo.tokenData.address.toLowerCase()
+		)
+	);
+
+	console.log(TOKENS);
+	console.log(POOLS);
+	// console.log(findTokenInPool(tokenTwo));
+
+	const calculateConvertAmount = (amount: number) => {
+		dispatch(setAmount({ amount: amount }));
+		// console.log(calculatedAmount);
 	};
 
 	return (
 		<div className=" flex h-screen w-full items-center justify-center">
-			{tokenModalOneIsOpen && <TokenModal tokenNum={activeToken} closeModal={closeTokenModalHandler} setToken={setTokenHandler} />}
+			{tokenModalOneIsOpen && (
+				<TokenModal
+					tokenNum={activeToken}
+					oppositeToken={activeToken === 2 ? tokenOne : tokenTwo.tokenData}
+					closeModal={closeTokenModalHandler}
+					setToken={setTokenHandler}
+				/>
+			)}
 			<SwapLayoutCard>
 				<div className="flex w-full flex-row items-center justify-between text-lg font-semibold text-white">
 					<div>Swap</div>
@@ -73,11 +119,25 @@ const SwapIndexPage: ExtendedNextPage = () => {
 						<BsFillGearFill />
 					</div>
 				</div>
-				<SwapCard swapType="from" tokenNum={1} token={tokenOne} openTokenModal={openTokenModalHandler} />
+				<SwapCard
+					swapType="from"
+					tokenNum={1}
+					token={tokenOne}
+					convertedAmount={0}
+					openTokenModal={openTokenModalHandler}
+					setInputAmount={calculateConvertAmount}
+				/>
 				<div className=" flex h-6 w-full cursor-pointer items-center justify-center text-3xl text-white" onClick={swapTokensHandler}>
 					<IoSwapVertical />
 				</div>
-				<SwapCard swapType="to" tokenNum={2} token={tokenTwo} openTokenModal={openTokenModalHandler} />
+				<SwapCard
+					swapType="to"
+					tokenNum={2}
+					token={tokenTwo.tokenData}
+					convertedAmount={fromBigNumber(calculatedAmount, tokenTwo.tokenData.decimals)}
+					openTokenModal={openTokenModalHandler}
+					setInputAmount={calculateConvertAmount}
+				/>
 				{account && <button className="btn mt-2 w-full bg-lights-400 text-black hover:bg-lights-200">SWAP</button>}
 				{!account && (
 					<button className="btn mt-2 flex w-full items-center justify-center bg-lights-400 hover:bg-lights-400">

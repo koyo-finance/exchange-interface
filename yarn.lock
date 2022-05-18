@@ -2030,6 +2030,23 @@
     tslib "^2.4.0"
     wagmi "^0.3.5"
 
+"@koyofinance/core-sdk@^0.2.0-next.8f35cd3.0":
+  version "0.2.0-next.8f35cd3.0"
+  resolved "https://registry.yarnpkg.com/@koyofinance/core-sdk/-/core-sdk-0.2.0-next.8f35cd3.0.tgz#c1d983f8d267fcfde1953f3ff3bc099f7f4cbfe7"
+  integrity sha512-gasPJiEbQ4tyQzrlvV+bmYqRu/2LnQIP+F2eZYurPzJV5GNsQ4Sqo1BOksYCsY1i/Kw1UNiMmut6XOoxom/wPg==
+  dependencies:
+    ethers "^5.6.6"
+    tslib "^2.4.0"
+    wagmi "^0.3.5"
+
+"@koyofinance/swap-sdk@^0.2.0-next.4f3c101.0":
+  version "0.2.0-next.4f3c101.0"
+  resolved "https://registry.yarnpkg.com/@koyofinance/swap-sdk/-/swap-sdk-0.2.0-next.4f3c101.0.tgz#087886735aad951fde4b434dae14e1cb25cf3c76"
+  integrity sha512-sqQhKjvwAHmt/yMFbE2TJNr8Qp2QCb0J2y24hTfnONIRLbssrdSlCP2Hain49R85sXalkUGBqFEzznEUWZXRYg==
+  dependencies:
+    "@koyofinance/core-sdk" "^0.2.0-next.4f3c101.0"
+    tslib "^2.4.0"
+
 "@mdx-js/loader@^1.6.22":
   version "1.6.22"
   resolved "https://registry.yarnpkg.com/@mdx-js/loader/-/loader-1.6.22.tgz#d9e8fe7f8185ff13c9c8639c048b123e30d322c4"

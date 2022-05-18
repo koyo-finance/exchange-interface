@@ -1,22 +1,34 @@
 import { ChainId } from '@koyofinance/core-sdk';
 import { TokenInfo } from '@uniswap/token-lists';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { FiEdit } from 'react-icons/fi';
 import { useSelector } from 'react-redux';
-import { selectAllTokensByChainId } from 'state/reducers/lists';
+import { selectAllPoolsByChainId, selectAllTokensByChainId } from 'state/reducers/lists';
+import { selectTokenOne } from 'state/reducers/selectedTokens';
 
 export interface TokenModalProps {
 	tokenNum: number;
+	oppositeToken: TokenInfo;
 	closeModal: () => void;
 	setToken: (token: TokenInfo, tokenNum: number) => void;
 }
 
 const TokenModal: React.FC<TokenModalProps> = (props) => {
 	const TOKENS = useSelector(selectAllTokensByChainId(ChainId.BOBA));
+	const POOLS = useSelector(selectAllPoolsByChainId(ChainId.BOBA));
 
-	const setTokenHandler = (e: { target: { id?: string } }) => {
-		props.setToken(TOKENS.find((token) => token.symbol === (e?.target || undefined)?.id)!, props.tokenNum);
+	const [tokenList, setTokenList] = useState(TOKENS);
+
+	useEffect(() => {
+		const newTokenList = tokenList.filter((token) => token.address !== props.oppositeToken.address);
+		// const
+
+		setTokenList(newTokenList);
+	}, []);
+
+	const setToken = (symbol: string) => {
+		props.setToken(TOKENS.find((token) => token.symbol === symbol)!, props.tokenNum);
 		props.closeModal();
 	};
 
@@ -38,13 +50,12 @@ const TokenModal: React.FC<TokenModalProps> = (props) => {
 					/>
 				</div>
 				<div className="flex  max-h-[35rem] w-full flex-col overflow-y-scroll">
-					{TOKENS.map((token, i) => (
+					{tokenList.map((token, i) => (
 						<div
 							key={i}
 							id={token.symbol}
 							className=" flex w-full transform-gpu cursor-pointer flex-row items-center justify-start  gap-3 p-2 duration-150 hover:bg-gray-900"
-							// @ts-expect-error Events are weirdos
-							onClick={setTokenHandler}
+							onClick={() => setToken(token.symbol)}
 						>
 							<div>
 								<img src={token.logoURI} className="w-8" alt={token.name} />
