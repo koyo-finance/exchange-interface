@@ -9,8 +9,8 @@ export default function useGetDY(
 	dx: BigNumberish | null | undefined,
 	swap: string
 ): QueryObserverResult<BigNumberish> {
-	const iValid = i !== undefined && i !== null;
-	const jValid = j !== undefined && j !== null;
+	const iValid = i !== undefined && i !== null && i !== -1;
+	const jValid = j !== undefined && j !== null && j !== -1;
 
 	const swapContract = swapContracts.get(swap);
 

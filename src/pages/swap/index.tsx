@@ -33,7 +33,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 	const tokenOne = useSelector(selectTokenOne);
 	const tokenTwo = useSelector(selectTokenTwo);
 	const inputAmount = useSelector(selectAmount);
-	const pool = useSelector(selectPoolBySwapAndChainId(tokenTwo.poolAddress, ChainId.BOBA))!;
+	const pool = useSelector(selectPoolBySwapAndChainId(tokenTwo.poolAddress, ChainId.BOBA));
 
 	const openTokenModalHandler = (tokenNum: number) => {
 		setActiveToken(tokenNum);
@@ -64,10 +64,10 @@ const SwapIndexPage: ExtendedNextPage = () => {
 	};
 
 	const { data: calculatedAmount = 0 } = useGetDY(
-		pool.coins.findIndex((token) => token.address.toLowerCase() === tokenOne.address.toLowerCase()),
-		pool.coins.findIndex((token) => token.address.toLowerCase() === tokenTwo.tokenData.address.toLowerCase()),
+		(pool?.coins || []).findIndex((token) => token.address.toLowerCase() === tokenOne.address.toLowerCase()),
+		(pool?.coins || []).findIndex((token) => token.address.toLowerCase() === tokenTwo.tokenData.address.toLowerCase()),
 		toBigNumber(inputAmount, tokenOne.decimals),
-		pool.id
+		pool?.id || ''
 	);
 
 	return (
