@@ -2,7 +2,7 @@ import { configureStore } from '@reduxjs/toolkit';
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import reducer from './reducer';
-import listsReducer, { listsSlice } from './reducers/lists';
+import { listsSlice } from './reducers/lists';
 
 const PERSISTED_KEYS: string[] = ['lists'];
 
@@ -16,14 +16,18 @@ const persistConfig = {
 const persistedReducer = persistReducer(persistConfig, reducer);
 
 export const store = configureStore({
-	reducer: {
-		lists: listsReducer
-	},
+	reducer: persistedReducer,
 	devTools: {
 		actionCreators: {
 			...listsSlice.actions
 		}
-	}
+	},
+	middleware: (getDefaultMiddleware) =>
+		getDefaultMiddleware({
+			thunk: true,
+			immutableCheck: true,
+			serializableCheck: false
+		})
 });
 
 export const persistor = persistStore(store);

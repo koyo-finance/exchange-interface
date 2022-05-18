@@ -1,4 +1,5 @@
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { TokenInfo } from '@uniswap/token-lists';
 import SwapCard from 'components/UI/Cards/SwapCard';
 import TokenModal from 'components/UI/Modals/TokenModal';
 import { SwapLayout, SwapLayoutCard } from 'layouts/SwapLayout';
@@ -8,23 +9,26 @@ import { IoSwapVertical } from 'react-icons/io5';
 import { useAppDispatch } from 'state/hooks';
 import { fetchTokenLists } from 'state/reducers/lists';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
-import { Token } from 'types/TokenObject';
 import { useAccount } from 'wagmi';
 
 const SwapIndexPage: ExtendedNextPage = () => {
 	const dispatch = useAppDispatch();
 	const [tokenModalOneIsOpen, setTokenModalIsOpen] = useState(false);
-	const [tokenOne, setTokenOne] = useState<Token>({
-		name: 'Wrapped Ethereum',
-		symbol: 'wETH',
-		icon: 'assets/icons/Ethereum.svg',
-		address: '0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000'
+	const [tokenOne, setTokenOne] = useState<TokenInfo>({
+		name: 'Dai',
+		address: '0xf74195Bb8a5cf652411867c5C2C5b8C2a402be35',
+		symbol: 'DAI',
+		decimals: 18,
+		chainId: 288,
+		logoURI: 'https://tassets.koyo.finance/logos/DAI/512x512.png'
 	});
-	const [tokenTwo, setTokenTwo] = useState<Token>({
-		name: 'Polygon',
-		symbol: 'MATIC',
-		icon: 'assets/icons/Polygon.svg',
-		address: '0x922D641a426DcFFaeF11680e5358F34d97d112E1'
+	const [tokenTwo, setTokenTwo] = useState<TokenInfo>({
+		name: 'Frax',
+		address: '0x7562F525106F5d54E891e005867Bf489B5988CD9',
+		symbol: 'FRAX',
+		decimals: 18,
+		chainId: 288,
+		logoURI: 'https://tassets.koyo.finance/logos/FRAX/512x512.png'
 	});
 
 	const [activeToken, setActiveToken] = useState(1);
@@ -46,7 +50,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 		setTokenModalIsOpen(false);
 	};
 
-	const setTokenHandler = (token: Token, tokenNum: number) => {
+	const setTokenHandler = (token: TokenInfo, tokenNum: number) => {
 		if (tokenNum === 1) {
 			setTokenOne(token);
 			return;

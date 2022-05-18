@@ -1,4 +1,5 @@
 import { formatBalance } from '@koyofinance/core-sdk';
+import { TokenInfo } from '@uniswap/token-lists';
 import useTokenBalance from 'hooks/contracts/useTokenBalance';
 import React from 'react';
 import { RiArrowDownSLine } from 'react-icons/ri';
@@ -7,12 +8,7 @@ import { useAccount } from 'wagmi';
 export interface SwapCardProps {
 	swapType: string;
 	tokenNum: number;
-	token: {
-		name: string;
-		symbol: string;
-		icon: string;
-		address: string;
-	};
+	token: TokenInfo;
 	openTokenModal: (tokenNum: number) => void;
 }
 
@@ -35,7 +31,7 @@ const SwapCard: React.FC<SwapCardProps> = (props) => {
 					onClick={openModalHandler}
 				>
 					<div>
-						<img src={props.token.icon} alt={props.token.name} />
+						<img src={props.token.logoURI} alt={props.token.name} className="w-8" />
 					</div>
 					<div>{props.token.symbol}</div>
 					<div>

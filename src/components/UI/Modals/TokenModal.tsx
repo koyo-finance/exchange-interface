@@ -1,60 +1,22 @@
+import { ChainId } from '@koyofinance/core-sdk';
+import { TokenInfo } from '@uniswap/token-lists';
 import React from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { FiEdit } from 'react-icons/fi';
 import { useSelector } from 'react-redux';
-import { Token } from 'types/TokenObject';
+import { selectAllTokensByChainId } from 'state/reducers/lists';
 
 export interface TokenModalProps {
 	tokenNum: number;
 	closeModal: () => void;
-	setToken: (token: Token, tokenNum: number) => void;
+	setToken: (token: TokenInfo, tokenNum: number) => void;
 }
 
 const TokenModal: React.FC<TokenModalProps> = (props) => {
-	// const TOKENS: Token[] = [
-	// 	{
-	// 		name: 'Wrapped Ethereum',
-	// 		symbol: 'wETH',
-	// 		icon: 'assets/icons/Ethereum.svg',
-	// 		address: '0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000'
-	// 	},
-	// 	{
-	// 		name: 'Wrapped Bitcoin',
-	// 		symbol: 'WBTC',
-	// 		icon: 'assets/icons/BitcoinWrapped.svg',
-	// 		address: '0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000'
-	// 	},
-	// 	{
-	// 		name: 'Curve',
-	// 		symbol: 'CRV',
-	// 		icon: 'assets/icons/Curve.svg',
-	// 		address: '0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000'
-	// 	},
-	// 	{
-	// 		name: 'Polygon',
-	// 		symbol: 'MATIC',
-	// 		icon: 'assets/icons/Polygon.svg',
-	// 		address: '0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000'
-	// 	},
-	// 	{
-	// 		name: 'Loopring',
-	// 		symbol: 'LRC',
-	// 		icon: 'assets/icons/Loopring.svg',
-	// 		address: '0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000'
-	// 	},
-	// 	{
-	// 		name: 'Sushi',
-	// 		symbol: 'SUSHI',
-	// 		icon: 'assets/icons/SushiSwap.svg',
-	// 		address: '0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000'
-	// 	}
-	// ];
+	const TOKENS = useSelector(selectAllTokensByChainId(ChainId.BOBA));
 
-	const TOKENS = useSelector((state) => state?.tokenList.tokenList);
-
-	const setTokenHandler = (e: any) => {
-		// console.log(e.target.id);
-		props.setToken(TOKENS[+e.target.id], props.tokenNum);
+	const setTokenHandler = (e: { target: { id?: string } }) => {
+		props.setToken(TOKENS.find((token) => token.symbol === (e?.target || undefined)?.id)!, props.tokenNum);
 		props.closeModal();
 	};
 
@@ -79,12 +41,13 @@ const TokenModal: React.FC<TokenModalProps> = (props) => {
 					{TOKENS.map((token, i) => (
 						<div
 							key={i}
-							id={`${i}`}
+							id={token.symbol}
 							className=" flex w-full transform-gpu cursor-pointer flex-row items-center justify-start  gap-3 p-2 duration-150 hover:bg-gray-900"
+							// @ts-expect-error Events are weirdos
 							onClick={setTokenHandler}
 						>
 							<div>
-								<img src={token.icon} className=" w-8" />
+								<img src={token.logoURI} className="w-8" alt={token.name} />
 							</div>
 							<div>
 								<div>{token.symbol}</div>

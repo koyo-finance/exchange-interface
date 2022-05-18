@@ -1,4 +1,4 @@
-export const KOYO_LIST = 'https://tokens.koyo.finance';
+export const KOYO_LIST = 'https://tassets.koyo.finance/koyo-default.tokenlist.json';
 
 export const UNSUPPORTED_LIST_URLS: string[] = [];
 

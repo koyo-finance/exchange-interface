@@ -90,7 +90,7 @@ const DepositPage: NextPage = () => {
 															onChange={props.handleChange}
 															value={props.values[coin.name]}
 															type="number"
-															className="w-fit mt-4 inline-block rounded-lg border border-black bg-transparent px-6 py-4 font-inter"
+															className="mt-4 inline-block w-fit rounded-lg border border-black bg-transparent px-6 py-4 font-inter"
 														/>
 													</div>
 												))}

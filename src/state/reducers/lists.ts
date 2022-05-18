@@ -1,17 +1,20 @@
+import { ChainId } from '@koyofinance/core-sdk';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
-import { TokenList } from '@uniswap/token-lists';
+import { TokenList, TokenInfo } from '@uniswap/token-lists';
 import { DEFAULT_ACTIVE_LIST_URLS } from 'config/token-lists';
 import { RootState } from 'state';
 
 export interface ListsState {
 	lists: string[];
 	fetchedLists: TokenList[];
+	tokens: TokenInfo[];
 }
 
 const initialState: ListsState = {
 	lists: DEFAULT_ACTIVE_LIST_URLS,
-	fetchedLists: []
+	fetchedLists: [],
+	tokens: []
 };
 
 export const fetchTokenLists = createAsyncThunk('tokens/fetchTokenList', async (_, { getState }) => {
@@ -34,10 +37,14 @@ export const listsSlice = createSlice({
 	extraReducers: (builder) => {
 		builder.addCase(fetchTokenLists.fulfilled, (state, action) => {
 			state.fetchedLists = action.payload;
+			state.tokens = action.payload.flatMap((list) => list.tokens);
 		});
 	}
 });
 
 export const { setLists } = listsSlice.actions;
+
+export const selectAllTokens = () => (state: RootState) => state.lists.tokens;
+export const selectAllTokensByChainId = (chainId: ChainId) => (state: RootState) => state.lists.tokens.filter((token) => token.chainId === chainId);
 
 export default listsSlice.reducer;
