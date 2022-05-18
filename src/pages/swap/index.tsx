@@ -1,23 +1,18 @@
-import FormApproveAsset from 'components/Pools/StableSwap/FormApproveAsset';
-import { BigNumber } from 'ethers';
-import { parseUnits } from 'ethers/lib/utils';
-import { Form, Formik } from 'formik';
+import { ConnectButton } from '@rainbow-me/rainbowkit';
+import SwapCard from 'components/UI/Cards/SwapCard';
+import TokenModal from 'components/UI/Modals/TokenModal';
 import { SwapLayout, SwapLayoutCard } from 'layouts/SwapLayout';
-import { NextPage } from 'next';
 import React, { useEffect, useState } from 'react';
-import { Case, Default, Switch } from 'react-if';
-import { ExtendedNextPage } from 'types/ExtendedNextPage';
 import { BsFillGearFill } from 'react-icons/bs';
 import { IoSwapVertical } from 'react-icons/io5';
-import SwapCard from 'components/UI/Cards/SwapCard';
-import { useAccount } from 'wagmi';
-import { ConnectButton } from '@rainbow-me/rainbowkit';
-import TokenModal from 'components/UI/Modals/TokenModal';
+import { useAppDispatch } from 'state/hooks';
+import { fetchTokenLists } from 'state/reducers/lists';
+import { ExtendedNextPage } from 'types/ExtendedNextPage';
 import { Token } from 'types/TokenObject';
-import { useDispatch } from 'react-redux';
-import { fetchTokenList } from 'state/reducers/tokens';
+import { useAccount } from 'wagmi';
 
 const SwapIndexPage: ExtendedNextPage = () => {
+	const dispatch = useAppDispatch();
 	const [tokenModalOneIsOpen, setTokenModalIsOpen] = useState(false);
 	const [tokenOne, setTokenOne] = useState<Token>({
 		name: 'Wrapped Ethereum',
@@ -35,10 +30,9 @@ const SwapIndexPage: ExtendedNextPage = () => {
 	const [activeToken, setActiveToken] = useState(1);
 	// const [isInital, setIsInitial] = useState(false);
 
-	const dispatch = useDispatch;
-
 	useEffect(() => {
-		dispatch(fetchTokenList());
+		dispatch(fetchTokenLists());
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const { data: account } = useAccount();
