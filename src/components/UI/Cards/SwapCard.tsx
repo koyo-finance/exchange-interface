@@ -48,7 +48,7 @@ const SwapCard: React.FC<SwapCardProps> = (props) => {
 					className=" w-2/3
 				 border-0 border-b-2 border-darks-200 bg-darks-500 font-jtm text-4xl font-extralight text-white outline-none "
 				/>
-				<div>Balance: {formatBalance(tokenBalance)}</div>
+				<div>Balance: {formatBalance(tokenBalance, undefined, props.token.decimals)}</div>
 			</div>
 		</div>
 	);
