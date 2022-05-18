@@ -64,8 +64,8 @@ const SwapIndexPage: ExtendedNextPage = () => {
 	};
 
 	const { data: calculatedAmount = 0 } = useGetDY(
-		(pool?.coins || []).findIndex((token) => token.address.toLowerCase() === tokenOne.address.toLowerCase()),
-		(pool?.coins || []).findIndex((token) => token.address.toLowerCase() === tokenTwo.tokenData.address.toLowerCase()),
+		(pool?.coins || []).findIndex((token) => token.address === tokenOne.address.toLowerCase()),
+		(pool?.coins || []).findIndex((token) => token.address === tokenTwo.tokenData.address.toLowerCase()),
 		toBigNumber(inputAmount, tokenOne.decimals),
 		pool?.id || ''
 	);
