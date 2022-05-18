@@ -28,7 +28,7 @@ const TokenModal: React.FC<TokenModalProps> = (props) => {
 			return;
 		}
 
-		const filteredTokenList = newTokenList.map((token, i) => {
+		const filteredTokenList = newTokenList.map((token) => {
 			const [tokenInPools] = pools.map((pool) => {
 				const [tokenIsInPool] = pool.coins.filter((coin) => coin.address === token.address);
 				const tokenId = newTokenList.findIndex((wantedToken) => tokenIsInPool.address === wantedToken.address);
