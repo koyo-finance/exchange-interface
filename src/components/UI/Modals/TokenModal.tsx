@@ -4,27 +4,50 @@ import React, { useEffect, useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { FiEdit } from 'react-icons/fi';
 import { useSelector } from 'react-redux';
-import { selectAllTokensByChainId } from 'state/reducers/lists';
+import { selectAllPoolsByChainId, selectAllTokensByChainId } from 'state/reducers/lists';
+import { TokenWithPoolInfo } from 'types/TokenWithPoolInfo';
 
 export interface TokenModalProps {
 	tokenNum: number;
 	oppositeToken: TokenInfo;
 	closeModal: () => void;
-	setToken: (token: TokenInfo, tokenNum: number) => void;
+	setToken: (token: TokenInfo | TokenWithPoolInfo, tokenNum: number) => void;
 }
 
 const TokenModal: React.FC<TokenModalProps> = (props) => {
 	const TOKENS = useSelector(selectAllTokensByChainId(ChainId.BOBA));
+	const pools = useSelector(selectAllPoolsByChainId(ChainId.BOBA));
 
-	const [tokenList, setTokenList] = useState(TOKENS);
+	const [tokenList, setTokenList] = useState<TokenInfo[] | TokenWithPoolInfo[]>(TOKENS);
 
 	useEffect(() => {
-		const newTokenList = tokenList.filter((token) => token.address !== props.oppositeToken.address);
-		setTokenList(newTokenList);
-	}, [props.oppositeToken.address, tokenList]);
+		const newTokenList = TOKENS.filter((token) => token.address !== props.oppositeToken.address);
 
-	const setToken = (symbol: string) => {
-		props.setToken(TOKENS.find((token) => token.symbol === symbol)!, props.tokenNum);
+		if (props.tokenNum === 1) {
+			setTokenList(newTokenList);
+			return;
+		}
+
+		const filteredTokenList = newTokenList.map((token, i) => {
+			const [tokenInPools] = pools.map((pool) => {
+				const [tokenIsInPool] = pool.coins.filter((coin) => coin.address === token.address);
+				const tokenId = newTokenList.findIndex((wantedToken) => tokenIsInPool.address === wantedToken.address);
+				const tokenWithPool = {
+					...newTokenList[tokenId],
+					poolId: pool.id,
+					poolAddress: pool.addresses.swap
+				};
+				return tokenWithPool;
+			});
+			return tokenInPools;
+		});
+
+		setTokenList(filteredTokenList);
+	}, [props.oppositeToken.address]);
+
+	const setTokenHandler = (address: string) => {
+		const chosenTokenId = tokenList.findIndex((token) => token.address === address);
+		props.setToken(tokenList[chosenTokenId], props.tokenNum);
 		props.closeModal();
 	};
 
@@ -51,15 +74,16 @@ const TokenModal: React.FC<TokenModalProps> = (props) => {
 							key={i}
 							id={token.symbol}
 							className=" flex w-full transform-gpu cursor-pointer flex-row items-center justify-start  gap-3 p-2 duration-150 hover:bg-gray-900"
-							onClick={() => setToken(token.symbol)}
+							onClick={() => setTokenHandler(token.address)}
 						>
 							<div>
-								<img src={token.logoURI} className="w-8" alt={token.name} />
+								<img src={token.logoURI} className="w-10" alt={token.name} />
 							</div>
-							<div>
+							<div className=" w-1/2">
 								<div>{token.symbol}</div>
 								<div>{token.name}</div>
 							</div>
+							{props.tokenNum === 2 && <div className=" w-1/2 pr-4 text-right text-gray-500">{token.poolId}</div>}
 						</div>
 					))}
 				</div>

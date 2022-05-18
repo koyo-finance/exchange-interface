@@ -13,6 +13,7 @@ import { useAppDispatch } from 'state/hooks';
 import { fetchPoolLists, fetchTokenLists, selectPoolBySwapAndChainId } from 'state/reducers/lists';
 import { selectAmount, selectTokenOne, selectTokenTwo, setAmount, setTokenOne, setTokenTwo } from 'state/reducers/selectedTokens';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
+import { TokenWithPoolInfo } from 'types/TokenWithPoolInfo';
 import { useAccount } from 'wagmi';
 
 const SwapIndexPage: ExtendedNextPage = () => {
@@ -26,7 +27,6 @@ const SwapIndexPage: ExtendedNextPage = () => {
 	useEffect(() => {
 		dispatch(fetchPoolLists());
 		dispatch(fetchTokenLists());
-
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
@@ -44,20 +44,43 @@ const SwapIndexPage: ExtendedNextPage = () => {
 		setTokenModalIsOpen(false);
 	};
 
-	const setTokenHandler = (token: TokenInfo, tokenNum: number) => {
+	const setTokenHandler = (token: TokenInfo | TokenWithPoolInfo, tokenNum: number) => {
 		if (tokenNum === 1) {
 			dispatch(setTokenOne(token));
 			return;
 		}
-		const tokenTwoFormatted = { tokenData: token, poolAddress: '0x9f0a572be1fcfe96e94c0a730c5f4bc2993fe3f6' };
+
+		const tokenTwoFormatted: TokenWithPoolInfo = {
+			address: token.address,
+			chainId: token.chainId,
+			decimals: token.decimals,
+			logoURI: token.logoURI,
+			name: token.name,
+			symbol: token.symbol,
+			poolId: token.poolId,
+			poolAddress: token.poolAddress
+		};
 		dispatch(setTokenTwo(tokenTwoFormatted));
 	};
 
 	const swapTokensHandler = () => {
-		const tokenOneTransformed = tokenTwo.tokenData;
-		const tokenTwoTransformed = {
-			tokenData: tokenOne,
-			poolAddress: '0x9f0a572be1fcfe96e94c0a730c5f4bc2993fe3f6'
+		const tokenTwoTransformed: TokenWithPoolInfo = {
+			address: tokenOne.address,
+			chainId: tokenOne.chainId,
+			decimals: tokenOne.decimals,
+			logoURI: tokenOne.logoURI,
+			name: tokenOne.name,
+			symbol: tokenOne.symbol,
+			poolId: tokenTwo.poolId,
+			poolAddress: tokenTwo.poolAddress
+		};
+		const tokenOneTransformed = {
+			address: tokenTwo.address,
+			chainId: tokenTwo.chainId,
+			decimals: tokenTwo.decimals,
+			logoURI: tokenTwo.logoURI,
+			name: tokenTwo.name,
+			symbol: tokenTwo.symbol
 		};
 		dispatch(setTokenOne(tokenOneTransformed));
 		dispatch(setTokenTwo(tokenTwoTransformed));
@@ -65,7 +88,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 
 	const { data: calculatedAmount = 0 } = useGetDY(
 		(pool?.coins || []).findIndex((token) => token.address.toLowerCase() === tokenOne.address.toLowerCase()),
-		(pool?.coins || []).findIndex((token) => token.address.toLowerCase() === tokenTwo.tokenData.address.toLowerCase()),
+		(pool?.coins || []).findIndex((token) => token.address.toLowerCase() === tokenTwo.address.toLowerCase()),
 		toBigNumber(inputAmount, tokenOne.decimals),
 		pool?.id || ''
 	);
@@ -75,7 +98,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 			{tokenModalOneIsOpen && (
 				<TokenModal
 					tokenNum={activeToken}
-					oppositeToken={activeToken === 2 ? tokenOne : tokenTwo.tokenData}
+					oppositeToken={activeToken === 2 ? tokenOne : tokenTwo}
 					closeModal={closeTokenModalHandler}
 					setToken={setTokenHandler}
 				/>
@@ -101,16 +124,16 @@ const SwapIndexPage: ExtendedNextPage = () => {
 				<SwapCard
 					swapType="to"
 					tokenNum={2}
-					token={tokenTwo.tokenData}
-					convertedAmount={fromBigNumber(calculatedAmount, tokenTwo.tokenData.decimals)}
+					token={tokenTwo}
+					convertedAmount={fromBigNumber(calculatedAmount, tokenTwo.decimals)}
 					openTokenModal={openTokenModalHandler}
 					setInputAmount={(amount: number) => dispatch(setAmount({ amount }))}
 				/>
 				{account && <button className="btn mt-2 w-full bg-lights-400 text-black hover:bg-lights-200">SWAP</button>}
 				{!account && (
-					<button className="btn mt-2 flex w-full items-center justify-center bg-lights-400 hover:bg-lights-400">
+					<div className="btn mt-2 flex w-full items-center justify-center bg-lights-400 hover:bg-lights-400">
 						<ConnectButton />
-					</button>
+					</div>
 				)}
 			</SwapLayoutCard>
 		</div>

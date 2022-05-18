@@ -81,7 +81,7 @@ const Navbar: React.FC = () => {
 
 							<Disclosure.Panel className="md:hidden">
 								<div className="w-full space-y-1 px-2 pt-2 pb-3 shadow-lg">
-									<div className="justify-content-evenly flex w-full">
+									<div className=" flex w-full justify-center">
 										<div className="flex flex-col gap-y-4 text-center">
 											<Link href="/swap">Swap</Link>
 											<Link href="/deposit">Deposit</Link>
