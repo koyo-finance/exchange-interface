@@ -1,17 +1,16 @@
-import { ChainId, fromBigNumber, toBigNumber } from '@koyofinance/core-sdk';
+import { fromBigNumber } from '@koyofinance/core-sdk';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { TokenInfo } from '@uniswap/token-lists';
 import SwapCard from 'components/UI/Cards/SwapCard';
 import TokenModal from 'components/UI/Modals/TokenModal';
-import useGetDY from 'hooks/contracts/StableSwap/useGetDY';
 import { SwapLayout, SwapLayoutCard } from 'layouts/SwapLayout';
 import React, { useEffect, useState } from 'react';
 import { BsFillGearFill } from 'react-icons/bs';
 import { IoSwapVertical } from 'react-icons/io5';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from 'state/hooks';
-import { fetchPoolLists, fetchTokenLists, selectPoolBySwapAndChainId } from 'state/reducers/lists';
-import { selectAmount, selectTokenOne, selectTokenTwo, setAmount, setTokenOne, setTokenTwo } from 'state/reducers/selectedTokens';
+import { fetchPoolLists, fetchTokenLists } from 'state/reducers/lists';
+import { selectTokenOne, selectTokenTwo, setAmount, setTokenOne, setTokenTwo } from 'state/reducers/selectedTokens';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
 import { TokenWithPoolInfo } from 'types/TokenWithPoolInfo';
 import { useAccount } from 'wagmi';
@@ -19,12 +18,17 @@ import { useAccount } from 'wagmi';
 const SwapIndexPage: ExtendedNextPage = () => {
 	const dispatch = useAppDispatch();
 
+	const { data: account } = useAccount();
+
 	const [tokenModalOneIsOpen, setTokenModalIsOpen] = useState(false);
 	const [activeToken, setActiveToken] = useState(1);
-	const [tokenOneAmount, seTokenOneAmount] = useState(0);
-	const [tokenTwoAmount, seTokenTwoAmount] = useState(0);
+	const [tokenOneAmount, _seTokenOneAmount] = useState(0);
+	const [tokenTwoAmount, _seTokenTwoAmount] = useState(0);
 
-	const { data: account } = useAccount();
+	const tokenOne = useSelector(selectTokenOne);
+	const tokenTwo = useSelector(selectTokenTwo);
+	// const inputAmount = useSelector(selectAmount);
+	// const pool = useSelector(selectPoolBySwapAndChainId(tokenTwo.poolAddress, ChainId.BOBA));
 
 	useEffect(() => {
 		dispatch(fetchPoolLists());
@@ -40,11 +44,6 @@ const SwapIndexPage: ExtendedNextPage = () => {
 		// 	pool?.id || ''
 		// );
 	});
-
-	const tokenOne = useSelector(selectTokenOne);
-	const tokenTwo = useSelector(selectTokenTwo);
-	const inputAmount = useSelector(selectAmount);
-	const pool = useSelector(selectPoolBySwapAndChainId(tokenTwo.poolAddress, ChainId.BOBA));
 
 	const openTokenModalHandler = (tokenNum: number) => {
 		setActiveToken(tokenNum);
@@ -68,8 +67,8 @@ const SwapIndexPage: ExtendedNextPage = () => {
 			logoURI: token.logoURI,
 			name: token.name,
 			symbol: token.symbol,
-			poolId: token.poolId,
-			poolAddress: token.poolAddress
+			poolId: (token as TokenWithPoolInfo)?.poolId || '',
+			poolAddress: (token as TokenWithPoolInfo)?.poolAddress || ''
 		};
 		dispatch(setTokenTwo(tokenTwoFormatted));
 	};
@@ -85,6 +84,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 			poolId: tokenTwo.poolId,
 			poolAddress: tokenTwo.poolAddress
 		};
+
 		const tokenOneTransformed = {
 			address: tokenTwo.address,
 			chainId: tokenTwo.chainId,
@@ -93,12 +93,9 @@ const SwapIndexPage: ExtendedNextPage = () => {
 			name: tokenTwo.name,
 			symbol: tokenTwo.symbol
 		};
+
 		dispatch(setTokenOne(tokenOneTransformed));
 		dispatch(setTokenTwo(tokenTwoTransformed));
-	};
-
-	const setInputAmountHandler = (amount: number) => {
-		dispatch(setAmount({ amount }));
 	};
 
 	return (

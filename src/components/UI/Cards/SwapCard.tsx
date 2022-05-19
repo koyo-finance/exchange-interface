@@ -1,7 +1,7 @@
 import { formatBalance } from '@koyofinance/core-sdk';
 import { TokenInfo } from '@uniswap/token-lists';
 import useTokenBalance from 'hooks/contracts/useTokenBalance';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { RiArrowDownSLine } from 'react-icons/ri';
 import { useAccount } from 'wagmi';
 

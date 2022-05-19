@@ -1,8 +1,10 @@
 import { config } from '@fortawesome/fontawesome-svg-core';
 import { darkTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import Navbar from 'components/Navbar';
 import { ROOT } from 'constants/links';
 import { queryClient } from 'core/query';
 import { chains, wagmiClient } from 'core/wallet';
+import DefaultLayout from 'layouts/DefaultLayout';
 import type { NextPage, NextPageContext } from 'next';
 import PlausibleProvider from 'next-plausible';
 import { DefaultSeo } from 'next-seo';
@@ -11,17 +13,15 @@ import Head from 'next/head';
 import React from 'react';
 import { QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistor, store } from 'state';
+import { ExtendedNextPage } from 'types/ExtendedNextPage';
 import { WagmiProvider } from 'wagmi';
 import DefaultSeoProps from '../DefaultSeoProps';
 
 import 'styles/_App.css';
 import '@rainbow-me/rainbowkit/styles.css';
-import DefaultLayout from 'layouts/DefaultLayout';
-import { ExtendedNextPage } from 'types/ExtendedNextPage';
-import Navbar from 'components/Navbar/Navbar';
-import { Provider } from 'react-redux';
-import { persistor, store } from 'state';
-import { PersistGate } from 'redux-persist/integration/react';
 
 config.autoAddCss = false;
 

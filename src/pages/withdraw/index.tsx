@@ -1,7 +1,7 @@
-import { NextPage } from 'next';
 import React from 'react';
+import { ExtendedNextPage } from 'types/ExtendedNextPage';
 
-const WithdrawPage: NextPage = () => {
+const WithdrawPage: ExtendedNextPage = () => {
 	return <div>Withdraw here</div>;
 };
 

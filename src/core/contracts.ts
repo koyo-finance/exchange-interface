@@ -1,7 +1,7 @@
-import { pools } from 'constants/pools';
+import { augmentedPools } from '@koyofinance/swap-sdk';
 import { bobaProvider } from 'hooks/useProviders';
 import { StableSwap4Pool, StableSwap4Pool__factory } from 'types/contracts/exchange';
 
 export const swapContracts: Map<string, StableSwap4Pool> = new Map(
-	pools.map((pool) => [pool.deploy.name, StableSwap4Pool__factory.connect(pool.deploy.swap_address, bobaProvider)])
+	augmentedPools.map((pool) => [pool.id, StableSwap4Pool__factory.connect(pool.addresses.swap, bobaProvider)])
 );

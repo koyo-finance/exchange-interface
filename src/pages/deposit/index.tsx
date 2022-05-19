@@ -1,42 +1,40 @@
 import { Combobox } from '@headlessui/react';
-import { allPoolsByName, getPool, Pool } from 'constants/pools';
+import { ChainId } from '@koyofinance/core-sdk';
+import { AugmentedPool } from '@koyofinance/swap-sdk';
 import { BigNumber } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
 import { Form, Formik } from 'formik';
 import useAddLiquidity from 'hooks/contracts/StableSwap/useAddLiquidity';
 import useMultiTokenAllowance from 'hooks/contracts/useMultiTokenAllowance';
-import { NextPage } from 'next';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Case, Default, Switch } from 'react-if';
+import { useSelector } from 'react-redux';
+import { selectAllPoolsByChainId } from 'state/reducers/lists';
+import { ExtendedNextPage } from 'types/ExtendedNextPage';
 import { useAccount, useSigner } from 'wagmi';
 
-const DepositPage: NextPage = () => {
-	const pools = allPoolsByName();
+const DepositPage: ExtendedNextPage = () => {
+	const pools = useSelector(selectAllPoolsByChainId(ChainId.BOBA));
 
 	const { data: account } = useAccount();
 	const { data: signer } = useSigner();
 
-	const [selectedPoolName, setSelectedPoolName] = useState(pools[0]);
-	const [selectedPool, setSelectedPool] = useState<Pool | null>(null);
+	const [selectedPool, setSelectedPool] = useState<AugmentedPool | undefined>(undefined);
 	const [query, setQuery] = useState('');
 
 	const allowances = useMultiTokenAllowance(
 		account?.address,
-		selectedPool?.deploy.swap_address,
-		selectedPool?.coins?.map((coin) => coin.underlying_address)
+		selectedPool?.addresses.swap,
+		selectedPool?.coins?.map((coin) => coin.address)
 	);
 
-	const { mutate: addLiqudity } = useAddLiquidity(signer || undefined, selectedPool?.deploy?.name || '');
-
-	useEffect(() => {
-		setSelectedPool(getPool(selectedPoolName) || null);
-	}, [selectedPoolName]);
+	const { mutate: addLiqudity } = useAddLiquidity(signer || undefined, selectedPool?.id || '');
 
 	const filteredPools =
 		query === ''
 			? pools
 			: pools.filter((pool) => {
-					return pool.toLowerCase().includes(query.toLowerCase());
+					return pool.id.toLowerCase().includes(query.toLowerCase());
 			  });
 
 	return (
@@ -44,12 +42,12 @@ const DepositPage: NextPage = () => {
 			<div className="content-without-nav flex">
 				<div className="m-auto rounded-xl border-4 border-darks-500 bg-lights-300 p-8">
 					<div className="text-center">
-						<Combobox value={selectedPoolName} onChange={setSelectedPoolName}>
+						<Combobox value={selectedPool?.name} onChange={(name) => setSelectedPool(pools.find((pool) => pool.name === name))}>
 							<Combobox.Input onChange={(event) => setQuery(event.target.value)} className="rounded-xl p-2 px-4" />
 							<Combobox.Options className="absolute z-10 mt-1 text-center">
 								{filteredPools.map((pool) => (
-									<Combobox.Option key={pool} value={pool}>
-										{pool}
+									<Combobox.Option key={pool.id} value={pool.name}>
+										{pool.name}
 									</Combobox.Option>
 								))}
 							</Combobox.Options>

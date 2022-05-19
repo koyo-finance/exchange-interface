@@ -49,6 +49,7 @@ const TokenModal: React.FC<TokenModalProps> = (props) => {
 			.filter((tList) => tList !== -1) as TokenWithPoolInfo[];
 
 		setTokenList(filteredTokenList);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [props.oppositeToken.address, (props.oppositeToken as TokenWithPoolInfo).poolId]);
 
 	const setTokenHandler = (address: string, poolId: string) => {
