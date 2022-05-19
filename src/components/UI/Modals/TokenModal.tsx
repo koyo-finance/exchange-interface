@@ -18,7 +18,7 @@ const TokenModal: React.FC<TokenModalProps> = (props) => {
 	const TOKENS = useSelector(selectAllTokensByChainId(ChainId.BOBA));
 	const pools = useSelector(selectAllPoolsByChainId(ChainId.BOBA));
 
-	const [tokenList, setTokenList] = useState<TokenInfo[] | TokenWithPoolInfo[]>(TOKENS);
+	const [tokenList, setTokenList] = useState<(TokenInfo | TokenWithPoolInfo)[]>(TOKENS);
 
 	useEffect(() => {
 		const newTokenList = TOKENS;
@@ -30,26 +30,25 @@ const TokenModal: React.FC<TokenModalProps> = (props) => {
 		}
 
 		console.log(newFilteredTokenList);
-		const filteredTokenList = newFilteredTokenList.flatMap((token) => {
-			const tokenInPools = pools
-				.map((pool) => {
+		const filteredTokenList = newFilteredTokenList
+			.flatMap((token) =>
+				pools.map((pool) => {
 					const oppositeTokenInPool = pool.coins.findIndex((poolToken) => poolToken.address === props.oppositeToken.address);
 					if (oppositeTokenInPool === -1) return -1;
 					const [tokenInPool] = pool.coins.filter((coin) => {
 						return coin.address === token.address;
 					});
-					if (!tokenInPool) return false;
+					if (!tokenInPool) return -1;
 					const tokenId = newFilteredTokenList.findIndex((wantedToken) => tokenInPool?.address === wantedToken.address);
-					const tokenWithPool = {
+					const tokenWithPool: TokenWithPoolInfo = {
 						...newFilteredTokenList[tokenId],
 						poolId: pool.id,
 						poolAddress: pool.addresses.swap
 					};
 					return tokenWithPool;
 				})
-				.filter(Number.isNaN);
-			return tokenInPools;
-		});
+			)
+			.filter((tList) => tList !== -1) as TokenWithPoolInfo[];
 
 		setTokenList(filteredTokenList);
 	}, [props.oppositeToken.address]);
@@ -92,7 +91,9 @@ const TokenModal: React.FC<TokenModalProps> = (props) => {
 								<div>{token.symbol}</div>
 								<div>{token.name}</div>
 							</div>
-							{props.tokenNum === 2 && <div className=" w-1/2 pr-4 text-right text-gray-500">{token.poolId}</div>}
+							{props.tokenNum === 2 && (token as TokenWithPoolInfo).poolId && (
+								<div className=" w-1/2 pr-4 text-right text-gray-500">{(token as TokenWithPoolInfo).poolId}</div>
+							)}
 						</div>
 					))}
 				</div>
