@@ -90,7 +90,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 		(pool?.coins || []).findIndex((token) => token.address.toLowerCase() === tokenOne.address.toLowerCase()),
 		(pool?.coins || []).findIndex((token) => token.address.toLowerCase() === tokenTwo.address.toLowerCase()),
 		toBigNumber(inputAmount, tokenOne.decimals),
-		tokenTwo.poolId
+		pool?.id || ''
 	);
 
 	return (

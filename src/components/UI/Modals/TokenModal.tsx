@@ -21,24 +21,33 @@ const TokenModal: React.FC<TokenModalProps> = (props) => {
 	const [tokenList, setTokenList] = useState<TokenInfo[] | TokenWithPoolInfo[]>(TOKENS);
 
 	useEffect(() => {
-		const newTokenList = TOKENS.filter((token) => token.address !== props.oppositeToken.address);
+		const newTokenList = TOKENS;
+		const newFilteredTokenList = newTokenList.filter((token) => token.address !== props.oppositeToken.address);
 
 		if (props.tokenNum === 1) {
-			setTokenList(newTokenList);
+			setTokenList(newFilteredTokenList);
 			return;
 		}
 
-		const filteredTokenList = newTokenList.map((token) => {
-			const [tokenInPools] = pools.map((pool) => {
-				const [tokenIsInPool] = pool.coins.filter((coin) => coin.address === token.address);
-				const tokenId = newTokenList.findIndex((wantedToken) => tokenIsInPool.address === wantedToken.address);
-				const tokenWithPool = {
-					...newTokenList[tokenId],
-					poolId: pool.id,
-					poolAddress: pool.addresses.swap
-				};
-				return tokenWithPool;
-			});
+		console.log(newFilteredTokenList);
+		const filteredTokenList = newFilteredTokenList.flatMap((token) => {
+			const tokenInPools = pools
+				.map((pool) => {
+					const oppositeTokenInPool = pool.coins.findIndex((poolToken) => poolToken.address === props.oppositeToken.address);
+					if (oppositeTokenInPool === -1) return -1;
+					const [tokenInPool] = pool.coins.filter((coin) => {
+						return coin.address === token.address;
+					});
+					if (!tokenInPool) return false;
+					const tokenId = newFilteredTokenList.findIndex((wantedToken) => tokenInPool?.address === wantedToken.address);
+					const tokenWithPool = {
+						...newFilteredTokenList[tokenId],
+						poolId: pool.id,
+						poolAddress: pool.addresses.swap
+					};
+					return tokenWithPool;
+				})
+				.filter(Number.isNaN);
 			return tokenInPools;
 		});
 
