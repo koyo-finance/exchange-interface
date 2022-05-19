@@ -3,12 +3,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Disclosure } from '@headlessui/react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import React from 'react';
+import PageSelectedOverlay from './Desktop/PageSelectedOverlay';
 
 const Navbar: React.FC = () => {
-	const router = useRouter();
-
 	return (
 		<>
 			<header className="fixed left-0 top-0 z-20 w-full bg-darks-500 pt-2">
@@ -44,13 +42,7 @@ const Navbar: React.FC = () => {
 													<span className="cursor-pointer px-4">Withdraw</span>
 												</Link>
 											</div>
-											<div
-												className={`absolute left-0 z-0 h-10 w-1/3 transform rounded-2xl bg-darks-200 bg-opacity-100 duration-200 ${
-													router.pathname === '/swap' ? ' translate-x-0' : ''
-												} ${router.pathname === '/deposit' ? ' ml-0 translate-x-[100%]' : ''} ${
-													router.pathname === '/withdraw' ? 'ml-0 translate-x-[200%]' : ''
-												} ${router.pathname === '/' ? ' -translate-x-[100%] opacity-0' : ''}`}
-											></div>
+											<PageSelectedOverlay />
 										</div>
 									</div>
 

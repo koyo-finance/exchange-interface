@@ -1,6 +1,6 @@
 import { fromBigNumber } from '@koyofinance/core-sdk';
-import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { TokenInfo } from '@uniswap/token-lists';
+import CoreCardConnectButton from 'components/UI/Cards/CoreCardConnectButton';
 import SwapCard from 'components/UI/Cards/SwapCard';
 import TokenModal from 'components/UI/Modals/TokenModal';
 import { SwapLayout, SwapLayoutCard } from 'layouts/SwapLayout';
@@ -13,12 +13,9 @@ import { fetchPoolLists, fetchTokenLists } from 'state/reducers/lists';
 import { selectTokenOne, selectTokenTwo, setAmount, setTokenOne, setTokenTwo } from 'state/reducers/selectedTokens';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
 import { TokenWithPoolInfo } from 'types/TokenWithPoolInfo';
-import { useAccount } from 'wagmi';
 
 const SwapIndexPage: ExtendedNextPage = () => {
 	const dispatch = useAppDispatch();
-
-	const { data: account } = useAccount();
 
 	const [tokenModalOneIsOpen, setTokenModalIsOpen] = useState(false);
 	const [activeToken, setActiveToken] = useState(1);
@@ -136,12 +133,18 @@ const SwapIndexPage: ExtendedNextPage = () => {
 					setInputAmount={(amount: number) => dispatch(setAmount({ amount }))}
 					setActiveToken={(tokenNum: number) => setActiveToken(tokenNum)}
 				/>
-				{account && <button className="btn mt-2 w-full bg-lights-400 text-black hover:bg-lights-200">SWAP</button>}
+				{/* {account && }
 				{!account && (
 					<div className="btn mt-2 flex w-full items-center justify-center bg-lights-400 hover:bg-lights-400">
 						<ConnectButton />
 					</div>
-				)}
+				)} */}
+				<CoreCardConnectButton
+					className="btn mt-2 w-full bg-lights-400 text-black hover:bg-lights-200"
+					invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
+				>
+					<button>SWAP</button>
+				</CoreCardConnectButton>
 			</SwapLayoutCard>
 		</div>
 	);
