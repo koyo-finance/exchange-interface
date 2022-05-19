@@ -1,16 +1,17 @@
-import { fromBigNumber } from '@koyofinance/core-sdk';
+import { ChainId, fromBigNumber, toBigNumber } from '@koyofinance/core-sdk';
 import { TokenInfo } from '@uniswap/token-lists';
 import CoreCardConnectButton from 'components/UI/Cards/CoreCardConnectButton';
 import SwapCard from 'components/UI/Cards/SwapCard';
 import TokenModal from 'components/UI/Modals/TokenModal';
+import useGetDY from 'hooks/contracts/StableSwap/useGetDY';
 import { SwapLayout, SwapLayoutCard } from 'layouts/SwapLayout';
 import React, { useEffect, useState } from 'react';
 import { BsFillGearFill } from 'react-icons/bs';
 import { IoSwapVertical } from 'react-icons/io5';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from 'state/hooks';
-import { fetchPoolLists, fetchTokenLists } from 'state/reducers/lists';
-import { selectTokenOne, selectTokenTwo, setAmount, setTokenOne, setTokenTwo } from 'state/reducers/selectedTokens';
+import { fetchPoolLists, fetchTokenLists, selectPoolBySwapAndChainId } from 'state/reducers/lists';
+import { selectAmount, selectTokenOne, selectTokenTwo, setAmount, setTokenOne, setTokenTwo } from 'state/reducers/selectedTokens';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
 import { TokenWithPoolInfo } from 'types/TokenWithPoolInfo';
 
@@ -19,13 +20,13 @@ const SwapIndexPage: ExtendedNextPage = () => {
 
 	const [tokenModalOneIsOpen, setTokenModalIsOpen] = useState(false);
 	const [activeToken, setActiveToken] = useState(1);
-	const [tokenOneAmount, _seTokenOneAmount] = useState(0);
-	const [tokenTwoAmount, _seTokenTwoAmount] = useState(0);
+	const [tokenOneAmount, setTokenOneAmount] = useState(0);
+	const [tokenTwoAmount, setTokenTwoAmount] = useState(0);
 
 	const tokenOne = useSelector(selectTokenOne);
 	const tokenTwo = useSelector(selectTokenTwo);
-	// const inputAmount = useSelector(selectAmount);
-	// const pool = useSelector(selectPoolBySwapAndChainId(tokenTwo.poolAddress, ChainId.BOBA));
+	const inputAmount = useSelector(selectAmount);
+	const pool = useSelector(selectPoolBySwapAndChainId(tokenTwo.poolAddress, ChainId.BOBA));
 
 	useEffect(() => {
 		dispatch(fetchPoolLists());
@@ -33,14 +34,28 @@ const SwapIndexPage: ExtendedNextPage = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	useEffect(() => {
-		// const { data: calculatedAmount = 0 } = useGetDY(
-		// 	(pool?.coins || []).findIndex((token) => token.address === tokenOne.address),
-		// 	(pool?.coins || []).findIndex((token) => token.address === tokenTwo.address),
-		// 	toBigNumber(inputAmount, tokenOne.decimals),
-		// 	pool?.id || ''
-		// );
-	});
+	const { data: calculatedAmountTokenOne = 0 } = useGetDY(
+		(pool?.coins || []).findIndex((token) => token.address === tokenTwo.address),
+		(pool?.coins || []).findIndex((token) => token.address === tokenOne.address),
+		toBigNumber(tokenTwoAmount, tokenOne.decimals),
+		pool?.id || ''
+	);
+
+	const { data: calculatedAmountTokenTwo = 0 } = useGetDY(
+		(pool?.coins || []).findIndex((token) => token.address === tokenOne.address),
+		(pool?.coins || []).findIndex((token) => token.address === tokenTwo.address),
+		toBigNumber(tokenOneAmount, tokenOne.decimals),
+		pool?.id || ''
+	);
+
+	const setTokenAmountHandler = (amount: number, tokenNum: number, settingConvertedAmount: boolean) => {
+		if (tokenNum === 1) {
+			if (!settingConvertedAmount) setTokenOneAmount(amount);
+			dispatch(setAmount({ amount }));
+			return;
+		}
+		setTokenTwoAmount(amount);
+	};
 
 	const openTokenModalHandler = (tokenNum: number) => {
 		setActiveToken(tokenNum);
@@ -113,24 +128,22 @@ const SwapIndexPage: ExtendedNextPage = () => {
 					</div>
 				</div>
 				<SwapCard
-					swapType="from"
 					tokenNum={1}
 					token={tokenOne}
-					convertedAmount={fromBigNumber(tokenOneAmount, tokenTwo.decimals)}
+					convertedAmount={fromBigNumber(calculatedAmountTokenOne, tokenOne.decimals)}
 					openTokenModal={openTokenModalHandler}
-					setInputAmount={(amount: number) => dispatch(setAmount({ amount }))}
+					setInputAmount={setTokenAmountHandler}
 					setActiveToken={(tokenNum: number) => setActiveToken(tokenNum)}
 				/>
 				<div className=" flex h-6 w-full cursor-pointer items-center justify-center text-3xl text-white" onClick={swapTokensHandler}>
 					<IoSwapVertical />
 				</div>
 				<SwapCard
-					swapType="to"
 					tokenNum={2}
 					token={tokenTwo}
-					convertedAmount={fromBigNumber(tokenTwoAmount, tokenTwo.decimals)}
+					convertedAmount={fromBigNumber(calculatedAmountTokenTwo, tokenTwo.decimals)}
 					openTokenModal={openTokenModalHandler}
-					setInputAmount={(amount: number) => dispatch(setAmount({ amount }))}
+					setInputAmount={setTokenAmountHandler}
 					setActiveToken={(tokenNum: number) => setActiveToken(tokenNum)}
 				/>
 				{/* {account && }
