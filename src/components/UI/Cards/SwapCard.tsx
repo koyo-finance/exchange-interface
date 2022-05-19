@@ -12,14 +12,24 @@ export interface SwapCardProps {
 	convertedAmount: number;
 	openTokenModal: (tokenNum: number) => void;
 	setInputAmount: (amount: number) => void;
+	setActiveToken: (tokenNum: number) => void;
 }
 
 const SwapCard: React.FC<SwapCardProps> = (props) => {
-	const { data: account } = useAccount();
+	const [tokenAmount, setTokenAmount] = useState(props.convertedAmount);
 
+	useEffect(() => {
+		setTokenAmount(props.convertedAmount);
+	}, [props.convertedAmount]);
+
+	const { data: account } = useAccount();
 	const { data: tokenBalance = 0 } = useTokenBalance(account?.address, props.token.address);
 
-	console.log(props.convertedAmount);
+	const changeTokenAmountHandler = (e: any) => {
+		props.setActiveToken(props.tokenNum);
+		setTokenAmount(e.target.value);
+		props.setInputAmount(Number(e.target.value));
+	};
 
 	const openModalHandler = () => {
 		props.openTokenModal(props.tokenNum);
@@ -48,20 +58,25 @@ const SwapCard: React.FC<SwapCardProps> = (props) => {
 					name={`swap ${props.swapType}`}
 					min={0}
 					step={0.1}
-					onChange={(e) => {
-						props.setInputAmount(Number(e.target.value));
-					}}
+					onChange={changeTokenAmountHandler}
+					value={tokenAmount.toLocaleString('fullwide', {
+						minimumFractionDigits: 2,
+						maximumFractionDigits: 5
+					})}
 					className=" w-2/3
 				  border-0 border-b-2 border-darks-200 bg-darks-500 font-jtm text-4xl font-extralight text-white outline-none"
 				/>
-				{props.tokenNum === 2 && (
+				{/* {props.tokenNum === 2 && (
 					<div
 						className="w-2/3
 				 truncate border-0 bg-darks-500 font-jtm text-4xl font-extralight text-white outline-none"
 					>
-						{props.convertedAmount}
+						{props.convertedAmount.toLocaleString('default', {
+							minimumFractionDigits: 2,
+							maximumFractionDigits: 5
+						})}
 					</div>
-				)}
+				)} */}
 				<div>Balance: {formatBalance(tokenBalance, undefined, props.token.decimals)}</div>
 			</div>
 		</div>

@@ -24,7 +24,7 @@
     "@fortawesome/react-fontawesome": "^0.1.17",
     "@headlessui/react": "^1.5.0",
     "@heroicons/react": "^1.0.6",
-    "@koyofinance/core-sdk": "^0.2.0-next.8f35cd3.0",
+    "@koyofinance/core-sdk": "^0.2.0-next.6115c43.0",
     "@koyofinance/swap-sdk": "^0.2.0-next.4f3c101.0",
     "@rainbow-me/rainbowkit": "^0.1.0",
     "@reduxjs/toolkit": "^1.8.1",

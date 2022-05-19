@@ -21,6 +21,8 @@ const SwapIndexPage: ExtendedNextPage = () => {
 
 	const [tokenModalOneIsOpen, setTokenModalIsOpen] = useState(false);
 	const [activeToken, setActiveToken] = useState(1);
+	const [tokenOneAmount, seTokenOneAmount] = useState(0);
+	const [tokenTwoAmount, seTokenTwoAmount] = useState(0);
 
 	const { data: account } = useAccount();
 
@@ -29,6 +31,15 @@ const SwapIndexPage: ExtendedNextPage = () => {
 		dispatch(fetchTokenLists());
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
+	useEffect(() => {
+		// const { data: calculatedAmount = 0 } = useGetDY(
+		// 	(pool?.coins || []).findIndex((token) => token.address === tokenOne.address),
+		// 	(pool?.coins || []).findIndex((token) => token.address === tokenTwo.address),
+		// 	toBigNumber(inputAmount, tokenOne.decimals),
+		// 	pool?.id || ''
+		// );
+	});
 
 	const tokenOne = useSelector(selectTokenOne);
 	const tokenTwo = useSelector(selectTokenTwo);
@@ -86,12 +97,9 @@ const SwapIndexPage: ExtendedNextPage = () => {
 		dispatch(setTokenTwo(tokenTwoTransformed));
 	};
 
-	const { data: calculatedAmount = 0 } = useGetDY(
-		(pool?.coins || []).findIndex((token) => token.address.toLowerCase() === tokenOne.address.toLowerCase()),
-		(pool?.coins || []).findIndex((token) => token.address.toLowerCase() === tokenTwo.address.toLowerCase()),
-		toBigNumber(inputAmount, tokenOne.decimals),
-		pool?.id || ''
-	);
+	const setInputAmountHandler = (amount: number) => {
+		dispatch(setAmount({ amount }));
+	};
 
 	return (
 		<div className=" flex h-screen w-full items-center justify-center">
@@ -114,9 +122,10 @@ const SwapIndexPage: ExtendedNextPage = () => {
 					swapType="from"
 					tokenNum={1}
 					token={tokenOne}
-					convertedAmount={0}
+					convertedAmount={fromBigNumber(tokenOneAmount, tokenTwo.decimals)}
 					openTokenModal={openTokenModalHandler}
 					setInputAmount={(amount: number) => dispatch(setAmount({ amount }))}
+					setActiveToken={(tokenNum: number) => setActiveToken(tokenNum)}
 				/>
 				<div className=" flex h-6 w-full cursor-pointer items-center justify-center text-3xl text-white" onClick={swapTokensHandler}>
 					<IoSwapVertical />
@@ -125,9 +134,10 @@ const SwapIndexPage: ExtendedNextPage = () => {
 					swapType="to"
 					tokenNum={2}
 					token={tokenTwo}
-					convertedAmount={fromBigNumber(calculatedAmount, tokenTwo.decimals)}
+					convertedAmount={fromBigNumber(tokenTwoAmount, tokenTwo.decimals)}
 					openTokenModal={openTokenModalHandler}
 					setInputAmount={(amount: number) => dispatch(setAmount({ amount }))}
+					setActiveToken={(tokenNum: number) => setActiveToken(tokenNum)}
 				/>
 				{account && <button className="btn mt-2 w-full bg-lights-400 text-black hover:bg-lights-200">SWAP</button>}
 				{!account && (

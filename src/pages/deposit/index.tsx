@@ -1,6 +1,4 @@
 import { Combobox } from '@headlessui/react';
-import FormApproveAsset from 'components/Pools/StableSwap/FormApproveAsset';
-import FormLPCalculation from 'components/Pools/StableSwap/FormLPCalculation';
 import { allPoolsByName, getPool, Pool } from 'constants/pools';
 import { BigNumber } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
@@ -96,14 +94,7 @@ const DepositPage: NextPage = () => {
 												))}
 											</div>
 											<div className="mt-4 grid grid-cols-2">
-												<div className="flex h-full items-center justify-center text-center font-bold text-white">
-													<FormLPCalculation
-														pool={selectedPool}
-														amounts={Object.entries(props.values)
-															.slice(0, selectedPool.coins.length)
-															.map((coins) => coins[1] || 0)}
-													/>
-												</div>
+												<div className="flex h-full items-center justify-center text-center font-bold text-white"></div>
 												<div>
 													<Switch>
 														{selectedPool.coins.map((coin, i) => (
@@ -111,17 +102,7 @@ const DepositPage: NextPage = () => {
 																condition={BigNumber.from(allowances[i].data || 0).lt(
 																	parseUnits((props.values[coin.name] || 0).toString(), coin.decimals)
 																)}
-															>
-																<FormApproveAsset
-																	asset={coin.underlying_address}
-																	spender={selectedPool.deploy.swap_address}
-																	amount={props.values[coin.name]}
-																	decimals={coin.decimals}
-																	className="btn border border-white bg-lights-300 font-sora text-sm lowercase text-white"
-																>
-																	approve - {coin.name}
-																</FormApproveAsset>
-															</Case>
+															></Case>
 														))}
 														<Default>
 															<button

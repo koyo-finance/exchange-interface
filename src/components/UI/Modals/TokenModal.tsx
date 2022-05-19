@@ -21,16 +21,14 @@ const TokenModal: React.FC<TokenModalProps> = (props) => {
 	const [tokenList, setTokenList] = useState<(TokenInfo | TokenWithPoolInfo)[]>(TOKENS);
 
 	useEffect(() => {
-		const newTokenList = TOKENS;
-		const newFilteredTokenList = newTokenList.filter((token) => token.address !== props.oppositeToken.address);
+		const newTokenList = TOKENS.filter((token) => token.address !== props.oppositeToken.address);
 
 		if (props.tokenNum === 1) {
-			setTokenList(newFilteredTokenList);
+			setTokenList(newTokenList);
 			return;
 		}
 
-		console.log(newFilteredTokenList);
-		const filteredTokenList = newFilteredTokenList
+		const filteredTokenList = newTokenList
 			.flatMap((token) =>
 				pools.map((pool) => {
 					const oppositeTokenInPool = pool.coins.findIndex((poolToken) => poolToken.address === props.oppositeToken.address);
@@ -39,9 +37,9 @@ const TokenModal: React.FC<TokenModalProps> = (props) => {
 						return coin.address === token.address;
 					});
 					if (!tokenInPool) return -1;
-					const tokenId = newFilteredTokenList.findIndex((wantedToken) => tokenInPool?.address === wantedToken.address);
+					const tokenId = newTokenList.findIndex((wantedToken) => tokenInPool?.address === wantedToken.address);
 					const tokenWithPool: TokenWithPoolInfo = {
-						...newFilteredTokenList[tokenId],
+						...newTokenList[tokenId],
 						poolId: pool.id,
 						poolAddress: pool.addresses.swap
 					};
@@ -51,11 +49,19 @@ const TokenModal: React.FC<TokenModalProps> = (props) => {
 			.filter((tList) => tList !== -1) as TokenWithPoolInfo[];
 
 		setTokenList(filteredTokenList);
-	}, [props.oppositeToken.address]);
+	}, [props.oppositeToken.address, (props.oppositeToken as TokenWithPoolInfo).poolId]);
 
-	const setTokenHandler = (address: string) => {
-		const chosenTokenId = tokenList.findIndex((token) => token.address === address);
-		props.setToken(tokenList[chosenTokenId], props.tokenNum);
+	const setTokenHandler = (address: string, poolId: string) => {
+		const chosenTokens = tokenList.filter((token) => token.address === address);
+
+		if (poolId === undefined) {
+			props.setToken(chosenTokens[0], props.tokenNum);
+			props.closeModal();
+			return;
+		}
+
+		const [chosenTokenByPool] = chosenTokens.filter((token) => (token as TokenWithPoolInfo).poolId === poolId);
+		props.setToken(chosenTokenByPool, props.tokenNum);
 		props.closeModal();
 	};
 
@@ -82,7 +88,7 @@ const TokenModal: React.FC<TokenModalProps> = (props) => {
 							key={i}
 							id={token.symbol}
 							className=" flex w-full transform-gpu cursor-pointer flex-row items-center justify-start  gap-3 p-2 duration-150 hover:bg-gray-900"
-							onClick={() => setTokenHandler(token.address)}
+							onClick={() => setTokenHandler(token.address, (token as TokenWithPoolInfo).poolId)}
 						>
 							<div>
 								<img src={token.logoURI} className="w-10" alt={token.name} />
