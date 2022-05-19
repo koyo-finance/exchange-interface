@@ -11,7 +11,7 @@ import { IoSwapVertical } from 'react-icons/io5';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from 'state/hooks';
 import { fetchPoolLists, fetchTokenLists, selectPoolBySwapAndChainId } from 'state/reducers/lists';
-import { selectAmount, selectTokenOne, selectTokenTwo, setAmount, setTokenOne, setTokenTwo } from 'state/reducers/selectedTokens';
+import { selectTokenOne, selectTokenTwo, setAmount, setTokenOne, setTokenTwo } from 'state/reducers/selectedTokens';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
 import { TokenWithPoolInfo } from 'types/TokenWithPoolInfo';
 
@@ -25,7 +25,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 
 	const tokenOne = useSelector(selectTokenOne);
 	const tokenTwo = useSelector(selectTokenTwo);
-	const inputAmount = useSelector(selectAmount);
+	// const inputAmount = useSelector(selectAmount);
 	const pool = useSelector(selectPoolBySwapAndChainId(tokenTwo.poolAddress, ChainId.BOBA));
 
 	useEffect(() => {
