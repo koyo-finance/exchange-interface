@@ -46,7 +46,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 	const { data: calculatedAmountTokenOne = 0 } = useGetDY(
 		tokenTwoIndex,
 		tokenOneIndex,
-		toBigNumber(tokenTwoAmount, tokenOne.decimals),
+		toBigNumber(tokenTwoAmount, tokenTwo.decimals),
 		pool?.id || ''
 	);
 
