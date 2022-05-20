@@ -5,7 +5,7 @@ import SwapCard from 'components/UI/Cards/SwapCard';
 import TokenModal from 'components/UI/Modals/TokenModal';
 import useGetDY from 'hooks/contracts/StableSwap/useGetDY';
 import { SwapLayout, SwapLayoutCard } from 'layouts/SwapLayout';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BsFillGearFill } from 'react-icons/bs';
 import { IoSwapVertical } from 'react-icons/io5';
 import { useSelector } from 'react-redux';
@@ -22,6 +22,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 	const [activeToken, setActiveToken] = useState(1);
 	const [tokenOneAmount, setTokenOneAmount] = useState(0);
 	const [tokenTwoAmount, setTokenTwoAmount] = useState(0);
+	const [invertedTokenOneAmount, setInvertedTokenOneAmount] = useState(0);
 
 	const tokenOne = useSelector(selectTokenOne);
 	const tokenTwo = useSelector(selectTokenTwo);
@@ -41,6 +42,18 @@ const SwapIndexPage: ExtendedNextPage = () => {
 		toBigNumber(tokenOneAmount, tokenOne.decimals),
 		pool?.id || ''
 	);
+
+	useEffect(() => {
+		const convertedAmount = fromBigNumber(calculatedAmountTokenOne, tokenOne.decimals);
+		if (convertedAmount === 0) {
+			setInvertedTokenOneAmount(convertedAmount);
+			return;
+		}
+		console.log(convertedAmount);
+		const calculatedAmountDiff = tokenTwoAmount - convertedAmount;
+		const calculatedSumAmount = tokenTwoAmount + calculatedAmountDiff;
+		setInvertedTokenOneAmount(calculatedSumAmount);
+	}, [calculatedAmountTokenOne]);
 
 	const setTokenAmountHandler = (amount: number, tokenNum: number, settingConvertedAmount: boolean) => {
 		if (tokenNum === 1) {
@@ -124,7 +137,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 				<SwapCard
 					tokenNum={1}
 					token={tokenOne}
-					convertedAmount={fromBigNumber(calculatedAmountTokenOne, tokenOne.decimals)}
+					convertedAmount={invertedTokenOneAmount}
 					openTokenModal={openTokenModalHandler}
 					setInputAmount={setTokenAmountHandler}
 					setActiveToken={(tokenNum: number) => setActiveToken(tokenNum)}
