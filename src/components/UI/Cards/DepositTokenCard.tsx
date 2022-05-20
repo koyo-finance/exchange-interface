@@ -1,6 +1,6 @@
 import { ChainId } from '@koyofinance/core-sdk';
 import { RawCoin } from '@koyofinance/swap-sdk';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectAllTokensByChainId } from 'state/reducers/lists';
 
@@ -15,7 +15,7 @@ const DepositTokenCard: React.FC<SwapCardProps> = (props) => {
 	const inputAmountRef = useRef<HTMLInputElement>(null);
 	const [defaultValue, setDefaultValue] = useState(0);
 
-	useEffect(() => {}, [props.coin]);
+	// useEffect(() => {}, [props.coin]);
 
 	const [{ logoURI: coinLogo }] = TOKENS.filter((token) => token.symbol.toLowerCase() === props.coin.symbol.toLowerCase());
 

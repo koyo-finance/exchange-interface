@@ -53,6 +53,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 		const calculatedAmountDiff = tokenTwoAmount - convertedAmount;
 		const calculatedSumAmount = tokenTwoAmount + calculatedAmountDiff;
 		setInvertedTokenOneAmount(calculatedSumAmount);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [calculatedAmountTokenOne]);
 
 	const setTokenAmountHandler = (amount: number, tokenNum: number, settingConvertedAmount: boolean) => {

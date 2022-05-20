@@ -1838,22 +1838,24 @@
     "@json-rpc-tools/types" "^1.7.6"
     "@pedrouid/environment" "^1.0.1"
 
-"@koyofinance/core-sdk@^0.2.0-next.6115c43.0":
-  version "0.2.0-next.6115c43.0"
-  resolved "https://registry.yarnpkg.com/@koyofinance/core-sdk/-/core-sdk-0.2.0-next.6115c43.0.tgz#60180c9f89a740a7db8ade15b84266f543989c7b"
-  integrity sha512-QtfByY6x7MnGOumLRWWbM5Ek8GUHRKJtstpig01b9lY7Sezv8ttAQ8UB5BXxvTb17gqmzhSae60SlfG/wDcedw==
+"@koyofinance/core-sdk@^0.2.0-next.177ad78.0":
+  version "0.2.0-next.177ad78.0"
+  resolved "https://registry.yarnpkg.com/@koyofinance/core-sdk/-/core-sdk-0.2.0-next.177ad78.0.tgz#68e29664a0cfcf47f5a420f97cfe5cbd8d4a52d2"
+  integrity sha512-h7XzdfimS4WOOoP7GlyVZRHPJpFk3g7DnhZ9SWwwCUrQBoxQY+OjiVTKh4Hya01A2FHdntZC92ZVKPMypvJZKA==
   dependencies:
     "@uniswap/token-lists" "^1.0.0-beta.28"
+    dayjs "^1.11.2"
     ethers "^5.6.6"
+    numbro "^2.3.6"
     tslib "^2.4.0"
     wagmi "^0.3.5"
 
-"@koyofinance/swap-sdk@^0.2.0-next.6115c43.0":
-  version "0.2.0-next.6115c43.0"
-  resolved "https://registry.yarnpkg.com/@koyofinance/swap-sdk/-/swap-sdk-0.2.0-next.6115c43.0.tgz#3d4d41ed396907d61f8244285bd7137cf7c57101"
-  integrity sha512-/Tkcu0s7hrX85sWrL/L7YozZvkkPyR+m5D/dduRitvBDlIm1tq1O3W2FXYT6E7jKFesPh3P0OSW8JnWO1/FK0g==
+"@koyofinance/swap-sdk@^0.2.0-next.177ad78.0":
+  version "0.2.0-next.177ad78.0"
+  resolved "https://registry.yarnpkg.com/@koyofinance/swap-sdk/-/swap-sdk-0.2.0-next.177ad78.0.tgz#410b7088024fe9c6613b30d422df25960a17d390"
+  integrity sha512-qpVYmgyX8ZPH0LwrPLNJS//K2FOc6hB5mJUUr0blJ7JDHbin1vFnc7aMhAz/PkI6BHvlJAek5Kj4o2dxOFBCDg==
   dependencies:
-    "@koyofinance/core-sdk" "^0.2.0-next.6115c43.0"
+    "@koyofinance/core-sdk" "^0.2.0-next.177ad78.0"
     tslib "^2.4.0"
 
 "@mdx-js/mdx@^1.6.22":
@@ -4406,6 +4408,11 @@ big.js@^5.2.2:
   resolved "https://registry.yarnpkg.com/big.js/-/big.js-5.2.2.tgz#65f0af382f578bcdc742bd9c281e9cb2d7768328"
   integrity sha512-vyL2OymJxmarO8gxMr0mhChsO9QGwhynfuu4+MHTAW6czfq9humCB7rKpUjDd9YUiDPU4mzpyupFSvOClAwbmQ==
 
+bignumber.js@^8.1.1:
+  version "8.1.1"
+  resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-8.1.1.tgz#4b072ae5aea9c20f6730e4e5d529df1271c4d885"
+  integrity sha512-QD46ppGintwPGuL1KqmwhR0O+N2cZUg8JG/VzwI2e28sM9TqHjQB10lI4QAaMHVbLzwVLLAwEglpKPViWX+5NQ==
+
 binary-extensions@^1.0.0:
   version "1.13.1"
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-1.13.1.tgz#598afe54755b2868a5330d2aff9d4ebb53209b65"
@@ -5565,6 +5572,11 @@ date-fns@^2.0.1, date-fns@^2.24.0, date-fns@^2.9.0:
   version "2.28.0"
   resolved "https://registry.yarnpkg.com/date-fns/-/date-fns-2.28.0.tgz#9570d656f5fc13143e50c975a3b6bbeb46cd08b2"
   integrity sha512-8d35hViGYx/QH0icHYCeLmsLmMUheMmTyV9Fcm6gvNwdw31yXXH+O85sOBJ+OLnLQMKZowvpKb6FgMIQjcpvQw==
+
+dayjs@^1.11.2:
+  version "1.11.2"
+  resolved "https://registry.yarnpkg.com/dayjs/-/dayjs-1.11.2.tgz#fa0f5223ef0d6724b3d8327134890cfe3d72fbe5"
+  integrity sha512-F4LXf1OeU9hrSYRPTTj/6FbO4HTjPKXvEIC1P2kcnFurViINCVk3ZV0xAS3XVx9MkMsXbbqlK6hjseaYbgKEHw==
 
 debug@2.6.9, debug@^2.2.0, debug@^2.3.3, debug@^2.6.0, debug@^2.6.9:
   version "2.6.9"
@@ -9234,6 +9246,13 @@ num2fraction@^1.2.2:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/num2fraction/-/num2fraction-1.2.2.tgz#6f682b6a027a4e9ddfa4564cd2589d1d4e669ede"
   integrity sha1-b2gragJ6Tp3fpFZM0lidHU5mnt4=
+
+numbro@^2.3.6:
+  version "2.3.6"
+  resolved "https://registry.yarnpkg.com/numbro/-/numbro-2.3.6.tgz#4bd622ebe59ccbc49dad365c5b9eed200781fa21"
+  integrity sha512-pxpoTT3hVxQGaOA2RTzXR/muonQNd1K1HPJbWo7QOmxPwiPmoFCFfsG9XXgW3uqjyzezJ0P9IvCPDXUtJexjwg==
+  dependencies:
+    bignumber.js "^8.1.1"
 
 object-assign@^4.1.1:
   version "4.1.1"
