@@ -1,19 +1,20 @@
-import { ChainId } from '@koyofinance/core-sdk';
+import { ChainId, formatBalance } from '@koyofinance/core-sdk';
 import { RawCoin } from '@koyofinance/swap-sdk';
+import { BigNumber, BigNumberish } from 'ethers';
 import React, { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectAllTokensByChainId } from 'state/reducers/lists';
 
-export interface SwapCardProps {
+export interface DepositCardProps {
 	coin: RawCoin;
+	balance: BigNumberish | undefined;
 	setInputAmount: (e: React.ChangeEvent) => void;
 }
 
-const DepositTokenCard: React.FC<SwapCardProps> = (props) => {
+const DepositTokenCard: React.FC<DepositCardProps> = (props) => {
 	const TOKENS = useSelector(selectAllTokensByChainId(ChainId.BOBA));
 
 	const inputAmountRef = useRef<HTMLInputElement>(null);
-	const [defaultValue, setDefaultValue] = useState(0);
 
 	// useEffect(() => {}, [props.coin]);
 
@@ -39,12 +40,11 @@ const DepositTokenCard: React.FC<SwapCardProps> = (props) => {
 					min={0}
 					step={0.1}
 					onChange={props.setInputAmount}
-					value={defaultValue}
-					onLoad={() => setDefaultValue(0)}
-					defaultValue={inputAmountRef.current?.value}
+					defaultValue={0}
 					className=" w-2/3
 				  border-0 border-b-2 border-darks-200 bg-darks-500 font-jtm text-4xl font-extralight text-white outline-none"
 				/>
+				<div>Balance: {formatBalance(props.balance || 0, undefined, props.coin.decimals)}</div>
 				{/* {props.tokenNum === 2 && (
 					<div
 						className="w-2/3

@@ -17,6 +17,7 @@ import { HiSwitchHorizontal } from 'react-icons/hi';
 import PoolsModal from 'components/UI/Modals/PoolsModal';
 import DepositTokenCard from 'components/UI/Cards/DepositTokenCard';
 import CoreCardConnectButton from 'components/UI/Cards/CoreCardConnectButton';
+import useMultiTokenBalances from 'hooks/contracts/useMultiTokenBalances';
 
 const DepositPage: ExtendedNextPage = () => {
 	const pools = useSelector(selectAllPoolsByChainId(ChainId.BOBA));
@@ -32,6 +33,13 @@ const DepositPage: ExtendedNextPage = () => {
 		selectedPool?.addresses.swap,
 		selectedPool?.coins?.map((coin) => coin.address)
 	);
+
+	const balances = useMultiTokenBalances(
+		account?.address,
+		selectedPool?.coins?.map((coin) => coin.address)
+	);
+
+	console.log(balances);
 
 	const { mutate: addLiqudity } = useAddLiquidity(signer || undefined, selectedPool?.id || '');
 
@@ -68,7 +76,7 @@ const DepositPage: ExtendedNextPage = () => {
 							</Combobox> */}
 			{poolsModalIsOpen && <PoolsModal setPool={setPoolHandler} closeModal={closePoolsModalHandler} />}
 			<SwapLayoutCard>
-				<div className="w-[90vw] sm:w-[75vw] md:w-[50vw] lg:max-w-[50vw]">
+				<div className={`xl: w-[90vw] sm:w-[75vw] md:w-[50vw] lg:w-[40vw] xl:${selectedPool ? 'w-[50vw]' : 'w-[30vw]'}`}>
 					<div className="m-auto rounded-xl">
 						<div className="flex flex-col gap-2">
 							<div className="flex w-full flex-row items-center justify-between text-lg font-semibold text-white">
@@ -122,9 +130,13 @@ const DepositPage: ExtendedNextPage = () => {
 										<Form>
 											<div>
 												<div className="mt-4 grid grid-cols-2 gap-8">
-													{selectedPool.coins.map((coin) => (
+													{selectedPool.coins.map((coin, i) => (
 														<div key={coin.name}>
-															<DepositTokenCard coin={coin} setInputAmount={props.handleChange} />
+															<DepositTokenCard
+																coin={coin}
+																balance={balances[i].data}
+																setInputAmount={props.handleChange}
+															/>
 														</div>
 													))}
 												</div>
