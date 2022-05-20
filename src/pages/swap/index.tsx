@@ -5,12 +5,12 @@ import SwapCard from 'components/UI/Cards/SwapCard';
 import TokenModal from 'components/UI/Modals/TokenModal';
 import useGetDY from 'hooks/contracts/StableSwap/useGetDY';
 import { SwapLayout, SwapLayoutCard } from 'layouts/SwapLayout';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { BsFillGearFill } from 'react-icons/bs';
 import { IoSwapVertical } from 'react-icons/io5';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from 'state/hooks';
-import { fetchPoolLists, fetchTokenLists, selectPoolBySwapAndChainId } from 'state/reducers/lists';
+import { selectPoolBySwapAndChainId } from 'state/reducers/lists';
 import { selectTokenOne, selectTokenTwo, setAmount, setTokenOne, setTokenTwo } from 'state/reducers/selectedTokens';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
 import { TokenWithPoolInfo } from 'types/TokenWithPoolInfo';
@@ -27,12 +27,6 @@ const SwapIndexPage: ExtendedNextPage = () => {
 	const tokenTwo = useSelector(selectTokenTwo);
 	// const inputAmount = useSelector(selectAmount);
 	const pool = useSelector(selectPoolBySwapAndChainId(tokenTwo.poolAddress, ChainId.BOBA));
-
-	useEffect(() => {
-		dispatch(fetchPoolLists());
-		dispatch(fetchTokenLists());
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
 
 	const { data: calculatedAmountTokenOne = 0 } = useGetDY(
 		(pool?.coins || []).findIndex((token) => token.address === tokenTwo.address),

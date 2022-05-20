@@ -1,5 +1,6 @@
 import { config } from '@fortawesome/fontawesome-svg-core';
 import { darkTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import InitialStateWrapper from 'components/InitialStateWrapper';
 import Navbar from 'components/Navbar';
 import { ROOT } from 'constants/links';
 import { queryClient } from 'core/query';
@@ -20,8 +21,8 @@ import { ExtendedNextPage } from 'types/ExtendedNextPage';
 import { WagmiProvider } from 'wagmi';
 import DefaultSeoProps from '../DefaultSeoProps';
 
-import 'styles/_App.css';
 import '@rainbow-me/rainbowkit/styles.css';
+import 'styles/_App.css';
 
 config.autoAddCss = false;
 
@@ -44,28 +45,30 @@ const App: NextPage<AppProps> = ({ Component, pageProps }) => {
 							<PlausibleProvider domain={ROOT}>
 								<Provider store={store}>
 									<PersistGate persistor={persistor}>
-										<>
-											<Head>
-												<meta httpEquiv="Content-Type" content="text/html; charset=UTF-8" />
-												<meta httpEquiv="X-UA-Compatible" content="ie=edge" />
-												<meta httpEquiv="Expires" content="1y" />
-												<meta httpEquiv="Pragma" content="1y" />
-												<meta httpEquiv="Cache-Control" content="1y" />
+										<InitialStateWrapper>
+											<>
+												<Head>
+													<meta httpEquiv="Content-Type" content="text/html; charset=UTF-8" />
+													<meta httpEquiv="X-UA-Compatible" content="ie=edge" />
+													<meta httpEquiv="Expires" content="1y" />
+													<meta httpEquiv="Pragma" content="1y" />
+													<meta httpEquiv="Cache-Control" content="1y" />
 
-												<meta httpEquiv="Page-Enter" content="RevealTrans(Duration=2.0,Transition=2)" />
-												<meta httpEquiv="Page-Exit" content="RevealTrans(Duration=3.0,Transition=12)" />
+													<meta httpEquiv="Page-Enter" content="RevealTrans(Duration=2.0,Transition=2)" />
+													<meta httpEquiv="Page-Exit" content="RevealTrans(Duration=3.0,Transition=12)" />
 
-												<link rel="shortcut icon" href="/favicon.ico" />
-											</Head>
-											<DefaultSeo {...DefaultSeoProps} />
-										</>
+													<link rel="shortcut icon" href="/favicon.ico" />
+												</Head>
+												<DefaultSeo {...DefaultSeoProps} />
+											</>
 
-										<>
-											<Navbar />
-											<Layout>
-												<ExtendedPage {...pageProps} />
-											</Layout>
-										</>
+											<>
+												<Navbar />
+												<Layout>
+													<ExtendedPage {...pageProps} />
+												</Layout>
+											</>
+										</InitialStateWrapper>
 									</PersistGate>
 								</Provider>
 							</PlausibleProvider>

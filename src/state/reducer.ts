@@ -1,10 +1,10 @@
 import { combineReducers } from '@reduxjs/toolkit';
 import listsReducer from './reducers/lists';
-import selectedTokens from './reducers/selectedTokens';
+import selectedTokensReducer from './reducers/selectedTokens';
 
 const reducer = combineReducers({
 	lists: listsReducer,
-	selectedTokens: selectedTokens
+	selectedTokens: selectedTokensReducer
 });
 
 export default reducer;
