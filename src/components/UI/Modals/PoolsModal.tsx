@@ -1,4 +1,5 @@
 import { ChainId } from '@koyofinance/core-sdk';
+import { Pool } from '@koyofinance/swap-sdk';
 import React, { useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { useSelector } from 'react-redux';
@@ -19,7 +20,7 @@ const PoolsModal: React.FC<PoolsModalProps> = (props) => {
 			return;
 		}
 		const filteredList = pools.filter(
-			(pool) =>
+			(pool: Pool) =>
 				pool.id.includes(e.target.value) ||
 				pool.id.toLowerCase().includes(e.target.value) ||
 				pool.id.includes(e.target.value) ||
@@ -49,6 +50,7 @@ const PoolsModal: React.FC<PoolsModalProps> = (props) => {
 				<div className="flex  max-h-[50vh] w-full flex-col overflow-y-scroll">
 					{filteredPoolList.map((pool) => (
 						<div
+							key={pool.id}
 							className="flex transform-gpu cursor-pointer flex-row justify-between rounded-lg p-3 text-lg duration-100 hover:bg-gray-700"
 							onClick={() => {
 								props.setPool(pool.id);

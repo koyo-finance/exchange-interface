@@ -1,9 +1,11 @@
 import { ChainId, formatBalance } from '@koyofinance/core-sdk';
 import { RawCoin } from '@koyofinance/swap-sdk';
+import { TokenInfo } from '@uniswap/token-lists';
 import { BigNumberish } from 'ethers';
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectAllTokensByChainId } from 'state/reducers/lists';
+import { TokenWithPoolInfo } from 'types/TokenWithPoolInfo';
 
 export interface DepositCardProps {
 	coin: RawCoin;
@@ -14,9 +16,19 @@ export interface DepositCardProps {
 const DepositTokenCard: React.FC<DepositCardProps> = (props) => {
 	const TOKENS = useSelector(selectAllTokensByChainId(ChainId.BOBA));
 
+	const [tokenAmount, setTokenAmount] = useState<number | string>(0);
+
 	const inputAmountRef = useRef<HTMLInputElement>(null);
 
-	const [{ logoURI: coinLogo }] = TOKENS.filter((token) => token.symbol.toLowerCase() === props.coin.symbol.toLowerCase());
+	const [{ logoURI: coinLogo }] = TOKENS.filter(
+		(token: TokenInfo | TokenWithPoolInfo) => token.symbol.toLowerCase() === props.coin.symbol.toLowerCase()
+	);
+
+	const tokenAmountChangeHandler = (e: React.ChangeEvent) => {
+		const inputAmount = inputAmountRef.current ? inputAmountRef.current?.value : 0;
+		setTokenAmount(inputAmount);
+		props.setInputAmount(e);
+	};
 
 	return (
 		<div className=" flex w-full flex-col gap-2 rounded-xl bg-darks-500 p-4">
@@ -37,24 +49,19 @@ const DepositTokenCard: React.FC<DepositCardProps> = (props) => {
 					name={props.coin.name}
 					min={0}
 					step={0.1}
-					onChange={props.setInputAmount}
-					defaultValue={0}
-					className=" w-2/3
+					onChange={tokenAmountChangeHandler}
+					defaultValue={0.0}
+					value={tokenAmount.toLocaleString('fullwide', {
+						minimumFractionDigits: 2,
+						maximumFractionDigits: 5
+					})}
+					onBlur={() => setTokenAmount(Number(tokenAmount))}
+					className=" w-10/12
 				  border-0 border-b-2 border-darks-200 bg-darks-500 font-jtm text-4xl font-extralight text-white outline-none"
 				/>
-				<div>Balance: {formatBalance(props.balance, undefined, props.coin.decimals)}</div>
-				{/* {props.tokenNum === 2 && (
-					<div
-						className="w-2/3
-				 truncate border-0 bg-darks-500 font-jtm text-4xl font-extralight text-white outline-none"
-					>
-						{props.convertedAmount.toLocaleString('default', {
-							minimumFractionDigits: 2,
-							maximumFractionDigits: 5
-						})}
-					</div>
-				)} */}
-				{/* <div>Balance: {formatBalance(tokenBalance, undefined, props.token.decimals)}</div> */}
+				<div className="max-w-2/12 flex flex-row flex-wrap justify-center gap-2 text-left md:pl-0 lg:flex-nowrap">
+					<div>Balance:</div> <div>{formatBalance(props.balance, undefined, props.coin.decimals)}</div>
+				</div>
 			</div>
 		</div>
 	);

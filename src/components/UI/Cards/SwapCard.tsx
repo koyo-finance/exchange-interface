@@ -21,7 +21,17 @@ const SwapCard: React.FC<SwapCardProps> = (props) => {
 	useEffect(() => {
 		setTokenAmount(props.convertedAmount);
 
-		if (props.tokenNum === 1) props.setInputAmount(props.convertedAmount, props.tokenNum, true);
+		if (props.tokenNum === 1)
+			props.setInputAmount(
+				Number(
+					props.convertedAmount.toLocaleString('fullwide', {
+						minimumFractionDigits: 0,
+						maximumFractionDigits: 5
+					})
+				),
+				props.tokenNum,
+				true
+			);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [props.convertedAmount]);
 
@@ -29,9 +39,13 @@ const SwapCard: React.FC<SwapCardProps> = (props) => {
 	const { data: tokenBalance = 0 } = useTokenBalance(account?.address, props.token.address);
 
 	const changeTokenAmountHandler = (e: any) => {
+		const formattedAmount = Number(e.target.value).toLocaleString('default', {
+			minimumFractionDigits: 0,
+			maximumFractionDigits: 5
+		});
 		props.setActiveToken(props.tokenNum);
 		setTokenAmount(e.target.value);
-		props.setInputAmount(Number(e.target.value), props.tokenNum, false);
+		props.setInputAmount(Number(formattedAmount), props.tokenNum, false);
 	};
 
 	const openModalHandler = () => {
@@ -64,25 +78,22 @@ const SwapCard: React.FC<SwapCardProps> = (props) => {
 					min={0}
 					step={0.1}
 					onChange={changeTokenAmountHandler}
-					value={tokenAmount.toLocaleString('fullwide', {
+					defaultValue={tokenAmount.toLocaleString('default', {
 						minimumFractionDigits: 2,
 						maximumFractionDigits: 5
 					})}
-					className=" w-2/3
+					value={tokenAmount.toLocaleString('default', {
+						minimumFractionDigits: 2,
+						maximumFractionDigits: 5
+					})}
+					onBlur={() => setTokenAmount(Number(tokenAmount))}
+					className=" w-9/12
 				  border-0 border-b-2 border-darks-200 bg-darks-500 font-jtm text-4xl font-extralight text-white outline-none"
 				/>
-				{/* {props.tokenNum === 2 && (
-					<div
-						className="w-2/3
-				 truncate border-0 bg-darks-500 font-jtm text-4xl font-extralight text-white outline-none"
-					>
-						{props.convertedAmount.toLocaleString('default', {
-							minimumFractionDigits: 2,
-							maximumFractionDigits: 5
-						})}
-					</div>
-				)} */}
-				<div>Balance: {formatBalance(tokenBalance, undefined, props.token.decimals)}</div>
+				<div className="max-w-2/12 flex flex-row flex-wrap justify-center gap-2 text-left">
+					<div>Balance:</div>
+					<div>{formatBalance(tokenBalance, undefined, props.token.decimals)}</div>
+				</div>
 			</div>
 		</div>
 	);

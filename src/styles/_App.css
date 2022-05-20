@@ -332,9 +332,17 @@
 ::-webkit-scrollbar {
 	width: 8px;
 	height: 10px;
-	@apply bg-lights-200;
+	@apply bg-darks-400;
 }
 ::-webkit-scrollbar-thumb {
 	border-radius: 8px;
-	@apply bg-darks-500;
+	@apply bg-lights-400;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	@apply bg-lights-300;
+}
+
+::-webkit-scrollbar-thumb:active {
+	@apply bg-lights-200;
 }

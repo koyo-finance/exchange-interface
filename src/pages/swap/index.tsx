@@ -186,7 +186,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 					setToken={setTokenHandler}
 				/>
 			)}
-			<SwapLayoutCard className="w-[90vw] sm:w-[75vw] md:w-[55vw] lg:w-[45vw] xl:w-[35vw]">
+			<SwapLayoutCard className="w-[90vw] sm:w-[75vw] md:w-[55vw] lg:w-[45vw] xl:w-[40vw] 2xl:w-[30vw]">
 				<div className="w-full">
 					<div className="mb-2 flex w-full flex-row items-center justify-between text-lg font-semibold text-white">
 						<div>Swap</div>

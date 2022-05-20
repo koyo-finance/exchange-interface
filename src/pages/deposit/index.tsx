@@ -1,5 +1,5 @@
 import { ChainId } from '@koyofinance/core-sdk';
-import { AugmentedPool } from '@koyofinance/swap-sdk';
+import { AugmentedPool, Pool } from '@koyofinance/swap-sdk';
 import CoreCardConnectButton from 'components/UI/Cards/CoreCardConnectButton';
 import DepositTokenCard from 'components/UI/Cards/DepositTokenCard';
 import FormApproveAsset from 'components/UI/Cards/FormApproveAsset';
@@ -40,8 +40,6 @@ const DepositPage: ExtendedNextPage = () => {
 		selectedPool?.coins?.map((coin) => coin.address)
 	);
 
-	console.log(balances);
-
 	const { mutate: addLiqudity } = useAddLiquidity(signer || undefined, selectedPool?.id || '');
 
 	const openPoolsModalHandler = () => {
@@ -53,17 +51,23 @@ const DepositPage: ExtendedNextPage = () => {
 	};
 
 	const setPoolHandler = (poolId: string) => {
-		const [selectedPoolFilter] = pools.filter((pool) => {
+		const [selectedPoolFilter] = pools.filter((pool: Pool) => {
 			return pool.id.toLowerCase().includes(poolId.toLowerCase());
 		});
 		setSelectedPool(selectedPoolFilter);
 	};
 
 	return (
-		<div className="flex h-screen w-full items-center justify-center">
+		<div className="flex min-h-screen w-full items-center justify-center bg-darks-500 pb-6 pt-[10vh] md:pt-0">
 			{poolsModalIsOpen && <PoolsModal setPool={setPoolHandler} closeModal={closePoolsModalHandler} />}
 			<SwapLayoutCard>
-				<div className={`xl: w-[90vw] sm:w-[75vw] md:w-[50vw] lg:w-[40vw] xl:${selectedPool ? 'w-[50vw]' : 'w-[30vw]'}`}>
+				<div
+					className={
+						selectedPool
+							? 'w-[90vw] sm:w-[60vw] md:w-[80vw] lg:w-[70vw] xl:w-[55vw]'
+							: 'w-[90vw] sm:w-[60vw] md:w-[50vw] lg:w-[35vw] xl:w-[30vw]'
+					}
+				>
 					<div className="m-auto rounded-xl">
 						<div className="flex flex-col gap-2">
 							<div className="flex w-full flex-row items-center justify-between text-lg font-semibold text-white">
@@ -98,7 +102,7 @@ const DepositPage: ExtendedNextPage = () => {
 						</div>
 
 						{selectedPool && (
-							<>
+							<div className={selectedPool ? 'block' : 'hidden'}>
 								<Formik
 									initialValues={Object.fromEntries(selectedPool.coins.map((coin) => [coin.name, 0]))}
 									onSubmit={(values) => {
@@ -116,10 +120,11 @@ const DepositPage: ExtendedNextPage = () => {
 									{(props) => (
 										<Form>
 											<div>
-												<div className="mt-4 grid grid-cols-2 gap-8">
+												<div className="mt-4 grid grid-cols-1 gap-8 md:grid-cols-2">
 													{selectedPool.coins.map((coin, i) => (
-														<div key={coin.name}>
+														<div key={coin.id}>
 															<DepositTokenCard
+																key={coin.id}
 																coin={coin}
 																balance={balances[i].data || 0}
 																setInputAmount={props.handleChange}
@@ -138,6 +143,7 @@ const DepositPage: ExtendedNextPage = () => {
 																	condition={BigNumber.from(allowances[i].data || 0).lt(
 																		parseUnits((props.values[coin.name] || 0).toString(), coin.decimals)
 																	)}
+																	key={coin.id}
 																>
 																	<FormApproveAsset
 																		asset={coin.address}
@@ -159,7 +165,7 @@ const DepositPage: ExtendedNextPage = () => {
 										</Form>
 									)}
 								</Formik>
-							</>
+							</div>
 						)}
 					</div>
 				</div>
