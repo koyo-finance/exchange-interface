@@ -11,6 +11,7 @@ const EthInputFormik: React.FC<EthInputFormikProps> = ({ ...props }) => {
 
 	return (
 		<div>
+			{/* eslint-disable-next-line @next/next/no-img-element */}
 			<img src="/assets/icons/ether_white.svg" alt="Ether" className="inline pr-1" />
 			<input type="text" {...props} {...field} />
 		</div>

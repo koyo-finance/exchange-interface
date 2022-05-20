@@ -92,6 +92,7 @@ const TokenModal: React.FC<TokenModalProps> = (props) => {
 							onClick={() => setTokenHandler(token.address, (token as TokenWithPoolInfo).poolId)}
 						>
 							<div>
+								{/* eslint-disable-next-line @next/next/no-img-element */}
 								<img src={token.logoURI} className="w-10" alt={token.name} />
 							</div>
 							<div className=" w-1/2">

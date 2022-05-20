@@ -22,6 +22,7 @@ const SwapCard: React.FC<SwapCardProps> = (props) => {
 		setTokenAmount(props.convertedAmount);
 
 		if (props.tokenNum === 1) props.setInputAmount(props.convertedAmount, props.tokenNum, true);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [props.convertedAmount]);
 
 	const { data: account } = useAccount();
@@ -46,6 +47,7 @@ const SwapCard: React.FC<SwapCardProps> = (props) => {
 					onClick={openModalHandler}
 				>
 					<div>
+						{/* eslint-disable-next-line @next/next/no-img-element */}
 						<img src={props.token.logoURI} alt={props.token.name} className="w-8" />
 					</div>
 					<div>{props.token.symbol}</div>

@@ -1,9 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { persistReducer, persistStore } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
 import reducer from './reducer';
 import { listsSlice } from './reducers/lists';
 import { selectedTokensSlice } from './reducers/selectedTokens';
+import storage from './storage';
 
 const PERSISTED_KEYS: string[] = ['lists'];
 

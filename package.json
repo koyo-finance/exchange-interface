@@ -30,11 +30,9 @@
     "@reduxjs/toolkit": "^1.8.1",
     "@sapphire/fetch": "^2.3.1",
     "@uniswap/token-lists": "^1.0.0-beta.28",
-    "babel-plugin-macros": "^3.1.0",
     "daisyui": "^2.14.3",
     "ethers": "^5.6.5",
     "formik": "^2.2.9",
-    "ms.macro": "^2.0.0",
     "next": "12.1.0",
     "next-plausible": "^3.1.5",
     "next-seo": "^5.1.0",
@@ -57,6 +55,7 @@
     "wagmi": "^0.3.4"
   },
   "devDependencies": {
+    "@next/eslint-plugin-next": "^12.1.6",
     "@sapphire/eslint-config": "4.0.8",
     "@sapphire/prettier-config": "1.2.7",
     "@sapphire/ts-config": "3.1.6",
