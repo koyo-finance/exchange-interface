@@ -13,7 +13,7 @@ const Navbar: React.FC = () => {
 				<Disclosure as="nav" className="border-b-2 border-darks-500 bg-transparent font-semibold text-black">
 					{({ open }) => (
 						<>
-							<div className="container mx-auto px-8 py-2">
+							<div className=" mx-auto px-4 py-2 md:px-6 xl:px-32">
 								<div className="relative flex h-12 items-center justify-between">
 									{/* Left */}
 									<div className="z-40 flex items-stretch justify-start pl-0">
@@ -27,7 +27,7 @@ const Navbar: React.FC = () => {
 
 									{/* Center */}
 									<div className="absolute z-0 flex w-full flex-row items-center justify-center ">
-										<div className="relative hidden flex-row items-center rounded-2xl bg-black bg-opacity-50 p-0 text-center text-white md:flex md:w-1/2 lg:w-1/3 xl:w-1/4">
+										<div className="relative hidden flex-row items-center rounded-2xl bg-black bg-opacity-50 p-0 text-center text-white md:flex md:w-2/5 xl:w-1/4">
 											<div className={`z-10 w-1/3 cursor-pointer rounded-2xl py-2 `}>
 												<Link href="/swap">
 													<span className=" px-4">Swap</span>
