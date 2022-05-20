@@ -61,6 +61,7 @@ export const listsSlice = createSlice({
 			})
 			.addCase(fetchPoolLists.fulfilled, (state, action) => {
 				state.pools = action.payload.flat() || [];
+				state.pools = state.pools.filter((pool) => !['3pool'].includes(pool.id));
 			});
 	}
 });
