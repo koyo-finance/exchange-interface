@@ -1,23 +1,24 @@
-import { BsFillGearFill } from 'react-icons/bs';
 import { ChainId } from '@koyofinance/core-sdk';
 import { AugmentedPool } from '@koyofinance/swap-sdk';
+import CoreCardConnectButton from 'components/UI/Cards/CoreCardConnectButton';
+import DepositTokenCard from 'components/UI/Cards/DepositTokenCard';
+import FormApproveAsset from 'components/UI/Cards/FormApproveAsset';
+import PoolsModal from 'components/UI/Modals/PoolsModal';
 import { BigNumber } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
 import { Form, Formik } from 'formik';
 import useAddLiquidity from 'hooks/contracts/StableSwap/useAddLiquidity';
 import useMultiTokenAllowance from 'hooks/contracts/useMultiTokenAllowance';
+import useMultiTokenBalances from 'hooks/contracts/useMultiTokenBalances';
 import { SwapLayout, SwapLayoutCard } from 'layouts/SwapLayout';
 import React, { useState } from 'react';
+import { BsFillGearFill } from 'react-icons/bs';
+import { HiSwitchHorizontal } from 'react-icons/hi';
 import { Case, Default, Switch } from 'react-if';
 import { useSelector } from 'react-redux';
 import { selectAllPoolsByChainId } from 'state/reducers/lists';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
 import { useAccount, useSigner } from 'wagmi';
-import { HiSwitchHorizontal } from 'react-icons/hi';
-import PoolsModal from 'components/UI/Modals/PoolsModal';
-import DepositTokenCard from 'components/UI/Cards/DepositTokenCard';
-import CoreCardConnectButton from 'components/UI/Cards/CoreCardConnectButton';
-import useMultiTokenBalances from 'hooks/contracts/useMultiTokenBalances';
 
 const DepositPage: ExtendedNextPage = () => {
 	const pools = useSelector(selectAllPoolsByChainId(ChainId.BOBA));
@@ -60,20 +61,6 @@ const DepositPage: ExtendedNextPage = () => {
 
 	return (
 		<div className="flex h-screen w-full items-center justify-center">
-			{/* <Combobox
-								value={selectedPool?.name}
-								onFocus={(name) => setSelectedPool(pools.find((pool) => pool.name === name))}
-								onChange={(name) => setSelectedPool(pools.find((pool) => pool.name === name))}
-							>
-								<Combobox.Input onChange={(event) => setQuery(event.target.value)} className="rounded-xl p-2 px-4" />
-								<Combobox.Options className="absolute z-10 mt-1 text-center">
-									{filteredPools.map((pool) => (
-										<Combobox.Option key={pool.id} value={pool.name}>
-											{pool.name}
-										</Combobox.Option>
-									))}
-								</Combobox.Options>
-							</Combobox> */}
 			{poolsModalIsOpen && <PoolsModal setPool={setPoolHandler} closeModal={closePoolsModalHandler} />}
 			<SwapLayoutCard>
 				<div className={`xl: w-[90vw] sm:w-[75vw] md:w-[50vw] lg:w-[40vw] xl:${selectedPool ? 'w-[50vw]' : 'w-[30vw]'}`}>
@@ -134,7 +121,7 @@ const DepositPage: ExtendedNextPage = () => {
 														<div key={coin.name}>
 															<DepositTokenCard
 																coin={coin}
-																balance={balances[i].data}
+																balance={balances[i].data || 0}
 																setInputAmount={props.handleChange}
 															/>
 														</div>
@@ -142,7 +129,7 @@ const DepositPage: ExtendedNextPage = () => {
 												</div>
 												<div className="mt-4">
 													<CoreCardConnectButton
-														className="btn mt-2 w-full bg-lights-400 bg-opacity-100 text-black hover:bg-lights-200"
+														className="btn mt-2 w-full bg-lights-400 bg-opacity-100 font-sora text-black hover:bg-lights-200"
 														invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
 													>
 														<Switch>
@@ -151,15 +138,19 @@ const DepositPage: ExtendedNextPage = () => {
 																	condition={BigNumber.from(allowances[i].data || 0).lt(
 																		parseUnits((props.values[coin.name] || 0).toString(), coin.decimals)
 																	)}
-																></Case>
+																>
+																	<FormApproveAsset
+																		asset={coin.address}
+																		spender={selectedPool.addresses.swap}
+																		amount={props.values[coin.name] + 1}
+																		decimals={coin.decimals}
+																	>
+																		APPROVE - <span className="italic">{coin.name.toUpperCase()}</span>
+																	</FormApproveAsset>
+																</Case>
 															))}
 															<Default>
-																<button
-																	type="submit"
-																	className="btn border border-white bg-lights-300 font-sora text-sm lowercase text-white"
-																>
-																	confirm
-																</button>
+																<button type="submit">DEPOSIT</button>
 															</Default>
 														</Switch>
 													</CoreCardConnectButton>
