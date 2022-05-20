@@ -6,6 +6,7 @@ import FormApproveAsset from 'components/UI/Cards/FormApproveAsset';
 import SwapCard from 'components/UI/Cards/SwapCard';
 import TokenModal from 'components/UI/Modals/TokenModal';
 import { BigNumber } from 'ethers';
+import useExchange from 'hooks/contracts/StableSwap/useExchange';
 import useGetDY from 'hooks/contracts/StableSwap/useGetDY';
 import useMultiTokenAllowance from 'hooks/contracts/useMultiTokenAllowance';
 import { SwapLayout, SwapLayoutCard } from 'layouts/SwapLayout';
@@ -19,12 +20,13 @@ import { selectAllTokensByChainId, selectPoolBySwapAndChainId } from 'state/redu
 import { selectAmount, selectTokenOne, selectTokenTwo, setAmount, setTokenOne, setTokenTwo } from 'state/reducers/selectedTokens';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
 import { TokenWithPoolInfo } from 'types/TokenWithPoolInfo';
-import { useAccount } from 'wagmi';
+import { useAccount, useSigner } from 'wagmi';
 
 const SwapIndexPage: ExtendedNextPage = () => {
 	const dispatch = useAppDispatch();
 
 	const { data: account } = useAccount();
+	const { data: signer } = useSigner();
 
 	const [tokenModalOneIsOpen, setTokenModalIsOpen] = useState(false);
 	const [activeToken, setActiveToken] = useState(1);
@@ -172,6 +174,8 @@ const SwapIndexPage: ExtendedNextPage = () => {
 		dispatch(setTokenTwo(tokenTwoTransformed));
 	};
 
+	const { mutate: exchange } = useExchange(signer || undefined, tokenTwo.poolId);
+
 	return (
 		<div className=" flex h-screen w-full items-center justify-center">
 			{tokenModalOneIsOpen && (
@@ -231,7 +235,19 @@ const SwapIndexPage: ExtendedNextPage = () => {
 								)}
 							</Case>
 							<Default>
-								<button>SWAP</button>
+								<button
+									onClick={() =>
+										exchange([
+											tokenOneIndex,
+											tokenTwoIndex,
+											toBigNumber(tokenAmount, pool?.coins[tokenOneIndex]?.decimals),
+											0,
+											{ gasLimit: 600_000 }
+										])
+									}
+								>
+									SWAP
+								</button>
 							</Default>
 						</Switch>
 					</CoreCardConnectButton>
