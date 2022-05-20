@@ -1,5 +1,5 @@
 import { ChainId, fromBigNumber, toBigNumber } from '@koyofinance/core-sdk';
-import { Pool, pools, RawCoin } from '@koyofinance/swap-sdk';
+import { Pool, pools } from '@koyofinance/swap-sdk';
 import { TokenInfo } from '@uniswap/token-lists';
 import CoreCardConnectButton from 'components/UI/Cards/CoreCardConnectButton';
 import FormApproveAsset from 'components/UI/Cards/FormApproveAsset';

@@ -10,6 +10,12 @@ module.exports = withPlausibleProxy()({
 		];
 	},
 	async redirects() {
-		return [];
+		return [
+			{
+				source: '/',
+				destination: '/swap',
+				permanent: true
+			}
+		];
 	}
 });
