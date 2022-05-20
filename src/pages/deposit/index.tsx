@@ -16,6 +16,7 @@ import { useAccount, useSigner } from 'wagmi';
 import { HiSwitchHorizontal } from 'react-icons/hi';
 import PoolsModal from 'components/UI/Modals/PoolsModal';
 import DepositTokenCard from 'components/UI/Cards/DepositTokenCard';
+import CoreCardConnectButton from 'components/UI/Cards/CoreCardConnectButton';
 
 const DepositPage: ExtendedNextPage = () => {
 	const pools = useSelector(selectAllPoolsByChainId(ChainId.BOBA));
@@ -127,9 +128,11 @@ const DepositPage: ExtendedNextPage = () => {
 														</div>
 													))}
 												</div>
-												<div className="mt-4 grid grid-cols-2">
-													<div className="flex h-full items-center justify-center text-center font-bold text-white"></div>
-													<div>
+												<div className="mt-4">
+													<CoreCardConnectButton
+														className="btn mt-2 w-full bg-lights-400 bg-opacity-100 text-black hover:bg-lights-200"
+														invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
+													>
 														<Switch>
 															{selectedPool.coins.map((coin, i) => (
 																<Case
@@ -147,7 +150,7 @@ const DepositPage: ExtendedNextPage = () => {
 																</button>
 															</Default>
 														</Switch>
-													</div>
+													</CoreCardConnectButton>
 												</div>
 											</div>
 										</Form>
