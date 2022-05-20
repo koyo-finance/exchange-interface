@@ -19,6 +19,11 @@ const TokenModal: React.FC<TokenModalProps> = (props) => {
 	const pools = useSelector(selectAllPoolsByChainId(ChainId.BOBA));
 
 	const [tokenList, setTokenList] = useState<(TokenInfo | TokenWithPoolInfo)[]>(TOKENS);
+	const [filteredTokenList, setFilteredTokenList] = useState<(TokenInfo | TokenWithPoolInfo)[]>(tokenList);
+
+	useEffect(() => {
+		setFilteredTokenList(tokenList);
+	}, [tokenList]);
 
 	useEffect(() => {
 		const newTokenList = TOKENS.filter((token) => token.address !== props.oppositeToken.address);
@@ -28,7 +33,7 @@ const TokenModal: React.FC<TokenModalProps> = (props) => {
 			return;
 		}
 
-		const filteredTokenList = newTokenList
+		const newFilteredTokenList = newTokenList
 			.flatMap((token) =>
 				pools.map((pool) => {
 					const oppositeTokenInPool = pool.coins.findIndex((poolToken) => poolToken.address === props.oppositeToken.address);
@@ -48,7 +53,7 @@ const TokenModal: React.FC<TokenModalProps> = (props) => {
 			)
 			.filter((tList) => tList !== -1) as TokenWithPoolInfo[];
 
-		setTokenList(filteredTokenList);
+		setTokenList(newFilteredTokenList);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [props.oppositeToken.address, (props.oppositeToken as TokenWithPoolInfo).poolId]);
 
@@ -66,6 +71,21 @@ const TokenModal: React.FC<TokenModalProps> = (props) => {
 		props.closeModal();
 	};
 
+	const filterTokensHandler = (e: any) => {
+		if (e.target.value === '') {
+			setFilteredTokenList(tokenList);
+			return;
+		}
+		const filteredList = tokenList.filter(
+			(token) =>
+				token.name.includes(e.target.value) ||
+				token.name.toLowerCase().includes(e.target.value) ||
+				token.symbol.includes(e.target.value) ||
+				token.symbol.toLowerCase().includes(e.target.value)
+		);
+		setFilteredTokenList(filteredList);
+	};
+
 	return (
 		<div className=" fixed top-0 left-0 z-40 flex min-h-screen w-full items-center justify-center ">
 			<div className="fixed top-0 left-0 z-0 min-h-screen w-full cursor-pointer bg-black bg-opacity-50" onClick={props.closeModal}></div>
@@ -80,11 +100,12 @@ const TokenModal: React.FC<TokenModalProps> = (props) => {
 					<input
 						type="text"
 						placeholder="Select Token by Name or Address"
+						onChange={filterTokensHandler}
 						className="w-full rounded-xl border-2 border-darks-300 bg-transparent p-2 text-lg outline-none"
 					/>
 				</div>
-				<div className="flex  max-h-[35rem] w-full flex-col overflow-y-scroll">
-					{tokenList.map((token, i) => (
+				<div className="flex max-h-[35rem] w-full flex-col overflow-y-scroll">
+					{filteredTokenList.map((token, i) => (
 						<div
 							key={i}
 							id={token.symbol}
@@ -109,7 +130,7 @@ const TokenModal: React.FC<TokenModalProps> = (props) => {
 					<div>Manage token lists</div>
 					<div>
 						<FiEdit />
-					</div>{' '}
+					</div>
 				</div>
 			</div>
 		</div>

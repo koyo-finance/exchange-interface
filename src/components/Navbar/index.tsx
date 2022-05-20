@@ -10,7 +10,7 @@ const Navbar: React.FC = () => {
 	return (
 		<>
 			<header className="fixed left-0 top-0 z-20 w-full bg-darks-500 pt-2">
-				<Disclosure as="nav" className="bg-transparenr border-b-2 border-darks-500 font-semibold text-black">
+				<Disclosure as="nav" className="border-b-2 border-darks-500 bg-transparent font-semibold text-black">
 					{({ open }) => (
 						<>
 							<div className="container mx-auto px-8 py-2">
@@ -26,21 +26,21 @@ const Navbar: React.FC = () => {
 									</div>
 
 									{/* Center */}
-									<div className="absolute z-0 flex w-full flex-row items-center justify-center">
-										<div className="relative hidden flex-row items-center rounded-2xl bg-black bg-opacity-50 p-0 text-center text-white lg:flex lg:w-1/4 ">
-											<div className={`z-10 w-1/3 rounded-2xl py-2 `}>
+									<div className="absolute z-0 flex w-full flex-row items-center justify-center ">
+										<div className="relative hidden flex-row items-center rounded-2xl bg-black bg-opacity-50 p-0 text-center text-white md:flex md:w-1/2 lg:w-1/3 xl:w-1/4">
+											<div className={`z-10 w-1/3 cursor-pointer rounded-2xl py-2 `}>
 												<Link href="/swap">
-													<span className="cursor-pointer px-4">Swap</span>
+													<span className=" px-4">Swap</span>
 												</Link>
 											</div>
-											<div className={`z-10 w-1/3 rounded-2xl py-2 `}>
+											<div className={`z-10 w-1/3 cursor-pointer rounded-2xl py-2 `}>
 												<Link href="/deposit">
-													<span className="cursor-pointer px-4">Deposit</span>
+													<span className=" px-4">Deposit</span>
 												</Link>
 											</div>
-											<div className={`z-10 w-1/3 rounded-2xl py-2`}>
+											<div className={`z-10 w-1/3 cursor-pointer rounded-2xl py-2`}>
 												<Link href="/withdraw">
-													<span className="cursor-pointer px-4">Withdraw</span>
+													<span className=" px-4">Withdraw</span>
 												</Link>
 											</div>
 											<PageSelectedOverlay />
@@ -57,7 +57,7 @@ const Navbar: React.FC = () => {
 											</div>
 										</div>
 										<div className="block md:hidden">
-											<Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-black">
+											<Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-white focus:outline-none ">
 												<span className="sr-only">Open main menu</span>
 												{open ? (
 													/* @ts-expect-error This is quite odd */
@@ -75,9 +75,22 @@ const Navbar: React.FC = () => {
 							<Disclosure.Panel className="md:hidden">
 								<div className="w-full space-y-1 px-2 pt-2 pb-3 shadow-lg">
 									<div className=" flex w-full justify-center">
-										<div className="flex flex-col gap-y-4 text-center">
-											<Link href="/swap">Swap</Link>
-											<Link href="/deposit">Deposit</Link>
+										<div className="flex flex-col gap-y-4 text-center text-white">
+											<div className={`z-10 w-full rounded-2xl py-2 `}>
+												<Link href="/swap">
+													<span className="transform-gpu cursor-pointer px-4 duration-200 hover:text-lights-400">Swap</span>
+												</Link>
+											</div>
+											<div className={`z-10 w-full rounded-2xl py-2 `}>
+												<Link href="/deposit">
+													<span className="cursor-pointer px-4 duration-200 hover:text-lights-400">Deposit</span>
+												</Link>
+											</div>
+											<div className={`z-10 w-full rounded-2xl py-2`}>
+												<Link href="/withdraw">
+													<span className="cursor-pointer px-4 duration-200 hover:text-lights-400">Withdraw</span>
+												</Link>
+											</div>
 											<ConnectButton />
 										</div>
 									</div>

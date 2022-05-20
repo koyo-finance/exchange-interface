@@ -127,44 +127,40 @@ const SwapIndexPage: ExtendedNextPage = () => {
 					setToken={setTokenHandler}
 				/>
 			)}
-			<SwapLayoutCard>
-				<div className="flex w-full flex-row items-center justify-between text-lg font-semibold text-white">
-					<div>Swap</div>
-					<div>
-						<BsFillGearFill />
+			<SwapLayoutCard className="w-1/3">
+				<div className="w-[90vw] sm:w-[75vw] md:w-[50vw] lg:w-[30vw]">
+					<div className="mb-2 flex w-full flex-row items-center justify-between text-lg font-semibold text-white">
+						<div>Swap</div>
+						<div>
+							<BsFillGearFill />
+						</div>
 					</div>
-				</div>
-				<SwapCard
-					tokenNum={1}
-					token={tokenOne}
-					convertedAmount={invertedTokenOneAmount}
-					openTokenModal={openTokenModalHandler}
-					setInputAmount={setTokenAmountHandler}
-					setActiveToken={(tokenNum: number) => setActiveToken(tokenNum)}
-				/>
-				<div className=" flex h-6 w-full cursor-pointer items-center justify-center text-3xl text-white" onClick={swapTokensHandler}>
-					<IoSwapVertical />
-				</div>
-				<SwapCard
-					tokenNum={2}
-					token={tokenTwo}
-					convertedAmount={fromBigNumber(calculatedAmountTokenTwo, tokenTwo.decimals)}
-					openTokenModal={openTokenModalHandler}
-					setInputAmount={setTokenAmountHandler}
-					setActiveToken={(tokenNum: number) => setActiveToken(tokenNum)}
-				/>
-				{/* {account && }
-				{!account && (
-					<div className="btn mt-2 flex w-full items-center justify-center bg-lights-400 hover:bg-lights-400">
-						<ConnectButton />
+					<SwapCard
+						tokenNum={1}
+						token={tokenOne}
+						convertedAmount={invertedTokenOneAmount}
+						openTokenModal={openTokenModalHandler}
+						setInputAmount={setTokenAmountHandler}
+						setActiveToken={(tokenNum: number) => setActiveToken(tokenNum)}
+					/>
+					<div className=" flex h-8 w-full cursor-pointer items-center justify-center text-3xl text-white" onClick={swapTokensHandler}>
+						<IoSwapVertical />
 					</div>
-				)} */}
-				<CoreCardConnectButton
-					className="btn mt-2 w-full bg-lights-400 text-black hover:bg-lights-200"
-					invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
-				>
-					<button>SWAP</button>
-				</CoreCardConnectButton>
+					<SwapCard
+						tokenNum={2}
+						token={tokenTwo}
+						convertedAmount={fromBigNumber(calculatedAmountTokenTwo, tokenTwo.decimals)}
+						openTokenModal={openTokenModalHandler}
+						setInputAmount={setTokenAmountHandler}
+						setActiveToken={(tokenNum: number) => setActiveToken(tokenNum)}
+					/>
+					<CoreCardConnectButton
+						className="btn mt-2 w-full bg-lights-400 bg-opacity-100 text-black hover:bg-lights-200"
+						invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
+					>
+						<button>SWAP</button>
+					</CoreCardConnectButton>
+				</div>
 			</SwapLayoutCard>
 		</div>
 	);

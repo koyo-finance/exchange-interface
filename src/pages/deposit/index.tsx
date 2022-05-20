@@ -1,4 +1,4 @@
-import { Combobox } from '@headlessui/react';
+import { BsFillGearFill } from 'react-icons/bs';
 import { ChainId } from '@koyofinance/core-sdk';
 import { AugmentedPool } from '@koyofinance/swap-sdk';
 import { BigNumber } from 'ethers';
@@ -6,12 +6,16 @@ import { parseUnits } from 'ethers/lib/utils';
 import { Form, Formik } from 'formik';
 import useAddLiquidity from 'hooks/contracts/StableSwap/useAddLiquidity';
 import useMultiTokenAllowance from 'hooks/contracts/useMultiTokenAllowance';
+import { SwapLayout, SwapLayoutCard } from 'layouts/SwapLayout';
 import React, { useState } from 'react';
 import { Case, Default, Switch } from 'react-if';
 import { useSelector } from 'react-redux';
 import { selectAllPoolsByChainId } from 'state/reducers/lists';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
 import { useAccount, useSigner } from 'wagmi';
+import { HiSwitchHorizontal } from 'react-icons/hi';
+import PoolsModal from 'components/UI/Modals/PoolsModal';
+import DepositTokenCard from 'components/UI/Cards/DepositTokenCard';
 
 const DepositPage: ExtendedNextPage = () => {
 	const pools = useSelector(selectAllPoolsByChainId(ChainId.BOBA));
@@ -20,7 +24,7 @@ const DepositPage: ExtendedNextPage = () => {
 	const { data: signer } = useSigner();
 
 	const [selectedPool, setSelectedPool] = useState<AugmentedPool | undefined>(undefined);
-	const [query, setQuery] = useState('');
+	const [poolsModalIsOpen, setPoolsModalIsOpen] = useState(false);
 
 	const allowances = useMultiTokenAllowance(
 		account?.address,
@@ -30,99 +34,133 @@ const DepositPage: ExtendedNextPage = () => {
 
 	const { mutate: addLiqudity } = useAddLiquidity(signer || undefined, selectedPool?.id || '');
 
-	const filteredPools =
-		query === ''
-			? pools
-			: pools.filter((pool) => {
-					return pool.id.toLowerCase().includes(query.toLowerCase());
-			  });
+	const openPoolsModalHandler = () => {
+		setPoolsModalIsOpen(true);
+	};
+
+	const closePoolsModalHandler = () => {
+		setPoolsModalIsOpen(false);
+	};
+
+	const setPoolHandler = (poolId: string) => {
+		const [selectedPoolFilter] = pools.filter((pool) => {
+			return pool.id.toLowerCase().includes(poolId.toLowerCase());
+		});
+		setSelectedPool(selectedPoolFilter);
+	};
 
 	return (
-		<div className="container">
-			<div className="content-without-nav flex">
-				<div className="m-auto rounded-xl border-4 border-darks-500 bg-lights-300 p-8">
-					<div className="text-center">
-						<Combobox value={selectedPool?.name} onChange={(name) => setSelectedPool(pools.find((pool) => pool.name === name))}>
-							<Combobox.Input onChange={(event) => setQuery(event.target.value)} className="rounded-xl p-2 px-4" />
-							<Combobox.Options className="absolute z-10 mt-1 text-center">
-								{filteredPools.map((pool) => (
-									<Combobox.Option key={pool.id} value={pool.name}>
-										{pool.name}
-									</Combobox.Option>
-								))}
-							</Combobox.Options>
-						</Combobox>
-					</div>
-
-					{selectedPool && (
-						<>
-							<h2 className="mt-4 text-center text-xl font-bold">Deposit tokens</h2>
-							<Formik
-								initialValues={Object.fromEntries(selectedPool.coins.map((coin) => [coin.name, 0]))}
-								onSubmit={(values) => {
-									return addLiqudity([
-										// @ts-expect-error Huh
-										Object.entries(values)
-											.slice(0, selectedPool.coins.length)
-											.map((coins) => coins[1] || 0)
-											.map((amount, i) => parseUnits(amount.toString(), selectedPool.coins[i].decimals)),
-										0,
-										{ gasLimit: 600_000 }
-									]);
-								}}
+		<div className="flex h-screen w-full items-center justify-center">
+			{/* <Combobox
+								value={selectedPool?.name}
+								onFocus={(name) => setSelectedPool(pools.find((pool) => pool.name === name))}
+								onChange={(name) => setSelectedPool(pools.find((pool) => pool.name === name))}
 							>
-								{(props) => (
-									<Form>
-										<div>
-											<div className="mt-4 grid grid-cols-2 gap-8">
-												{selectedPool.coins.map((coin) => (
-													<div key={coin.name}>
-														<label htmlFor={coin.name} className="text-xl font-bold">
-															{coin.name}
-														</label>
-														<br />
-														<input
-															name={coin.name}
-															onChange={props.handleChange}
-															value={props.values[coin.name]}
-															type="number"
-															className="mt-4 inline-block w-fit rounded-lg border border-black bg-transparent px-6 py-4 font-inter"
-														/>
+								<Combobox.Input onChange={(event) => setQuery(event.target.value)} className="rounded-xl p-2 px-4" />
+								<Combobox.Options className="absolute z-10 mt-1 text-center">
+									{filteredPools.map((pool) => (
+										<Combobox.Option key={pool.id} value={pool.name}>
+											{pool.name}
+										</Combobox.Option>
+									))}
+								</Combobox.Options>
+							</Combobox> */}
+			{poolsModalIsOpen && <PoolsModal setPool={setPoolHandler} closeModal={closePoolsModalHandler} />}
+			<SwapLayoutCard>
+				<div className="w-[90vw] sm:w-[75vw] md:w-[50vw] lg:max-w-[50vw]">
+					<div className="m-auto rounded-xl">
+						<div className="flex flex-col gap-2">
+							<div className="flex w-full flex-row items-center justify-between text-lg font-semibold text-white">
+								<div>Add Liquidity</div>
+								<div>
+									<BsFillGearFill />
+								</div>
+							</div>
+							<div className=" rounded-xl bg-gray-500 bg-opacity-50 p-2 text-gray-300">
+								When you add liquidity, you will receive pool tokens representing your position. These tokens automatically earn fees
+								proportional to your share of the pool, and can be redeemed at any time.
+							</div>
+							{!selectedPool && (
+								<button
+									className="btn mt-2 w-full bg-lights-400 text-lg text-black hover:bg-lights-200"
+									onClick={openPoolsModalHandler}
+								>
+									Choose liquidity pool&nbsp;<span className=" text-2xl">+</span>
+								</button>
+							)}
+							{selectedPool && (
+								<div
+									className="mt-2 flex w-full cursor-pointer flex-row items-center justify-center gap-2 text-center text-lg text-lights-400 hover:text-lights-200"
+									onClick={openPoolsModalHandler}
+								>
+									<div>Switch liquidity Pool</div>
+									<div className=" text-2xl">
+										<HiSwitchHorizontal />
+									</div>
+								</div>
+							)}
+						</div>
+
+						{selectedPool && (
+							<>
+								<Formik
+									initialValues={Object.fromEntries(selectedPool.coins.map((coin) => [coin.name, 0]))}
+									onSubmit={(values) => {
+										return addLiqudity([
+											// @ts-expect-error Huh
+											Object.entries(values)
+												.slice(0, selectedPool.coins.length)
+												.map((coins) => coins[1] || 0)
+												.map((amount, i) => parseUnits(amount.toString(), selectedPool.coins[i].decimals)),
+											0,
+											{ gasLimit: 600_000 }
+										]);
+									}}
+								>
+									{(props) => (
+										<Form>
+											<div>
+												<div className="mt-4 grid grid-cols-2 gap-8">
+													{selectedPool.coins.map((coin) => (
+														<div key={coin.name}>
+															<DepositTokenCard coin={coin} setInputAmount={props.handleChange} />
+														</div>
+													))}
+												</div>
+												<div className="mt-4 grid grid-cols-2">
+													<div className="flex h-full items-center justify-center text-center font-bold text-white"></div>
+													<div>
+														<Switch>
+															{selectedPool.coins.map((coin, i) => (
+																<Case
+																	condition={BigNumber.from(allowances[i].data || 0).lt(
+																		parseUnits((props.values[coin.name] || 0).toString(), coin.decimals)
+																	)}
+																></Case>
+															))}
+															<Default>
+																<button
+																	type="submit"
+																	className="btn border border-white bg-lights-300 font-sora text-sm lowercase text-white"
+																>
+																	confirm
+																</button>
+															</Default>
+														</Switch>
 													</div>
-												))}
-											</div>
-											<div className="mt-4 grid grid-cols-2">
-												<div className="flex h-full items-center justify-center text-center font-bold text-white"></div>
-												<div>
-													<Switch>
-														{selectedPool.coins.map((coin, i) => (
-															<Case
-																condition={BigNumber.from(allowances[i].data || 0).lt(
-																	parseUnits((props.values[coin.name] || 0).toString(), coin.decimals)
-																)}
-															></Case>
-														))}
-														<Default>
-															<button
-																type="submit"
-																className="btn border border-white bg-lights-300 font-sora text-sm lowercase text-white"
-															>
-																confirm
-															</button>
-														</Default>
-													</Switch>
 												</div>
 											</div>
-										</div>
-									</Form>
-								)}
-							</Formik>
-						</>
-					)}
+										</Form>
+									)}
+								</Formik>
+							</>
+						)}
+					</div>
 				</div>
-			</div>
+			</SwapLayoutCard>
 		</div>
 	);
 };
 
+DepositPage.Layout = SwapLayout('swap');
 export default DepositPage;
