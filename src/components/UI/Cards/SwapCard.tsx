@@ -15,13 +15,17 @@ export interface SwapCardProps {
 }
 
 const SwapCard: React.FC<SwapCardProps> = (props) => {
+	const [error, setError] = useState('');
+
 	const [tokenAmount, setTokenAmount] = useState(props.convertedAmount);
 	const inputAmountRef = useRef<HTMLInputElement>(null);
 
 	useEffect(() => {
-		setTokenAmount(props.convertedAmount);
+		const formattedAmount = Number(props.convertedAmount.toFixed(5));
 
-		if (props.tokenNum === 1) props.setInputAmount(props.convertedAmount, props.tokenNum, true);
+		setTokenAmount(formattedAmount);
+
+		if (props.tokenNum === 1) props.setInputAmount(formattedAmount, props.tokenNum, true);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [props.convertedAmount]);
 
@@ -29,9 +33,15 @@ const SwapCard: React.FC<SwapCardProps> = (props) => {
 	const { data: tokenBalance = 0 } = useTokenBalance(account?.address, props.token.address);
 
 	const changeTokenAmountHandler = (e: any) => {
+		if (e.target.value > 1000000) {
+			setError('Cannot swap that amount! Amount too large!');
+			setTokenAmount(e.target.value);
+			return;
+		}
 		props.setActiveToken(props.tokenNum);
 		setTokenAmount(e.target.value);
 		props.setInputAmount(Number(e.target.value), props.tokenNum, false);
+		setError('');
 	};
 
 	const openModalHandler = () => {
@@ -40,6 +50,7 @@ const SwapCard: React.FC<SwapCardProps> = (props) => {
 
 	return (
 		<div className=" flex w-full flex-col gap-2 rounded-xl bg-darks-500 p-4">
+			{error !== '' && <div className=" w-full text-red-600">{error}</div>}
 			<div className="flex w-full flex-row justify-between ">
 				<div className=" text-2xl text-darks-200">{props.tokenNum === 1 ? 'You pay' : 'You recieve'}</div>
 				<div
@@ -62,17 +73,12 @@ const SwapCard: React.FC<SwapCardProps> = (props) => {
 					type="number"
 					name={`swap ${props.tokenNum === 1 ? 'from' : 'to'}`}
 					min={0}
+					max={1000000}
 					step={0.1}
 					onChange={changeTokenAmountHandler}
-					defaultValue={tokenAmount.toLocaleString('default', {
-						minimumFractionDigits: 2,
-						maximumFractionDigits: 5
-					})}
-					value={tokenAmount.toLocaleString('default', {
-						minimumFractionDigits: 2,
-						maximumFractionDigits: 5
-					})}
-					onBlur={() => setTokenAmount(Number(tokenAmount))}
+					value={tokenAmount > 0 ? tokenAmount : undefined}
+					placeholder={'0.00'}
+					onBlur={() => setTokenAmount(Number(Number(tokenAmount).toFixed(5)))}
 					className=" w-9/12
 				  border-0 border-b-2 border-darks-200 bg-darks-500 font-jtm text-4xl font-extralight text-white outline-none"
 				/>

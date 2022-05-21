@@ -187,7 +187,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 					/>
 				)}
 				<SwapLayoutCard className="w-[90vw] sm:w-[75vw] md:w-[55vw] lg:w-[45vw] xl:w-[40vw] 2xl:w-[30vw]">
-					<div className="w-full">
+					<div className="flex w-full flex-col gap-1">
 						<div className="mb-2 flex w-full flex-row items-center justify-between text-lg font-semibold text-white">
 							<div>Swap</div>
 							<div>
@@ -202,7 +202,10 @@ const SwapIndexPage: ExtendedNextPage = () => {
 							setInputAmount={setTokenAmountHandler}
 							setActiveToken={(tokenNum: number) => setActiveToken(tokenNum)}
 						/>
-						<div className=" flex h-8 w-full cursor-pointer items-center justify-center text-3xl text-white" onClick={swapTokensHandler}>
+						<div
+							className=" mx-auto h-8 w-auto transform-gpu cursor-pointer text-3xl text-white duration-150 hover:text-lights-400"
+							onClick={swapTokensHandler}
+						>
 							<IoSwapVertical />
 						</div>
 						<SwapCard
