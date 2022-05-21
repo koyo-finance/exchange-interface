@@ -5,11 +5,13 @@ import CoreCardConnectButton from 'components/UI/Cards/CoreCardConnectButton';
 import FormApproveAsset from 'components/UI/Cards/FormApproveAsset';
 import SwapCard from 'components/UI/Cards/SwapCard';
 import TokenModal from 'components/UI/Modals/TokenModal';
+import { ROOT_WITH_PROTOCOL } from 'constants/links';
 import { BigNumber } from 'ethers';
 import useExchange from 'hooks/contracts/StableSwap/useExchange';
 import useGetDY from 'hooks/contracts/StableSwap/useGetDY';
 import useMultiTokenAllowance from 'hooks/contracts/useMultiTokenAllowance';
 import { SwapLayout, SwapLayoutCard } from 'layouts/SwapLayout';
+import { NextSeo } from 'next-seo';
 import React, { useEffect, useState } from 'react';
 import { BsFillGearFill } from 'react-icons/bs';
 import { IoSwapVertical } from 'react-icons/io5';
@@ -111,7 +113,6 @@ const SwapIndexPage: ExtendedNextPage = () => {
 					return pool;
 				});
 				const [poolWithSelectedToken] = filteredPools.filter((pool) => pool !== false);
-				console.log(poolWithSelectedToken);
 				const filterTokenFromPool = (poolWithSelectedToken as Pool).coins.filter((coin) => coin.address !== token.address);
 				const [selectSecondTokenFromPool] = TOKENS.filter((coin) => filterTokenFromPool[0].address === coin.address);
 
@@ -121,10 +122,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 					poolAddress: (poolWithSelectedToken as Pool).addresses.swap
 				};
 
-				console.log(secondToken);
-
 				setTokenOneIndex(((poolWithSelectedToken as Pool)?.coins || []).findIndex((token) => token.address === tokenOne.address));
-
 				dispatch(setTokenTwo(secondToken));
 			}
 
@@ -177,85 +175,88 @@ const SwapIndexPage: ExtendedNextPage = () => {
 	const { mutate: exchange } = useExchange(signer || undefined, tokenTwo.poolId);
 
 	return (
-		<div className=" flex h-screen w-full items-center justify-center">
-			{tokenModalOneIsOpen && (
-				<TokenModal
-					tokenNum={activeToken}
-					oppositeToken={activeToken === 2 ? tokenOne : tokenTwo}
-					closeModal={closeTokenModalHandler}
-					setToken={setTokenHandler}
-				/>
-			)}
-			<SwapLayoutCard className="w-[90vw] sm:w-[75vw] md:w-[55vw] lg:w-[45vw] xl:w-[40vw] 2xl:w-[30vw]">
-				<div className="w-full">
-					<div className="mb-2 flex w-full flex-row items-center justify-between text-lg font-semibold text-white">
-						<div>Swap</div>
-						<div>
-							<BsFillGearFill />
+		<>
+			<NextSeo title="Swap" canonical={`${ROOT_WITH_PROTOCOL}/swap`} />
+			<div className=" flex h-screen w-full items-center justify-center">
+				{tokenModalOneIsOpen && (
+					<TokenModal
+						tokenNum={activeToken}
+						oppositeToken={activeToken === 2 ? tokenOne : tokenTwo}
+						closeModal={closeTokenModalHandler}
+						setToken={setTokenHandler}
+					/>
+				)}
+				<SwapLayoutCard className="w-[90vw] sm:w-[75vw] md:w-[55vw] lg:w-[45vw] xl:w-[40vw] 2xl:w-[30vw]">
+					<div className="w-full">
+						<div className="mb-2 flex w-full flex-row items-center justify-between text-lg font-semibold text-white">
+							<div>Swap</div>
+							<div>
+								<BsFillGearFill />
+							</div>
 						</div>
-					</div>
-					<SwapCard
-						tokenNum={1}
-						token={tokenOne}
-						convertedAmount={invertedTokenOneAmount}
-						openTokenModal={openTokenModalHandler}
-						setInputAmount={setTokenAmountHandler}
-						setActiveToken={(tokenNum: number) => setActiveToken(tokenNum)}
-					/>
-					<div className=" flex h-8 w-full cursor-pointer items-center justify-center text-3xl text-white" onClick={swapTokensHandler}>
-						<IoSwapVertical />
-					</div>
-					<SwapCard
-						tokenNum={2}
-						token={tokenTwo}
-						convertedAmount={fromBigNumber(calculatedAmountTokenTwo, tokenTwo.decimals)}
-						openTokenModal={openTokenModalHandler}
-						setInputAmount={setTokenAmountHandler}
-						setActiveToken={(tokenNum: number) => setActiveToken(tokenNum)}
-					/>
-					<CoreCardConnectButton
-						className="btn mt-2 w-full bg-lights-400 bg-opacity-100 text-black hover:bg-lights-200"
-						invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
-					>
-						<Switch>
-							<Case
-								condition={BigNumber.from(allowances[tokenOneIndex]?.data || 0).lt(
-									toBigNumber(tokenAmount, pool?.coins[tokenOneIndex]?.decimals)
-								)}
-							>
-								{pool && pool.coins.length !== 0 && tokenOneIndex !== -1 && (
-									<FormApproveAsset
-										asset={pool.coins[tokenOneIndex].address}
-										spender={pool.addresses.swap}
-										amount={tokenAmount + 1}
-										decimals={pool.coins[tokenOneIndex].decimals}
+						<SwapCard
+							tokenNum={1}
+							token={tokenOne}
+							convertedAmount={invertedTokenOneAmount}
+							openTokenModal={openTokenModalHandler}
+							setInputAmount={setTokenAmountHandler}
+							setActiveToken={(tokenNum: number) => setActiveToken(tokenNum)}
+						/>
+						<div className=" flex h-8 w-full cursor-pointer items-center justify-center text-3xl text-white" onClick={swapTokensHandler}>
+							<IoSwapVertical />
+						</div>
+						<SwapCard
+							tokenNum={2}
+							token={tokenTwo}
+							convertedAmount={fromBigNumber(calculatedAmountTokenTwo, tokenTwo.decimals)}
+							openTokenModal={openTokenModalHandler}
+							setInputAmount={setTokenAmountHandler}
+							setActiveToken={(tokenNum: number) => setActiveToken(tokenNum)}
+						/>
+						<CoreCardConnectButton
+							className="btn mt-2 w-full bg-lights-400 bg-opacity-100 text-black hover:bg-lights-200"
+							invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
+						>
+							<Switch>
+								<Case
+									condition={BigNumber.from(allowances[tokenOneIndex]?.data || 0).lt(
+										toBigNumber(tokenAmount, pool?.coins[tokenOneIndex]?.decimals)
+									)}
+								>
+									{pool && pool.coins.length !== 0 && tokenOneIndex !== -1 && (
+										<FormApproveAsset
+											asset={pool.coins[tokenOneIndex].address}
+											spender={pool.addresses.swap}
+											amount={tokenAmount + 1}
+											decimals={pool.coins[tokenOneIndex].decimals}
+											className="h-full w-full"
+										>
+											APPROVE - <span className="italic">{pool.coins[tokenOneIndex].name.toUpperCase()}</span>
+										</FormApproveAsset>
+									)}
+								</Case>
+								<Default>
+									<button
+										onClick={() =>
+											exchange([
+												tokenOneIndex,
+												tokenTwoIndex,
+												toBigNumber(tokenAmount, pool?.coins[tokenOneIndex]?.decimals),
+												0,
+												{ gasLimit: 600_000 }
+											])
+										}
 										className="h-full w-full"
 									>
-										APPROVE - <span className="italic">{pool.coins[tokenOneIndex].name.toUpperCase()}</span>
-									</FormApproveAsset>
-								)}
-							</Case>
-							<Default>
-								<button
-									onClick={() =>
-										exchange([
-											tokenOneIndex,
-											tokenTwoIndex,
-											toBigNumber(tokenAmount, pool?.coins[tokenOneIndex]?.decimals),
-											0,
-											{ gasLimit: 600_000 }
-										])
-									}
-									className="h-full w-full"
-								>
-									SWAP
-								</button>
-							</Default>
-						</Switch>
-					</CoreCardConnectButton>
-				</div>
-			</SwapLayoutCard>
-		</div>
+										SWAP
+									</button>
+								</Default>
+							</Switch>
+						</CoreCardConnectButton>
+					</div>
+				</SwapLayoutCard>
+			</div>
+		</>
 	);
 };
 

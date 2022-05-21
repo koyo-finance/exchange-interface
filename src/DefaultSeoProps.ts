@@ -6,7 +6,7 @@ export const Summary = '';
 
 export const DefaultSeoProps: DefaultSeoPropsType = {
 	titleTemplate: 'Kōyō | %s',
-	title: 'Home',
+	title: 'Landing',
 	description: Summary,
 	canonical: BaseUrl,
 	additionalMetaTags: [
@@ -16,10 +16,10 @@ export const DefaultSeoProps: DefaultSeoPropsType = {
 		{ name: 'viewport', content: 'width=device-width, initial-scale=1' },
 		{ name: 'robots', content: 'archive,follow,imageindex,index,odp,snippet,translate' },
 		{ name: 'googlebot', content: 'index,follow' },
-		{ name: 'author', content: `` },
-		{ name: 'owner', content: `` },
-		{ name: 'designer', content: `` },
-		{ name: 'reply-to', content: '' },
+		{ name: 'author', content: `Kōyō Finance, contact@koyo.finance` },
+		{ name: 'owner', content: `Kōyō Finance, contact@koyo.finance` },
+		{ name: 'designer', content: `Kōyō Finance, contact@koyo.finance` },
+		{ name: 'reply-to', content: 'contact@koyo.finance' },
 		{ name: 'target', content: 'all' },
 		{ name: 'audience', content: 'all' },
 		{ name: 'coverage', content: 'Worldwide' },
@@ -28,26 +28,26 @@ export const DefaultSeoProps: DefaultSeoPropsType = {
 		{ name: 'apple-mobile-web-app-capable', content: 'yes' },
 		{ name: 'apple-mobile-web-app-status-bar-style', content: 'black' },
 		{ name: 'HandheldFriendly', content: 'True' },
-		{ name: 'apple-mobile-web-app-title', content: '' },
-		{ name: 'application-name', content: '' },
+		{ name: 'apple-mobile-web-app-title', content: 'Kōyō Finance' },
+		{ name: 'application-name', content: 'Kōyō Finance' },
 		{ name: 'revisit-after', content: '7 days' },
-		{ property: 'og:email', content: '' }
+		{ property: 'og:email', content: 'contact@koyo.finance' }
 	],
 	openGraph: {
-		title: '',
+		title: 'Kōyō Finance',
 		url: BaseUrl,
 		description: Summary,
 		type: 'website',
 		locale: 'en_US',
 		site_name: '',
 		profile: {
-			firstName: '',
-			username: ''
+			firstName: 'Kōyō Finance',
+			username: 'Kōyō Finance'
 		}
 	},
 	twitter: {
-		handle: '',
-		site: '',
+		handle: '@koyofinance',
+		site: '@koyofinance',
 		cardType: 'summary'
 	}
 };
