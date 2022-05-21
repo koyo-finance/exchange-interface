@@ -3,7 +3,7 @@ import { AugmentedPool } from '@koyofinance/swap-sdk';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { TokenList, TokenInfo } from '@uniswap/token-lists';
-import { KOYO_POOL_LISTS } from 'config/pool-lists';
+import { EXCLUDED_POOLS, KOYO_POOL_LISTS } from 'config/pool-lists';
 import { DEFAULT_ACTIVE_LIST_URLS } from 'config/token-lists';
 import { RootState } from 'state';
 
@@ -61,7 +61,7 @@ export const listsSlice = createSlice({
 			})
 			.addCase(fetchPoolLists.fulfilled, (state, action) => {
 				state.pools = action.payload.flat() || [];
-				state.pools = state.pools.filter((pool) => !['3pool'].includes(pool.id));
+				state.pools = state.pools.filter((pool) => !EXCLUDED_POOLS.includes(pool.id));
 			});
 	}
 });
