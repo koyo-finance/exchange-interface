@@ -6,6 +6,18 @@ module.exports = withPlausibleProxy()({
 			{
 				source: '/index',
 				destination: '/'
+			},
+			{
+				source: '/deposit/index',
+				destination: '/deposit'
+			},
+			{
+				source: '/swap/index',
+				destination: '/swap'
+			},
+			{
+				source: '/withdraw/index',
+				destination: '/withdraw'
 			}
 		];
 	},
