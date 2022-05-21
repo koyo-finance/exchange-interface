@@ -17,7 +17,7 @@ const DepositPoolAPYCard: React.FC<DepositPoolAPYCardProps> = ({ poolId, ...rest
 
 	return (
 		<div {...rest}>
-			Daily APY:{' '}
+			Daily Percentage Yield:{' '}
 			<span className="underline">
 				{data.data[poolId]?.toLocaleString('default', { minimumFractionDigits: 2, maximumFractionDigits: 5 }) || '?'}
 			</span>{' '}
