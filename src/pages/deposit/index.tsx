@@ -1,7 +1,8 @@
 import { ChainId } from '@koyofinance/core-sdk';
 import { AugmentedPool, Pool } from '@koyofinance/swap-sdk';
 import CoreCardConnectButton from 'components/UI/Cards/CoreCardConnectButton';
-import DepositTokenCard from 'components/UI/Cards/DepositTokenCard';
+import DepositPoolAPYCard from 'components/UI/Cards/Deposit/DepositPoolAPYCard';
+import DepositTokenCard from 'components/UI/Cards/Deposit/DepositTokenCard';
 import FormApproveAsset from 'components/UI/Cards/FormApproveAsset';
 import PoolsModal from 'components/UI/Modals/PoolsModal';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
@@ -80,7 +81,7 @@ const DepositPage: ExtendedNextPage = () => {
 										<BsFillGearFill />
 									</div>
 								</div>
-								<div className=" rounded-xl bg-gray-500 bg-opacity-50 p-2 text-gray-300">
+								<div className="rounded-xl bg-gray-500 bg-opacity-50 p-2 text-gray-300">
 									When you add liquidity, you will receive pool tokens representing your position. These tokens automatically earn
 									fees proportional to your share of the pool, and can be redeemed at any time.
 								</div>
@@ -174,6 +175,13 @@ const DepositPage: ExtendedNextPage = () => {
 									</Formik>
 								</div>
 							)}
+
+							{selectedPool && (
+								<DepositPoolAPYCard
+									poolId={selectedPool.id}
+									className="mt-4 w-full rounded-xl bg-gray-500 bg-opacity-50 p-2 text-gray-300"
+								/>
+							)}
 						</div>
 					</div>
 				</SwapLayoutCard>
@@ -182,5 +190,5 @@ const DepositPage: ExtendedNextPage = () => {
 	);
 };
 
-DepositPage.Layout = SwapLayout('swap');
+DepositPage.Layout = SwapLayout('deposit');
 export default DepositPage;

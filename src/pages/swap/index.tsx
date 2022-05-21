@@ -3,7 +3,7 @@ import { Pool, pools } from '@koyofinance/swap-sdk';
 import { TokenInfo } from '@uniswap/token-lists';
 import CoreCardConnectButton from 'components/UI/Cards/CoreCardConnectButton';
 import FormApproveAsset from 'components/UI/Cards/FormApproveAsset';
-import SwapCard from 'components/UI/Cards/SwapCard';
+import SwapCard from 'components/UI/Cards/Swap/SwapCard';
 import TokenModal from 'components/UI/Modals/TokenModal';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
 import { BigNumber } from 'ethers';
