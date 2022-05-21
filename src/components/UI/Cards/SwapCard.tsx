@@ -21,17 +21,7 @@ const SwapCard: React.FC<SwapCardProps> = (props) => {
 	useEffect(() => {
 		setTokenAmount(props.convertedAmount);
 
-		if (props.tokenNum === 1)
-			props.setInputAmount(
-				Number(
-					props.convertedAmount.toLocaleString('fullwide', {
-						minimumFractionDigits: 0,
-						maximumFractionDigits: 5
-					})
-				),
-				props.tokenNum,
-				true
-			);
+		if (props.tokenNum === 1) props.setInputAmount(props.convertedAmount, props.tokenNum, true);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [props.convertedAmount]);
 
@@ -39,13 +29,9 @@ const SwapCard: React.FC<SwapCardProps> = (props) => {
 	const { data: tokenBalance = 0 } = useTokenBalance(account?.address, props.token.address);
 
 	const changeTokenAmountHandler = (e: any) => {
-		const formattedAmount = Number(e.target.value).toLocaleString('default', {
-			minimumFractionDigits: 0,
-			maximumFractionDigits: 5
-		});
 		props.setActiveToken(props.tokenNum);
 		setTokenAmount(e.target.value);
-		props.setInputAmount(Number(formattedAmount), props.tokenNum, false);
+		props.setInputAmount(Number(e.target.value), props.tokenNum, false);
 	};
 
 	const openModalHandler = () => {
