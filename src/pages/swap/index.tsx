@@ -229,6 +229,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 										spender={pool.addresses.swap}
 										amount={tokenAmount + 1}
 										decimals={pool.coins[tokenOneIndex].decimals}
+										className="h-full w-full"
 									>
 										APPROVE - <span className="italic">{pool.coins[tokenOneIndex].name.toUpperCase()}</span>
 									</FormApproveAsset>
@@ -245,6 +246,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 											{ gasLimit: 600_000 }
 										])
 									}
+									className="h-full w-full"
 								>
 									SWAP
 								</button>

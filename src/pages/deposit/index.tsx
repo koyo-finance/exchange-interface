@@ -150,13 +150,16 @@ const DepositPage: ExtendedNextPage = () => {
 																		spender={selectedPool.addresses.swap}
 																		amount={props.values[coin.name] + 1}
 																		decimals={coin.decimals}
+																		className="h-full w-full"
 																	>
 																		APPROVE - <span className="italic">{coin.name.toUpperCase()}</span>
 																	</FormApproveAsset>
 																</Case>
 															))}
 															<Default>
-																<button type="submit">DEPOSIT</button>
+																<button type="submit" className="h-full w-full">
+																	DEPOSIT
+																</button>
 															</Default>
 														</Switch>
 													</CoreCardConnectButton>
