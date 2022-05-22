@@ -1,11 +1,13 @@
 import { ChainId, formatBalance } from '@koyofinance/core-sdk';
 import { AugmentedPool, Pool } from '@koyofinance/swap-sdk';
 import CoreCardConnectButton from 'components/UI/Cards/CoreCardConnectButton';
+import WithdrawLPBurnCalculation from 'components/UI/Cards/Withdraw/WithdrawLPBurnCalculation';
 import WithdrawTokenCard from 'components/UI/Cards/Withdraw/WithdrawTokenCard';
 import PoolsModal from 'components/UI/Modals/PoolsModal';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
 import { parseUnits } from 'ethers/lib/utils';
 import { Form, Formik } from 'formik';
+import useGetVirtualPrice from 'hooks/contracts/StableSwap/useGetVirtualPrice';
 import useRemoveLiquidityImbalance from 'hooks/contracts/StableSwap/useRemoveLiquidityImbalance';
 import useTokenBalance from 'hooks/contracts/useTokenBalance';
 import { SwapLayout, SwapLayoutCard } from 'layouts/SwapLayout';
@@ -28,6 +30,7 @@ const WithdrawPage: ExtendedNextPage = () => {
 	const [poolsModalIsOpen, setPoolsModalIsOpen] = useState(false);
 
 	const { data: lpTokenBalance = 0 } = useTokenBalance(account?.address, selectedPool?.addresses.lpToken);
+	const { data: virtualPrice = 0 } = useGetVirtualPrice(selectedPool?.id || '');
 	const { mutate: removeLiquidityImbalance } = useRemoveLiquidityImbalance(signer || undefined, selectedPool?.id || '');
 
 	const openPoolsModalHandler = () => {
@@ -86,13 +89,11 @@ const WithdrawPage: ExtendedNextPage = () => {
 									</div>
 								)}
 							</div>
-
 							{selectedPool && (
 								<div className="mt-4 w-full rounded-xl bg-darks-500 p-4">
 									LP Token Balance: <span className="underline">{formatBalance(lpTokenBalance)}</span>
 								</div>
 							)}
-
 							{selectedPool && (
 								<div className={selectedPool ? 'block' : 'hidden'}>
 									<Formik
@@ -119,6 +120,16 @@ const WithdrawPage: ExtendedNextPage = () => {
 															</div>
 														))}
 													</div>
+													<div className="mt-4 w-full rounded-xl bg-darks-500 p-4">
+														LP Tokens Burned:{' '}
+														<span className="underline">
+															<WithdrawLPBurnCalculation
+																poolId={selectedPool.id}
+																amounts={Object.values(props.values).map((amount) => amount || 0)}
+																decimals={selectedPool.coins.map((coin) => coin.decimals)}
+															/>
+														</span>
+													</div>
 													<div className="mt-4">
 														<CoreCardConnectButton
 															className="btn mt-2 w-full bg-lights-400 bg-opacity-100 font-sora text-black hover:bg-lights-200"
@@ -133,6 +144,12 @@ const WithdrawPage: ExtendedNextPage = () => {
 											</Form>
 										)}
 									</Formik>
+								</div>
+							)}
+
+							{selectedPool && (
+								<div className="mt-4 w-full rounded-xl bg-gray-500 bg-opacity-50 p-4 text-gray-300">
+									Virtual Price: <span className="underline">{formatBalance(virtualPrice)}</span>
 								</div>
 							)}
 						</div>

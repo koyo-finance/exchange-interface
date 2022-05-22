@@ -179,7 +179,7 @@ const DepositPage: ExtendedNextPage = () => {
 							{selectedPool && (
 								<DepositPoolAPYCard
 									poolId={selectedPool.id}
-									className="mt-4 w-full rounded-xl bg-gray-500 bg-opacity-50 p-2 text-gray-300"
+									className="mt-4 w-full rounded-xl bg-gray-500 bg-opacity-50 p-4 text-gray-300"
 								/>
 							)}
 						</div>

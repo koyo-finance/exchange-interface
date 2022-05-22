@@ -13,6 +13,6 @@ export default function useCalculateTokenAmount(
 	return useSmartContractReadCall(swapContract, 'calc_token_amount', {
 		// @ts-expect-error This function can be used more fluidly.
 		callArgs: [amounts as BigNumberish[], isDeposit as boolean],
-		enabled: Boolean(amounts && amounts.length !== 0 && isDeposit && swapContract)
+		enabled: Boolean(amounts && amounts.length !== 0 && swapContract)
 	});
 }
