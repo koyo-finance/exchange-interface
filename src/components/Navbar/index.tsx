@@ -3,13 +3,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Disclosure } from '@headlessui/react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React from 'react';
 import PageSelectedOverlay from './Desktop/PageSelectedOverlay';
 
 const Navbar: React.FC = () => {
+	const router = useRouter();
+
 	return (
 		<>
-			<header className="fixed left-0 top-0 z-20 w-full bg-darks-500 pt-2">
+			<header className="fixed left-0 top-0 z-20 w-full transform-gpu bg-darks-500 pt-2">
 				<Disclosure as="nav" className="border-b-2 border-darks-500 bg-transparent font-semibold text-black">
 					{({ open }) => (
 						<>
@@ -26,7 +29,12 @@ const Navbar: React.FC = () => {
 									</div>
 
 									{/* Center */}
-									<div className="absolute z-0 flex w-full flex-row items-center justify-center ">
+									<div
+										className={`absolute z-0 flex w-full transform-gpu flex-row items-center justify-center duration-100 ${
+											router.pathname === '/' ? 'opacity-0' : 'opacity-100'
+										}
+				`}
+									>
 										<div className="relative hidden flex-row items-center rounded-2xl bg-black bg-opacity-50 p-0 text-center text-white md:flex md:w-2/5 xl:w-1/4">
 											<div className={`z-10 w-1/3 cursor-pointer rounded-2xl py-2 `}>
 												<Link href="/swap">
@@ -48,7 +56,11 @@ const Navbar: React.FC = () => {
 									</div>
 
 									{/* Right */}
-									<div className="static right-0 z-40 flex items-center pr-0">
+									<div
+										className={`static right-0 z-40 flex transform-gpu items-center pr-0 duration-100 ${
+											router.pathname === '/' ? 'opacity-0' : 'opacity-100'
+										}`}
+									>
 										<div className="ml-6 block w-full content-center">
 											<div className="hidden md:block">
 												<div className=" flex justify-end space-x-4">
@@ -69,6 +81,13 @@ const Navbar: React.FC = () => {
 											</Disclosure.Button>
 										</div>
 									</div>
+									{router.pathname === '/' && (
+										<Link href="/swap">
+											<button className=" btn transform-gpu bg-lights-400 text-black duration-100 hover:bg-lights-300 active:bg-lights-200">
+												Launch App
+											</button>
+										</Link>
+									)}
 								</div>
 							</div>
 
