@@ -38,11 +38,11 @@ const Navbar: React.FC = () => {
 													<span className=" px-4">Deposit</span>
 												</Link>
 											</div>
-											{/* <div className={`z-10 w-1/3 cursor-pointer rounded-2xl py-2`}>
+											<div className={`z-10 w-1/3 cursor-pointer rounded-2xl py-2`}>
 												<Link href="/withdraw">
 													<span className=" px-4">Withdraw</span>
 												</Link>
-											</div> */}
+											</div>
 											<PageSelectedOverlay />
 										</div>
 									</div>
@@ -86,11 +86,11 @@ const Navbar: React.FC = () => {
 													<span className="cursor-pointer px-4 duration-200 hover:text-lights-400">Deposit</span>
 												</Link>
 											</div>
-											{/* <div className={`z-10 w-full rounded-2xl py-2`}>
+											<div className={`z-10 w-full rounded-2xl py-2`}>
 												<Link href="/withdraw">
 													<span className="cursor-pointer px-4 duration-200 hover:text-lights-400">Withdraw</span>
 												</Link>
-											</div> */}
+											</div>
 											<ConnectButton />
 										</div>
 									</div>
