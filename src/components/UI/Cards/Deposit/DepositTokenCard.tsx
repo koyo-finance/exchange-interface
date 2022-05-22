@@ -49,13 +49,11 @@ const DepositTokenCard: React.FC<DepositCardProps> = (props) => {
 					name={props.coin.name}
 					min={0}
 					step={0.1}
+					max={1000000}
 					onChange={tokenAmountChangeHandler}
-					defaultValue={0.0}
-					value={tokenAmount.toLocaleString('fullwide', {
-						minimumFractionDigits: 2,
-						maximumFractionDigits: 5
-					})}
-					onBlur={() => setTokenAmount(Number(tokenAmount))}
+					placeholder={'0,00'}
+					value={tokenAmount > 0 ? tokenAmount : undefined}
+					onBlur={() => setTokenAmount(Number(Number(tokenAmount).toFixed(5)))}
 					className=" w-10/12
 				  border-0 border-b-2 border-darks-200 bg-darks-500 font-jtm text-4xl font-extralight text-white outline-none"
 				/>

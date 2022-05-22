@@ -77,7 +77,7 @@ const SwapCard: React.FC<SwapCardProps> = (props) => {
 					step={0.1}
 					onChange={changeTokenAmountHandler}
 					value={tokenAmount > 0 ? tokenAmount : undefined}
-					placeholder={'0.00'}
+					placeholder={'0,00'}
 					onBlur={() => setTokenAmount(Number(Number(tokenAmount).toFixed(5)))}
 					className=" w-9/12
 				  border-0 border-b-2 border-darks-200 bg-darks-500 font-jtm text-4xl font-extralight text-white outline-none"

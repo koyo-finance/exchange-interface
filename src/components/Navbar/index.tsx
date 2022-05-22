@@ -28,19 +28,19 @@ const Navbar: React.FC = () => {
 									{/* Center */}
 									<div className="absolute z-0 flex w-full flex-row items-center justify-center ">
 										<div className="relative hidden flex-row items-center rounded-2xl bg-black bg-opacity-50 p-0 text-center text-white md:flex md:w-2/5 xl:w-1/4">
-											<div className={`z-10 w-1/2 cursor-pointer rounded-2xl py-2 `}>
+											<div className={`z-10 w-1/3 cursor-pointer rounded-2xl py-2 `}>
 												<Link href="/swap">
-													<span className=" px-4">Swap</span>
+													<span className=" ">Swap</span>
 												</Link>
 											</div>
-											<div className={`z-10 w-1/2 cursor-pointer rounded-2xl py-2 `}>
+											<div className={`z-10 w-1/3 cursor-pointer rounded-2xl py-2 `}>
 												<Link href="/deposit">
-													<span className=" px-4">Deposit</span>
+													<span className=" ">Deposit</span>
 												</Link>
 											</div>
 											<div className={`z-10 w-1/3 cursor-pointer rounded-2xl py-2`}>
 												<Link href="/withdraw">
-													<span className=" px-4">Withdraw</span>
+													<span className=" ">Withdraw</span>
 												</Link>
 											</div>
 											<PageSelectedOverlay />

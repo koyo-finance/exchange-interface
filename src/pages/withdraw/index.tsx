@@ -51,7 +51,7 @@ const WithdrawPage: ExtendedNextPage = () => {
 	return (
 		<>
 			<NextSeo title="Withdraw" canonical={`${ROOT_WITH_PROTOCOL}/withdraw`} />
-			<div className="flex min-h-screen w-full items-center justify-center bg-darks-500 pb-6 pt-[10vh] md:pt-0">
+			<div className="flex min-h-screen w-full items-center justify-center bg-darks-500 pb-6 pt-24 lg:pt-20 ">
 				{poolsModalIsOpen && <PoolsModal setPool={setPoolHandler} closeModal={closePoolsModalHandler} />}
 				<SwapLayoutCard>
 					<div
