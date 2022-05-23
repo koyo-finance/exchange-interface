@@ -1,4 +1,4 @@
-import { DISCORD_LINK, DOCS_LINK, GITHUB_LINK, TWITTER_LINK } from 'constants/links';
+import { DOCS_LINK, GITHUB_LINK, TWITTER_LINK } from 'constants/links';
 import React from 'react';
 
 const Footer: React.FC = () => {
@@ -14,17 +14,17 @@ const Footer: React.FC = () => {
 						<div className=" text-lg font-semibold text-white">
 							<span className=" text-gray-500">Developers</span>
 							{/* eslint-disable-next-line prettier/prettier */}
-							<a href={DOCS_LINK} className="link link-hover" target="_blank">
+							<a href={DOCS_LINK} className="link link-hover" target="_blank" rel="noreferrer">
 								Documentation
 							</a>
-							<a href={GITHUB_LINK} className="link link-hover" target="_blank">
+							<a href={GITHUB_LINK} className="link link-hover" target="_blank" rel="noreferrer">
 								Github
 							</a>
 						</div>
 						<div className=" text-lg font-semibold text-white">
 							<span className=" text-gray-500">Community</span>
 							{/* eslint-disable-next-line prettier/prettier */}
-							<a href={TWITTER_LINK} className="link link-hover" target="_blank">
+							<a href={TWITTER_LINK} className="link link-hover" target="_blank" rel="noreferrer">
 								Twitter
 							</a>
 						</div>
