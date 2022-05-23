@@ -52,6 +52,7 @@ const IndexPage: NextPage = () => {
 					<InfoCard data="KŌYŌ LOCKED" value="?" />
 				</div>
 			</div>
+			{/* eslint-disable-next-line @next/next/no-img-element */}
 			<img src="/assets/wallpappers/lying-leaves.svg" alt="leaves on the ground" className=" mt-10 w-full" />
 			<Footer />
 		</div>

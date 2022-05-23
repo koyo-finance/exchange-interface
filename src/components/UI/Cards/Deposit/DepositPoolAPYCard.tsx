@@ -13,11 +13,11 @@ export interface DepositPoolAPYCardProps extends React.HTMLAttributes<HTMLDivEle
 const DepositPoolAPYCard: React.FC<DepositPoolAPYCardProps> = ({ poolId, ...rest }) => {
 	const { data, error } = useSWR('https://api.exchange.koyo.finance/apys/day/boba', (url: string) => fetcher<DailyAPYReturnData>(url));
 
-	if (!data || error || !poolId) return null;
+	if (!poolId || !data || error) return null;
 
 	return (
 		<div {...rest}>
-			Daily Percentage Yield:{' '}
+			APY:{' '}
 			<span className="underline">
 				{data.data[poolId]?.toLocaleString('default', { minimumFractionDigits: 2, maximumFractionDigits: 5 }) || '?'}
 			</span>{' '}
