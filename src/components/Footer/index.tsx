@@ -4,7 +4,7 @@ import React from 'react';
 const Footer: React.FC = () => {
 	return (
 		<>
-			<div className=" w-full border-darks-500 bg-darks-500 py-6 text-black">
+			<div className=" w-full border-darks-500 bg-darks-400 py-6 text-black">
 				<div className="container">
 					<div className="footer p-10">
 						<div>
