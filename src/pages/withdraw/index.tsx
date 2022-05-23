@@ -51,7 +51,7 @@ const WithdrawPage: ExtendedNextPage = () => {
 	return (
 		<>
 			<NextSeo title="Withdraw" canonical={`${ROOT_WITH_PROTOCOL}/withdraw`} />
-			<div className="flex min-h-screen w-full items-center justify-center bg-darks-500 pb-6 pt-24 lg:pt-20 ">
+			<div className="flex min-h-screen w-full items-center justify-center bg-darks-500 px-8 pb-6 pt-24 lg:pt-20 ">
 				{poolsModalIsOpen && <PoolsModal setPool={setPoolHandler} closeModal={closePoolsModalHandler} />}
 				<SwapLayoutCard>
 					<div
@@ -71,10 +71,10 @@ const WithdrawPage: ExtendedNextPage = () => {
 								</div>
 								{!selectedPool && (
 									<button
-										className="btn mt-2 w-full bg-lights-400 text-lg text-black hover:bg-lights-200"
+										className="text-md btn mt-2 w-full bg-lights-400 text-black hover:bg-lights-200 lg:text-xl"
 										onClick={openPoolsModalHandler}
 									>
-										Choose liquidity pool&nbsp;<span className=" text-2xl">+</span>
+										Choose liquidity pool&nbsp;<span className=" text-md lg:text-2xl">+</span>
 									</button>
 								)}
 								{selectedPool && (

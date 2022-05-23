@@ -83,7 +83,7 @@ const Navbar: React.FC = () => {
 									</div>
 									{router.pathname === '/' && (
 										<Link href="/swap">
-											<button className=" btn transform-gpu bg-lights-400 text-black duration-100 hover:bg-lights-300 active:bg-lights-200">
+											<button className=" btn m-0 transform-gpu bg-lights-400 px-2 text-black duration-100 hover:bg-lights-300 active:bg-lights-200 lg:btn-md">
 												Launch App
 											</button>
 										</Link>
@@ -91,30 +91,34 @@ const Navbar: React.FC = () => {
 								</div>
 							</div>
 
-							<Disclosure.Panel className="md:hidden">
-								<div className="w-full space-y-1 px-2 pt-2 pb-3 shadow-lg">
-									<div className=" flex w-full justify-center">
-										<div className="flex flex-col gap-y-4 text-center text-white">
-											<div className={`z-10 w-full rounded-2xl py-2 `}>
-												<Link href="/swap">
-													<span className="transform-gpu cursor-pointer px-4 duration-200 hover:text-lights-400">Swap</span>
-												</Link>
+							{router.pathname !== '/' && (
+								<Disclosure.Panel className="md:hidden">
+									<div className="w-full space-y-1 px-2 pt-2 pb-3 shadow-lg">
+										<div className=" flex w-full justify-center">
+											<div className="flex flex-col gap-y-4 text-center text-white">
+												<div className={`z-10 w-full rounded-2xl py-2 `}>
+													<Link href="/swap">
+														<span className="transform-gpu cursor-pointer px-4 duration-200 hover:text-lights-400">
+															Swap
+														</span>
+													</Link>
+												</div>
+												<div className={`z-10 w-full rounded-2xl py-2 `}>
+													<Link href="/deposit">
+														<span className="cursor-pointer px-4 duration-200 hover:text-lights-400">Deposit</span>
+													</Link>
+												</div>
+												<div className={`z-10 w-full rounded-2xl py-2`}>
+													<Link href="/withdraw">
+														<span className="cursor-pointer px-4 duration-200 hover:text-lights-400">Withdraw</span>
+													</Link>
+												</div>
+												<ConnectButton />
 											</div>
-											<div className={`z-10 w-full rounded-2xl py-2 `}>
-												<Link href="/deposit">
-													<span className="cursor-pointer px-4 duration-200 hover:text-lights-400">Deposit</span>
-												</Link>
-											</div>
-											<div className={`z-10 w-full rounded-2xl py-2`}>
-												<Link href="/withdraw">
-													<span className="cursor-pointer px-4 duration-200 hover:text-lights-400">Withdraw</span>
-												</Link>
-											</div>
-											<ConnectButton />
 										</div>
 									</div>
-								</div>
-							</Disclosure.Panel>
+								</Disclosure.Panel>
+							)}
 						</>
 					)}
 				</Disclosure>
