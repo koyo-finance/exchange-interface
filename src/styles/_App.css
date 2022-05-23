@@ -2,6 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+.leaves-animation-desktop {
+	animation: animateLeaves 65s linear infinite;
+}
+
+.leaves-animation-mobile {
+	animation: animateLeaves 300s linear infinite;
+}
+
+@keyframes animateLeaves {
+	0% {
+		background-position: 0% 0%;
+	}
+	100% {
+		background-position: 0% 1000%;
+	}
+}
+
 @layer base {
 	html {
 		padding: 0;
