@@ -63,17 +63,17 @@ const DepositPage: ExtendedNextPage = () => {
 	return (
 		<>
 			<NextSeo title="Deposit" canonical={`${ROOT_WITH_PROTOCOL}/swap`} />
-			<div className="flex min-h-screen w-full items-center justify-center bg-darks-500 pb-6 pt-[10vh] md:pt-0">
+			<div className="flex min-h-screen w-full items-center justify-center bg-darks-500 px-6 pb-6 pt-24 md:px-0 md:pb-0 lg:pt-20">
 				{poolsModalIsOpen && <PoolsModal setPool={setPoolHandler} closeModal={closePoolsModalHandler} />}
 				<SwapLayoutCard>
 					<div
 						className={
 							selectedPool
-								? 'w-[90vw] sm:w-[60vw] md:w-[80vw] lg:w-[70vw] xl:w-[55vw]'
-								: 'w-[90vw] sm:w-[60vw] md:w-[50vw] lg:w-[35vw] xl:w-[30vw]'
+								? 'w-[85vw] sm:w-[60vw] md:w-[80vw] lg:w-[70vw] xl:w-[55vw]'
+								: 'w-[85vw] sm:w-[60vw] md:w-[50vw] lg:w-[35vw] xl:w-[30vw]'
 						}
 					>
-						<div className="m-auto rounded-xl">
+						<div className="mx-auto rounded-xl">
 							<div className="flex flex-col gap-2">
 								<div className="flex w-full flex-row items-center justify-between text-lg font-semibold text-white">
 									<div>Add Liquidity</div>

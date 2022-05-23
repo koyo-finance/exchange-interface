@@ -57,8 +57,8 @@ const WithdrawPage: ExtendedNextPage = () => {
 					<div
 						className={
 							selectedPool
-								? 'w-[90vw] sm:w-[60vw] md:w-[80vw] lg:w-[70vw] xl:w-[55vw]'
-								: 'w-[90vw] sm:w-[60vw] md:w-[50vw] lg:w-[35vw] xl:w-[30vw]'
+								? 'w-[85vw] sm:w-[60vw] md:w-[80vw] lg:w-[70vw] xl:w-[55vw]'
+								: 'w-[85vw] sm:w-[60vw] md:w-[50vw] lg:w-[35vw] xl:w-[30vw]'
 						}
 					>
 						<div className="m-auto rounded-xl">

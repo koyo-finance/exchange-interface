@@ -57,6 +57,11 @@ module.exports = {
 			},
 			screens: {
 				'3xl': '1600px'
+			},
+			backgroundImage: {
+				trees: "url('/assets/wallpappers/trees.svg')",
+				leaves: "url('/assets/wallpappers/leaves.svg')",
+				'title-gradient': 'radial-gradient(#300729, #300729,  transparent)'
 			}
 		}
 	},

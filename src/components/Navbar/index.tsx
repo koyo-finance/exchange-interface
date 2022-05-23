@@ -12,7 +12,7 @@ const Navbar: React.FC = () => {
 
 	return (
 		<>
-			<header className="fixed left-0 top-0 z-20 w-full transform-gpu bg-darks-500 pt-2">
+			<header className="fixed left-0 top-0 z-20 w-full transform-gpu bg-darks-500 py-1">
 				<Disclosure as="nav" className="border-b-2 border-darks-500 bg-transparent font-semibold text-black">
 					{({ open }) => (
 						<>
@@ -23,7 +23,7 @@ const Navbar: React.FC = () => {
 										<div className="flex items-center">
 											<Link href="/">
 												{/* eslint-disable-next-line @next/next/no-img-element */}
-												<img src="/wide.svg" alt="Koyo logo" className="max-h-12 cursor-pointer" />
+												<img src="/wide-dark.svg" alt="Koyo logo" className="max-h-12 cursor-pointer " />
 											</Link>
 										</div>
 									</div>
