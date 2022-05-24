@@ -1898,10 +1898,19 @@
     tslib "^2.4.0"
     wagmi "^0.3.5"
 
-"@koyofinance/rainbowkit-wallets-sdk@^0.2.0-next.70e04df.0":
-  version "0.2.0-next.70e04df.0"
-  resolved "https://registry.yarnpkg.com/@koyofinance/rainbowkit-wallets-sdk/-/rainbowkit-wallets-sdk-0.2.0-next.70e04df.0.tgz#c92608e4aaee3400207aa91473b7fa94dbb37265"
-  integrity sha512-sHGx7YVNE9bv5EUHkZrKUBvVSsErBW2R5WwOGnt7GrGLZPLd60vpnk327CkliDjoiCM0b2tQipO44iHNthKQXg==
+"@koyofinance/core-sdk@^0.2.0-next.e1a9fb7.0":
+  version "0.2.0-next.e7c5222.0"
+  resolved "https://registry.yarnpkg.com/@koyofinance/core-sdk/-/core-sdk-0.2.0-next.e7c5222.0.tgz#ed2ffec5618bde924a11c4bd3a8d65b57ff8b9f6"
+  integrity sha512-JpFNfbODbRsTOr3VdbrHTPAmwzD0K41j7Bsd1zvnkjzRzarUQedYRGPQLYT76SToxVp9reB/jOyEHH75Sbklrg==
+  dependencies:
+    ethers "^5.6.6"
+    tslib "^2.4.0"
+    wagmi "^0.3.5"
+
+"@koyofinance/rainbowkit-wallets-sdk@^0.2.0-next.e1a9fb7.0":
+  version "0.2.0-next.e1a9fb7.0"
+  resolved "https://registry.yarnpkg.com/@koyofinance/rainbowkit-wallets-sdk/-/rainbowkit-wallets-sdk-0.2.0-next.e1a9fb7.0.tgz#fcd62eed986a70f32bc6679c2291214313fb913e"
+  integrity sha512-x1u06V+PBdYd3HI4LmO86s2msys+Sl3XgdCn/Xp9MOFE7CF9b1X7oQVCmV0bfpp/uXi5NPgCK/NE2rk7kCcPFw==
   dependencies:
     "@rainbow-me/rainbowkit" "^0.1.2"
     ethers "^5.6.7"
@@ -1910,12 +1919,12 @@
     tslib "^2.4.0"
     wagmi "0.3.2"
 
-"@koyofinance/swap-sdk@^0.2.0-next.70e04df.0":
-  version "0.2.0-next.70e04df.0"
-  resolved "https://registry.yarnpkg.com/@koyofinance/swap-sdk/-/swap-sdk-0.2.0-next.70e04df.0.tgz#6c776056795cf9847fbd87b6eba8cb36b0bc8721"
-  integrity sha512-ObUrqPIoH57j7jMGxegeGvopCsZZQAm4cf/zlJ3fg/YnA8xBVr0ml+oK97t0OpqvCFGmkJFUCo08NiSm6aqIiA==
+"@koyofinance/swap-sdk@^0.2.0-next.e1a9fb7.0":
+  version "0.2.0-next.e1a9fb7.0"
+  resolved "https://registry.yarnpkg.com/@koyofinance/swap-sdk/-/swap-sdk-0.2.0-next.e1a9fb7.0.tgz#a1761b2d5c94fb2970aaec70b107e57aa9ca5394"
+  integrity sha512-Q4z12lxDM+BppE5hOMKAmIbwSSRqcfkqjbrF+bqJ6klf2ZI6WPfHPGcUIuM+dKubxQjA9bpTSq71UQJIl7kabw==
   dependencies:
-    "@koyofinance/core-sdk" "^0.2.0-next.70e04df.0"
+    "@koyofinance/core-sdk" "^0.2.0-next.e1a9fb7.0"
     tslib "^2.4.0"
 
 "@mdx-js/mdx@^1.6.22":
