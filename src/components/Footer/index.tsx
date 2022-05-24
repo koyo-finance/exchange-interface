@@ -1,4 +1,4 @@
-import { DOCS_LINK, GITHUB_LINK, TWITTER_LINK } from 'constants/links';
+import { DISCORD_LINK, DOCS_LINK, GITHUB_LINK, TWITTER_LINK } from 'constants/links';
 import React from 'react';
 
 const Footer: React.FC = () => {
@@ -26,6 +26,9 @@ const Footer: React.FC = () => {
 							{/* eslint-disable-next-line prettier/prettier */}
 							<a href={TWITTER_LINK} className="link link-hover" target="_blank" rel="noreferrer">
 								Twitter
+							</a>
+							<a href={DISCORD_LINK} className="link link-hover" target="_blank" rel="noreferrer">
+								Discord
 							</a>
 						</div>
 						{/* <div className="md:place-self-center md:justify-self-end">

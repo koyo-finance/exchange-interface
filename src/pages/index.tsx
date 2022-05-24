@@ -5,6 +5,14 @@ import { GetStaticProps, NextPage } from 'next';
 import Link from 'next/link';
 import path from 'path';
 import React, { useEffect, useState } from 'react';
+import { fetch, FetchResultTypes } from '@sapphire/fetch';
+import { DefiLlamaProtocol } from 'types/DefiLlama';
+import useSWRImmutable from 'swr/immutable';
+import { formatDollarAmount } from '@koyofinance/core-sdk';
+
+function fetcher<T = unknown>(url: string) {
+	return fetch<T>(url, 'json' as FetchResultTypes.JSON);
+}
 
 const IndexPage: NextPage = () => {
 	const [activeTitleWord, setActiveTitleWord] = useState(0);
@@ -20,6 +28,8 @@ const IndexPage: NextPage = () => {
 	}, [activeTitleWord]);
 
 	const deviceWidth = window.visualViewport.width;
+
+	const { data: tvlData } = useSWRImmutable('https://api.llama.fi/protocol/koyo-finance', (url: string) => fetcher<DefiLlamaProtocol>(url), {});
 
 	return (
 		<div
@@ -44,7 +54,10 @@ const IndexPage: NextPage = () => {
 					</Link>
 				</div>
 				<div className="mt-12 flex w-full flex-row flex-wrap justify-evenly gap-10 lg:mt-2">
-					<InfoCard data="TOTAL LIQUIDITY" value="$11.3k" />
+					<InfoCard
+						data="TOTAL LIQUIDITY"
+						value={formatDollarAmount((tvlData?.currentChainTvls?.Boba || 0) + (tvlData?.currentChainTvls?.Treasury || 0))}
+					/>
 					<InfoCard data="MOST ACTIVE POOL" value="4pool" />
 					<InfoCard data="KŌYŌ PRICE" value="?" />
 				</div>
