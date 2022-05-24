@@ -4,7 +4,7 @@ import { TokenInfo } from '@uniswap/token-lists';
 import React, { useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectAllTokensByChainId } from 'state/reducers/lists';
-import { TokenWithPoolInfo } from 'types/TokenWithPoolInfo';
+import { TokenWithPoolInfo } from 'types/tokens';
 
 export interface WithdrawTokenCardProps {
 	coin: RawCoin;

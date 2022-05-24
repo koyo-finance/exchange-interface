@@ -21,7 +21,7 @@ import { useAppDispatch } from 'state/hooks';
 import { selectAllTokensByChainId, selectPoolBySwapAndChainId } from 'state/reducers/lists';
 import { selectAmount, selectTokenOne, selectTokenTwo, setAmount, setTokenOne, setTokenTwo } from 'state/reducers/selectedTokens';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
-import { TokenWithPoolInfo } from 'types/TokenWithPoolInfo';
+import { TokenWithPoolInfo } from 'types/tokens';
 import { useAccount, useSigner } from 'wagmi';
 
 const SwapIndexPage: ExtendedNextPage = () => {

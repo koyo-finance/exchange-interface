@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TokenInfo } from '@uniswap/token-lists';
 import { RootState } from 'state';
-import { TokenWithPoolInfo } from 'types/TokenWithPoolInfo';
+import { TokenWithPoolInfo } from 'types/tokens';
 
 export interface selectedTokensState {
 	tokenOne: TokenInfo;

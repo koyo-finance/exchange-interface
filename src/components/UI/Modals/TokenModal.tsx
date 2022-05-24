@@ -5,7 +5,7 @@ import { FaTimes } from 'react-icons/fa';
 import { FiEdit } from 'react-icons/fi';
 import { useSelector } from 'react-redux';
 import { selectAllPoolsByChainId, selectAllTokensByChainId } from 'state/reducers/lists';
-import { TokenWithPoolInfo } from 'types/TokenWithPoolInfo';
+import { TokenWithPoolInfo } from 'types/tokens';
 
 export interface TokenModalProps {
 	tokenNum: number;
