@@ -1,6 +1,7 @@
-import { apiProvider, configureChains, getDefaultWallets } from '@rainbow-me/rainbowkit';
+import { onto } from '@koyofinance/rainbowkit-wallets-sdk';
+import { apiProvider, configureChains, connectorsForWallets, wallet } from '@rainbow-me/rainbowkit';
 import { CHAIN_INFO, SupportedChainId } from 'constants/chains';
-import { createClient, Chain } from 'wagmi';
+import { Chain, createClient } from 'wagmi';
 
 const bobaMainnetChain: Chain = {
 	id: SupportedChainId.BOBA,
@@ -17,12 +18,22 @@ const bobaMainnetChain: Chain = {
 	testnet: false
 };
 
+// @ts-expect-error We know that "isONTO" could be present. https://publicdocs.gitbook.io/onto/integrate-onto-in-mobile-dapp
+const needsInjectedWalletFallback = typeof window !== 'undefined' && window.ethereum && !window.ethereum.isMetaMask && !window.ethereum.isONTO;
+
 export const { chains, provider } = configureChains([bobaMainnetChain], [apiProvider.jsonRpc((chain) => ({ rpcUrl: chain.rpcUrls.default }))]);
 
-const { connectors } = getDefaultWallets({
-	appName: 'Kōyō Finance',
-	chains
-});
+const connectors = connectorsForWallets([
+	{
+		groupName: 'Recommended',
+		wallets: [
+			wallet.metaMask({ chains, shimDisconnect: true }),
+			onto({ chains, shimDisconnect: true }),
+			...(needsInjectedWalletFallback ? [wallet.injected({ chains, shimDisconnect: true })] : []),
+			wallet.walletConnect({ chains })
+		]
+	}
+]);
 
 export const wagmiClient = createClient({
 	autoConnect: true,
