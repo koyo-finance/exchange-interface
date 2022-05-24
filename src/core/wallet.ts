@@ -1,7 +1,7 @@
-import { onto } from '@koyofinance/rainbowkit-wallets-sdk';
 import { apiProvider, configureChains, connectorsForWallets, wallet } from '@rainbow-me/rainbowkit';
 import { CHAIN_INFO, SupportedChainId } from 'constants/chains';
 import { Chain, createClient } from 'wagmi';
+import { onto } from './wallets/onto';
 
 const bobaMainnetChain: Chain = {
 	id: SupportedChainId.BOBA,

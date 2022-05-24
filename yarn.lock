@@ -1867,18 +1867,6 @@
     tslib "^2.4.0"
     wagmi "^0.3.5"
 
-"@koyofinance/rainbowkit-wallets-sdk@^0.2.0-next.e1a9fb7.0":
-  version "0.2.0-next.e1a9fb7.0"
-  resolved "https://registry.yarnpkg.com/@koyofinance/rainbowkit-wallets-sdk/-/rainbowkit-wallets-sdk-0.2.0-next.e1a9fb7.0.tgz#fcd62eed986a70f32bc6679c2291214313fb913e"
-  integrity sha512-x1u06V+PBdYd3HI4LmO86s2msys+Sl3XgdCn/Xp9MOFE7CF9b1X7oQVCmV0bfpp/uXi5NPgCK/NE2rk7kCcPFw==
-  dependencies:
-    "@rainbow-me/rainbowkit" "^0.1.2"
-    ethers "^5.6.7"
-    react "^18.1.0"
-    react-dom "^18.1.0"
-    tslib "^2.4.0"
-    wagmi "0.3.2"
-
 "@koyofinance/swap-sdk@^0.2.0-next.e1a9fb7.0":
   version "0.2.0-next.e7c5222.0"
   resolved "https://registry.yarnpkg.com/@koyofinance/swap-sdk/-/swap-sdk-0.2.0-next.e7c5222.0.tgz#c65683d4aec2eb5c79894da47b7770ae803746b5"
@@ -2069,7 +2057,7 @@
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.5.tgz#db5a11bf66bdab39569719555b0f76e138d7bd64"
   integrity sha512-9X2obfABZuDVLCgPK9aX0a/x4jaOEweTTWE2+9sr0Qqqevj2Uv5XorvusThmc9XGYpS9yI+fhh8RTafBtGposw==
 
-"@rainbow-me/rainbowkit@^0.1.0", "@rainbow-me/rainbowkit@^0.1.2":
+"@rainbow-me/rainbowkit@^0.1.0":
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/@rainbow-me/rainbowkit/-/rainbowkit-0.1.2.tgz#fb2019deedb2a306ff9565f8b32f911cad9eadaa"
   integrity sha512-Pr92NDcNRzsR2n+TPkxkROfTYN9vvDZFNfoI5RbmxkWarH7WjA7RjLgCVPIgxvNXdm9N+N9qbBtPP0qAsz61zg==
@@ -3342,7 +3330,7 @@
   resolved "https://registry.yarnpkg.com/@vanilla-extract/sprinkles/-/sprinkles-1.4.1.tgz#8c8703ddedaac355c1187db909119816c0fc771c"
   integrity sha512-aW6CfMMToX4a+baLuVxwcT0FSACjX3xrNt8wdi/3LLRlLAfhyue8OK7kJxhcYNZfydBeWTP59aRy8p5FUTIeew==
 
-"@wagmi/core@^0.2.2", "@wagmi/core@^0.2.5":
+"@wagmi/core@^0.2.5":
   version "0.2.5"
   resolved "https://registry.yarnpkg.com/@wagmi/core/-/core-0.2.5.tgz#e1314ffa482477d818bd210550d0d14144c48f77"
   integrity sha512-4l7fA9RsKxMDaILUP8eUxDcudOi5gB5Hyfwox9pDzZNdzt8QShwOsfm0gbtLcfpHpZPzRDt1D0VY1UtP1NMicQ==
@@ -3404,7 +3392,7 @@
   resolved "https://registry.yarnpkg.com/@walletconnect/environment/-/environment-1.0.0.tgz#c4545869fa9c389ec88c364e1a5f8178e8ab5034"
   integrity sha512-4BwqyWy6KpSvkocSaV7WR3BlZfrxLbJSLkg+j7Gl6pTDE+U55lLhJvQaMuDVazXYxcjBsG09k7UlH7cGiUI5vQ==
 
-"@walletconnect/ethereum-provider@^1.7.5", "@walletconnect/ethereum-provider@^1.7.8":
+"@walletconnect/ethereum-provider@^1.7.8":
   version "1.7.8"
   resolved "https://registry.yarnpkg.com/@walletconnect/ethereum-provider/-/ethereum-provider-1.7.8.tgz#8b969b394e14c68855b6ae2660f2e39dec857f5f"
   integrity sha512-dnl560zFMdK/LD4MD2XwHbWj7RXOaeXWPc9jzDaosLQLAXfA5mKe4XbCFFUPbVMYuyBdRI9NZv3Ci/qDb5wncQ==
@@ -4512,9 +4500,9 @@ bn.js@^4.0.0, bn.js@^4.1.0, bn.js@^4.11.0, bn.js@^4.11.8, bn.js@^4.11.9:
   integrity sha512-c98Bf3tPniI+scsdk237ku1Dc3ujXQTSgyiPUDEOe7tRkhrqridvh8klBv0HCEso1OLOYcHuCv/cS6DNxKH+ZA==
 
 bn.js@^5.0.0, bn.js@^5.1.1, bn.js@^5.2.0:
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-5.2.0.tgz#358860674396c6997771a9d051fcc1b57d4ae002"
-  integrity sha512-D7iWRBvnZE8ecXiLj/9wbxH7Tk79fAh8IHaTNq1RWRixsS02W+5qS+iE9yq6RYl0asXx5tw0bLhmT5pIfbSquw==
+  version "5.2.1"
+  resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-5.2.1.tgz#0bc527a6a0d18d0aa8d5b0538ce4a77dccfa7b70"
+  integrity sha512-eXRvHzWyYPBuB4NBy0cmYQjGitUrtqwbvlzP3G6VFnNRbsZQIxQ10PbKKHt8gZ/HW/D/747aDl+QkDqg3KQLMQ==
 
 body-parser@1.20.0:
   version "1.20.0"
@@ -6612,7 +6600,7 @@ ethereumjs-util@^6.0.0:
     ethjs-util "0.1.6"
     rlp "^2.2.3"
 
-ethers@^5.5.2, ethers@^5.6.5, ethers@^5.6.6, ethers@^5.6.7:
+ethers@^5.5.2, ethers@^5.6.5, ethers@^5.6.6:
   version "5.6.7"
   resolved "https://registry.yarnpkg.com/ethers/-/ethers-5.6.7.tgz#3e6257b2a0fdd5fc93e68e141cf2b9761900f374"
   integrity sha512-Q8pmMraUENK0cY6cy6IvIe3e9xL/+4kBvxmUvLXg1O7Abob0c7XzWI76E29j5em/HxWMl5hYiSClmOMW3jJmdg==
@@ -9387,9 +9375,9 @@ node-libs-browser@^2.2.1:
     vm-browserify "^1.0.1"
 
 node-releases@^2.0.3:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-2.0.4.tgz#f38252370c43854dc48aa431c766c6c398f40476"
-  integrity sha512-gbMzqQtTtDz/00jQzZ21PQzdI9PyLYqUSvD0p3naOhX4odFji0ZxYdnVwPTxmSwkmxhcFImpozceidSG+AgoPQ==
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-2.0.5.tgz#280ed5bc3eba0d96ce44897d8aee478bfb3d9666"
+  integrity sha512-U9h1NLROZTq9uE1SNffn6WuPDg8icmi3ns4rEl/oTfIle4iLjTliCzgTsbaIFMq/Xn078/lfY/BL0GWZ+psK4Q==
 
 normalize-package-data@^2.3.2, normalize-package-data@^2.3.4, normalize-package-data@^2.5.0:
   version "2.5.0"
@@ -10773,14 +10761,6 @@ react-dom@17.0.2, react-dom@^17.0.2:
     object-assign "^4.1.1"
     scheduler "^0.20.2"
 
-react-dom@^18.1.0:
-  version "18.1.0"
-  resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-18.1.0.tgz#7f6dd84b706408adde05e1df575b3a024d7e8a2f"
-  integrity sha512-fU1Txz7Budmvamp7bshe4Zi32d0ll7ect+ccxNu9FlObT605GOEB8BfO4tmRJ39R5Zj831VCpvQ05QPBW5yb+w==
-  dependencies:
-    loose-envify "^1.1.0"
-    scheduler "^0.22.0"
-
 react-element-to-jsx-string@^14.3.4:
   version "14.3.4"
   resolved "https://registry.yarnpkg.com/react-element-to-jsx-string/-/react-element-to-jsx-string-14.3.4.tgz#709125bc72f06800b68f9f4db485f2c7d31218a8"
@@ -10874,17 +10854,6 @@ react-query@^3.34.5, react-query@^3.38.1:
     broadcast-channel "^3.4.1"
     match-sorter "^6.0.2"
 
-react-query@^4.0.0-beta.7:
-  version "4.0.0-beta.13"
-  resolved "https://registry.yarnpkg.com/react-query/-/react-query-4.0.0-beta.13.tgz#07fc1610d87db1a174ad5723b4ca4b3e238dc3db"
-  integrity sha512-CnDuiD4IWGh2nesnAqMlUbXhcw7ZSZZ5JwfQyv3a8OIAs7NoHvtNWlIH88kcOWDZjC7eGALrjnwsWpCK45jjtw==
-  dependencies:
-    "@babel/runtime" "^7.17.9"
-    "@types/use-sync-external-store" "^0.0.3"
-    broadcast-channel "^3.4.1"
-    match-sorter "^6.0.2"
-    use-sync-external-store "^1.1.0"
-
 react-redux@^8.0.1:
   version "8.0.2"
   resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-8.0.2.tgz#bc2a304bb21e79c6808e3e47c50fe1caf62f7aad"
@@ -10955,13 +10924,6 @@ react@^17.0.2:
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
-
-react@^18.1.0:
-  version "18.1.0"
-  resolved "https://registry.yarnpkg.com/react/-/react-18.1.0.tgz#6f8620382decb17fdc5cc223a115e2adbf104890"
-  integrity sha512-4oL8ivCz5ZEPyclFQXaNksK3adutVS8l2xzZU0cqEFrE9Sb7fC0EFK5uEk74wIreL1DERyjvsU915j1pcT2uEQ==
-  dependencies:
-    loose-envify "^1.1.0"
 
 read-cache@^1.0.0:
   version "1.0.0"
@@ -11450,13 +11412,6 @@ scheduler@^0.20.2:
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
-
-scheduler@^0.22.0:
-  version "0.22.0"
-  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.22.0.tgz#83a5d63594edf074add9a7198b1bae76c3db01b8"
-  integrity sha512-6QAm1BgQI88NPYymgGQLCZgvep4FyePDWFpXVK+zNSUgHwlqpJy8VEh8Et0KxTACS4VWwMousBElAZOH9nkkoQ==
-  dependencies:
-    loose-envify "^1.1.0"
 
 schema-utils@2.7.0:
   version "2.7.0"
@@ -12948,17 +12903,6 @@ vm-browserify@^1.0.1:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/vm-browserify/-/vm-browserify-1.1.2.tgz#78641c488b8e6ca91a75f511e7a3b32a86e5dda0"
   integrity sha512-2ham8XPWTONajOR0ohOKOHXkm3+gaBmGut3SRuu75xLd/RRaY6vqgh8NBYYk7+RW3u5AtzPQZG8F10LHkl0lAQ==
-
-wagmi@0.3.2:
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/wagmi/-/wagmi-0.3.2.tgz#b9f861156f7960a0e0ba662c6a9cc7afdcdc21be"
-  integrity sha512-O5NJZj+HR9RHxyw6yqyPF2Uj96DnGX4iGrG77rwq2TSFp4BUDTP/4EI6+j9kwdrcVhaM9ka1+a6AHbuWtYF3EA==
-  dependencies:
-    "@coinbase/wallet-sdk" "^3.0.11"
-    "@wagmi/core" "^0.2.2"
-    "@walletconnect/ethereum-provider" "^1.7.5"
-    react-query "^4.0.0-beta.7"
-    use-sync-external-store "^1.1.0"
 
 wagmi@^0.3.4, wagmi@^0.3.5:
   version "0.3.5"
