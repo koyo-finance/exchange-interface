@@ -230,7 +230,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 										<FormApproveAsset
 											asset={pool.coins[tokenOneIndex].address}
 											spender={pool.addresses.swap}
-											amount={tokenAmount + 1}
+											amount={100_000}
 											decimals={pool.coins[tokenOneIndex].decimals}
 											className="h-full w-full"
 										>

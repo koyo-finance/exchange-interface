@@ -1,8 +1,9 @@
 import { ERC20Permit, ERC20Permit__factory } from '@elementfi/elf-council-typechain';
-import { useSmartContractTransaction } from '@elementfi/react-query-typechain';
+import { makeSmartContractReadCallQueryKey, useSmartContractTransaction } from '@elementfi/react-query-typechain';
 import { ContractReceipt, Signer } from 'ethers';
 import { UseMutationResult } from 'react-query';
 import { useAddRecentTransaction } from '@rainbow-me/rainbowkit';
+import { queryClient } from 'core/query';
 
 export default function useSetTokenAllowance(
 	signer: Signer | undefined,
@@ -18,7 +19,14 @@ export default function useSetTokenAllowance(
 				hash: tx.hash,
 				description: 'Approving asset spending.'
 			});
+		},
+		onTransactionMined: async (_, [spender]) => {
+			if (tokenContract && signer && spender)
+				queryClient.invalidateQueries(
+					makeSmartContractReadCallQueryKey(tokenContract.address, 'allowance', [await signer.getAddress(), spender])
+				);
 		}
 	});
+
 	return approve;
 }

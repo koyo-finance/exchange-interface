@@ -31,6 +31,7 @@ const DepositPage: ExtendedNextPage = () => {
 
 	const [selectedPool, setSelectedPool] = useState<AugmentedPool | undefined>(undefined);
 	const [poolsModalIsOpen, setPoolsModalIsOpen] = useState(false);
+	// const [assetApproved, setAssetApproved] = useState(false);
 
 	const allowances = useMultiTokenAllowance(
 		account?.address,
@@ -59,6 +60,10 @@ const DepositPage: ExtendedNextPage = () => {
 		});
 		setSelectedPool(selectedPoolFilter);
 	};
+
+	// const setStatusHandler = (status: string) => {
+	// 	if (status === 'success') setAssetApproved(true);
+	// };
 
 	return (
 		<>
@@ -153,9 +158,10 @@ const DepositPage: ExtendedNextPage = () => {
 																		<FormApproveAsset
 																			asset={coin.address}
 																			spender={selectedPool.addresses.swap}
-																			amount={props.values[coin.name] + 1}
+																			amount={100_000}
 																			decimals={coin.decimals}
 																			className="h-full w-full"
+																			// setStatus={setStatusHandler}
 																		>
 																			APPROVE - <span className="italic">{coin.name.toUpperCase()}</span>
 																		</FormApproveAsset>

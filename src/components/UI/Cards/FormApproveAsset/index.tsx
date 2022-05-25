@@ -9,21 +9,20 @@ export interface FormApproveAssetProps {
 	amount: number;
 	decimals: number;
 	className?: string;
+	// setStatus: (status: string) => void;
 }
 
 const FormApproveAsset: React.FC<FormApproveAssetProps> = ({ asset, spender, amount, decimals, className, children }) => {
 	const { data: signer } = useSigner();
 	const { mutate: approve, isLoading: approveLoading } = useSetTokenAllowance(signer || undefined, asset);
 
+	const approveHandler = () => {
+		// setStatus(approveStatus);
+		return approve([spender, toBigNumber(amount, decimals), { gasLimit: 600_000 }]);
+	};
+
 	return (
-		<button
-			type="button"
-			onClick={() => {
-				return approve([spender, toBigNumber(amount, decimals), { gasLimit: 600_000 }]);
-			}}
-			disabled={approveLoading}
-			className={className}
-		>
+		<button type="button" onClick={approveHandler} disabled={approveLoading} className={className}>
 			{children}
 		</button>
 	);
