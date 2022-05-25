@@ -1846,33 +1846,23 @@
     "@json-rpc-tools/types" "^1.7.6"
     "@pedrouid/environment" "^1.0.1"
 
-"@koyofinance/core-sdk@^0.2.0-next.70e04df.0":
-  version "0.2.0-next.70e04df.0"
-  resolved "https://registry.yarnpkg.com/@koyofinance/core-sdk/-/core-sdk-0.2.0-next.70e04df.0.tgz#8dcf2f026f98ddda31492f7df828965c09350a78"
-  integrity sha512-4NZxPDWyEl9ZW0w0HPIwKq7UlcDgfbr4h+x1RH9BoBfRCzYH2IC7rx0d4mTSi1lRU2C9yFxAOBS8SipuGv3sxQ==
+"@koyofinance/core-sdk@^0.3.0-next.0e1194a.0":
+  version "0.3.0-next.0e1194a.0"
+  resolved "https://registry.yarnpkg.com/@koyofinance/core-sdk/-/core-sdk-0.3.0-next.0e1194a.0.tgz#159f17b84a95fd6ed51f5bfb217dbc52a76f3517"
+  integrity sha512-bIu2h6QL7KPQUV1h3fgni8Hoikw08uE+Bo0QzBV5RftNKwYcCEX+FWXg+I10UBGEjPtiWnB305GZHzxFZ47sYQ==
   dependencies:
     "@uniswap/token-lists" "^1.0.0-beta.28"
     dayjs "^1.11.2"
     ethers "^5.6.6"
     numbro "^2.3.6"
     tslib "^2.4.0"
-    wagmi "^0.3.5"
 
-"@koyofinance/core-sdk@^0.2.0-next.e7c5222.0":
-  version "0.2.0-next.e7c5222.0"
-  resolved "https://registry.yarnpkg.com/@koyofinance/core-sdk/-/core-sdk-0.2.0-next.e7c5222.0.tgz#ed2ffec5618bde924a11c4bd3a8d65b57ff8b9f6"
-  integrity sha512-JpFNfbODbRsTOr3VdbrHTPAmwzD0K41j7Bsd1zvnkjzRzarUQedYRGPQLYT76SToxVp9reB/jOyEHH75Sbklrg==
+"@koyofinance/swap-sdk@^0.3.0-next.0e1194a.0":
+  version "0.3.0-next.0e1194a.0"
+  resolved "https://registry.yarnpkg.com/@koyofinance/swap-sdk/-/swap-sdk-0.3.0-next.0e1194a.0.tgz#e22639eb3f81c3e3f34fd81dc7a6263eb99ead4a"
+  integrity sha512-yuiEQZi20C0STe42CaQIuQmZ86lSQ+bCfrjwtXpTS/Hjs9b2tksEWX23JlIJIJAEs4frnS6EfQzyKFxXF6rA8Q==
   dependencies:
-    ethers "^5.6.6"
-    tslib "^2.4.0"
-    wagmi "^0.3.5"
-
-"@koyofinance/swap-sdk@^0.2.0-next.e1a9fb7.0":
-  version "0.2.0-next.e7c5222.0"
-  resolved "https://registry.yarnpkg.com/@koyofinance/swap-sdk/-/swap-sdk-0.2.0-next.e7c5222.0.tgz#c65683d4aec2eb5c79894da47b7770ae803746b5"
-  integrity sha512-KndCibjgh99B4IINUuR8E8B6qxgkQ5vqnG6XSMkFDBgyeWUtMIQ+S1oYO7VItnpWOsfmRHebIgT7K+fAaK5bsw==
-  dependencies:
-    "@koyofinance/core-sdk" "^0.2.0-next.e7c5222.0"
+    "@koyofinance/core-sdk" "^0.3.0-next.0e1194a.0"
     tslib "^2.4.0"
 
 "@mdx-js/mdx@^1.6.22":
@@ -12904,7 +12894,7 @@ vm-browserify@^1.0.1:
   resolved "https://registry.yarnpkg.com/vm-browserify/-/vm-browserify-1.1.2.tgz#78641c488b8e6ca91a75f511e7a3b32a86e5dda0"
   integrity sha512-2ham8XPWTONajOR0ohOKOHXkm3+gaBmGut3SRuu75xLd/RRaY6vqgh8NBYYk7+RW3u5AtzPQZG8F10LHkl0lAQ==
 
-wagmi@^0.3.4, wagmi@^0.3.5:
+wagmi@^0.3.4:
   version "0.3.5"
   resolved "https://registry.yarnpkg.com/wagmi/-/wagmi-0.3.5.tgz#d48fa7cd4cf264491201ff0b0bb0356f7d9a2472"
   integrity sha512-NZx8vfPBnkW2UTRUjLTAGC+t8VEJyOxydT1VYAA/7+5/2+xr1likVAVqgk+U/tLdfd3rn/iuQKIEuJWfZNu+Ew==

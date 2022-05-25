@@ -1,6 +1,7 @@
 import { ERC20PermitWithMint, ERC20PermitWithMint__factory } from '@elementfi/elf-council-typechain';
-import { useSmartContractReadCall } from '@elementfi/react-query-typechain';
+import { ContractMethodArgs, useSmartContractReadCall } from '@elementfi/react-query-typechain';
 import { BigNumberish } from 'ethers';
+import { getAddress } from 'ethers/lib/utils';
 import { bobaProvider } from 'hooks/useProviders';
 import { QueryObserverResult } from 'react-query';
 
@@ -13,7 +14,7 @@ export default function useTokenBalance(
 		: undefined;
 
 	return useSmartContractReadCall(tokenContract, 'balanceOf(address)' as 'balanceOf', {
-		callArgs: [account as string],
+		callArgs: [account as string].map((addr) => (addr ? getAddress(addr) : addr)) as ContractMethodArgs<ERC20PermitWithMint, 'balanceOf'>,
 		enabled: Boolean(account && tokenContract)
 	});
 }

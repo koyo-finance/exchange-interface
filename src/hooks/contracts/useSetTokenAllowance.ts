@@ -1,14 +1,15 @@
 import { ERC20Permit, ERC20Permit__factory } from '@elementfi/elf-council-typechain';
 import { makeSmartContractReadCallQueryKey, useSmartContractTransaction } from '@elementfi/react-query-typechain';
 import { ContractReceipt, Signer } from 'ethers';
-import { UseMutationResult } from 'react-query';
+import { UseMutationResult, useQueryClient } from 'react-query';
 import { useAddRecentTransaction } from '@rainbow-me/rainbowkit';
-import { queryClient } from 'core/query';
+import { getAddress } from 'ethers/lib/utils';
 
 export default function useSetTokenAllowance(
 	signer: Signer | undefined,
 	tokenAddress: string
 ): UseMutationResult<ContractReceipt | undefined, unknown, Parameters<ERC20Permit['approve']>> {
+	const queryClient = useQueryClient();
 	const addRecentTransaction = useAddRecentTransaction();
 
 	const tokenContract: ERC20Permit | undefined = signer ? ERC20Permit__factory.connect(tokenAddress, signer) : undefined;
@@ -20,11 +21,10 @@ export default function useSetTokenAllowance(
 				description: 'Approving asset spending.'
 			});
 		},
-		onTransactionMined: async (_, [spender]) => {
-			if (tokenContract && signer && spender)
-				queryClient.invalidateQueries(
-					makeSmartContractReadCallQueryKey(tokenContract.address, 'allowance', [await signer.getAddress(), spender])
-				);
+		onTransactionMined: async (tx, [spender]) => {
+			await queryClient.invalidateQueries(
+				makeSmartContractReadCallQueryKey<ERC20Permit, 'allowance'>(tx.to, 'allowance', [tx.from, getAddress(spender)])
+			);
 		}
 	});
 

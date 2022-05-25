@@ -1,6 +1,7 @@
 import { ERC20Permit, ERC20Permit__factory } from '@elementfi/elf-council-typechain';
-import { useSmartContractReadCall } from '@elementfi/react-query-typechain';
+import { ContractMethodArgs, useSmartContractReadCall } from '@elementfi/react-query-typechain';
 import { BigNumberish } from 'ethers';
+import { getAddress } from 'ethers/lib/utils';
 import { bobaProvider } from 'hooks/useProviders';
 import { QueryObserverResult } from 'react-query';
 
@@ -12,7 +13,10 @@ export default function useTokenAllowance(
 	const tokenContract: ERC20Permit | undefined = tokenAddress ? ERC20Permit__factory.connect(tokenAddress, bobaProvider) : undefined;
 
 	return useSmartContractReadCall(tokenContract, 'allowance', {
-		callArgs: [account as string, spender as string],
+		callArgs: [account as string, spender as string].map((addr) => (addr ? getAddress(addr) : addr)) as ContractMethodArgs<
+			ERC20Permit,
+			'allowance'
+		>,
 		enabled: Boolean(account && spender && tokenAddress)
 	});
 }
