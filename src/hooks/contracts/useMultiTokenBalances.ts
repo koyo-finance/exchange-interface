@@ -13,7 +13,7 @@ export default function useMultiTokenBalances(
 		tokenAddress ? ERC20Permit__factory.connect(tokenAddress, bobaProvider) : undefined
 	);
 
-	return useSmartContractReadCalls(tokenContracts, 'balanceOf', {
+	return useSmartContractReadCalls(tokenContracts, 'balanceOf(address)' as 'balanceOf', {
 		callArgs: [account as string].map((addr) => (addr ? getAddress(addr) : addr)) as ContractMethodArgs<ERC20Permit, 'balanceOf'>,
 		enabled: Boolean(account && tokenContracts.length !== 0 && tokenContracts.every(Boolean))
 	});

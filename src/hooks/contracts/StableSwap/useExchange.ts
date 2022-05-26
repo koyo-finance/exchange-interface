@@ -34,7 +34,7 @@ export default function useExchange(
 					await queryClient.invalidateQueries(
 						makeSmartContractReadCallQueryKey<ERC20Permit, 'balanceOf'>(
 							pool ? getAddress(pool.coins[tIndex as number].address) : '',
-							'balanceOf',
+							'balanceOf(address)' as 'balanceOf',
 							[getAddress(tx.from)]
 						)
 					);
