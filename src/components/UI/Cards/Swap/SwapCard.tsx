@@ -30,12 +30,17 @@ const SwapCard: React.FC<SwapCardProps> = (props) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [props.convertedAmount]);
 
-	useEffect(() => {
-		if (props.swapStatus === 'success') setTokenAmount(0);
-	}, [props.swapStatus]);
-
 	const { data: account } = useAccount();
-	const { data: tokenBalance = 0 } = useTokenBalance(account?.address, props.token.address);
+	const { data: tokenBalance = 0, refetch: refetchBalance } = useTokenBalance(account?.address, props.token.address);
+
+	useEffect(() => {
+		if (props.swapStatus === 'success') {
+			setTokenAmount(0);
+			setTimeout(() => {
+				refetchBalance();
+			}, 3000);
+		}
+	}, [props.swapStatus]);
 
 	const changeTokenAmountHandler = (e: any) => {
 		if (e.target.value > 1000000) {
