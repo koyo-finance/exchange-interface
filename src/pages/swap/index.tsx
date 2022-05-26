@@ -172,7 +172,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 		dispatch(setTokenTwo(tokenTwoTransformed));
 	};
 
-	const { mutate: exchange } = useExchange(signer || undefined, tokenTwo.poolId);
+	const { mutate: exchange, status: swapStatus } = useExchange(signer || undefined, tokenTwo.poolId);
 
 	return (
 		<>
@@ -197,6 +197,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 						<SwapCard
 							tokenNum={1}
 							token={tokenOne}
+							swapStatus={swapStatus}
 							convertedAmount={invertedTokenOneAmount}
 							openTokenModal={openTokenModalHandler}
 							setInputAmount={setTokenAmountHandler}
@@ -211,6 +212,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 						<SwapCard
 							tokenNum={2}
 							token={tokenTwo}
+							swapStatus={swapStatus}
 							convertedAmount={fromBigNumber(calculatedAmountTokenTwo, tokenTwo.decimals)}
 							openTokenModal={openTokenModalHandler}
 							setInputAmount={setTokenAmountHandler}

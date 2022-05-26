@@ -8,6 +8,7 @@ import { useAccount } from 'wagmi';
 export interface SwapCardProps {
 	tokenNum: number;
 	token: TokenInfo;
+	swapStatus: string;
 	convertedAmount: number;
 	openTokenModal: (tokenNum: number) => void;
 	setInputAmount: (amount: number, tokenNum: number, settingConvertedAmount: boolean) => void;
@@ -28,6 +29,10 @@ const SwapCard: React.FC<SwapCardProps> = (props) => {
 		if (props.tokenNum === 1) props.setInputAmount(formattedAmount, props.tokenNum, true);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [props.convertedAmount]);
+
+	useEffect(() => {
+		if (props.swapStatus === 'success') setTokenAmount(0);
+	}, [props.swapStatus]);
 
 	const { data: account } = useAccount();
 	const { data: tokenBalance = 0 } = useTokenBalance(account?.address, props.token.address);
@@ -76,7 +81,7 @@ const SwapCard: React.FC<SwapCardProps> = (props) => {
 					max={1000000}
 					step={0.1}
 					onChange={changeTokenAmountHandler}
-					value={tokenAmount > 0 ? tokenAmount : undefined}
+					value={tokenAmount > 0 ? tokenAmount : ''}
 					placeholder={'0,00'}
 					onBlur={() => setTokenAmount(Number(Number(tokenAmount).toFixed(5)))}
 					className=" w-9/12

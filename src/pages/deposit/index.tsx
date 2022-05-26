@@ -14,7 +14,7 @@ import useMultiTokenAllowance from 'hooks/contracts/useMultiTokenAllowance';
 import useMultiTokenBalances from 'hooks/contracts/useMultiTokenBalances';
 import { SwapLayout, SwapLayoutCard } from 'layouts/SwapLayout';
 import { NextSeo } from 'next-seo';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BsFillGearFill } from 'react-icons/bs';
 import { HiSwitchHorizontal } from 'react-icons/hi';
 import { Case, Default, Switch } from 'react-if';
@@ -31,6 +31,7 @@ const DepositPage: ExtendedNextPage = () => {
 
 	const [selectedPool, setSelectedPool] = useState<AugmentedPool | undefined>(undefined);
 	const [poolsModalIsOpen, setPoolsModalIsOpen] = useState(false);
+	const [resetInputs, setResetInputs] = useState(false);
 	// const [assetApproved, setAssetApproved] = useState(false);
 
 	const allowances = useMultiTokenAllowance(
@@ -44,7 +45,15 @@ const DepositPage: ExtendedNextPage = () => {
 		selectedPool?.coins?.map((coin) => coin.address)
 	);
 
-	const { mutate: addLiqudity } = useAddLiquidity(signer || undefined, selectedPool?.id || '');
+	const { mutate: addLiqudity, status: deposited } = useAddLiquidity(signer || undefined, selectedPool?.id || '');
+
+	useEffect(() => {
+		if (deposited === 'success') {
+			setResetInputs(true);
+			return;
+		}
+		setResetInputs(false);
+	}, [deposited]);
 
 	const openPoolsModalHandler = () => {
 		setPoolsModalIsOpen(true);
@@ -137,6 +146,7 @@ const DepositPage: ExtendedNextPage = () => {
 																	key={coin.id}
 																	coin={coin}
 																	balance={balances[i].data || 0}
+																	resetValues={resetInputs}
 																	setInputAmount={props.handleChange}
 																/>
 															</div>

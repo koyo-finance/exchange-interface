@@ -2,7 +2,7 @@ import { ChainId, formatBalance } from '@koyofinance/core-sdk';
 import { RawCoin } from '@koyofinance/swap-sdk';
 import { TokenInfo } from '@uniswap/token-lists';
 import { BigNumberish } from 'ethers';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectAllTokensByChainId } from 'state/reducers/lists';
 import { TokenWithPoolInfo } from 'types/tokens';
@@ -10,6 +10,7 @@ import { TokenWithPoolInfo } from 'types/tokens';
 export interface DepositCardProps {
 	coin: RawCoin;
 	balance: BigNumberish;
+	resetValues: boolean | undefined;
 	setInputAmount: (e: React.ChangeEvent) => void;
 }
 
@@ -19,6 +20,12 @@ const DepositTokenCard: React.FC<DepositCardProps> = (props) => {
 	const [tokenAmount, setTokenAmount] = useState<number | string>(0);
 
 	const inputAmountRef = useRef<HTMLInputElement>(null);
+
+	useEffect(() => {
+		if (props.resetValues) {
+			setTokenAmount(0);
+		}
+	}, [props.resetValues]);
 
 	const [{ logoURI: coinLogo }] = TOKENS.filter(
 		(token: TokenInfo | TokenWithPoolInfo) => token.symbol.toLowerCase() === props.coin.symbol.toLowerCase()
@@ -52,7 +59,7 @@ const DepositTokenCard: React.FC<DepositCardProps> = (props) => {
 					max={1000000}
 					onChange={tokenAmountChangeHandler}
 					placeholder={'0,00'}
-					value={tokenAmount > 0 ? tokenAmount : undefined}
+					value={tokenAmount > 0 ? tokenAmount : ''}
 					onBlur={() => setTokenAmount(Number(Number(tokenAmount).toFixed(5)))}
 					className=" w-10/12
 				  border-0 border-b-2 border-darks-200 bg-darks-500 font-jtm text-4xl font-extralight text-white outline-none"
