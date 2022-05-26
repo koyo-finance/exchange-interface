@@ -94,3 +94,5 @@ src/public/sitemap.xml
 
 src/types/contracts/*
 !src/types/contracts/.gitkeep
+
+tailwind-static/
