@@ -36,21 +36,21 @@ const Navbar: React.FC = () => {
 				`}
 									>
 										<div className="relative hidden flex-row items-center rounded-2xl bg-black bg-opacity-50 p-0 text-center text-white md:flex md:w-2/5 xl:w-1/4">
-											<div className={`z-10 w-1/3 cursor-pointer rounded-2xl py-2 `}>
-												<Link href="/swap">
+											<Link href="/swap">
+												<div className={`z-10 w-1/3 cursor-pointer rounded-2xl py-2 `}>
 													<span className=" ">Swap</span>
-												</Link>
-											</div>
-											<div className={`z-10 w-1/3 cursor-pointer rounded-2xl py-2 `}>
-												<Link href="/deposit">
+												</div>
+											</Link>
+											<Link href="/deposit">
+												<div className={`z-10 w-1/3 cursor-pointer rounded-2xl py-2 `}>
 													<span className=" ">Deposit</span>
-												</Link>
-											</div>
-											<div className={`z-10 w-1/3 cursor-pointer rounded-2xl py-2`}>
-												<Link href="/withdraw">
+												</div>
+											</Link>
+											<Link href="/withdraw">
+												<div className={`z-10 w-1/3 cursor-pointer rounded-2xl py-2`}>
 													<span className=" ">Withdraw</span>
-												</Link>
-											</div>
+												</div>
+											</Link>
 											<PageSelectedOverlay />
 										</div>
 									</div>
