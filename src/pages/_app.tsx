@@ -39,7 +39,7 @@ const App: NextPage<AppProps> = ({ Component, pageProps }) => {
 						chains={chains}
 						showRecentTransactions={true}
 						coolMode={true}
-						theme={darkTheme({ accentColor: '#F0932C', accentColorForeground: '#fff' })}
+						theme={darkTheme({ accentColor: '#F0932C', accentColorForeground: '#000' })}
 					>
 						<QueryClientProvider client={queryClient}>
 							<PlausibleProvider domain={ROOT}>
