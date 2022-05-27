@@ -12,7 +12,7 @@ import useRemoveLiquidityImbalance from 'hooks/contracts/StableSwap/useRemoveLiq
 import useTokenBalance from 'hooks/contracts/useTokenBalance';
 import { SwapLayout, SwapLayoutCard } from 'layouts/SwapLayout';
 import { NextSeo } from 'next-seo';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BsFillGearFill } from 'react-icons/bs';
 import { HiSwitchHorizontal } from 'react-icons/hi';
 import { useSelector } from 'react-redux';
@@ -29,9 +29,13 @@ const WithdrawPage: ExtendedNextPage = () => {
 	const [selectedPool, setSelectedPool] = useState<AugmentedPool | undefined>(undefined);
 	const [poolsModalIsOpen, setPoolsModalIsOpen] = useState(false);
 
-	const { data: lpTokenBalance = 0 } = useTokenBalance(account?.address, selectedPool?.addresses.lpToken);
+	const { data: lpTokenBalance = 0, refetch: refetchLPBalance } = useTokenBalance(account?.address, selectedPool?.addresses.lpToken);
 	const { data: virtualPrice = 0 } = useGetVirtualPrice(selectedPool?.id || '');
-	const { mutate: removeLiquidityImbalance } = useRemoveLiquidityImbalance(signer || undefined, selectedPool?.id || '');
+	const { mutate: removeLiquidityImbalance, status: withdrawStatus } = useRemoveLiquidityImbalance(signer || undefined, selectedPool?.id || '');
+
+	useEffect(() => {
+		if (withdrawStatus === 'success') refetchLPBalance();
+	}, [withdrawStatus]);
 
 	const openPoolsModalHandler = () => {
 		setPoolsModalIsOpen(true);
@@ -116,7 +120,12 @@ const WithdrawPage: ExtendedNextPage = () => {
 													<div className="mt-4 grid grid-cols-1 gap-8 md:grid-cols-2">
 														{selectedPool.coins.map((coin) => (
 															<div key={coin.id}>
-																<WithdrawTokenCard key={coin.id} coin={coin} setInputAmount={props.handleChange} />
+																<WithdrawTokenCard
+																	key={coin.id}
+																	coin={coin}
+																	status={withdrawStatus}
+																	setInputAmount={props.handleChange}
+																/>
 															</div>
 														))}
 													</div>
