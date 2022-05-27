@@ -4,6 +4,7 @@ import CoreCardConnectButton from 'components/UI/Cards/CoreCardConnectButton';
 import DepositPoolAPYCard from 'components/UI/Cards/Deposit/DepositPoolAPYCard';
 import DepositTokenCard from 'components/UI/Cards/Deposit/DepositTokenCard';
 import FormApproveAsset from 'components/UI/Cards/FormApproveAsset';
+import GuideLink from 'components/UI/GuideLink';
 import PoolsModal from 'components/UI/Modals/PoolsModal';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
 import { BigNumber } from 'ethers';
@@ -77,7 +78,7 @@ const DepositPage: ExtendedNextPage = () => {
 	return (
 		<>
 			<NextSeo title="Deposit" canonical={`${ROOT_WITH_PROTOCOL}/swap`} />
-			<div className="flex min-h-screen w-full items-center justify-center bg-darks-500 px-8 pb-6 pt-24 md:px-0 md:pb-0 lg:pt-20">
+			<div className=" relative flex min-h-screen w-full items-center justify-center bg-darks-500 px-8 pb-6 pt-24 md:px-0 md:pb-0 lg:pt-20">
 				{poolsModalIsOpen && <PoolsModal setPool={setPoolHandler} closeModal={closePoolsModalHandler} />}
 				<SwapLayoutCard>
 					<div
@@ -201,6 +202,7 @@ const DepositPage: ExtendedNextPage = () => {
 						</div>
 					</div>
 				</SwapLayoutCard>
+				<GuideLink type="Deposit" text="Trouble depositing?" link="https://docs.koyo.finance/protocol/guide/exchange/deposit" />
 			</div>
 		</>
 	);

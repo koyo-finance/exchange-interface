@@ -3,6 +3,7 @@ import { AugmentedPool, Pool } from '@koyofinance/swap-sdk';
 import CoreCardConnectButton from 'components/UI/Cards/CoreCardConnectButton';
 import WithdrawLPBurnCalculation from 'components/UI/Cards/Withdraw/WithdrawLPBurnCalculation';
 import WithdrawTokenCard from 'components/UI/Cards/Withdraw/WithdrawTokenCard';
+import GuideLink from 'components/UI/GuideLink';
 import PoolsModal from 'components/UI/Modals/PoolsModal';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
 import { parseUnits } from 'ethers/lib/utils';
@@ -55,7 +56,7 @@ const WithdrawPage: ExtendedNextPage = () => {
 	return (
 		<>
 			<NextSeo title="Withdraw" canonical={`${ROOT_WITH_PROTOCOL}/withdraw`} />
-			<div className="flex min-h-screen w-full items-center justify-center bg-darks-500 px-8 pb-6 pt-24 lg:pt-20 ">
+			<div className=" relative flex min-h-screen w-full items-center justify-center bg-darks-500 px-8 pb-6 pt-24 lg:pt-20 ">
 				{poolsModalIsOpen && <PoolsModal setPool={setPoolHandler} closeModal={closePoolsModalHandler} />}
 				<SwapLayoutCard>
 					<div
@@ -164,6 +165,7 @@ const WithdrawPage: ExtendedNextPage = () => {
 						</div>
 					</div>
 				</SwapLayoutCard>
+				<GuideLink type="Withdraw" text="Trouble withdrawing?" link="https://docs.koyo.finance/protocol/guide/exchange/withdraw" />
 			</div>
 		</>
 	);
