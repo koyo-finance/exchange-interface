@@ -3,6 +3,7 @@ import { AugmentedPool, Pool } from '@koyofinance/swap-sdk';
 import CoreCardConnectButton from 'components/UI/Cards/CoreCardConnectButton';
 import WithdrawLPBurnCalculation from 'components/UI/Cards/Withdraw/WithdrawLPBurnCalculation';
 import WithdrawTokenCard from 'components/UI/Cards/Withdraw/WithdrawTokenCard';
+import GuideLink from 'components/UI/GuideLink';
 import PoolsModal from 'components/UI/Modals/PoolsModal';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
 import { parseUnits } from 'ethers/lib/utils';
@@ -12,7 +13,7 @@ import useRemoveLiquidityImbalance from 'hooks/contracts/StableSwap/useRemoveLiq
 import useTokenBalance from 'hooks/contracts/useTokenBalance';
 import { SwapLayout, SwapLayoutCard } from 'layouts/SwapLayout';
 import { NextSeo } from 'next-seo';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BsFillGearFill } from 'react-icons/bs';
 import { HiSwitchHorizontal } from 'react-icons/hi';
 import { useSelector } from 'react-redux';
@@ -29,9 +30,13 @@ const WithdrawPage: ExtendedNextPage = () => {
 	const [selectedPool, setSelectedPool] = useState<AugmentedPool | undefined>(undefined);
 	const [poolsModalIsOpen, setPoolsModalIsOpen] = useState(false);
 
-	const { data: lpTokenBalance = 0 } = useTokenBalance(account?.address, selectedPool?.addresses.lpToken);
+	const { data: lpTokenBalance = 0, refetch: refetchLPBalance } = useTokenBalance(account?.address, selectedPool?.addresses.lpToken);
 	const { data: virtualPrice = 0 } = useGetVirtualPrice(selectedPool?.id || '');
-	const { mutate: removeLiquidityImbalance } = useRemoveLiquidityImbalance(signer || undefined, selectedPool?.id || '');
+	const { mutate: removeLiquidityImbalance, status: withdrawStatus } = useRemoveLiquidityImbalance(signer || undefined, selectedPool?.id || '');
+
+	useEffect(() => {
+		if (withdrawStatus === 'success') refetchLPBalance();
+	}, [withdrawStatus]);
 
 	const openPoolsModalHandler = () => {
 		setPoolsModalIsOpen(true);
@@ -51,7 +56,7 @@ const WithdrawPage: ExtendedNextPage = () => {
 	return (
 		<>
 			<NextSeo title="Withdraw" canonical={`${ROOT_WITH_PROTOCOL}/withdraw`} />
-			<div className="flex min-h-screen w-full items-center justify-center bg-darks-500 px-8 pb-6 pt-24 lg:pt-20 ">
+			<div className=" relative flex min-h-screen w-full items-center justify-center bg-darks-500 px-8 pb-6 pt-24 lg:pt-20 ">
 				{poolsModalIsOpen && <PoolsModal setPool={setPoolHandler} closeModal={closePoolsModalHandler} />}
 				<SwapLayoutCard>
 					<div
@@ -116,7 +121,12 @@ const WithdrawPage: ExtendedNextPage = () => {
 													<div className="mt-4 grid grid-cols-1 gap-8 md:grid-cols-2">
 														{selectedPool.coins.map((coin) => (
 															<div key={coin.id}>
-																<WithdrawTokenCard key={coin.id} coin={coin} setInputAmount={props.handleChange} />
+																<WithdrawTokenCard
+																	key={coin.id}
+																	coin={coin}
+																	status={withdrawStatus}
+																	setInputAmount={props.handleChange}
+																/>
 															</div>
 														))}
 													</div>
@@ -155,6 +165,7 @@ const WithdrawPage: ExtendedNextPage = () => {
 						</div>
 					</div>
 				</SwapLayoutCard>
+				<GuideLink type="Withdraw" text="Trouble withdrawing?" link="https://docs.koyo.finance/protocol/guide/exchange/withdraw" />
 			</div>
 		</>
 	);

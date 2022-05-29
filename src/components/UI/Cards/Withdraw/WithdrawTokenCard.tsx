@@ -1,22 +1,29 @@
 import { ChainId } from '@koyofinance/core-sdk';
 import { RawCoin } from '@koyofinance/swap-sdk';
 import { TokenInfo } from '@uniswap/token-lists';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectAllTokensByChainId } from 'state/reducers/lists';
 import { TokenWithPoolInfo } from 'types/tokens';
 
 export interface WithdrawTokenCardProps {
 	coin: RawCoin;
+	status: string;
 	setInputAmount: (e: React.ChangeEvent) => void;
 }
 
-const WithdrawTokenCard: React.FC<WithdrawTokenCardProps> = ({ coin, setInputAmount }) => {
+const WithdrawTokenCard: React.FC<WithdrawTokenCardProps> = ({ coin, status, setInputAmount }) => {
 	const TOKENS = useSelector(selectAllTokensByChainId(ChainId.BOBA));
 
 	const [tokenAmount, setTokenAmount] = useState<number | string>(0);
 
 	const inputAmountRef = useRef<HTMLInputElement>(null);
+
+	useEffect(() => {
+		if (status === 'success') {
+			setTokenAmount(0);
+		}
+	}, [status]);
 
 	const [{ logoURI: coinLogo }] = TOKENS.filter((token: TokenInfo | TokenWithPoolInfo) => token.symbol.toLowerCase() === coin.symbol.toLowerCase());
 
@@ -47,10 +54,10 @@ const WithdrawTokenCard: React.FC<WithdrawTokenCardProps> = ({ coin, setInputAmo
 					step={0.1}
 					onChange={tokenAmountChangeHandler}
 					placeholder={'0,00'}
-					value={tokenAmount > 0 ? tokenAmount : undefined}
+					value={tokenAmount > 0 ? tokenAmount : ''}
 					onBlur={() => setTokenAmount(Number(Number(tokenAmount).toFixed(5)))}
-					className=" w-10/12
-				  border-0 border-b-2 border-darks-200 bg-darks-500 font-jtm text-4xl font-extralight text-white outline-none"
+					className=" w-full
+				  border-0 border-b-2 border-darks-200 bg-darks-500 font-jtm text-3xl font-extralight text-white outline-none md:text-4xl"
 				/>
 			</div>
 		</div>

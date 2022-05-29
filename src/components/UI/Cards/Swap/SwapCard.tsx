@@ -90,7 +90,7 @@ const SwapCard: React.FC<SwapCardProps> = (props) => {
 					placeholder={'0,00'}
 					onBlur={() => setTokenAmount(Number(Number(tokenAmount).toFixed(5)))}
 					className=" w-9/12
-				  border-0 border-b-2 border-darks-200 bg-darks-500 font-jtm text-4xl font-extralight text-white outline-none"
+				  border-0 border-b-2 border-darks-200 bg-darks-500 font-jtm text-3xl font-extralight text-white outline-none md:text-4xl"
 				/>
 				<div className="max-w-2/12 flex flex-row flex-wrap justify-center gap-2 text-left">
 					<div>Balance:</div>

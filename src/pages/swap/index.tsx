@@ -4,6 +4,7 @@ import { TokenInfo } from '@uniswap/token-lists';
 import CoreCardConnectButton from 'components/UI/Cards/CoreCardConnectButton';
 import FormApproveAsset from 'components/UI/Cards/FormApproveAsset';
 import SwapCard from 'components/UI/Cards/Swap/SwapCard';
+import GuideLink from 'components/UI/GuideLink';
 import TokenModal from 'components/UI/Modals/TokenModal';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
 import { BigNumber } from 'ethers';
@@ -177,7 +178,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 	return (
 		<>
 			<NextSeo title="Swap" canonical={`${ROOT_WITH_PROTOCOL}/swap`} />
-			<div className=" flex min-h-screen w-full items-center justify-center bg-darks-500 pt-24 pb-6 md:pb-0 lg:pt-20">
+			<div className="relative flex min-h-screen w-full items-center justify-center bg-darks-500 pt-24 pb-6 md:pb-0 lg:pt-20">
 				{tokenModalOneIsOpen && (
 					<TokenModal
 						tokenNum={activeToken}
@@ -260,6 +261,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 						</CoreCardConnectButton>
 					</div>
 				</SwapLayoutCard>
+				<GuideLink type="Swap" text="Trouble swapping?" link="https://docs.koyo.finance/protocol/guide/exchange/swap" />
 			</div>
 		</>
 	);
