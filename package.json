@@ -6,17 +6,18 @@
     "dev": "next dev src --port 3069",
     "build": "next build src",
     "start": "next start src",
+    "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx src",
+    "cypress": "cypress open",
+    "cypress:headless": "cypress run",
     "storybook:start": "start-storybook -p 9009",
     "storybook:build": "build-storybook",
     "tailwind:build": "tailwind-config-viewer export ./tailwind-static",
     "tailwind:view": "tailwind-config-viewer -o",
-    "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx src",
-    "cypress": "cypress open",
-    "cypress:headless": "cypress run",
     "test:e2e": "start-server-and-test dev http://localhost:3069 cypress",
     "test:e2e:headless": "start-server-and-test dev http://localhost:3069 cypress:headless",
-    "postinstall": "yarn generate:typechain:exchange",
-    "generate:typechain:exchange": "typechain --target ethers-v5 --always-generate-overloads --discriminate-types --out-dir ./src/types/contracts/exchange './src/constants/abis/exchange/*.json'"
+    "generate:typechain:exchange": "typechain --target ethers-v5 --always-generate-overloads --discriminate-types --out-dir ./src/types/contracts/exchange './src/constants/abis/exchange/*.json'",
+    "generate:typechain:koyo": "typechain --target ethers-v5 --always-generate-overloads --discriminate-types --out-dir ./src/types/contracts/koyo './src/constants/abis/koyo/*.json'",
+    "postinstall": "yarn generate:typechain:exchange && yarn generate:typechain:koyo"
   },
   "dependencies": {
     "@elementfi/elf-council-typechain": "^1.0.2",
