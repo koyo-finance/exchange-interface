@@ -35,20 +35,25 @@ const Navbar: React.FC = () => {
 										}
 				`}
 									>
-										<div className="relative hidden flex-row items-center rounded-2xl bg-black bg-opacity-50 p-0 text-center text-white md:flex md:w-2/5 xl:w-1/4">
+										<div className="relative hidden flex-row items-center rounded-2xl bg-black bg-opacity-50 p-0 text-center text-white md:w-1/2 lg:flex xl:w-1/3">
 											<Link href="/swap">
-												<div className={`z-10 w-1/3 cursor-pointer rounded-2xl py-2 `}>
+												<div className={`z-10 w-1/4 cursor-pointer rounded-2xl py-2 `}>
 													<span className=" ">Swap</span>
 												</div>
 											</Link>
 											<Link href="/deposit">
-												<div className={`z-10 w-1/3 cursor-pointer rounded-2xl py-2 `}>
+												<div className={`z-10 w-1/4 cursor-pointer rounded-2xl py-2 `}>
 													<span className=" ">Deposit</span>
 												</div>
 											</Link>
 											<Link href="/withdraw">
-												<div className={`z-10 w-1/3 cursor-pointer rounded-2xl py-2`}>
+												<div className={`z-10 w-1/4 cursor-pointer rounded-2xl py-2`}>
 													<span className=" ">Withdraw</span>
+												</div>
+											</Link>
+											<Link href="/lock">
+												<div className={`z-10 w-1/4 cursor-pointer rounded-2xl py-2`}>
+													<span className=" ">Lock</span>
 												</div>
 											</Link>
 											<PageSelectedOverlay />
@@ -62,13 +67,13 @@ const Navbar: React.FC = () => {
 										}`}
 									>
 										<div className="ml-6 block w-full content-center">
-											<div className="hidden md:block">
+											<div className="hidden lg:block">
 												<div className=" flex justify-end space-x-4">
 													<ConnectButton />
 												</div>
 											</div>
 										</div>
-										<div className="block md:hidden">
+										<div className="block lg:hidden">
 											<Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-white focus:outline-none ">
 												<span className="sr-only">Open main menu</span>
 												{open ? (
@@ -92,7 +97,7 @@ const Navbar: React.FC = () => {
 							</div>
 
 							{router.pathname !== '/' && (
-								<Disclosure.Panel className="md:hidden">
+								<Disclosure.Panel className="lg:hidden">
 									<div className="w-full space-y-1 px-2 pt-2 pb-3 shadow-lg">
 										<div className=" flex w-full justify-center">
 											<div className="flex flex-col gap-y-4 text-center text-white">
@@ -111,6 +116,11 @@ const Navbar: React.FC = () => {
 												<div className={`z-10 w-full rounded-2xl py-2`}>
 													<Link href="/withdraw">
 														<span className="cursor-pointer px-4 duration-200 hover:text-lights-400">Withdraw</span>
+													</Link>
+												</div>
+												<div className={`z-10 w-full rounded-2xl py-2`}>
+													<Link href="/lock">
+														<span className="cursor-pointer px-4 duration-200 hover:text-lights-400">Lock</span>
 													</Link>
 												</div>
 												<ConnectButton />

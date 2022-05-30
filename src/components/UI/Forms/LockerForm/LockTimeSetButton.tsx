@@ -20,7 +20,7 @@ const LockTimeSetButton: React.FC<LockTimeSetButtonProps> = ({
 		<button
 			type="button"
 			onClick={() => onClick(new Date(startMs + baseMs * modifier))}
-			className="btn border border-black bg-transparent text-base font-normal lowercase text-black hover:border-lights-300 hover:bg-transparent"
+			className="btn border border-white bg-transparent text-base font-normal lowercase text-white hover:border-lights-300 hover:bg-transparent"
 		>
 			{children}
 		</button>

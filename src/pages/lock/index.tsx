@@ -1,4 +1,6 @@
 import { calculatePercentage, formatBalance } from '@koyofinance/core-sdk';
+import Footer from 'components/Footer';
+import BalanceCard from 'components/UI/Cards/lock/BalanceCard';
 import LockerForm from 'components/UI/Forms/LockerForm';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
 import { kyoContract, votingEscrowContract } from 'core/contracts';
@@ -23,72 +25,46 @@ const LockIndexPage: ExtendedNextPage = () => {
 	return (
 		<>
 			<NextSeo title="Lock" canonical={`${ROOT_WITH_PROTOCOL}/lock`} />
-			<div className="relative flex min-h-screen w-full items-center justify-center bg-darks-500 pt-24 pb-6 md:pb-0 lg:pt-20">
-				<div className="container pt-20">
-					<div>
-						<h1 className="text-5xl font-bold">Kōyō locking</h1>
-						<p className="pt-5 text-xl">
+			<div className="relative flex min-h-screen w-full items-center justify-center bg-darks-500 pt-10 pb-16 text-white lg:pb-24 lg:pt-16">
+				<div className="flex w-full flex-col items-center gap-[7.5vh] px-4 pt-20 md:px-6 xl:px-32">
+					<div className="flex w-auto flex-col items-center gap-10 text-center">
+						<h1 className="text-4xl font-bold md:text-5xl">Kōyō locking</h1>
+						<p className="w-full text-xl md:w-3/4 lg:w-1/2">
 							Lock your <code>KYO</code> in the Kōyō Finance locker to receive emissions and a share of pool fees alongside
 							participating in the governance votes.
 						</p>
 					</div>
-					<div className="pt-16">
-						<h2 className="text-3xl font-bold">My voting power</h2>
-						<p className="pt-5 text-xl">These numbers represent .....</p>
-						<div className="mx-14 mt-8">
-							<div className="grid w-full grid-cols-2 grid-rows-1">
-								<div className="grid w-full grid-cols-2 grid-rows-1">
-									<div>
-										<span className="relative top-1 text-4xl font-bold">{formatBalance(kyoBalance)}</span>
-										<p className="pt-2 text-xl">My KYO balance</p>
-									</div>
-									<div>
-										<span className="relative top-1 text-4xl font-bold">{formatBalance(veKyoBalance)}</span>
-										<p className="pt-2 text-xl">My locked KYO</p>
-									</div>
-								</div>
-							</div>
+					<div className="flex w-full flex-wrap items-center justify-center gap-[10vw]">
+						<BalanceCard text="My KYO Balance" value={formatBalance(kyoBalance)} />
+						<BalanceCard text="My Locked KYO" value={formatBalance(veKyoBalance)} />
+					</div>
+					<div className="w-full rounded-lg border-2 border-lights-400 bg-black bg-opacity-40 md:mt-6 lg:w-7/12">
+						<div className="flex flex-col gap-4 px-4 py-4 lg:gap-6 lg:py-8 lg:px-12">
+							<h2 className="text-2xl font-bold lg:text-3xl">Lock KYO tokens</h2>
+							<LockerForm />
 						</div>
 					</div>
-					<div className="pt-20">
-						<h2 className="text-3xl font-bold">Lock KYO tokens</h2>
-						<div className="mt-6 w-full rounded-lg border-2 border-black">
-							<div className="py-11 px-20">
-								<LockerForm />
-							</div>
-						</div>
-					</div>
-					<div className="pt-20">
+					<div className="flex flex-col items-center gap-10">
 						<h2 className="text-3xl font-bold">Total voting power</h2>
-						<p className="pt-5 text-xl">General stats about the veKYO system</p>
-						<div className="mx-14 mt-16">
-							<div className="grid w-full grid-cols-3 grid-rows-2 gap-6 gap-y-12">
-								<div>
-									<span className="relative top-1 text-4xl font-bold">{formatBalance(kyoEscrowed)}</span>
-									<p className="pt-2 text-xl">Total KYO vote-locked</p>
-								</div>
-								<div>
-									<span className="relative top-1 text-4xl font-bold">
-										{calculatePercentage(kyoTotalSupply, kyoEscrowed).toLocaleString('fullwide', {
-											maximumFractionDigits: 5
-										})}{' '}
-										%
-									</span>
-									<p className="pt-2 text-xl">
-										Percentage of total
-										<br />
-										KYO locked
-									</p>
-								</div>
-								<div>
-									<span className="relative top-1 text-4xl font-bold">{formatBalance(veKyoTotalSupply)}</span>
-									<p className="pt-2 text-xl">Total veKYO</p>
-								</div>
+						{/* <p className="text-xl">General stats about the veKYO system</p> */}
+						<div className="">
+							<div className="flex w-full flex-row flex-wrap items-center justify-center gap-x-[10vw] gap-y-6">
+								<BalanceCard text="Total KYO vote-locked" value={formatBalance(kyoEscrowed)} />
+								<BalanceCard
+									text="Percentage of KYO locked"
+									value={
+										calculatePercentage(kyoTotalSupply, kyoEscrowed).toLocaleString('fullwide', {
+											maximumFractionDigits: 4
+										}) + ' %'
+									}
+								/>
+								<BalanceCard text="Total veKYO" value={formatBalance(veKyoTotalSupply, { maximumFractionDigits: 2 })} />
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+			<Footer />
 		</>
 	);
 };

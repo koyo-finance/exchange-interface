@@ -47,57 +47,65 @@ const LockerForm: React.FC = () => {
 			>
 				{(props) => (
 					<Form>
-						<>
-							<div>
-								<label htmlFor="amount" className="text-xl font-bold">
+						<div className=" flex flex-col gap-6 lg:gap-8">
+							<div className=" flex flex-col gap-6">
+								<label htmlFor="amount" className="text-lg font-bold md:text-xl">
 									Input the amount of KYO you want to lock
 								</label>
-								<br />
-								<div className="mt-4 inline-block w-fit rounded-lg border border-black px-6 py-4 font-inter">
+								<div className="flex w-full flex-row rounded-lg border border-white p-3 font-inter md:w-fit md:py-3 md:px-5 ">
 									<input
 										name="amount"
 										onChange={props.handleChange}
 										value={props.values.amount}
 										type="number"
-										className="bg-transparent"
+										className="w-2/3 bg-transparent text-lg md:w-auto"
 									/>
 									{/* eslint-disable-next-line no-alert */}
-									<button
-										type="button"
-										className="border-r border-black pr-2 text-xs font-bold"
-										onClick={() => props.setFieldValue('amount', fromBigNumber(kyoBalance))}
-									>
-										Max
-									</button>
-									<span className="pl-2">
-										<span className="text-xs font-bold">KYO</span>
-									</span>
+									<div className="flex w-1/3 justify-center gap-2 md:w-fit">
+										<button
+											type="button"
+											className="border-r border-white pr-2 text-xs font-bold"
+											onClick={() => props.setFieldValue('amount', fromBigNumber(kyoBalance))}
+										>
+											Max
+										</button>
+										<span className="">
+											<span className="text-xs font-bold">KYO</span>
+										</span>
+									</div>
 								</div>
 							</div>
-							<div className="mt-12">
-								<label htmlFor="duration" className="text-xl font-bold">
-									Select the lock duration (cannot be unlocked)
-								</label>
-								<div className="inline-block pl-4">
-									<DatePickerFormik
-										name="duration"
-										onChange={props.handleChange}
-										value={props.values.duration}
-										className="inline-block rounded-lg border border-black bg-transparent text-center"
-										dateFormat="dd/MM/yyyy"
-									/>
+							<div className=" flex flex-col gap-6">
+								<div>
+									<label htmlFor="duration" className=" text-lg font-bold md:text-xl">
+										Select the lock duration
+									</label>
+									<div className="inline-block pl-4">
+										<DatePickerFormik
+											name="duration"
+											onChange={props.handleChange}
+											value={props.values.duration}
+											className="inline-block rounded-lg border border-white bg-transparent text-center"
+											dateFormat="dd/MM/yyyy"
+										/>
+									</div>
 								</div>
-								<div className="mt-4 flex gap-7">
+								<div className=" flex flex-row flex-wrap gap-8">
 									{lockIncrements.map((increment) => (
 										<LockTimeSetButton onClick={(date) => props.setFieldValue('duration', date)} modifier={increment.modifier}>
 											{increment.label}
 										</LockTimeSetButton>
 									))}
 								</div>
+								<div className=" rounded-xl bg-gray-700 bg-opacity-60 p-2 text-gray-200">
+									Beware that locked KYO tokens cannot be unlocked, until the locking period passes. If you want to withdraw your
+									KYO tokens before the end of the lock period, you will be able to withdraw only 20% of your locked tokens. You'll
+									lose other 80% of locked tokens as a penalty.
+								</div>
 							</div>
-							<div className="mt-12">
+							<div className="">
 								<CoreCardConnectButton
-									className="btn mt-2 w-full bg-lights-400 bg-opacity-100 text-black hover:bg-lights-200"
+									className="btn w-full bg-lights-400 bg-opacity-100 text-black hover:bg-lights-200"
 									invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
 								>
 									<Switch>
@@ -120,7 +128,7 @@ const LockerForm: React.FC = () => {
 									</Switch>
 								</CoreCardConnectButton>
 							</div>
-						</>
+						</div>
 					</Form>
 				)}
 			</Formik>
