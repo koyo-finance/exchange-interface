@@ -1,12 +1,16 @@
 import { useForceWithdrawLockedEscrow } from 'hooks/contracts/KYO/useForceWithdraw';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSigner } from 'wagmi';
 
 const ForceWithdrawModal: React.FC<{ closeForceWithdrawModal: () => void }> = ({ closeForceWithdrawModal }) => {
 	const { data: signer } = useSigner();
 	const signerDefaulted = signer || undefined;
 
-	const { mutate: kyoForceWithdraw } = useForceWithdrawLockedEscrow(signerDefaulted);
+	const { mutate: kyoForceWithdraw, status: forceWithdrawStatus } = useForceWithdrawLockedEscrow(signerDefaulted);
+
+	useEffect(() => {
+		if (forceWithdrawStatus === 'success') closeForceWithdrawModal();
+	}, [forceWithdrawStatus]);
 
 	return (
 		<div className="fixed top-0 left-0 z-30 flex h-screen w-screen items-center justify-center px-2">
