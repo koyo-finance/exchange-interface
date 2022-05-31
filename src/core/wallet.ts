@@ -2,6 +2,7 @@ import { apiProvider, configureChains, connectorsForWallets, wallet } from '@rai
 import { CHAIN_INFO, SupportedChainId } from 'constants/chains';
 import { Chain, createClient } from 'wagmi';
 import { onto } from './wallets/onto';
+import { ontoWeb } from './wallets/ontoWeb';
 
 const bobaMainnetChain: Chain = {
 	id: SupportedChainId.BOBA,
@@ -23,7 +24,12 @@ export const { chains, provider } = configureChains([bobaMainnetChain], [apiProv
 const connectors = connectorsForWallets([
 	{
 		groupName: 'Recommended',
-		wallets: [wallet.metaMask({ chains, shimDisconnect: true }), onto({ chains, shimDisconnect: true }), wallet.walletConnect({ chains })]
+		wallets: [
+			wallet.metaMask({ chains, shimDisconnect: true }),
+			ontoWeb({ chains, shimDisconnect: true }),
+			onto({ chains, shimDisconnect: true }),
+			wallet.walletConnect({ chains })
+		]
 	}
 ]);
 
