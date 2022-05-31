@@ -55,7 +55,11 @@ const WithdrawPage: ExtendedNextPage = () => {
 
 	return (
 		<>
-			<NextSeo title="Withdraw" canonical={`${ROOT_WITH_PROTOCOL}/withdraw`} />
+			<NextSeo
+				title="Withdraw"
+				canonical={`${ROOT_WITH_PROTOCOL}/withdraw`}
+				description="Withdraw your assets from pools, where you have deposited your tokens."
+			/>
 			<div className=" relative flex min-h-screen w-full items-center justify-center bg-darks-500 px-8 pb-6 pt-24 lg:pt-20 ">
 				{poolsModalIsOpen && <PoolsModal setPool={setPoolHandler} closeModal={closePoolsModalHandler} />}
 				<SwapLayoutCard>

@@ -5,16 +5,16 @@ import { ContractReceipt, Signer } from 'ethers';
 import { UseMutationResult } from 'react-query';
 import { VotingEscrow } from 'types/contracts/koyo';
 
-export function useIncreaseAmountEscrow(
+export function useForceWithdrawLockedEscrow(
 	signer: Signer | undefined
-): UseMutationResult<ContractReceipt | undefined, unknown, Parameters<VotingEscrow['increase_amount']>> {
+): UseMutationResult<ContractReceipt | undefined, unknown, Parameters<VotingEscrow['force_withdraw']>> {
 	const addRecentTransaction = useAddRecentTransaction();
 
-	return useSmartContractTransaction(votingEscrowContract, 'increase_amount', signer, {
+	return useSmartContractTransaction(votingEscrowContract, 'force_withdraw', signer, {
 		onTransactionSubmitted(tx) {
 			addRecentTransaction({
 				hash: tx.hash,
-				description: 'Increasing allowance of locking KYO.'
+				description: 'Force Withdraw locked KYO tokens.'
 			});
 		}
 	});

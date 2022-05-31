@@ -177,7 +177,11 @@ const SwapIndexPage: ExtendedNextPage = () => {
 
 	return (
 		<>
-			<NextSeo title="Swap" canonical={`${ROOT_WITH_PROTOCOL}/swap`} />
+			<NextSeo
+				title="Swap"
+				canonical={`${ROOT_WITH_PROTOCOL}/swap`}
+				description="Swap your tokens between different pools. Kōyō Finance makes swapping tokens easier than ever before."
+			/>
 			<div className="relative flex min-h-screen w-full items-center justify-center bg-darks-500 pt-24 pb-6 md:pb-0 lg:pt-20">
 				{tokenModalOneIsOpen && (
 					<TokenModal

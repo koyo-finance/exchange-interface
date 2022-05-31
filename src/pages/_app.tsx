@@ -54,8 +54,8 @@ const App: NextPage<AppProps> = ({ Component, pageProps }) => {
 													<meta httpEquiv="Pragma" content="1y" />
 													<meta httpEquiv="Cache-Control" content="1y" />
 
-													<meta httpEquiv="Page-Enter" content="RevealTrans(Duration=2.0,Transition=2)" />
-													<meta httpEquiv="Page-Exit" content="RevealTrans(Duration=3.0,Transition=12)" />
+													{/* <meta httpEquiv="Page-Enter" content="RevealTrans(Duration=2.0,Transition=2)" />
+													<meta httpEquiv="Page-Exit" content="RevealTrans(Duration=3.0,Transition=12)" /> */}
 
 													<link rel="shortcut icon" href="/favicon.ico" />
 												</Head>
