@@ -26,7 +26,6 @@ const LockerForm: React.FC<{ openForceWithdrawModal: () => void }> = ({ openForc
 	const { mutate: kyoLock } = useCreateVotingEscrowLock(signerDefaulted);
 	const { data: kyoBalance = 0 } = useTokenBalance(accountAddress, kyoContract.address);
 	const { data: veKyoBalance = 0 } = useTokenBalance(accountAddress, votingEscrowContract.address);
-
 	const { data: kyoAllowance = 0 } = useTokenAllowance(accountAddress, votingEscrowContract.address, kyoContract.address);
 	const { data: lockTime } = useGetLockTimeEscrow(accountAddress);
 	const { mutate: kyoWithdraw } = useWithdrawLockedEscrow(signerDefaulted);
@@ -154,7 +153,7 @@ const LockerForm: React.FC<{ openForceWithdrawModal: () => void }> = ({ openForc
 						<div className="">Your current locker:</div>
 
 						<div className=" text-lights-400">
-							{formatBalance(kyoBalance)} KYO locked until{' '}
+							{formatBalance(veKyoBalance)} veKYO locked until{' '}
 							{new Date(lockTimeConverted).toLocaleDateString(navigator.language, {
 								day: 'numeric',
 								month: 'short',
