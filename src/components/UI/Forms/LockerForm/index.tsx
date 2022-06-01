@@ -8,6 +8,7 @@ import { Form, Formik } from 'formik';
 import { useCreateVotingEscrowLock } from 'hooks/contracts/KYO/useCreateVotingEscrowLock';
 import useGetLockTimeEscrow from 'hooks/contracts/KYO/useGetLockTimeEscrow';
 import { useWithdrawLockedEscrow } from 'hooks/contracts/KYO/useWithdrawLockedEscrow';
+import useGetLockedAmount from 'hooks/useGetLockedAmount';
 import useTokenAllowance from 'hooks/contracts/useTokenAllowance';
 import useTokenBalance from 'hooks/contracts/useTokenBalance';
 import React from 'react';
@@ -23,12 +24,14 @@ const LockerForm: React.FC<{ openForceWithdrawModal: () => void }> = ({ openForc
 	const { data: signer } = useSigner();
 	const signerDefaulted = signer || undefined;
 
-	const { mutate: kyoLock } = useCreateVotingEscrowLock(signerDefaulted);
 	const { data: kyoBalance = 0 } = useTokenBalance(accountAddress, kyoContract.address);
-	const { data: veKyoBalance = 0 } = useTokenBalance(accountAddress, votingEscrowContract.address);
 	const { data: kyoAllowance = 0 } = useTokenAllowance(accountAddress, votingEscrowContract.address, kyoContract.address);
 	const { data: lockTime } = useGetLockTimeEscrow(accountAddress);
+	const kyoLocked = useGetLockedAmount(accountAddress);
+	const { data: veKyoBalance = 0 } = useTokenBalance(accountAddress, votingEscrowContract.address);
+	const { mutate: kyoLock } = useCreateVotingEscrowLock(signerDefaulted);
 	const { mutate: kyoWithdraw } = useWithdrawLockedEscrow(signerDefaulted);
+
 	const lockTimeConverted = (lockTime as BigNumber)?.toNumber() * 1000;
 
 	const lockIncrements = [
@@ -58,7 +61,6 @@ const LockerForm: React.FC<{ openForceWithdrawModal: () => void }> = ({ openForc
 						<Form>
 							<div className=" flex flex-col gap-6 lg:gap-8">
 								<div className=" flex flex-col gap-6">
-									<div>Current amount of KYO locked: {}</div>
 									<label htmlFor="amount" className="text-lg font-bold md:text-xl">
 										Input the amount of KYO you want to lock
 									</label>
@@ -153,7 +155,7 @@ const LockerForm: React.FC<{ openForceWithdrawModal: () => void }> = ({ openForc
 						<div className="">Your current locker:</div>
 
 						<div className=" text-lights-400">
-							{formatBalance(veKyoBalance)} veKYO locked until{' '}
+							{formatBalance(kyoLocked)} KYO locked until{' '}
 							{new Date(lockTimeConverted).toLocaleDateString(navigator.language, {
 								day: 'numeric',
 								month: 'short',
