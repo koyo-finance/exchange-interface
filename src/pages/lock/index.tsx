@@ -52,7 +52,7 @@ const LockIndexPage: ExtendedNextPage = () => {
 					</div>
 					<div className="flex w-full flex-wrap items-center justify-center gap-[10vw]">
 						<BalanceCard text="My KYO Balance" value={formatBalance(kyoBalance)} />
-						<BalanceCard text="My Locked KYO" value={formatBalance(veKyoBalance)} />
+						<BalanceCard text="My veKYO balance" value={formatBalance(veKyoBalance)} />
 					</div>
 					<div className="w-full rounded-lg border-2 border-lights-400 bg-black bg-opacity-40 md:mt-6 lg:w-7/12">
 						<div className="flex flex-col gap-4 px-4 py-4 lg:gap-6 lg:py-8 lg:px-12">
