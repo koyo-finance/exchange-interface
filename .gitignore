@@ -92,7 +92,8 @@ typings/
 src/package.json
 src/public/sitemap.xml
 
-src/types/contracts/*
+src/types/contracts/**/*.ts
 !src/types/contracts/.gitkeep
+!src/types/contracts/**/*.d.ts
 
 tailwind-static/

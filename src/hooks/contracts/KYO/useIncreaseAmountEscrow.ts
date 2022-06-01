@@ -14,7 +14,7 @@ export function useIncreaseAmountEscrow(
 		onTransactionSubmitted(tx) {
 			addRecentTransaction({
 				hash: tx.hash,
-				description: 'Increasing allowance of locking KYO.'
+				description: 'Increasing locked KYO.'
 			});
 		}
 	});

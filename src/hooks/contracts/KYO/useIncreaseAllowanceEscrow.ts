@@ -14,7 +14,7 @@ export function useIncreaseAllowanceEscrow(
 		onTransactionSubmitted(tx) {
 			addRecentTransaction({
 				hash: tx.hash,
-				description: 'Extend the unlock time of KYO Locker.'
+				description: 'Increasing allowance of KYO for spender.'
 			});
 		}
 	});
