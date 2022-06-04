@@ -22,6 +22,11 @@ module.exports = withPlausibleProxy()({
 			{
 				source: '/withdraw/index',
 				destination: '/withdraw'
+			},
+
+			{
+				source: '/tokens',
+				destination: 'https://tassets.koyo.finance/koyo-default.tokenlist.json',
 			}
 		];
 	},
