@@ -15,7 +15,7 @@ const WithdrawLPBurnCalculation: React.FC<WithdrawLPBurnCalculationProps> = ({ p
 		poolId
 	);
 
-	console.log(error);
+	if (error) throw new Error(`Error: ${error}`);
 
 	return <>{formatBalance(tokenAmount)}</>;
 };

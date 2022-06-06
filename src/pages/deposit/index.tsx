@@ -34,7 +34,6 @@ const DepositPage: ExtendedNextPage = () => {
 	const [selectedPool, setSelectedPool] = useState<AugmentedPool | undefined>(undefined);
 	const [poolsModalIsOpen, setPoolsModalIsOpen] = useState(false);
 	const [resetInputs, setResetInputs] = useState(false);
-	// const [assetApproved, setAssetApproved] = useState(false);
 
 	const allowances = useMultiTokenAllowance(
 		account?.address,
@@ -71,10 +70,6 @@ const DepositPage: ExtendedNextPage = () => {
 		});
 		setSelectedPool(selectedPoolFilter);
 	};
-
-	// const setStatusHandler = (status: string) => {
-	// 	if (status === 'success') setAssetApproved(true);
-	// };
 
 	return (
 		<>
