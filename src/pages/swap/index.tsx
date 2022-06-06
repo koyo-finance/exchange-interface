@@ -76,7 +76,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 		const calculatedSumAmount = tokenTwoAmount + calculatedAmountDiff;
 		setInvertedTokenOneAmount(calculatedSumAmount);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [calculatedAmountTokenOne]);
+	}, [calculatedAmountTokenOne, calculatedAmountTokenTwo]);
 
 	useEffect(() => {
 		setTokenOneIndex((pool?.coins || []).findIndex((token) => token.address === tokenOne.address));
@@ -177,8 +177,6 @@ const SwapIndexPage: ExtendedNextPage = () => {
 	};
 
 	const { mutate: exchange, status: swapStatus } = useExchange(signer || undefined, tokenTwo.poolId);
-
-	console.log((pool?.coins.findIndex((coin) => tokenOne.address === coin.address) || 0) > -1);
 
 	return (
 		<>

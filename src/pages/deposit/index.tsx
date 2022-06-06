@@ -1,6 +1,7 @@
 import { ChainId } from '@koyofinance/core-sdk';
 import { AugmentedPool, Pool } from '@koyofinance/swap-sdk';
 import CoreCardConnectButton from 'components/UI/Cards/CoreCardConnectButton';
+import DepositLPGetCalculation from 'components/UI/Cards/Deposit/DepositLPGetCalculation';
 import DepositPoolAPYCard from 'components/UI/Cards/Deposit/DepositPoolAPYCard';
 import DepositTokenCard from 'components/UI/Cards/Deposit/DepositTokenCard';
 import FormApproveAsset from 'components/UI/Cards/FormApproveAsset';
@@ -157,7 +158,17 @@ const DepositPage: ExtendedNextPage = () => {
 															</div>
 														))}
 													</div>
-													<div className="mt-4">
+													<div className="mt-4 rounded-xl bg-darks-500 p-4">
+														LP tokens recieved:{' '}
+														<span className="underline">
+															<DepositLPGetCalculation
+																poolId={selectedPool.id}
+																amounts={Object.values(props.values).map((amount) => amount || 0)}
+																decimals={selectedPool.coins.map((coin) => coin.decimals)}
+															/>
+														</span>
+													</div>
+													<div className="mt-2">
 														<CoreCardConnectButton
 															className="btn mt-2 w-full bg-lights-400 bg-opacity-100 font-sora text-black hover:bg-lights-200"
 															invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
