@@ -11,7 +11,7 @@ export interface DepositCardProps {
 	coin: RawCoin;
 	balance: BigNumberish;
 	resetValues: boolean | undefined;
-	setInputAmount: (e: React.ChangeEvent) => void;
+	setInputAmount: (name: string, value: number) => void;
 }
 
 const DepositTokenCard: React.FC<DepositCardProps> = (props) => {
@@ -31,10 +31,10 @@ const DepositTokenCard: React.FC<DepositCardProps> = (props) => {
 		(token: TokenInfo | TokenWithPoolInfo) => token.symbol.toLowerCase() === props.coin.symbol.toLowerCase()
 	);
 
-	const tokenAmountChangeHandler = (e: React.ChangeEvent) => {
-		const inputAmount = inputAmountRef.current ? inputAmountRef.current?.value : 0;
-		setTokenAmount(inputAmount);
-		props.setInputAmount(e);
+	const tokenAmountChangeHandler = () => {
+		const inputAmount = inputAmountRef.current ? Number(inputAmountRef.current?.value) : 0;
+		setTokenAmount(Number(inputAmount));
+		props.setInputAmount(props.coin.name, Number(inputAmount.toFixed(5)));
 	};
 
 	return (
@@ -54,8 +54,6 @@ const DepositTokenCard: React.FC<DepositCardProps> = (props) => {
 					ref={inputAmountRef}
 					type="number"
 					name={props.coin.name}
-					min={0}
-					step={0.1}
 					max={1000000}
 					onChange={tokenAmountChangeHandler}
 					placeholder={'0,00'}

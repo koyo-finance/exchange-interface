@@ -48,9 +48,10 @@ const SwapCard: React.FC<SwapCardProps> = (props) => {
 			setTokenAmount(e.target.value);
 			return;
 		}
+		const newAmount = Number(e.target.value);
 		props.setActiveToken(props.tokenNum);
 		setTokenAmount(e.target.value);
-		props.setInputAmount(Number(e.target.value), props.tokenNum, false);
+		props.setInputAmount(Number(newAmount.toFixed(5)), props.tokenNum, false);
 		setError('');
 	};
 
@@ -82,9 +83,7 @@ const SwapCard: React.FC<SwapCardProps> = (props) => {
 					ref={inputAmountRef}
 					type="number"
 					name={`swap ${props.tokenNum === 1 ? 'from' : 'to'}`}
-					min={0}
 					max={1000000}
-					step={0.1}
 					onChange={changeTokenAmountHandler}
 					value={tokenAmount > 0 ? tokenAmount : ''}
 					placeholder={'0,00'}

@@ -9,7 +9,7 @@ import { TokenWithPoolInfo } from 'types/tokens';
 export interface WithdrawTokenCardProps {
 	coin: RawCoin;
 	status: string;
-	setInputAmount: (e: React.ChangeEvent) => void;
+	setInputAmount: (name: string, value: number) => void;
 }
 
 const WithdrawTokenCard: React.FC<WithdrawTokenCardProps> = ({ coin, status, setInputAmount }) => {
@@ -27,10 +27,10 @@ const WithdrawTokenCard: React.FC<WithdrawTokenCardProps> = ({ coin, status, set
 
 	const [{ logoURI: coinLogo }] = TOKENS.filter((token: TokenInfo | TokenWithPoolInfo) => token.symbol.toLowerCase() === coin.symbol.toLowerCase());
 
-	const tokenAmountChangeHandler = (e: React.ChangeEvent) => {
-		const inputAmount = inputAmountRef.current ? inputAmountRef.current?.value : 0;
+	const tokenAmountChangeHandler = () => {
+		const inputAmount = inputAmountRef.current ? Number(inputAmountRef.current?.value) : 0;
 		setTokenAmount(inputAmount);
-		setInputAmount(e);
+		setInputAmount(coin.name, Number(inputAmount.toFixed(5)));
 	};
 
 	return (
@@ -50,8 +50,6 @@ const WithdrawTokenCard: React.FC<WithdrawTokenCardProps> = ({ coin, status, set
 					ref={inputAmountRef}
 					type="number"
 					name={coin.name}
-					min={0}
-					step={0.1}
 					onChange={tokenAmountChangeHandler}
 					placeholder={'0,00'}
 					value={tokenAmount > 0 ? tokenAmount : ''}

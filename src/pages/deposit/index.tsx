@@ -152,7 +152,7 @@ const DepositPage: ExtendedNextPage = () => {
 																	coin={coin}
 																	balance={balances[i].data || 0}
 																	resetValues={resetInputs}
-																	setInputAmount={props.handleChange}
+																	setInputAmount={props.setFieldValue}
 																/>
 															</div>
 														))}

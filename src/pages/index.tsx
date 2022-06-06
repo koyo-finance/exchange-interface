@@ -8,7 +8,9 @@ import React, { useEffect, useState } from 'react';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { DefiLlamaProtocol } from 'types/DefiLlama';
 import useSWRImmutable from 'swr/immutable';
-import { formatDollarAmount } from '@koyofinance/core-sdk';
+import { formatAmount, formatBalance, formatDollarAmount, fromBigNumber } from '@koyofinance/core-sdk';
+import useTokenBalance from 'hooks/contracts/useTokenBalance';
+import { kyoContract, votingEscrowContract } from 'core/contracts';
 
 function fetcher<T = unknown>(url: string) {
 	return fetch<T>(url, 'json' as FetchResultTypes.JSON);
@@ -16,6 +18,8 @@ function fetcher<T = unknown>(url: string) {
 
 const IndexPage: NextPage = () => {
 	const [activeTitleWord, setActiveTitleWord] = useState(0);
+
+	const { data: kyoLocked = 0 } = useTokenBalance(votingEscrowContract.address, kyoContract.address);
 
 	useEffect(() => {
 		setTimeout(() => {
@@ -62,7 +66,7 @@ const IndexPage: NextPage = () => {
 					<InfoCard data="KŌYŌ PRICE" value="?" />
 				</div>
 				<div className="mt-10 flex w-full flex-row items-center justify-center">
-					<InfoCard data="KŌYŌ LOCKED" value="?" />
+					<InfoCard data="KŌYŌ LOCKED" value={formatAmount(fromBigNumber(kyoLocked))} />
 				</div>
 			</div>
 			{/* eslint-disable-next-line @next/next/no-img-element */}

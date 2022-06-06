@@ -129,7 +129,7 @@ const WithdrawPage: ExtendedNextPage = () => {
 																	key={coin.id}
 																	coin={coin}
 																	status={withdrawStatus}
-																	setInputAmount={props.handleChange}
+																	setInputAmount={props.setFieldValue}
 																/>
 															</div>
 														))}
