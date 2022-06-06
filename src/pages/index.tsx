@@ -8,7 +8,7 @@ import React, { useEffect, useState } from 'react';
 import { fetch, FetchResultTypes } from '@sapphire/fetch';
 import { DefiLlamaProtocol } from 'types/DefiLlama';
 import useSWRImmutable from 'swr/immutable';
-import { formatAmount, formatBalance, formatDollarAmount, fromBigNumber } from '@koyofinance/core-sdk';
+import { formatAmount, formatDollarAmount, fromBigNumber } from '@koyofinance/core-sdk';
 import useTokenBalance from 'hooks/contracts/useTokenBalance';
 import { kyoContract, votingEscrowContract } from 'core/contracts';
 
