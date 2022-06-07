@@ -37,6 +37,7 @@ const WithdrawPage: ExtendedNextPage = () => {
 
 	useEffect(() => {
 		if (withdrawStatus === 'success') refetchLPBalance();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [withdrawStatus]);
 
 	const openPoolsModalHandler = () => {
