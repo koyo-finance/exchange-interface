@@ -51,7 +51,7 @@ const Navbar: React.FC = () => {
 														? router.pathname[5].toUpperCase() + router.pathname.slice(6, router.pathname.length)
 														: 'KYO'}
 												</div>
-												<div className=" absolute top-10 hidden flex-col items-start justify-start gap-1 bg-black bg-opacity-50 py-2 px-9 hover:flex group-hover:flex">
+												<div className=" absolute top-10 hidden w-full flex-col items-center justify-center gap-1 rounded-xl bg-black bg-opacity-90 py-2 hover:flex group-hover:flex">
 													<Link href="/kyo/lock">
 														<div className=" transform-gpu cursor-pointer duration-150 hover:text-darks-200">Lock</div>
 													</Link>

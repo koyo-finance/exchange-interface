@@ -11,6 +11,7 @@ import { useAccount, useSigner } from 'wagmi';
 import useCheckClaimableTokens from 'hooks/contracts/KYO/gauges/useMultiCheckClaimableTokens';
 import { useVoteForGaugeWeights } from 'hooks/contracts/KYO/gauges/useVoteForGaugeWeights';
 import { useDistributeGaugeEmissions } from 'hooks/contracts/KYO/gauges/useDistributeGaugeEmissions';
+import CoreCardConnectButton from 'components/UI/Cards/CoreCardConnectButton';
 
 const GaugesPage: ExtendedNextPage = () => {
 	const FourKoyoGaugeAddress = '0x24f47A11AEE5d1bF96C18dDA7bB0c0Ef248A8e71';
@@ -18,6 +19,7 @@ const GaugesPage: ExtendedNextPage = () => {
 	// const [selectedGauge, setSelectedGauge] = useState(false);
 	// const [gaugeListModalIsOpen, setGaugeListModalIsOpen] = useState(false);
 	const [voteAmount, setVoteAmount] = useState(0);
+	const [calculatedveKYOAmount, setCalculatedveKYOAmount] = useState(0);
 	const [error, setError] = useState('');
 
 	const { data: signer } = useSigner();
@@ -34,19 +36,19 @@ const GaugesPage: ExtendedNextPage = () => {
 		if (Number(e.target.value) > 100) {
 			setError('Cannot set percentage higher than 100%');
 			setVoteAmount(100);
+			setCalculatedveKYOAmount(fromBigNumber(veKYOBalance));
 			return;
 		}
 		setVoteAmount(Number(e.target.value));
+		const veKYOAmount = (fromBigNumber(veKYOBalance) / 100) * Number(e.target.value);
+		setCalculatedveKYOAmount(veKYOAmount);
+		setError('');
 	};
 
 	const submitVoteHandler = () => {
 		const transformedVoteAmount = voteAmount * 100;
-		submitVote([FourKoyoGaugeAddress, transformedVoteAmount]);
+		submitVote([FourKoyoGaugeAddress, transformedVoteAmount, { gasLimit: 700_000 }]);
 	};
-
-	// const claimEmissionsHanlder = () => {
-
-	// }
 
 	return (
 		<>
@@ -89,13 +91,16 @@ const GaugesPage: ExtendedNextPage = () => {
 									<div className="w-1/4 px-1">
 										<button
 											className="btn w-full bg-lights-400 bg-opacity-100 text-black hover:bg-lights-200"
-											onClick={() => claimEmissions([FourKoyoGaugeAddress])}
+											onClick={() => claimEmissions([FourKoyoGaugeAddress, { gasLimit: 700_000 }])}
 										>
 											{fromBigNumber(gauge.data || 0)}
 										</button>
 									</div>
 									<div className="w-1/4 px-1">
-										<button className="btn w-full border-2  border-red-600 bg-transparent text-red-600 hover:bg-red-600 hover:text-white">
+										<button
+											className="btn w-full border-2  border-red-600 bg-transparent text-red-600 hover:bg-red-600 hover:text-white"
+											onClick={() => {}}
+										>
 											RESET
 										</button>
 									</div>
@@ -113,11 +118,11 @@ const GaugesPage: ExtendedNextPage = () => {
 						</div>
 					)} */}
 					{error !== '' && <div className="w-full text-xl text-red-600">{error}</div>}
-					<div className="flex w-full flex-row flex-wrap items-center justify-between text-xl text-white">
+					<div className="flex w-full flex-row flex-wrap items-center justify-between gap-2 text-xl text-white">
 						<div>
 							<label htmlFor="power">Select voting power (%):</label>
 						</div>
-						<div className="flex w-1/2 flex-row justify-between border-b-2 border-darks-300 ">
+						<div className="flex w-full flex-row justify-between border-b-2 border-darks-300 ">
 							<input
 								type="number"
 								className="mr-1 w-full bg-transparent outline-none"
@@ -128,16 +133,30 @@ const GaugesPage: ExtendedNextPage = () => {
 							/>
 							<button
 								className=" mb-2 transform-gpu cursor-pointer rounded-xl border-2 border-lights-400 p-1 text-base text-lights-400 duration-100 hover:bg-lights-400 hover:text-black"
-								onClick={() => setVoteAmount(100)}
+								onClick={() => {
+									setVoteAmount(100);
+									setCalculatedveKYOAmount(fromBigNumber(veKYOBalance));
+								}}
 							>
 								MAX
 							</button>
 						</div>
 					</div>
-					<div className="w-full rounded-xl bg-darks-500 p-2">0.00 (0%) of your voting power will be given to the selected gauge.</div>
-					<button className="btn bg-lights-400 text-black hover:bg-lights-200" onClick={submitVoteHandler}>
-						SUBMIT VOTE
-					</button>
+					<div className="w-full rounded-xl bg-darks-500 p-2">
+						{calculatedveKYOAmount.toLocaleString(navigator.language, {
+							minimumFractionDigits: 2,
+							maximumFractionDigits: 2
+						})}{' '}
+						({voteAmount}%) of your voting power will be given to the selected gauge.
+					</div>
+					<CoreCardConnectButton
+						className="btn bg-lights-400 px-0 text-black hover:bg-lights-200"
+						invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
+					>
+						<button className="z-20 h-full w-full" onClick={submitVoteHandler}>
+							SUBMIT VOTE
+						</button>
+					</CoreCardConnectButton>
 				</div>
 			</div>
 		</>
