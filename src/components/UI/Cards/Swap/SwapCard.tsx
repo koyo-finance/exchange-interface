@@ -97,7 +97,7 @@ const SwapCard: React.FC<SwapCardProps> = ({ tokenNum, token, swapStatus, conver
 						value={tokenAmount > 0 ? tokenAmount : ''}
 						placeholder={'0,00'}
 						onBlur={() => setTokenAmount(Number(Number(tokenAmount).toFixed(5)))}
-						className=" w-4/5
+						className=" w-full
 					   bg-darks-500 font-jtm text-3xl font-extralight text-white outline-none md:text-4xl"
 					/>
 					<button

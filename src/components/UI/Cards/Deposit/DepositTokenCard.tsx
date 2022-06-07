@@ -53,8 +53,8 @@ const DepositTokenCard: React.FC<DepositCardProps> = ({ coin, balance, resetValu
 					<div>{coin.symbol.toUpperCase()}</div>
 				</div>
 			</div>
-			<div className="flex w-full flex-row items-end justify-between">
-				<div className="fle flex w-10/12 flex-row border-0 border-b-2 border-darks-200">
+			<div className="flex w-full flex-row items-end justify-between gap-1">
+				<div className=" flex w-10/12 flex-row border-0 border-b-2 border-darks-200">
 					<input
 						ref={inputAmountRef}
 						type="number"
