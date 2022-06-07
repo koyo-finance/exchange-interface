@@ -1,6 +1,6 @@
 import { config } from '@fortawesome/fontawesome-svg-core';
 import { darkTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit';
-import InitialStateWrapper from 'components/InitialStateWrapper';
+import InitialStateWrapper from 'components/wrappers/InitialStateWrapper';
 import Navbar from 'components/Navbar';
 import { ROOT } from 'constants/links';
 import { queryClient } from 'core/query';
@@ -53,9 +53,6 @@ const App: NextPage<AppProps> = ({ Component, pageProps }) => {
 													<meta httpEquiv="Expires" content="1y" />
 													<meta httpEquiv="Pragma" content="1y" />
 													<meta httpEquiv="Cache-Control" content="1y" />
-
-													{/* <meta httpEquiv="Page-Enter" content="RevealTrans(Duration=2.0,Transition=2)" />
-													<meta httpEquiv="Page-Exit" content="RevealTrans(Duration=3.0,Transition=12)" /> */}
 
 													<link rel="shortcut icon" href="/favicon.ico" />
 												</Head>

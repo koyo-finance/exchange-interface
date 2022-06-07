@@ -1,5 +1,5 @@
 import Main from 'components/Main';
-import PinnedComponents from 'components/PinnedComponents';
+import PinnedComponents from 'components/wrappers/PinnedComponents';
 import React from 'react';
 
 const DefaultLayout: React.FC = ({ children }) => {
