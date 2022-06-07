@@ -69,11 +69,9 @@ const LockIndexPage: ExtendedNextPage = () => {
 								<BalanceCard text="Total KYO vote-locked" value={formatBalance(kyoEscrowed)} />
 								<BalanceCard
 									text="Percentage of KYO locked"
-									value={
-										calculatePercentage(kyoTotalSupply, kyoEscrowed).toLocaleString('fullwide', {
-											maximumFractionDigits: 4
-										}) + ' %'
-									}
+									value={`${calculatePercentage(kyoTotalSupply, kyoEscrowed).toLocaleString('fullwide', {
+										maximumFractionDigits: 4
+									})} %`}
 								/>
 								<BalanceCard text="Total veKYO" value={formatBalance(veKyoTotalSupply, { maximumFractionDigits: 3 })} />
 							</div>

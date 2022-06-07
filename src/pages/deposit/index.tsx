@@ -11,6 +11,7 @@ import { ROOT_WITH_PROTOCOL } from 'constants/links';
 import { BigNumber } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
 import { Form, Formik } from 'formik';
+import { useDepositIntoGauge } from 'hooks/contracts/KYO/gauges/useDepositIntoGauge';
 import useAddLiquidity from 'hooks/contracts/StableSwap/useAddLiquidity';
 import useMultiTokenAllowance from 'hooks/contracts/useMultiTokenAllowance';
 import useMultiTokenBalances from 'hooks/contracts/useMultiTokenBalances';
@@ -28,7 +29,7 @@ import { ExtendedNextPage } from 'types/ExtendedNextPage';
 import { useAccount, useSigner } from 'wagmi';
 
 const DepositPage: ExtendedNextPage = () => {
-	const FourKoyoGaugeAddress = '0xDAb3Fc342A242AdD09504bea790f9b026Aa1e709';
+	const FourKoyoGaugeAddress = '0x24f47A11AEE5d1bF96C18dDA7bB0c0Ef248A8e71';
 
 	const pools = useSelector(selectAllPoolsByChainId(ChainId.BOBA));
 
@@ -45,14 +46,16 @@ const DepositPage: ExtendedNextPage = () => {
 		selectedPool?.coins?.map((coin) => coin.address)
 	);
 
-	const { data: lpTokenAllowance = BigNumber.from(0) } = useTokenAllowance(account?.address, FourKoyoGaugeAddress, selectedPool?.addresses.lpToken);
-
 	const balances = useMultiTokenBalances(
 		account?.address,
 		selectedPool?.coins?.map((coin) => coin.address)
 	);
 
+	const { data: lpTokenAllowance = BigNumber.from(0) } = useTokenAllowance(account?.address, FourKoyoGaugeAddress, selectedPool?.addresses.lpToken);
+	const { data: lpTokenBalance = BigNumber.from(0) } = useTokenBalance(account?.address, selectedPool?.addresses.lpToken);
+
 	const { mutate: addLiqudity, status: deposited } = useAddLiquidity(signer || undefined, selectedPool?.id || '');
+	const { mutate: gaugeDeposit } = useDepositIntoGauge(signer || undefined, FourKoyoGaugeAddress);
 
 	useEffect(() => {
 		if (deposited === 'success') {
@@ -77,13 +80,11 @@ const DepositPage: ExtendedNextPage = () => {
 		setSelectedPool(selectedPoolFilter);
 	};
 
-	const { data: lpTokenBalance = 0 } = useTokenBalance(account?.address, selectedPool?.addresses.lpToken);
-
 	return (
 		<>
 			<NextSeo
 				title="Deposit"
-				canonical={`${ROOT_WITH_PROTOCOL}/swap`}
+				canonical={`${ROOT_WITH_PROTOCOL}/deposit`}
 				description="Deposit your assets into the desired pools and get LP tokens that represent your position in the pools, to earn fees."
 			/>
 			<div className=" relative flex min-h-screen w-full items-center justify-center bg-darks-500 px-8 pb-8 pt-24 md:px-0 md:pb-0 lg:pt-20">
@@ -174,7 +175,7 @@ const DepositPage: ExtendedNextPage = () => {
 													</div>
 													<div className="mt-2">
 														<CoreCardConnectButton
-															className=" btn mt-2 w-full bg-lights-400 bg-opacity-100 text-black hover:bg-lights-200"
+															className=" btn mt-2 w-full bg-lights-400 bg-opacity-100 p-0 text-black hover:bg-lights-400"
 															invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
 														>
 															<div className="flex h-full w-full flex-row gap-1 divide-x-2">
@@ -210,7 +211,7 @@ const DepositPage: ExtendedNextPage = () => {
 																		</Default>
 																	</Switch>
 																</div>
-																<div className="w-1/2 font-sora text-black hover:font-extrabold">
+																<div className="w-1/2 font-sora text-black hover:bg-lights-200 hover:font-extrabold">
 																	<Switch>
 																		<Case
 																			condition={BigNumber.from(lpTokenAllowance).lt(
@@ -228,7 +229,13 @@ const DepositPage: ExtendedNextPage = () => {
 																			</FormApproveAsset>
 																		</Case>
 																		<Default>
-																			<button type="button" className="h-full w-full">
+																			<button
+																				type="button"
+																				onClick={() =>
+																					gaugeDeposit([lpTokenBalance, { gasLimit: 1_000_000 }])
+																				}
+																				className="h-full w-full"
+																			>
 																				STAKE LP TOKENS
 																			</button>
 																		</Default>
