@@ -37,25 +37,29 @@ const Navbar: React.FC = () => {
 									>
 										<div className="relative hidden flex-row items-center rounded-2xl bg-black bg-opacity-50 p-0 text-center text-white md:w-1/2 lg:flex xl:w-1/3">
 											<Link href="/swap">
-												<div className={`z-10 w-1/4 cursor-pointer rounded-2xl py-2 `}>
-													<span className=" ">Swap</span>
-												</div>
+												<div className={`z-10 w-1/4 cursor-pointer rounded-2xl py-2 `}>Swap</div>
 											</Link>
 											<Link href="/deposit">
-												<div className={`z-10 w-1/4 cursor-pointer rounded-2xl py-2 `}>
-													<span className=" ">Deposit</span>
-												</div>
+												<div className={`z-10 w-1/4 cursor-pointer rounded-2xl py-2 `}>Deposit</div>
 											</Link>
 											<Link href="/withdraw">
-												<div className={`z-10 w-1/4 cursor-pointer rounded-2xl py-2`}>
-													<span className=" ">Withdraw</span>
-												</div>
+												<div className={`z-10 w-1/4 cursor-pointer rounded-2xl py-2`}>Withdraw</div>
 											</Link>
-											<Link href="/lock">
-												<div className={`z-10 w-1/4 cursor-pointer rounded-2xl py-2`}>
-													<span className=" ">Lock</span>
+											<div className="group relative z-10 w-1/4">
+												<div className={`z-10 w-full cursor-pointer rounded-2xl py-2`}>
+													{router.pathname.includes('/kyo')
+														? router.pathname[5].toUpperCase() + router.pathname.slice(6, router.pathname.length)
+														: 'KYO'}
 												</div>
-											</Link>
+												<div className=" absolute top-10 hidden flex-col items-start justify-start gap-1 bg-black bg-opacity-50 py-2 px-9 hover:flex group-hover:flex">
+													<Link href="/kyo/lock">
+														<div className=" transform-gpu cursor-pointer duration-150 hover:text-darks-200">Lock</div>
+													</Link>
+													<Link href="/kyo/gauges">
+														<div className=" transform-gpu cursor-pointer duration-150 hover:text-darks-200">Gauges</div>
+													</Link>
+												</div>
+											</div>
 											<PageSelectedOverlay />
 										</div>
 									</div>

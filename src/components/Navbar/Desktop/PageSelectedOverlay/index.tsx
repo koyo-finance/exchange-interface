@@ -10,7 +10,7 @@ const PageSelectedOverlay: React.FC = () => {
 				router.pathname === '/swap' ? ' translate-x-0' : ''
 			} ${router.pathname === '/deposit' ? ' ml-0 translate-x-[100%]' : ''} ${
 				router.pathname === '/withdraw' ? 'ml-0 translate-x-[200%]' : ''
-			}${router.pathname === '/lock' ? 'ml-0 translate-x-[300%]' : ''} ${router.pathname === '/' ? ' -translate-x-[100%] opacity-0' : ''}`}
+			}${router.pathname.includes('/kyo') ? 'ml-0 translate-x-[300%]' : ''} ${router.pathname === '/' ? ' -translate-x-[100%] opacity-0' : ''}`}
 		></div>
 	);
 };
