@@ -76,7 +76,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 		const calculatedSumAmount = tokenTwoAmount + calculatedAmountDiff;
 		setInvertedTokenOneAmount(calculatedSumAmount);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [calculatedAmountTokenOne]);
+	}, [calculatedAmountTokenOne, calculatedAmountTokenTwo]);
 
 	useEffect(() => {
 		setTokenOneIndex((pool?.coins || []).findIndex((token) => token.address === tokenOne.address));
@@ -113,18 +113,21 @@ const SwapIndexPage: ExtendedNextPage = () => {
 					if (tokenIndex === -1) return false;
 					return pool;
 				});
+
 				const [poolWithSelectedToken] = filteredPools.filter((pool) => pool !== false);
-				const filterTokenFromPool = (poolWithSelectedToken as Pool).coins.filter((coin) => coin.address !== token.address);
-				const [selectSecondTokenFromPool] = TOKENS.filter((coin) => filterTokenFromPool[0].address === coin.address);
+				if (poolWithSelectedToken) {
+					const filterTokenFromPool = (poolWithSelectedToken as Pool).coins.filter((coin) => coin.address !== token.address);
+					const [selectSecondTokenFromPool] = TOKENS.filter((coin) => filterTokenFromPool[0].address === coin.address);
 
-				const secondToken = {
-					...selectSecondTokenFromPool,
-					poolId: (poolWithSelectedToken as Pool).id,
-					poolAddress: (poolWithSelectedToken as Pool).addresses.swap
-				};
+					const secondToken = {
+						...selectSecondTokenFromPool,
+						poolId: (poolWithSelectedToken as Pool).id,
+						poolAddress: (poolWithSelectedToken as Pool).addresses.swap
+					};
 
-				setTokenOneIndex(((poolWithSelectedToken as Pool)?.coins || []).findIndex((token) => token.address === tokenOne.address));
-				dispatch(setTokenTwo(secondToken));
+					setTokenOneIndex(((poolWithSelectedToken as Pool)?.coins || []).findIndex((token) => token.address === tokenOne.address));
+					dispatch(setTokenTwo(secondToken));
+				}
 			}
 
 			dispatch(setTokenOne(token));
@@ -223,46 +226,54 @@ const SwapIndexPage: ExtendedNextPage = () => {
 							setInputAmount={setTokenAmountHandler}
 							setActiveToken={(tokenNum: number) => setActiveToken(tokenNum)}
 						/>
-						<CoreCardConnectButton
-							className="btn mt-2 w-full bg-lights-400 bg-opacity-100 text-black hover:bg-lights-200"
-							invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
-						>
-							<Switch>
-								<Case
-									condition={BigNumber.from(allowances[tokenOneIndex]?.data || 0).lt(
-										toBigNumber(tokenAmount, pool?.coins[tokenOneIndex]?.decimals)
-									)}
-								>
-									{pool && pool.coins.length !== 0 && tokenOneIndex !== -1 && (
-										<FormApproveAsset
-											asset={pool.coins[tokenOneIndex].address}
-											spender={pool.addresses.swap}
-											amount={100_000}
-											decimals={pool.coins[tokenOneIndex].decimals}
+
+						{(pool?.coins.findIndex((coin) => tokenOne.address === coin.address) || 0) > -1 && (
+							<CoreCardConnectButton
+								className="btn mt-2 w-full bg-lights-400 bg-opacity-100 text-black hover:bg-lights-200"
+								invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
+							>
+								<Switch>
+									<Case
+										condition={BigNumber.from(allowances[tokenOneIndex]?.data || 0).lt(
+											toBigNumber(tokenAmount, pool?.coins[tokenOneIndex]?.decimals)
+										)}
+									>
+										{pool && pool.coins.length !== 0 && tokenOneIndex !== -1 && (
+											<FormApproveAsset
+												asset={pool.coins[tokenOneIndex].address}
+												spender={pool.addresses.swap}
+												amount={100_000}
+												decimals={pool.coins[tokenOneIndex].decimals}
+												className="h-full w-full"
+											>
+												APPROVE - <span className="italic">{pool.coins[tokenOneIndex].name.toUpperCase()}</span>
+											</FormApproveAsset>
+										)}
+									</Case>
+									<Default>
+										<button
+											onClick={() =>
+												exchange([
+													tokenOneIndex,
+													tokenTwoIndex,
+													toBigNumber(tokenAmount, pool?.coins[tokenOneIndex]?.decimals),
+													0,
+													{ gasLimit: 600_000 }
+												])
+											}
 											className="h-full w-full"
 										>
-											APPROVE - <span className="italic">{pool.coins[tokenOneIndex].name.toUpperCase()}</span>
-										</FormApproveAsset>
-									)}
-								</Case>
-								<Default>
-									<button
-										onClick={() =>
-											exchange([
-												tokenOneIndex,
-												tokenTwoIndex,
-												toBigNumber(tokenAmount, pool?.coins[tokenOneIndex]?.decimals),
-												0,
-												{ gasLimit: 600_000 }
-											])
-										}
-										className="h-full w-full"
-									>
-										SWAP
-									</button>
-								</Default>
-							</Switch>
-						</CoreCardConnectButton>
+											SWAP
+										</button>
+									</Default>
+								</Switch>
+							</CoreCardConnectButton>
+						)}
+						{!((pool?.coins.findIndex((coin) => tokenOne.address === coin.address) || 0) > -1) && (
+							<button className="mt-2 w-full rounded-lg bg-gray-600 bg-opacity-100 p-3 text-center text-black">
+								Cannot swap - Invalid path
+							</button>
+						)}
 					</div>
 				</SwapLayoutCard>
 				<GuideLink type="Swap" text="Trouble swapping?" link="https://docs.koyo.finance/protocol/guide/exchange/swap" />

@@ -1,6 +1,7 @@
 import { ChainId } from '@koyofinance/core-sdk';
 import { AugmentedPool, Pool } from '@koyofinance/swap-sdk';
 import CoreCardConnectButton from 'components/UI/Cards/CoreCardConnectButton';
+import DepositLPGetCalculation from 'components/UI/Cards/Deposit/DepositLPGetCalculation';
 import DepositPoolAPYCard from 'components/UI/Cards/Deposit/DepositPoolAPYCard';
 import DepositTokenCard from 'components/UI/Cards/Deposit/DepositTokenCard';
 import FormApproveAsset from 'components/UI/Cards/FormApproveAsset';
@@ -33,7 +34,6 @@ const DepositPage: ExtendedNextPage = () => {
 	const [selectedPool, setSelectedPool] = useState<AugmentedPool | undefined>(undefined);
 	const [poolsModalIsOpen, setPoolsModalIsOpen] = useState(false);
 	const [resetInputs, setResetInputs] = useState(false);
-	// const [assetApproved, setAssetApproved] = useState(false);
 
 	const allowances = useMultiTokenAllowance(
 		account?.address,
@@ -71,10 +71,6 @@ const DepositPage: ExtendedNextPage = () => {
 		setSelectedPool(selectedPoolFilter);
 	};
 
-	// const setStatusHandler = (status: string) => {
-	// 	if (status === 'success') setAssetApproved(true);
-	// };
-
 	return (
 		<>
 			<NextSeo
@@ -82,7 +78,7 @@ const DepositPage: ExtendedNextPage = () => {
 				canonical={`${ROOT_WITH_PROTOCOL}/swap`}
 				description="Deposit your assets into the desired pools and get LP tokens that represent your position in the pools, to earn fees."
 			/>
-			<div className=" relative flex min-h-screen w-full items-center justify-center bg-darks-500 px-8 pb-6 pt-24 md:px-0 md:pb-0 lg:pt-20">
+			<div className=" relative flex min-h-screen w-full items-center justify-center bg-darks-500 px-8 pb-8 pt-24 md:px-0 md:pb-0 lg:pt-20">
 				{poolsModalIsOpen && <PoolsModal setPool={setPoolHandler} closeModal={closePoolsModalHandler} />}
 				<SwapLayoutCard>
 					<div
@@ -152,12 +148,22 @@ const DepositPage: ExtendedNextPage = () => {
 																	coin={coin}
 																	balance={balances[i].data || 0}
 																	resetValues={resetInputs}
-																	setInputAmount={props.handleChange}
+																	setInputAmount={props.setFieldValue}
 																/>
 															</div>
 														))}
 													</div>
-													<div className="mt-4">
+													<div className="mt-4 rounded-xl bg-darks-500 p-4">
+														LP tokens recieved:{' '}
+														<span className="underline">
+															<DepositLPGetCalculation
+																poolId={selectedPool.id}
+																amounts={Object.values(props.values).map((amount) => amount || 0)}
+																decimals={selectedPool.coins.map((coin) => coin.decimals)}
+															/>
+														</span>
+													</div>
+													<div className="mt-2">
 														<CoreCardConnectButton
 															className="btn mt-2 w-full bg-lights-400 bg-opacity-100 font-sora text-black hover:bg-lights-200"
 															invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"

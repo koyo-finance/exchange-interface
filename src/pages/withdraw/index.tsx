@@ -60,7 +60,7 @@ const WithdrawPage: ExtendedNextPage = () => {
 				canonical={`${ROOT_WITH_PROTOCOL}/withdraw`}
 				description="Withdraw your assets from pools, where you have deposited your tokens."
 			/>
-			<div className=" relative flex min-h-screen w-full items-center justify-center bg-darks-500 px-8 pb-6 pt-24 lg:pt-20 ">
+			<div className=" relative flex min-h-screen w-full items-center justify-center bg-darks-500 px-8 pb-8 pt-24 lg:pt-20 ">
 				{poolsModalIsOpen && <PoolsModal setPool={setPoolHandler} closeModal={closePoolsModalHandler} />}
 				<SwapLayoutCard>
 					<div
@@ -129,7 +129,7 @@ const WithdrawPage: ExtendedNextPage = () => {
 																	key={coin.id}
 																	coin={coin}
 																	status={withdrawStatus}
-																	setInputAmount={props.handleChange}
+																	setInputAmount={props.setFieldValue}
 																/>
 															</div>
 														))}

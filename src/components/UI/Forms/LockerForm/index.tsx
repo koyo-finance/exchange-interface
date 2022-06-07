@@ -68,9 +68,10 @@ const LockerForm: React.FC<{ openForceWithdrawModal: () => void }> = ({ openForc
 										<input
 											name="amount"
 											onChange={props.handleChange}
-											value={props.values.amount}
+											value={props.values.amount || undefined}
 											type="number"
-											className="w-2/3 bg-transparent text-lg md:w-auto"
+											placeholder="0,00"
+											className="w-2/3 border-0 bg-transparent text-lg outline-none md:w-auto"
 										/>
 										{/* eslint-disable-next-line no-alert */}
 										<div className="flex w-1/3 justify-center gap-2 md:w-fit">
