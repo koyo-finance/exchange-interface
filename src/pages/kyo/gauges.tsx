@@ -18,5 +18,5 @@ const GaugesPage: ExtendedNextPage = () => {
 	);
 };
 
-GaugesPage.Layout = SwapLayout('deposit');
+GaugesPage.Layout = SwapLayout('gauge-vote');
 export default GaugesPage;
