@@ -51,7 +51,7 @@ const Navbar: React.FC = () => {
 														? router.pathname[5].toUpperCase() + router.pathname.slice(6, router.pathname.length)
 														: 'KYO'}
 												</div>
-												<div className=" absolute top-10 hidden flex-col items-start justify-start gap-1 bg-black bg-opacity-50 py-2 px-9 hover:flex group-hover:flex">
+												<div className=" absolute top-10 hidden w-full flex-col items-center justify-center gap-1 rounded-xl bg-black bg-opacity-90 py-2 hover:flex group-hover:flex">
 													<Link href="/kyo/lock">
 														<div className=" transform-gpu cursor-pointer duration-150 hover:text-darks-200">Lock</div>
 													</Link>
@@ -112,19 +112,28 @@ const Navbar: React.FC = () => {
 														</span>
 													</Link>
 												</div>
-												<div className={`z-10 w-full rounded-2xl py-2 `}>
+												<div className="z-10 w-full rounded-2xl py-2">
 													<Link href="/deposit">
 														<span className="cursor-pointer px-4 duration-200 hover:text-lights-400">Deposit</span>
 													</Link>
 												</div>
-												<div className={`z-10 w-full rounded-2xl py-2`}>
+												<div className="z-10 w-full rounded-2xl py-2">
 													<Link href="/withdraw">
 														<span className="cursor-pointer px-4 duration-200 hover:text-lights-400">Withdraw</span>
 													</Link>
 												</div>
-												<div className={`z-10 w-full rounded-2xl py-2`}>
-													<Link href="/lock">
-														<span className="cursor-pointer px-4 duration-200 hover:text-lights-400">Lock</span>
+												<div className="z-10 w-full rounded-2xl py-2">
+													<Link href="/kyo/lock">
+														<div className=" transform-gpu cursor-pointer px-4 duration-200 hover:text-lights-400">
+															Lock
+														</div>
+													</Link>
+												</div>
+												<div className="z-10 w-full rounded-2xl py-2">
+													<Link href="/kyo/gauges">
+														<div className=" transform-gpu cursor-pointer px-4 duration-200 hover:text-lights-400">
+															Gauges
+														</div>
 													</Link>
 												</div>
 												<ConnectButton />
