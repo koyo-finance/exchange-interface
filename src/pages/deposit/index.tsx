@@ -87,7 +87,7 @@ const DepositPage: ExtendedNextPage = () => {
 				canonical={`${ROOT_WITH_PROTOCOL}/deposit`}
 				description="Deposit your assets into the desired pools and get LP tokens that represent your position in the pools, to earn fees."
 			/>
-			<div className=" relative flex min-h-screen w-full items-center justify-center bg-darks-500 px-8 pb-8 pt-24 md:px-0 md:pb-0 lg:pt-20">
+			<div className=" relative flex min-h-screen w-full items-center justify-center bg-darks-500 px-8 pb-8 pt-24 md:px-0 lg:pt-20 ">
 				{poolsModalIsOpen && <PoolsModal setPool={setPoolHandler} closeModal={closePoolsModalHandler} />}
 				<SwapLayoutCard>
 					<div
@@ -129,7 +129,6 @@ const DepositPage: ExtendedNextPage = () => {
 									</div>
 								)}
 							</div>
-							<div>LP token balance:{formatBalance(lpTokenBalance)}</div>
 
 							{selectedPool && (
 								<div className={selectedPool ? 'block' : 'hidden'}>
@@ -163,23 +162,28 @@ const DepositPage: ExtendedNextPage = () => {
 															</div>
 														))}
 													</div>
-													<div className="mt-4 rounded-xl bg-darks-500 p-4">
-														LP tokens recieved:{' '}
-														<span className="underline">
-															<DepositLPGetCalculation
-																poolId={selectedPool.id}
-																amounts={Object.values(props.values).map((amount) => amount || 0)}
-																decimals={selectedPool.coins.map((coin) => coin.decimals)}
-															/>
-														</span>
+													<div className="mt-4 flex flex-row justify-between rounded-xl bg-darks-500 p-4">
+														<div>
+															LP tokens recieved:{' '}
+															<span className="underline">
+																<DepositLPGetCalculation
+																	poolId={selectedPool.id}
+																	amounts={Object.values(props.values).map((amount) => amount || 0)}
+																	decimals={selectedPool.coins.map((coin) => coin.decimals)}
+																/>
+															</span>
+														</div>
+														<div>
+															LP token balance: <span className="underline">{formatBalance(lpTokenBalance)}</span>
+														</div>
 													</div>
 													<div className="mt-2">
 														<CoreCardConnectButton
 															className=" btn mt-2 w-full bg-lights-400 bg-opacity-100 p-0 text-black hover:bg-lights-400"
 															invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
 														>
-															<div className="flex h-full w-full flex-row gap-1 divide-x-2">
-																<div className="w-1/2 font-sora text-black hover:font-extrabold">
+															<div className="flex h-full w-full flex-row ">
+																<div className="w-1/2 rounded-l-lg border-r-2 border-darks-500 font-sora text-black hover:bg-lights-200 hover:font-extrabold">
 																	<Switch>
 																		{selectedPool.coins.map((coin, i) => (
 																			<Case
@@ -211,7 +215,7 @@ const DepositPage: ExtendedNextPage = () => {
 																		</Default>
 																	</Switch>
 																</div>
-																<div className="w-1/2 font-sora text-black hover:bg-lights-200 hover:font-extrabold">
+																<div className="w-1/2 rounded-r-lg border-l-2 border-darks-500 font-sora text-black hover:bg-lights-200 hover:font-extrabold">
 																	<Switch>
 																		<Case condition={BigNumber.from(lpTokenAllowance).lt(lpTokenBalance)}>
 																			<FormApproveAsset
