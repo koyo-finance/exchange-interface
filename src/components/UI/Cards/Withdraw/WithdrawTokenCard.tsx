@@ -45,7 +45,7 @@ const WithdrawTokenCard: React.FC<WithdrawTokenCardProps> = ({ coin, status, set
 					<div>{coin.symbol.toUpperCase()}</div>
 				</div>
 			</div>
-			<div className="flex w-full flex-row items-end justify-between">
+			<div className="flex w-full flex-row items-end justify-between border-b-2 border-darks-200 pr-2">
 				<input
 					ref={inputAmountRef}
 					type="number"
@@ -55,8 +55,11 @@ const WithdrawTokenCard: React.FC<WithdrawTokenCardProps> = ({ coin, status, set
 					value={tokenAmount > 0 ? tokenAmount : ''}
 					onBlur={() => setTokenAmount(Number(Number(tokenAmount).toFixed(5)))}
 					className=" w-full
-				  border-0 border-b-2 border-darks-200 bg-darks-500 font-jtm text-3xl font-extralight text-white outline-none md:text-4xl"
+				  border-0 bg-darks-500 font-jtm text-3xl font-extralight text-white outline-none md:text-4xl"
 				/>
+				<div className=" mb-2 transform-gpu cursor-pointer rounded-xl border-2 border-lights-400 p-1 text-lights-400 duration-100 ease-out hover:bg-lights-400 hover:text-black active:scale-90 ">
+					MAX
+				</div>
 			</div>
 		</div>
 	);

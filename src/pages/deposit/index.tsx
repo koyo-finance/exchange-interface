@@ -1,4 +1,4 @@
-import { ChainId } from '@koyofinance/core-sdk';
+import { ChainId, formatBalance, fromBigNumber } from '@koyofinance/core-sdk';
 import { AugmentedPool, Pool } from '@koyofinance/swap-sdk';
 import CoreCardConnectButton from 'components/UI/Cards/CoreCardConnectButton';
 import DepositLPGetCalculation from 'components/UI/Cards/Deposit/DepositLPGetCalculation';
@@ -8,12 +8,14 @@ import FormApproveAsset from 'components/UI/Cards/FormApproveAsset';
 import GuideLink from 'components/UI/GuideLink';
 import PoolsModal from 'components/UI/Modals/PoolsModal';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
-import { BigNumber } from 'ethers';
+import { BigNumber, BigNumberish } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
 import { Form, Formik } from 'formik';
 import useAddLiquidity from 'hooks/contracts/StableSwap/useAddLiquidity';
 import useMultiTokenAllowance from 'hooks/contracts/useMultiTokenAllowance';
 import useMultiTokenBalances from 'hooks/contracts/useMultiTokenBalances';
+import useTokenAllowance from 'hooks/contracts/useTokenAllowance';
+import useTokenBalance from 'hooks/contracts/useTokenBalance';
 import { SwapLayout, SwapLayoutCard } from 'layouts/SwapLayout';
 import { NextSeo } from 'next-seo';
 import React, { useEffect, useState } from 'react';
@@ -39,6 +41,12 @@ const DepositPage: ExtendedNextPage = () => {
 		account?.address,
 		selectedPool?.addresses.swap,
 		selectedPool?.coins?.map((coin) => coin.address)
+	);
+
+	const { data: LPtokenAllowance } = useTokenAllowance(
+		account?.address,
+		'0x24f47A11AEE5d1bF96C18dDA7bB0c0Ef248A8e71',
+		'0xDAb3Fc342A242AdD09504bea790f9b026Aa1e709'
 	);
 
 	const balances = useMultiTokenBalances(
@@ -70,6 +78,8 @@ const DepositPage: ExtendedNextPage = () => {
 		});
 		setSelectedPool(selectedPoolFilter);
 	};
+
+	const { data: lpTokenBalance = 0 } = useTokenBalance(account?.address, selectedPool?.addresses.lpToken);
 
 	return (
 		<>
@@ -120,6 +130,7 @@ const DepositPage: ExtendedNextPage = () => {
 									</div>
 								)}
 							</div>
+							<div>LP token balance:{formatBalance(lpTokenBalance)}</div>
 
 							{selectedPool && (
 								<div className={selectedPool ? 'block' : 'hidden'}>
@@ -165,35 +176,64 @@ const DepositPage: ExtendedNextPage = () => {
 													</div>
 													<div className="mt-2">
 														<CoreCardConnectButton
-															className="btn mt-2 w-full bg-lights-400 bg-opacity-100 font-sora text-black hover:bg-lights-200"
+															className="w-full"
 															invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
 														>
-															<Switch>
-																{selectedPool.coins.map((coin, i) => (
-																	<Case
-																		condition={BigNumber.from(allowances[i].data || 0).lt(
-																			parseUnits((props.values[coin.name] || 0).toString(), coin.decimals)
-																		)}
-																		key={coin.id}
-																	>
-																		<FormApproveAsset
-																			asset={coin.address}
-																			spender={selectedPool.addresses.swap}
-																			amount={100_000}
-																			decimals={coin.decimals}
-																			className="h-full w-full"
-																			// setStatus={setStatusHandler}
+															<div className="flex flex-row gap-1">
+																<div className="btn mt-2 w-1/2 bg-lights-400 bg-opacity-100 font-sora text-black hover:bg-lights-200">
+																	<Switch>
+																		{selectedPool.coins.map((coin, i) => (
+																			<Case
+																				condition={BigNumber.from(allowances[i].data || 0).lt(
+																					parseUnits(
+																						(props.values[coin.name] || 0).toString(),
+																						coin.decimals
+																					)
+																				)}
+																				key={coin.id}
+																			>
+																				<FormApproveAsset
+																					asset={coin.address}
+																					spender={selectedPool.addresses.swap}
+																					amount={100_000}
+																					decimals={coin.decimals}
+																					className="h-full w-full"
+																				>
+																					APPROVE -{' '}
+																					<span className="italic">{coin.name.toUpperCase()}</span>
+																				</FormApproveAsset>
+																			</Case>
+																		))}
+
+																		<Default>
+																			<button type="submit" className="h-full w-full">
+																				DEPOSIT
+																			</button>
+																		</Default>
+																	</Switch>
+																</div>
+																<div className="btn mt-2 w-1/2 bg-lights-400 bg-opacity-100 font-sora text-black hover:bg-lights-200">
+																	<Switch>
+																		<Case
+																			condition={fromBigNumber(LPtokenAllowance as BigNumberish) > 0}
+																			key="LPtokens"
 																		>
-																			APPROVE - <span className="italic">{coin.name.toUpperCase()}</span>
-																		</FormApproveAsset>
-																	</Case>
-																))}
-																<Default>
-																	<button type="submit" className="h-full w-full">
-																		DEPOSIT
-																	</button>
-																</Default>
-															</Switch>
+																			<FormApproveAsset
+																				asset={'0xDAb3Fc342A242AdD09504bea790f9b026Aa1e709'}
+																				spender={'0x24f47A11AEE5d1bF96C18dDA7bB0c0Ef248A8e71'}
+																				amount={100_000}
+																				decimals={18}
+																				className="h-full w-full"
+																			>
+																				APPROVE - <span className="italic">4koyo LP</span>
+																			</FormApproveAsset>
+																		</Case>
+																		<Default>
+																			<button className="h-full w-full">STAKE LP TOKENS</button>
+																		</Default>
+																	</Switch>
+																</div>
+															</div>
 														</CoreCardConnectButton>
 													</div>
 												</div>

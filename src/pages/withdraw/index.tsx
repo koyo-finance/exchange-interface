@@ -29,6 +29,7 @@ const WithdrawPage: ExtendedNextPage = () => {
 
 	const [selectedPool, setSelectedPool] = useState<AugmentedPool | undefined>(undefined);
 	const [poolsModalIsOpen, setPoolsModalIsOpen] = useState(false);
+	// const [balancedAmounts, setBalancedAounts] = useState<number[]>([]);
 
 	const { data: lpTokenBalance = 0, refetch: refetchLPBalance } = useTokenBalance(account?.address, selectedPool?.addresses.lpToken);
 	const { data: virtualPrice = 0 } = useGetVirtualPrice(selectedPool?.id || '');
@@ -52,6 +53,10 @@ const WithdrawPage: ExtendedNextPage = () => {
 		});
 		setSelectedPool(selectedPoolFilter);
 	};
+
+	// const setBalancedAmountsHandler = (values: number[]) => {
+	// 	console.log(values);
+	// };
 
 	return (
 		<>
@@ -122,6 +127,12 @@ const WithdrawPage: ExtendedNextPage = () => {
 										{(props) => (
 											<Form>
 												<div>
+													{/* <div
+														className="btn mt-4 w-full border-2 border-lights-400 bg-transparent bg-opacity-100 font-sora text-lights-400 hover:bg-lights-400 hover:text-black active:bg-lights-300"
+														onClick={setBalancedAmountsHandler(props.values)}
+													>
+														WITHDRAW EVERYTHING - BALANCED AMOUNTS
+													</div> */}
 													<div className="mt-4 grid grid-cols-1 gap-8 md:grid-cols-2">
 														{selectedPool.coins.map((coin) => (
 															<div key={coin.id}>
