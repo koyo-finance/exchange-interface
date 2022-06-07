@@ -40,6 +40,7 @@ const SwapCard: React.FC<SwapCardProps> = ({ tokenNum, token, swapStatus, conver
 				refetchBalance();
 			}, 3000);
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [swapStatus]);
 
 	const changeTokenAmountHandler = (e: any) => {

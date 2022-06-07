@@ -99,7 +99,7 @@ const GaugesPage: ExtendedNextPage = () => {
 									<div className="w-1/4 px-1">
 										<button
 											className="btn w-full border-2  border-red-600 bg-transparent text-red-600 hover:bg-red-600 hover:text-white"
-											onClick={() => {}}
+											onClick={() => submitVote([FourKoyoGaugeAddress, 0, { gasLimit: 700_000 }])}
 										>
 											RESET
 										</button>

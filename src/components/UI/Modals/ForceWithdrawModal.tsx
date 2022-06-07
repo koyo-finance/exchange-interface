@@ -10,6 +10,7 @@ const ForceWithdrawModal: React.FC<{ closeForceWithdrawModal: () => void }> = ({
 
 	useEffect(() => {
 		if (forceWithdrawStatus === 'success') closeForceWithdrawModal();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [forceWithdrawStatus]);
 
 	return (
