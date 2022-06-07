@@ -12,10 +12,6 @@ module.exports = withPlausibleProxy()({
 				destination: '/deposit'
 			},
 			{
-				source: '/lock/index',
-				destination: '/lock'
-			},
-			{
 				source: '/swap/index',
 				destination: '/swap'
 			},
@@ -31,6 +27,17 @@ module.exports = withPlausibleProxy()({
 		];
 	},
 	async redirects() {
-		return [];
+		return [
+			{
+				source: '/lock/index',
+				destination: '/kyo/lock',
+				permanent: true
+			},
+			{
+				source: '/lock',
+				destination: '/kyo/lock',
+				permanent: true
+			}
+		];
 	}
 });
