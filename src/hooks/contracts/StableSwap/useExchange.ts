@@ -1,5 +1,5 @@
 import { ERC20Permit } from '@elementfi/elf-council-typechain';
-import { makeSmartContractReadCallQueryKey, useSmartContractTransaction } from '@elementfi/react-query-typechain';
+import { makeSmartContractReadCallQueryKey, useSmartContractTransaction } from '@koyofinance/react-query-typechain';
 import { useAddRecentTransaction } from '@rainbow-me/rainbowkit';
 import { swapContracts } from 'core/contracts';
 import { ContractReceipt, Signer } from 'ethers';

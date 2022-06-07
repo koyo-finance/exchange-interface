@@ -1,4 +1,4 @@
-import { useSmartContractTransaction } from '@elementfi/react-query-typechain';
+import { useSmartContractTransaction } from '@koyofinance/react-query-typechain';
 import { swapContracts } from 'core/contracts';
 import { ContractReceipt, Signer } from 'ethers';
 import { UseMutationResult } from 'react-query';
@@ -21,5 +21,6 @@ export default function useRemoveLiquidityImbalance(
 			});
 		}
 	});
+
 	return removeLiquidityImbalnce;
 }

@@ -45,7 +45,6 @@ const LockerForm: React.FC<{ openForceWithdrawModal: () => void }> = ({ openForc
 
 	return (
 		<>
-			{/* eslint-disable-next-line no-alert */}
 			{!lockTimeConverted && (
 				<Formik
 					initialValues={{ amount: 0, duration: new Date() }}

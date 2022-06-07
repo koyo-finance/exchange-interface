@@ -1,5 +1,5 @@
 import { ERC20PermitWithMint, ERC20PermitWithMint__factory } from '@elementfi/elf-council-typechain';
-import { ContractMethodArgs, useSmartContractReadCall } from '@elementfi/react-query-typechain';
+import { ContractMethodArgs, useSmartContractReadCall } from '@koyofinance/react-query-typechain';
 import { BigNumberish } from 'ethers';
 import { getAddress } from 'ethers/lib/utils';
 import { bobaReadonlyProvider } from 'hooks/useProviders';

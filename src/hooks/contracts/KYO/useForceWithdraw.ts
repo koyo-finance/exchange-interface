@@ -1,4 +1,4 @@
-import { useSmartContractTransaction } from '@elementfi/react-query-typechain';
+import { useSmartContractTransaction } from '@koyofinance/react-query-typechain';
 import { useAddRecentTransaction } from '@rainbow-me/rainbowkit';
 import { votingEscrowContract } from 'core/contracts';
 import { ContractReceipt, Signer } from 'ethers';

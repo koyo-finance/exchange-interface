@@ -1,4 +1,4 @@
-import { useSmartContractReadCall } from '@elementfi/react-query-typechain';
+import { useSmartContractReadCall } from '@koyofinance/react-query-typechain';
 import { votingEscrowContract } from 'core/contracts';
 import { QueryObserverResult } from 'react-query';
 import { LockedBalance } from 'types/contracts/koyo/structs';
