@@ -57,7 +57,7 @@ const GaugesPage: ExtendedNextPage = () => {
 				canonical={`${ROOT_WITH_PROTOCOL}/kyo/gauges`}
 				description="Deposit your assets into the desired pools and get LP tokens that represent your position in the pools, to earn fees."
 			/>
-			<div className=" flex min-h-screen w-full flex-col items-center gap-[5vh] bg-darks-500 px-8 pb-8 pt-24 md:px-0 lg:pt-20 ">
+			<div className=" flex min-h-screen w-full flex-col items-center gap-[5vh] bg-darks-500 px-4 pb-8 pt-24 md:px-0 lg:pt-20 ">
 				<div className="mt-8 flex w-full flex-col items-center justify-center gap-8 text-center text-white">
 					<h1 className=" text-4xl font-bold md:text-5xl">Gauge voting</h1>
 					<div className="w-full font-normal md:w-3/4 md:text-xl md:font-semibold lg:w-1/2">
@@ -73,7 +73,7 @@ const GaugesPage: ExtendedNextPage = () => {
 					/>
 					<BalanceCard text="VOTING POWER USED" value="?" />
 				</div>
-				<div className="mx-auto flex  w-1/2 flex-col gap-4 rounded-xl border-2 border-lights-400 bg-black bg-opacity-50 p-4">
+				<div className="mx-auto flex w-full flex-col gap-3 rounded-xl border-2 border-lights-400 bg-black bg-opacity-50 p-3 md:w-3/4 md:gap-4 md:p-4 lg:w-2/3 xl:w-1/2">
 					<div>
 						{/* Table */}
 						<div className=" flex w-full flex-col rounded-xl border-2 border-darks-200">
@@ -84,6 +84,7 @@ const GaugesPage: ExtendedNextPage = () => {
 								<div className="w-1/4">Claim</div>
 								<div className="w-1/4">Reset</div>
 							</div>
+							{/* Rows */}
 							{claimableGauges.map((gauge) => (
 								<div className="flex w-full flex-row items-center justify-between border-t-2 border-darks-200 p-2 text-center text-white">
 									<div className="w-1/4 truncate text-left">4koyo (DAI + USDC + USDT+ FRAX)</div>
@@ -119,7 +120,7 @@ const GaugesPage: ExtendedNextPage = () => {
 					)} */}
 					{error !== '' && <div className="w-full text-xl text-red-600">{error}</div>}
 					<div className="flex w-full flex-row flex-wrap items-center justify-between gap-2 text-xl text-white">
-						<div>
+						<div className="text-lg md:text-xl">
 							<label htmlFor="power">Select voting power (%):</label>
 						</div>
 						<div className="flex w-full flex-row justify-between border-b-2 border-darks-300 ">
@@ -142,7 +143,7 @@ const GaugesPage: ExtendedNextPage = () => {
 							</button>
 						</div>
 					</div>
-					<div className="w-full rounded-xl bg-darks-500 p-2">
+					<div className="w-full rounded-xl bg-darks-500 p-2 text-gray-300">
 						{calculatedveKYOAmount.toLocaleString(navigator.language, {
 							minimumFractionDigits: 2,
 							maximumFractionDigits: 2
