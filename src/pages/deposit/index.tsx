@@ -213,11 +213,7 @@ const DepositPage: ExtendedNextPage = () => {
 																</div>
 																<div className="w-1/2 font-sora text-black hover:bg-lights-200 hover:font-extrabold">
 																	<Switch>
-																		<Case
-																			condition={BigNumber.from(lpTokenAllowance).lt(
-																				BigNumber.from(100_000).mul(BigNumber.from(10).pow(18))
-																			)}
-																		>
+																		<Case condition={BigNumber.from(lpTokenAllowance).lt(lpTokenBalance)}>
 																			<FormApproveAsset
 																				asset={selectedPool.addresses.lpToken}
 																				spender={FourKoyoGaugeAddress}
