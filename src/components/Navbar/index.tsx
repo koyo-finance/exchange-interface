@@ -112,19 +112,28 @@ const Navbar: React.FC = () => {
 														</span>
 													</Link>
 												</div>
-												<div className={`z-10 w-full rounded-2xl py-2 `}>
+												<div className="z-10 w-full rounded-2xl py-2">
 													<Link href="/deposit">
 														<span className="cursor-pointer px-4 duration-200 hover:text-lights-400">Deposit</span>
 													</Link>
 												</div>
-												<div className={`z-10 w-full rounded-2xl py-2`}>
+												<div className="z-10 w-full rounded-2xl py-2">
 													<Link href="/withdraw">
 														<span className="cursor-pointer px-4 duration-200 hover:text-lights-400">Withdraw</span>
 													</Link>
 												</div>
-												<div className={`z-10 w-full rounded-2xl py-2`}>
-													<Link href="/lock">
-														<span className="cursor-pointer px-4 duration-200 hover:text-lights-400">Lock</span>
+												<div className="z-10 w-full rounded-2xl py-2">
+													<Link href="/kyo/lock">
+														<div className=" transform-gpu cursor-pointer px-4 duration-200 hover:text-lights-400">
+															Lock
+														</div>
+													</Link>
+												</div>
+												<div className="z-10 w-full rounded-2xl py-2">
+													<Link href="/kyo/gauges">
+														<div className=" transform-gpu cursor-pointer px-4 duration-200 hover:text-lights-400">
+															Gauges
+														</div>
 													</Link>
 												</div>
 												<ConnectButton />
