@@ -2,7 +2,7 @@ import { ChainId } from '@koyofinance/core-sdk';
 import { AugmentedPool } from '@koyofinance/swap-sdk';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { fetch as sFetch, FetchResultTypes } from '@sapphire/fetch';
-import { TokenList, TokenInfo } from '@uniswap/token-lists';
+import { TokenInfo, TokenList } from '@uniswap/token-lists';
 import { EXCLUDED_POOLS, KOYO_POOL_LISTS } from 'config/pool-lists';
 import { DEFAULT_ACTIVE_LIST_URLS } from 'config/token-lists';
 import { RootState } from 'state';
@@ -46,20 +46,6 @@ export const fetchPoolLists = createAsyncThunk('tokens/fetchPoolList', async (_,
 	}>[];
 
 	return poolLists.map((promiseResult) => Object.values(promiseResult.value.data));
-});
-
-export const fetchGaugeList = createAsyncThunk('tokens/fetchGaugeList', async (_, { dispatch }) => {
-	const gaugeListPromise = fetch('https://api.thegraph.com/subgraphs/name/koyo-finance/exchange-subgraph-boba?gauges=[id, address, name]', {
-		method: 'GET',
-		headers: {
-			'Content-type': 'application/json'
-		}
-	});
-
-	const gaugeList = await gaugeListPromise.then((res) => res.json()).then((data) => data);
-	console.log(gaugeList);
-
-	return gaugeList;
 });
 
 export const listsSlice = createSlice({
