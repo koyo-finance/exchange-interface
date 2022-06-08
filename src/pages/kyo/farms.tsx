@@ -81,8 +81,8 @@ const FarmsPage: ExtendedNextPage = () => {
 										<Switch>
 											<Case condition={BigNumber.from(lpTokenAllowance).lt(lpTokenBalance)}>
 												<FormApproveAsset
-													asset={FourKoyoGaugeAddress}
-													spender={pool.addresses.lpToken}
+													asset={pool.addresses.lpToken}
+													spender={FourKoyoGaugeAddress}
 													amount={100_000}
 													decimals={18}
 													className="h-full w-full"
