@@ -1,11 +1,12 @@
 import { ChainId } from '@koyofinance/core-sdk';
 import { AugmentedPool } from '@koyofinance/swap-sdk';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { fetch, FetchResultTypes } from '@sapphire/fetch';
+import { fetch as sFetch, FetchResultTypes } from '@sapphire/fetch';
 import { TokenList, TokenInfo } from '@uniswap/token-lists';
 import { EXCLUDED_POOLS, KOYO_POOL_LISTS } from 'config/pool-lists';
 import { DEFAULT_ACTIVE_LIST_URLS } from 'config/token-lists';
 import { RootState } from 'state';
+import { Gauge } from 'types/contracts/koyo';
 
 export interface ListsState {
 	lists: string[];
@@ -13,6 +14,7 @@ export interface ListsState {
 	tokens: TokenInfo[];
 	poolLists: string[];
 	pools: AugmentedPool[];
+	gaugeList: Gauge[];
 }
 
 const initialState: ListsState = {
@@ -20,13 +22,14 @@ const initialState: ListsState = {
 	fetchedLists: [],
 	tokens: [],
 	poolLists: KOYO_POOL_LISTS,
-	pools: []
+	pools: [],
+	gaugeList: []
 };
 
 export const fetchTokenLists = createAsyncThunk('tokens/fetchTokenList', async (_, { getState }) => {
 	const state = getState() as RootState;
 
-	const tokenListPromises = await Promise.allSettled(state.lists.lists.map((list) => fetch<TokenList>(list, 'json' as FetchResultTypes.JSON)));
+	const tokenListPromises = await Promise.allSettled(state.lists.lists.map((list) => sFetch<TokenList>(list, 'json' as FetchResultTypes.JSON)));
 	const tokenLists = tokenListPromises.filter((promise) => promise.status === 'fulfilled') as PromiseFulfilledResult<TokenList>[];
 
 	return tokenLists.map((promiseResult) => promiseResult.value);
@@ -36,13 +39,27 @@ export const fetchPoolLists = createAsyncThunk('tokens/fetchPoolList', async (_,
 	const state = getState() as RootState;
 
 	const poolListPromises = await Promise.allSettled(
-		state.lists.poolLists.map((list) => fetch<{ data: { [K: string]: AugmentedPool } }>(list, 'json' as FetchResultTypes.JSON))
+		state.lists.poolLists.map((list) => sFetch<{ data: { [K: string]: AugmentedPool } }>(list, 'json' as FetchResultTypes.JSON))
 	);
 	const poolLists = poolListPromises.filter((promise) => promise.status === 'fulfilled') as PromiseFulfilledResult<{
 		data: { [K: string]: AugmentedPool };
 	}>[];
 
 	return poolLists.map((promiseResult) => Object.values(promiseResult.value.data));
+});
+
+export const fetchGaugeList = createAsyncThunk('tokens/fetchGaugeList', async (_, { dispatch }) => {
+	const gaugeListPromise = fetch('https://api.thegraph.com/subgraphs/name/koyo-finance/exchange-subgraph-boba?gauges=[id, address, name]', {
+		method: 'GET',
+		headers: {
+			'Content-type': 'application/json'
+		}
+	});
+
+	const gaugeList = await gaugeListPromise.then((res) => res.json()).then((data) => data);
+	console.log(gaugeList);
+
+	return gaugeList;
 });
 
 export const listsSlice = createSlice({

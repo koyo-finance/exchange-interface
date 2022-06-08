@@ -64,13 +64,13 @@ const GaugesPage: ExtendedNextPage = () => {
 			<NextSeo
 				title="Gauges"
 				canonical={`${ROOT_WITH_PROTOCOL}/kyo/gauges`}
-				description="Deposit your assets into the desired pools and get LP tokens that represent your position in the pools, to earn fees."
+				description="Use your voting power to boost your gauges with veKYO (locked KYO)."
 			/>
 			<div className=" flex min-h-screen w-full flex-col items-center gap-[5vh] bg-darks-500 px-4 pb-8 pt-24 md:px-0 lg:pt-20 ">
 				<div className="mt-8 flex w-full flex-col items-center justify-center gap-8 text-center text-white">
 					<h1 className=" text-4xl font-bold md:text-5xl">Gauge voting</h1>
 					<div className="w-full font-normal md:w-3/4 md:text-xl md:font-semibold lg:w-1/2">
-						You can vote for gauge weight with your veKYO (locked KYO), to delegate it to our pools.
+						Use your voting power to boost your gauges with veKYO (locked KYO).
 					</div>
 				</div>
 				<div className=" flex flex-row flex-wrap justify-center gap-[10vw]">

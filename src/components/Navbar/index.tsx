@@ -5,7 +5,7 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
-import { FiArrowDown } from 'react-icons/fi';
+import { RiArrowDownSLine } from 'react-icons/ri';
 import PageSelectedOverlay from './Desktop/PageSelectedOverlay';
 
 const Navbar: React.FC = () => {
@@ -36,27 +36,37 @@ const Navbar: React.FC = () => {
 										}
 				`}
 									>
-										<div className="relative hidden flex-row items-center rounded-2xl bg-black bg-opacity-50 p-0 text-center text-white md:w-1/2 lg:flex xl:w-1/3">
-											<Link href="/swap">
-												<div className={`z-10 w-1/4 cursor-pointer rounded-2xl py-2 `}>Swap</div>
-											</Link>
-											<Link href="/deposit">
-												<div className={`z-10 w-1/4 cursor-pointer rounded-2xl py-2 `}>Deposit</div>
-											</Link>
-											<Link href="/withdraw">
-												<div className={`z-10 w-1/4 cursor-pointer rounded-2xl py-2`}>Withdraw</div>
-											</Link>
-											<div className="group relative z-10 w-1/4">
+										<div className="relative hidden flex-row items-center rounded-2xl bg-black bg-opacity-50 p-0 text-center text-white md:w-1/2 lg:flex xl:w-1/4">
+											<div className="group relative z-10 w-1/2">
 												<div
 													className={`z-10 flex w-full cursor-pointer flex-row items-center justify-center gap-1 rounded-2xl py-2`}
 												>
+													<div>Exchange</div>
 													<div>
-														{router.pathname.includes('/kyo')
-															? router.pathname[5].toUpperCase() + router.pathname.slice(6, router.pathname.length)
-															: 'KYO'}
+														<RiArrowDownSLine className=" text-xl " />
 													</div>
+												</div>
+												<div className=" absolute top-10 hidden w-full flex-col items-center justify-center gap-1 rounded-xl bg-black bg-opacity-90 py-2 hover:flex group-hover:flex">
+													<Link href="/swap">
+														<div className=" transform-gpu cursor-pointer duration-150 hover:text-darks-200">Swap</div>
+													</Link>
+													<Link href="/deposit">
+														<div className=" transform-gpu cursor-pointer duration-150 hover:text-darks-200">Deposit</div>
+													</Link>
+													<Link href="/withdraw">
+														<div className=" transform-gpu cursor-pointer duration-150 hover:text-darks-200">
+															Withdraw
+														</div>
+													</Link>
+												</div>
+											</div>
+											<div className="group relative z-10 w-1/2">
+												<div
+													className={`z-10 flex w-full cursor-pointer flex-row items-center justify-center gap-1 rounded-2xl py-2`}
+												>
+													<div>KYO</div>
 													<div>
-														<FiArrowDown className=" text-lg " />
+														<RiArrowDownSLine className=" text-xl " />
 													</div>
 												</div>
 												<div className=" absolute top-10 hidden w-full flex-col items-center justify-center gap-1 rounded-xl bg-black bg-opacity-90 py-2 hover:flex group-hover:flex">
@@ -65,6 +75,9 @@ const Navbar: React.FC = () => {
 													</Link>
 													<Link href="/kyo/gauges">
 														<div className=" transform-gpu cursor-pointer duration-150 hover:text-darks-200">Gauges</div>
+													</Link>
+													<Link href="/kyo/farms">
+														<div className=" transform-gpu cursor-pointer duration-150 hover:text-darks-200">Farms</div>
 													</Link>
 												</div>
 											</div>
@@ -75,7 +88,7 @@ const Navbar: React.FC = () => {
 									{/* Right */}
 									<div
 										className={`static right-0 z-40 flex transform-gpu items-center pr-0 duration-100 ${
-											router.pathname === '/' ? 'opacity-0' : 'opacity-100'
+											router.pathname === '/' ? 'hidden' : 'flex'
 										}`}
 									>
 										<div className="ml-6 block w-full content-center">

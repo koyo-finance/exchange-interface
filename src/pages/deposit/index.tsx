@@ -11,11 +11,9 @@ import { ROOT_WITH_PROTOCOL } from 'constants/links';
 import { BigNumber } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
 import { Form, Formik } from 'formik';
-import { useDepositIntoGauge } from 'hooks/contracts/KYO/gauges/useDepositIntoGauge';
 import useAddLiquidity from 'hooks/contracts/StableSwap/useAddLiquidity';
 import useMultiTokenAllowance from 'hooks/contracts/useMultiTokenAllowance';
 import useMultiTokenBalances from 'hooks/contracts/useMultiTokenBalances';
-import useTokenAllowance from 'hooks/contracts/useTokenAllowance';
 import useTokenBalance from 'hooks/contracts/useTokenBalance';
 import { SwapLayout, SwapLayoutCard } from 'layouts/SwapLayout';
 import { NextSeo } from 'next-seo';
@@ -29,8 +27,6 @@ import { ExtendedNextPage } from 'types/ExtendedNextPage';
 import { useAccount, useSigner } from 'wagmi';
 
 const DepositPage: ExtendedNextPage = () => {
-	const FourKoyoGaugeAddress = '0x24f47A11AEE5d1bF96C18dDA7bB0c0Ef248A8e71';
-
 	const pools = useSelector(selectAllPoolsByChainId(ChainId.BOBA));
 
 	const { data: account } = useAccount();
@@ -51,11 +47,9 @@ const DepositPage: ExtendedNextPage = () => {
 		selectedPool?.coins?.map((coin) => coin.address)
 	);
 
-	const { data: lpTokenAllowance = BigNumber.from(0) } = useTokenAllowance(account?.address, FourKoyoGaugeAddress, selectedPool?.addresses.lpToken);
 	const { data: lpTokenBalance = BigNumber.from(0) } = useTokenBalance(account?.address, selectedPool?.addresses.lpToken);
 
 	const { mutate: addLiqudity, status: deposited } = useAddLiquidity(signer || undefined, selectedPool?.id || '');
-	const { mutate: gaugeDeposit } = useDepositIntoGauge(signer || undefined, FourKoyoGaugeAddress);
 
 	useEffect(() => {
 		if (deposited === 'success') {
@@ -182,66 +176,32 @@ const DepositPage: ExtendedNextPage = () => {
 															className=" btn mt-2 w-full bg-lights-400 bg-opacity-100 p-0 text-black hover:bg-lights-400"
 															invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
 														>
-															<div className="flex h-full w-full flex-row ">
-																<div className="w-1/2 rounded-l-lg border-r-2 border-darks-500 font-sora text-black hover:bg-lights-200 hover:font-extrabold">
-																	<Switch>
-																		{selectedPool.coins.map((coin, i) => (
-																			<Case
-																				condition={BigNumber.from(allowances[i].data || 0).lt(
-																					parseUnits(
-																						(props.values[coin.name] || 0).toString(),
-																						coin.decimals
-																					)
-																				)}
-																				key={coin.id}
-																			>
-																				<FormApproveAsset
-																					asset={coin.address}
-																					spender={selectedPool.addresses.swap}
-																					amount={100_000}
-																					decimals={coin.decimals}
-																					className="h-full w-full"
-																				>
-																					APPROVE -{' '}
-																					<span className="italic">{coin.name.toUpperCase()}</span>
-																				</FormApproveAsset>
-																			</Case>
-																		))}
+															<Switch>
+																{selectedPool.coins.map((coin, i) => (
+																	<Case
+																		condition={BigNumber.from(allowances[i].data || 0).lt(
+																			parseUnits((props.values[coin.name] || 0).toString(), coin.decimals)
+																		)}
+																		key={coin.id}
+																	>
+																		<FormApproveAsset
+																			asset={coin.address}
+																			spender={selectedPool.addresses.swap}
+																			amount={100_000}
+																			decimals={coin.decimals}
+																			className="h-full w-full"
+																		>
+																			APPROVE - <span className="italic">{coin.name.toUpperCase()}</span>
+																		</FormApproveAsset>
+																	</Case>
+																))}
 
-																		<Default>
-																			<button type="submit" className="h-full w-full">
-																				DEPOSIT
-																			</button>
-																		</Default>
-																	</Switch>
-																</div>
-																<div className="w-1/2 rounded-r-lg border-l-2 border-darks-500 font-sora text-black hover:bg-lights-200 hover:font-extrabold">
-																	<Switch>
-																		<Case condition={BigNumber.from(lpTokenAllowance).lt(lpTokenBalance)}>
-																			<FormApproveAsset
-																				asset={selectedPool.addresses.lpToken}
-																				spender={FourKoyoGaugeAddress}
-																				amount={100_000}
-																				decimals={18}
-																				className="h-full w-full"
-																			>
-																				APPROVE LP TOKENS
-																			</FormApproveAsset>
-																		</Case>
-																		<Default>
-																			<button
-																				type="button"
-																				onClick={() =>
-																					gaugeDeposit([lpTokenBalance, { gasLimit: 1_000_000 }])
-																				}
-																				className="h-full w-full"
-																			>
-																				STAKE LP TOKENS
-																			</button>
-																		</Default>
-																	</Switch>
-																</div>
-															</div>
+																<Default>
+																	<button type="submit" className="h-full w-full">
+																		DEPOSIT
+																	</button>
+																</Default>
+															</Switch>
 														</CoreCardConnectButton>
 													</div>
 												</div>
