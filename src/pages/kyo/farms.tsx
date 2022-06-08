@@ -4,6 +4,7 @@ import FormApproveAsset from 'components/UI/Cards/FormApproveAsset';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
 import { BigNumber } from 'ethers';
 import { useDepositIntoGauge } from 'hooks/contracts/KYO/gauges/useDepositIntoGauge';
+import useMultiTokenBalances from 'hooks/contracts/useMultiTokenBalances';
 import useTokenAllowance from 'hooks/contracts/useTokenAllowance';
 import useTokenBalance from 'hooks/contracts/useTokenBalance';
 import { SwapLayout } from 'layouts/SwapLayout';
@@ -26,6 +27,7 @@ const FarmsPage: ExtendedNextPage = () => {
 	const [pool] = useSelector(selectAllPoolsByChainId(ChainId.BOBA)).filter((pool) => pool.name === '4pool');
 
 	const { data: lpTokenBalance = BigNumber.from(0) } = useTokenBalance(accountAddress, pool?.addresses.lpToken);
+	const gaugeTokenBalances = useMultiTokenBalances(account?.address, gauges);
 	const { data: LPtotal = BigNumber.from(0) } = useTokenBalance(FourKoyoGaugeAddress, pool?.addresses.lpToken || '');
 	const { data: lpTokenAllowance = BigNumber.from(0) } = useTokenAllowance(account?.address, FourKoyoGaugeAddress, pool?.addresses.lpToken);
 	const { mutate: gaugeDeposit } = useDepositIntoGauge(signer || undefined, FourKoyoGaugeAddress);
@@ -45,16 +47,23 @@ const FarmsPage: ExtendedNextPage = () => {
 					</div>
 				</div>
 				<div className=" flex w-full flex-row flex-wrap items-center justify-center">
-					{gauges.map(() => (
+					{gauges.map((_, i) => (
 						<div className="flex w-1/3 flex-col gap-4 rounded-xl border-2 border-lights-400 bg-black bg-opacity-50 p-4">
 							<div className="w-full text-center">4pool - 4koyo (FRAX + DAI stablecoin + USDT + USDC)</div>
 							<div className=" flex w-full flex-row justify-between ">
 								<div>TVL </div>
 								<div>${formatBalance(LPtotal)}</div>
 							</div>
-							<div className=" flex w-full flex-row justify-between ">
-								<div>Your LP token balance</div>
-								<div>{formatBalance(lpTokenBalance)}</div>
+							<div className="flex flex-row justify-between">
+								<div>
+									LP token balance: <span className="underline">{formatBalance(lpTokenBalance)}</span>
+								</div>
+								<div>
+									Gauge share balance:{' '}
+									<span className="underline">
+										{formatBalance(gaugeTokenBalances[i].data || 0, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+									</span>
+								</div>
 							</div>
 							<CoreCardConnectButton
 								className="btn w-full bg-lights-400 px-0 text-black hover:bg-lights-200"
