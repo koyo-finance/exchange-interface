@@ -5,6 +5,7 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { FiArrowDown } from 'react-icons/fi';
 import PageSelectedOverlay from './Desktop/PageSelectedOverlay';
 
 const Navbar: React.FC = () => {
@@ -46,10 +47,17 @@ const Navbar: React.FC = () => {
 												<div className={`z-10 w-1/4 cursor-pointer rounded-2xl py-2`}>Withdraw</div>
 											</Link>
 											<div className="group relative z-10 w-1/4">
-												<div className={`z-10 w-full cursor-pointer rounded-2xl py-2`}>
-													{router.pathname.includes('/kyo')
-														? router.pathname[5].toUpperCase() + router.pathname.slice(6, router.pathname.length)
-														: 'KYO'}
+												<div
+													className={`z-10 flex w-full cursor-pointer flex-row items-center justify-center gap-1 rounded-2xl py-2`}
+												>
+													<div>
+														{router.pathname.includes('/kyo')
+															? router.pathname[5].toUpperCase() + router.pathname.slice(6, router.pathname.length)
+															: 'KYO'}
+													</div>
+													<div>
+														<FiArrowDown className=" text-lg " />
+													</div>
 												</div>
 												<div className=" absolute top-10 hidden w-full flex-col items-center justify-center gap-1 rounded-xl bg-black bg-opacity-90 py-2 hover:flex group-hover:flex">
 													<Link href="/kyo/lock">

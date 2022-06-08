@@ -12,9 +12,14 @@ import useCheckClaimableTokens from 'hooks/contracts/KYO/gauges/useMultiCheckCla
 import { useVoteForGaugeWeights } from 'hooks/contracts/KYO/gauges/useVoteForGaugeWeights';
 import { useDistributeGaugeEmissions } from 'hooks/contracts/KYO/gauges/useDistributeGaugeEmissions';
 import CoreCardConnectButton from 'components/UI/Cards/CoreCardConnectButton';
+import useGetVoteUserPower from 'hooks/contracts/KYO/gauges/useGetVoteUserPower';
+import { BigNumber } from 'ethers';
+import useGetLastUserVoteTime from 'hooks/contracts/KYO/gauges/useGetLastUserVoteTime';
+import { BsInfoCircle } from 'react-icons/bs';
 
 const GaugesPage: ExtendedNextPage = () => {
 	const FourKoyoGaugeAddress = '0x24f47A11AEE5d1bF96C18dDA7bB0c0Ef248A8e71';
+	const weekSeconds = 604800;
 
 	// const [selectedGauge, setSelectedGauge] = useState(false);
 	// const [gaugeListModalIsOpen, setGaugeListModalIsOpen] = useState(false);
@@ -28,6 +33,10 @@ const GaugesPage: ExtendedNextPage = () => {
 
 	const { data: veKYOBalance = 0 } = useTokenBalance(accountAddress, votingEscrowContract.address);
 	const claimableGauges = useCheckClaimableTokens(accountAddress, [FourKoyoGaugeAddress]);
+	const { data: votePower = BigNumber.from(0) } = useGetVoteUserPower(accountAddress);
+	const { data: lasVoteTime = BigNumber.from(0) } = useGetLastUserVoteTime(accountAddress, FourKoyoGaugeAddress);
+	const transformedLastVoteTime = new Date(lasVoteTime.toNumber() * 1000);
+	const newVoteAvailible = new Date((lasVoteTime.toNumber() + weekSeconds) * 1000);
 
 	const { mutate: submitVote } = useVoteForGaugeWeights(signer || undefined);
 	const { mutate: claimEmissions } = useDistributeGaugeEmissions(signer || undefined);
@@ -88,7 +97,7 @@ const GaugesPage: ExtendedNextPage = () => {
 							{claimableGauges.map((gauge) => (
 								<div className="flex w-full flex-row items-center justify-between border-t-2 border-darks-200 p-2 text-center text-white">
 									<div className="w-1/4 truncate text-left">4koyo (DAI + USDC + USDT+ FRAX)</div>
-									<div className="w-1/4 text-xl">?</div>
+									<div className="w-1/4 text-xl">{votePower.div(100).toString()}%</div>
 									<div className="w-1/4 px-1">
 										<button
 											className="btn w-full bg-lights-400 bg-opacity-100 text-black hover:bg-lights-200"
@@ -118,7 +127,25 @@ const GaugesPage: ExtendedNextPage = () => {
 							</div>
 						</div>
 					)} */}
-					{error !== '' && <div className="w-full text-xl text-red-600">{error}</div>}
+					{error !== '' && <div className="w-full text-xl text-red-600 ">{error}</div>}
+					<div className="flex w-full flex-row justify-between font-semibold text-white">
+						<div>
+							Last voted on:{' '}
+							{transformedLastVoteTime.toLocaleDateString(navigator.language, {
+								day: 'numeric',
+								month: 'short',
+								year: 'numeric'
+							})}
+						</div>
+						<div className=" text-lights-400">
+							Next vote date:{' '}
+							{newVoteAvailible.toLocaleDateString(navigator.language, {
+								day: 'numeric',
+								month: 'short',
+								year: 'numeric'
+							})}
+						</div>
+					</div>
 					<div className="flex w-full flex-row flex-wrap items-center justify-between gap-2 text-xl text-white">
 						<div className="text-lg md:text-xl">
 							<label htmlFor="power">Select voting power (%):</label>
@@ -149,6 +176,12 @@ const GaugesPage: ExtendedNextPage = () => {
 							maximumFractionDigits: 2
 						})}{' '}
 						({voteAmount}%) of your voting power will be given to the selected gauge.
+					</div>
+					<div className="flex w-full flex-row items-center justify-start gap-1 rounded-xl bg-gray-600 p-2 text-gray-300">
+						<BsInfoCircle className=" text-xl" />
+						<span>
+							Beware that you can vote only <b>once</b> every 7 days for a specific gauges.
+						</span>
 					</div>
 					<CoreCardConnectButton
 						className="btn bg-lights-400 px-0 text-black hover:bg-lights-200"
