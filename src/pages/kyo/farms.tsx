@@ -4,6 +4,8 @@ import FormApproveAsset from 'components/UI/Cards/FormApproveAsset';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
 import { BigNumber } from 'ethers';
 import { useDepositIntoGauge } from 'hooks/contracts/KYO/gauges/useDepositIntoGauge';
+import { useDistributeGaugeEmissions } from 'hooks/contracts/KYO/gauges/useDistributeGaugeEmissions';
+import useMultiCheckClaimableTokens from 'hooks/contracts/KYO/gauges/useMultiCheckClaimableTokens';
 import { useWithdrawFromGauge } from 'hooks/contracts/KYO/gauges/useWithdrawFromGauge';
 import useMultiTokenBalances from 'hooks/contracts/useMultiTokenBalances';
 import useTokenAllowance from 'hooks/contracts/useTokenAllowance';
@@ -29,11 +31,13 @@ const FarmsPage: ExtendedNextPage = () => {
 
 	const { data: lpTokenBalance = BigNumber.from(0) } = useTokenBalance(accountAddress, pool?.addresses.lpToken);
 	const gaugeTokenBalances = useMultiTokenBalances(account?.address, gauges);
+	const gaugeClaimAmounts = useMultiCheckClaimableTokens(accountAddress, gauges);
 	const { data: LPtotal = BigNumber.from(0) } = useTokenBalance(FourKoyoGaugeAddress, pool?.addresses.lpToken || '');
 	const { data: lpTokenAllowance = BigNumber.from(0) } = useTokenAllowance(account?.address, FourKoyoGaugeAddress, pool?.addresses.lpToken);
 
 	const { mutate: gaugeDeposit } = useDepositIntoGauge(signer || undefined, FourKoyoGaugeAddress);
 	const { mutate: gaugeWithdraw } = useWithdrawFromGauge(signer || undefined, FourKoyoGaugeAddress);
+	const { mutate: claimEmissions } = useDistributeGaugeEmissions(signer || undefined);
 
 	return (
 		<>
@@ -50,7 +54,7 @@ const FarmsPage: ExtendedNextPage = () => {
 					</div>
 				</div>
 				<div className=" flex w-full flex-row flex-wrap items-center justify-center">
-					{gauges.map((_, i) => (
+					{gauges.map((gauge, i) => (
 						<div className="flex w-1/3 flex-col gap-4 rounded-xl border-2 border-lights-400 bg-black bg-opacity-50 p-4">
 							<div className="w-full text-center">4pool - 4koyo (FRAX + DAI stablecoin + USDT + USDC)</div>
 							<div className=" flex w-full flex-row justify-between ">
@@ -94,14 +98,8 @@ const FarmsPage: ExtendedNextPage = () => {
 										</Switch>
 									</div>
 									<div className="w-1/3 font-sora text-black hover:bg-lights-200 hover:font-extrabold">
-										<button
-											type="button"
-											className="z-20 h-full w-full"
-											onClick={() => {
-												/* */
-											}}
-										>
-											0
+										<button type="button" className="z-20 h-full w-full" onClick={() => claimEmissions([gauge])}>
+											{fromBigNumber(gaugeClaimAmounts[i].data || 0)}
 										</button>
 									</div>
 									<div className="w-1/3 rounded-r-lg border-l-2 border-darks-500 font-sora text-black hover:bg-lights-200 hover:font-extrabold">
