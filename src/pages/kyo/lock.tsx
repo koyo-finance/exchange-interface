@@ -53,6 +53,12 @@ const LockIndexPage: ExtendedNextPage = () => {
 					</div>
 					<div className="flex w-full flex-wrap items-center justify-center gap-[10vw]">
 						<BalanceCard text="My KYO Balance" value={formatBalance(kyoBalance)} />
+						<BalanceCard
+							text="Share of veKYO power"
+							value={`${calculatePercentage(veKyoTotalSupply, veKyoBalance).toLocaleString('fullwide', {
+								maximumFractionDigits: 4
+							})} %`}
+						/>
 						<BalanceCard text="My veKYO balance" value={formatBalance(veKyoBalance)} />
 					</div>
 					<div className="w-full rounded-lg border-2 border-lights-400 bg-black bg-opacity-40 md:mt-6 lg:w-7/12">
