@@ -5,7 +5,7 @@ import { bobaReadonlyProvider } from 'hooks/useProviders';
 import { QueryObserverResult } from 'react-query';
 import { Gauge, Gauge__factory } from 'types/contracts/koyo';
 
-export default function useCheckClaimableTokens(
+export default function useMultiCheckClaimableTokens(
 	account: string | null | undefined,
 	gaugeAddresses: (string | undefined | null)[] = []
 ): QueryObserverResult<BigNumber>[] {

@@ -1,21 +1,21 @@
 import { formatBalance, fromBigNumber } from '@koyofinance/core-sdk';
+import CoreCardConnectButton from 'components/UI/Cards/CoreCardConnectButton';
 import BalanceCard from 'components/UI/Cards/Gauges/BalanceCard';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
 import { votingEscrowContract } from 'core/contracts';
+import { BigNumber } from 'ethers';
+import { useDistributeGaugeEmissions } from 'hooks/contracts/KYO/gauges/useDistributeGaugeEmissions';
+import useGetLastUserVoteTime from 'hooks/contracts/KYO/gauges/useGetLastUserVoteTime';
+import useGetVoteUserPower from 'hooks/contracts/KYO/gauges/useGetVoteUserPower';
+import useMultiCheckClaimableTokens from 'hooks/contracts/KYO/gauges/useMultiCheckClaimableTokens';
+import { useVoteForGaugeWeights } from 'hooks/contracts/KYO/gauges/useVoteForGaugeWeights';
 import useTokenBalance from 'hooks/contracts/useTokenBalance';
 import { SwapLayout } from 'layouts/SwapLayout';
 import { NextSeo } from 'next-seo';
 import React, { useState } from 'react';
+import { BsInfoCircle } from 'react-icons/bs';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
 import { useAccount, useSigner } from 'wagmi';
-import useCheckClaimableTokens from 'hooks/contracts/KYO/gauges/useMultiCheckClaimableTokens';
-import { useVoteForGaugeWeights } from 'hooks/contracts/KYO/gauges/useVoteForGaugeWeights';
-import { useDistributeGaugeEmissions } from 'hooks/contracts/KYO/gauges/useDistributeGaugeEmissions';
-import CoreCardConnectButton from 'components/UI/Cards/CoreCardConnectButton';
-import useGetVoteUserPower from 'hooks/contracts/KYO/gauges/useGetVoteUserPower';
-import { BigNumber } from 'ethers';
-import useGetLastUserVoteTime from 'hooks/contracts/KYO/gauges/useGetLastUserVoteTime';
-import { BsInfoCircle } from 'react-icons/bs';
 
 const GaugesPage: ExtendedNextPage = () => {
 	const FourKoyoGaugeAddress = '0x24f47A11AEE5d1bF96C18dDA7bB0c0Ef248A8e71';
@@ -32,11 +32,11 @@ const GaugesPage: ExtendedNextPage = () => {
 	const accountAddress = account?.address;
 
 	const { data: veKYOBalance = 0 } = useTokenBalance(accountAddress, votingEscrowContract.address);
-	const claimableGauges = useCheckClaimableTokens(accountAddress, [FourKoyoGaugeAddress]);
+	const claimableGauges = useMultiCheckClaimableTokens(accountAddress, [FourKoyoGaugeAddress]);
 	const { data: votePower = BigNumber.from(0) } = useGetVoteUserPower(accountAddress);
-	const { data: lasVoteTime = BigNumber.from(0) } = useGetLastUserVoteTime(accountAddress, FourKoyoGaugeAddress);
-	const transformedLastVoteTime = new Date(lasVoteTime.toNumber() * 1000);
-	const newVoteAvailible = new Date((lasVoteTime.toNumber() + weekSeconds) * 1000);
+	const { data: lastVoteTime = BigNumber.from(0) } = useGetLastUserVoteTime(accountAddress, FourKoyoGaugeAddress);
+	const transformedLastVoteTime = new Date(lastVoteTime.toNumber() * 1000);
+	const newVoteAvailible = new Date((lastVoteTime.toNumber() + weekSeconds) * 1000);
 
 	const { mutate: submitVote } = useVoteForGaugeWeights(signer || undefined);
 	const { mutate: claimEmissions } = useDistributeGaugeEmissions(signer || undefined);
@@ -128,24 +128,26 @@ const GaugesPage: ExtendedNextPage = () => {
 						</div>
 					)} */}
 					{error !== '' && <div className="w-full text-xl text-red-600 ">{error}</div>}
-					<div className="flex w-full flex-row justify-between font-semibold text-white">
-						<div>
-							Last voted on:{' '}
-							{transformedLastVoteTime.toLocaleDateString(navigator.language, {
-								day: 'numeric',
-								month: 'short',
-								year: 'numeric'
-							})}
+					{lastVoteTime.gt(0) && (
+						<div className="flex w-full flex-row justify-between font-semibold text-white">
+							<div>
+								Last voted on:{' '}
+								{transformedLastVoteTime.toLocaleDateString(navigator.language, {
+									day: 'numeric',
+									month: 'short',
+									year: 'numeric'
+								})}
+							</div>
+							<div className=" text-lights-400">
+								Next vote date:{' '}
+								{newVoteAvailible.toLocaleDateString(navigator.language, {
+									day: 'numeric',
+									month: 'short',
+									year: 'numeric'
+								})}
+							</div>
 						</div>
-						<div className=" text-lights-400">
-							Next vote date:{' '}
-							{newVoteAvailible.toLocaleDateString(navigator.language, {
-								day: 'numeric',
-								month: 'short',
-								year: 'numeric'
-							})}
-						</div>
-					</div>
+					)}
 					<div className="flex w-full flex-row flex-wrap items-center justify-between gap-2 text-xl text-white">
 						<div className="text-lg md:text-xl">
 							<label htmlFor="power">Select voting power (%):</label>
