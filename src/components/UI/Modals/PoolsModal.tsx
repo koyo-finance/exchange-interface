@@ -30,7 +30,7 @@ const PoolsModal: React.FC<PoolsModalProps> = (props) => {
 	};
 
 	return (
-		<div className=" fixed top-0 left-0 z-40 flex min-h-screen w-full items-center justify-center ">
+		<div className=" fixed top-0 left-0 z-40 flex min-h-screen w-full items-center justify-center px-4 ">
 			<div className="fixed top-0 left-0 z-0 min-h-screen w-full cursor-pointer bg-black bg-opacity-50" onClick={props.closeModal}></div>
 			<div className="z-20 flex w-[30rem] flex-col gap-4 rounded-xl bg-gray-800 p-4 text-white">
 				<div className=" flex w-full flex-row items-center justify-between">

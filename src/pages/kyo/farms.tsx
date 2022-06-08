@@ -55,64 +55,72 @@ const FarmsPage: ExtendedNextPage = () => {
 				</div>
 				<div className=" flex w-full flex-row flex-wrap items-center justify-center">
 					{gauges.map((gauge, i) => (
-						<div className="flex w-1/3 flex-col gap-4 rounded-xl border-2 border-lights-400 bg-black bg-opacity-50 p-4">
+						<div className="flex w-full flex-col gap-4 rounded-xl border-2 border-lights-400 bg-black bg-opacity-50 p-4 text-base text-white sm:w-3/4 md:w-1/2 lg:w-2/5 lg:text-lg xl:w-1/3 xl:text-xl">
 							<div className="w-full text-center">4pool - 4koyo (FRAX + DAI stablecoin + USDT + USDC)</div>
 							<div className=" flex w-full flex-row justify-between ">
 								<div>TVL </div>
-								<div>{formatDollarAmount(fromBigNumber(LPtotal))}</div>
+								<div className=" font-bold">{formatDollarAmount(fromBigNumber(LPtotal))}</div>
 							</div>
 							<div className="flex flex-row justify-between">
-								<div>
-									LP token balance: <span className="underline">{formatBalance(lpTokenBalance)}</span>
-								</div>
-								<div>
-									Gauge share balance:{' '}
-									<span className="underline">
-										{formatBalance(gaugeTokenBalances[i].data || 0, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-									</span>
-								</div>
+								<div>LP token balance:</div> <div className=" font-bold">{formatBalance(lpTokenBalance)}</div>
 							</div>
-							<CoreCardConnectButton
-								className=" btn mt-2 w-full bg-lights-400 bg-opacity-100 p-0 text-black hover:bg-lights-400"
-								invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
-							>
-								<div className="flex h-full w-full flex-row ">
-									<div className="w-1/3 rounded-l-lg border-r-2 border-darks-500 font-sora text-black hover:bg-lights-200 hover:font-extrabold">
-										<Switch>
-											<Case condition={BigNumber.from(lpTokenAllowance).lt(lpTokenBalance)}>
-												<FormApproveAsset
-													asset={pool.addresses.lpToken}
-													spender={FourKoyoGaugeAddress}
-													amount={100_000}
-													decimals={18}
-													className="h-full w-full"
-												>
-													APPROVE - <span className="italic">4KOYO LP TOKEN</span>
-												</FormApproveAsset>
-											</Case>
-											<Default>
-												<button type="button" className="z-20 h-full w-full" onClick={() => gaugeDeposit([lpTokenBalance])}>
-													DEPOSIT LP TOKENS
-												</button>
-											</Default>
-										</Switch>
-									</div>
-									<div className="w-1/3 font-sora text-black hover:bg-lights-200 hover:font-extrabold">
-										<button type="button" className="z-20 h-full w-full" onClick={() => claimEmissions([gauge])}>
-											{fromBigNumber(gaugeClaimAmounts[i].data || 0)}
-										</button>
-									</div>
-									<div className="w-1/3 rounded-r-lg border-l-2 border-darks-500 font-sora text-black hover:bg-lights-200 hover:font-extrabold">
-										<button
-											type="button"
-											className="z-20 h-full w-full"
-											onClick={() => gaugeWithdraw([gaugeTokenBalances[i].data || 0])}
+							<div className="flex flex-row justify-between">
+								Gauge share balance:{' '}
+								<span className=" font-bold">
+									{formatBalance(gaugeTokenBalances[i].data || 0, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+								</span>
+							</div>
+							<div className=" flex w-full flex-col gap-2 ">
+								<CoreCardConnectButton
+									className=" btn w-full bg-lights-400 bg-opacity-100 p-0 text-black hover:bg-lights-200"
+									invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
+								>
+									<Switch>
+										<Case condition={BigNumber.from(lpTokenAllowance).lt(lpTokenBalance)}>
+											<FormApproveAsset
+												asset={pool.addresses.lpToken}
+												spender={FourKoyoGaugeAddress}
+												amount={100_000}
+												decimals={18}
+												className="h-full w-full"
+											>
+												APPROVE - <span className="italic">4KOYO LP TOKEN</span>
+											</FormApproveAsset>
+										</Case>
+										<Default>
+											<button type="button" className=" h-full w-full" onClick={() => gaugeDeposit([lpTokenBalance])}>
+												DEPOSIT LP TOKENS
+											</button>
+										</Default>
+									</Switch>
+								</CoreCardConnectButton>
+								{(gaugeTokenBalances[i].data || 0) > 0 && (
+									<>
+										<hr className="w-full bg-white" />
+										<CoreCardConnectButton
+											className=" btn w-full bg-lights-400 bg-opacity-100 p-0 text-black hover:bg-lights-200"
+											invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400 hidden"
 										>
-											WITHDRAW LP TOKENS
-										</button>
-									</div>
-								</div>
-							</CoreCardConnectButton>
+											<button type="button" className=" h-full w-full uppercase" onClick={() => claimEmissions([gauge])}>
+												Claim - {fromBigNumber(gaugeClaimAmounts[i].data || 0)} KYO
+											</button>
+										</CoreCardConnectButton>
+										<hr className="w-full bg-white" />
+										<CoreCardConnectButton
+											className=" btn w-full border-red-600 bg-transparent bg-opacity-100 p-0 text-red-600 hover:bg-red-600 hover:text-white"
+											invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400 hidden"
+										>
+											<button
+												type="button"
+												className="h-full w-full"
+												onClick={() => gaugeWithdraw([gaugeTokenBalances[i].data || 0])}
+											>
+												WITHDRAW LP TOKENS
+											</button>
+										</CoreCardConnectButton>
+									</>
+								)}
+							</div>
 						</div>
 					))}
 				</div>
