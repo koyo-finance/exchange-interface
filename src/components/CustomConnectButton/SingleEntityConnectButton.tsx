@@ -1,12 +1,12 @@
 import React from 'react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 
-export interface CoreCardConnectButtonProps {
+export interface SingleEntityConnectButtonProps {
 	className?: string;
 	invalidNetworkClassName?: string;
 }
 
-const CoreCardConnectButton: React.FC<CoreCardConnectButtonProps> = ({ children, className, invalidNetworkClassName }) => {
+const SingleEntityConnectButton: React.FC<SingleEntityConnectButtonProps> = ({ children, className, invalidNetworkClassName }) => {
 	return (
 		<ConnectButton.Custom>
 			{({ account, chain, openChainModal, openConnectModal, mounted }) => {
@@ -48,4 +48,4 @@ const CoreCardConnectButton: React.FC<CoreCardConnectButtonProps> = ({ children,
 	);
 };
 
-export default CoreCardConnectButton;
+export default SingleEntityConnectButton;

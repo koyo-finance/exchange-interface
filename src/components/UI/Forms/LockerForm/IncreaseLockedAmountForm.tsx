@@ -1,5 +1,5 @@
 import { fromBigNumber, toBigNumber } from '@koyofinance/core-sdk';
-import CoreCardConnectButton from 'components/UI/Cards/CoreCardConnectButton';
+import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
 import FormApproveAsset from 'components/UI/Cards/FormApproveAsset';
 import { kyoContract, votingEscrowContract } from 'core/contracts';
 import { BigNumber, BigNumberish } from 'ethers';
@@ -61,7 +61,7 @@ const IncreaseLockedAmountForm: React.FC<IncreaseLockedAmountFormProps> = ({ kyo
 								</div>
 							</div>
 							<div className="">
-								<CoreCardConnectButton
+								<SingleEntityConnectButton
 									className="btn w-full bg-lights-400 bg-opacity-100 text-black hover:bg-lights-200"
 									invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
 								>
@@ -83,7 +83,7 @@ const IncreaseLockedAmountForm: React.FC<IncreaseLockedAmountFormProps> = ({ kyo
 											</button>
 										</Default>
 									</Switch>
-								</CoreCardConnectButton>
+								</SingleEntityConnectButton>
 							</div>
 						</div>
 					</Form>

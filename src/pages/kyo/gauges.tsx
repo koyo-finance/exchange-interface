@@ -1,5 +1,5 @@
 import { formatBalance, fromBigNumber } from '@koyofinance/core-sdk';
-import CoreCardConnectButton from 'components/UI/Cards/CoreCardConnectButton';
+import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
 import BalanceCard from 'components/UI/Cards/Gauges/BalanceCard';
 import GaugeModal from 'components/UI/Modals/GaugeModal';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
@@ -223,23 +223,23 @@ const GaugesPage: ExtendedNextPage = () => {
 						</span>
 					</div>
 					{selectedGauge && (
-						<CoreCardConnectButton
+						<SingleEntityConnectButton
 							className="btn bg-lights-400 px-0 text-black hover:bg-lights-200"
 							invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
 						>
 							<button className="z-20 h-full w-full" onClick={submitVoteHandler}>
 								SUBMIT VOTE - 4KOYO
 							</button>
-						</CoreCardConnectButton>
+						</SingleEntityConnectButton>
 					)}
 
 					{!selectedGauge && (
-						<CoreCardConnectButton
+						<SingleEntityConnectButton
 							className="btn bg-gray-600 px-0 text-black hover:bg-gray-600"
 							invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
 						>
 							<button className="z-20 h-full w-full">GAUGE NOT SELECTED</button>
-						</CoreCardConnectButton>
+						</SingleEntityConnectButton>
 					)}
 				</div>
 			</div>

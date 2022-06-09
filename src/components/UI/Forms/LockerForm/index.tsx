@@ -1,6 +1,6 @@
 import { formatBalance, fromBigNumber, toBigNumber } from '@koyofinance/core-sdk';
+import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
 import DatePickerFormik from 'components/forms/fields/DatePickerFormik';
-import CoreCardConnectButton from 'components/UI/Cards/CoreCardConnectButton';
 import FormApproveAsset from 'components/UI/Cards/FormApproveAsset';
 import { kyoContract, votingEscrowContract } from 'core/contracts';
 import { BigNumber } from 'ethers';
@@ -8,9 +8,9 @@ import { Form, Formik } from 'formik';
 import { useCreateVotingEscrowLock } from 'hooks/contracts/KYO/useCreateVotingEscrowLock';
 import useGetLockTimeEscrow from 'hooks/contracts/KYO/useGetLockTimeEscrow';
 import { useWithdrawLockedEscrow } from 'hooks/contracts/KYO/useWithdrawLockedEscrow';
-import useGetLockedAmount from 'hooks/useGetLockedAmount';
 import useTokenAllowance from 'hooks/contracts/useTokenAllowance';
 import useTokenBalance from 'hooks/contracts/useTokenBalance';
+import useGetLockedAmount from 'hooks/useGetLockedAmount';
 import React from 'react';
 import { Case, Default, Switch } from 'react-if';
 import { useAccount, useSigner } from 'wagmi';
@@ -119,7 +119,7 @@ const LockerForm: React.FC<{ openForceWithdrawModal: () => void }> = ({ openForc
 									</div>
 								</div>
 								<div className="">
-									<CoreCardConnectButton
+									<SingleEntityConnectButton
 										className="btn w-full bg-lights-400 bg-opacity-100 text-black hover:bg-lights-200"
 										invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
 									>
@@ -141,7 +141,7 @@ const LockerForm: React.FC<{ openForceWithdrawModal: () => void }> = ({ openForc
 												</button>
 											</Default>
 										</Switch>
-									</CoreCardConnectButton>
+									</SingleEntityConnectButton>
 								</div>
 							</div>
 						</Form>

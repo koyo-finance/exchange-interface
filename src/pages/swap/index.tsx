@@ -1,7 +1,7 @@
 import { ChainId, fromBigNumber, toBigNumber } from '@koyofinance/core-sdk';
 import { Pool, pools } from '@koyofinance/swap-sdk';
 import { TokenInfo } from '@uniswap/token-lists';
-import CoreCardConnectButton from 'components/UI/Cards/CoreCardConnectButton';
+import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
 import FormApproveAsset from 'components/UI/Cards/FormApproveAsset';
 import SwapCard from 'components/UI/Cards/Swap/SwapCard';
 import GuideLink from 'components/UI/GuideLink';
@@ -228,7 +228,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 						/>
 
 						{(pool?.coins.findIndex((coin) => tokenOne.address === coin.address) || 0) > -1 && (
-							<CoreCardConnectButton
+							<SingleEntityConnectButton
 								className="btn mt-2 w-full bg-lights-400 bg-opacity-100 text-black hover:bg-lights-200"
 								invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
 							>
@@ -267,7 +267,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 										</button>
 									</Default>
 								</Switch>
-							</CoreCardConnectButton>
+							</SingleEntityConnectButton>
 						)}
 						{!((pool?.coins.findIndex((coin) => tokenOne.address === coin.address) || 0) > -1) && (
 							<button className="mt-2 w-full rounded-lg bg-gray-600 bg-opacity-100 p-3 text-center text-black">

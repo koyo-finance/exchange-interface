@@ -1,5 +1,5 @@
 import { ChainId, formatAmount, formatBalance, formatDollarAmount, fromBigNumber } from '@koyofinance/core-sdk';
-import CoreCardConnectButton from 'components/UI/Cards/CoreCardConnectButton';
+import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
 import FormApproveAsset from 'components/UI/Cards/FormApproveAsset';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
 import { BigNumber } from 'ethers';
@@ -71,7 +71,7 @@ const FarmsPage: ExtendedNextPage = () => {
 								</span>
 							</div>
 							<div className=" flex w-full flex-col gap-2 ">
-								<CoreCardConnectButton
+								<SingleEntityConnectButton
 									className=" btn w-full bg-lights-400 bg-opacity-100 p-0 text-black hover:bg-lights-200"
 									invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
 								>
@@ -93,20 +93,20 @@ const FarmsPage: ExtendedNextPage = () => {
 											</button>
 										</Default>
 									</Switch>
-								</CoreCardConnectButton>
+								</SingleEntityConnectButton>
 								{(gaugeTokenBalances[i].data || 0) > 0 && (
 									<>
 										<hr className="w-full bg-white" />
-										<CoreCardConnectButton
+										<SingleEntityConnectButton
 											className=" btn w-full bg-lights-400 bg-opacity-100 p-0 text-black hover:bg-lights-200"
 											invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400 hidden"
 										>
 											<button type="button" className=" h-full w-full uppercase" onClick={() => claimEmissions([gauge])}>
 												Claim - {formatAmount(fromBigNumber(gaugeClaimAmounts[i].data || 0))} KYO
 											</button>
-										</CoreCardConnectButton>
+										</SingleEntityConnectButton>
 										<hr className="w-full bg-white" />
-										<CoreCardConnectButton
+										<SingleEntityConnectButton
 											className=" btn w-full border-red-600 bg-transparent bg-opacity-100 p-0 text-red-600 hover:bg-red-600 hover:text-white"
 											invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400 hidden"
 										>
@@ -117,7 +117,7 @@ const FarmsPage: ExtendedNextPage = () => {
 											>
 												WITHDRAW LP TOKENS
 											</button>
-										</CoreCardConnectButton>
+										</SingleEntityConnectButton>
 									</>
 								)}
 							</div>

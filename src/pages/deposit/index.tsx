@@ -1,6 +1,6 @@
 import { ChainId, formatBalance } from '@koyofinance/core-sdk';
 import { AugmentedPool, Pool } from '@koyofinance/swap-sdk';
-import CoreCardConnectButton from 'components/UI/Cards/CoreCardConnectButton';
+import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
 import DepositLPGetCalculation from 'components/UI/Cards/Deposit/DepositLPGetCalculation';
 import DepositPoolAPYCard from 'components/UI/Cards/Deposit/DepositPoolAPYCard';
 import DepositTokenCard from 'components/UI/Cards/Deposit/DepositTokenCard';
@@ -172,7 +172,7 @@ const DepositPage: ExtendedNextPage = () => {
 														</div>
 													</div>
 													<div className="mt-2">
-														<CoreCardConnectButton
+														<SingleEntityConnectButton
 															className=" btn mt-2 w-full bg-lights-400 bg-opacity-100 p-0 text-black hover:bg-lights-400"
 															invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
 														>
@@ -202,7 +202,7 @@ const DepositPage: ExtendedNextPage = () => {
 																	</button>
 																</Default>
 															</Switch>
-														</CoreCardConnectButton>
+														</SingleEntityConnectButton>
 													</div>
 												</div>
 											</Form>

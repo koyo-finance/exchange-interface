@@ -1,6 +1,6 @@
 import { ChainId, formatBalance } from '@koyofinance/core-sdk';
 import { AugmentedPool, Pool } from '@koyofinance/swap-sdk';
-import CoreCardConnectButton from 'components/UI/Cards/CoreCardConnectButton';
+import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
 import WithdrawLPBurnCalculation from 'components/UI/Cards/Withdraw/WithdrawLPBurnCalculation';
 import WithdrawTokenCard from 'components/UI/Cards/Withdraw/WithdrawTokenCard';
 import GuideLink from 'components/UI/GuideLink';
@@ -147,14 +147,14 @@ const WithdrawPage: ExtendedNextPage = () => {
 														</span>
 													</div>
 													<div className="mt-4">
-														<CoreCardConnectButton
+														<SingleEntityConnectButton
 															className="btn mt-2 w-full bg-lights-400 bg-opacity-100 font-sora text-black hover:bg-lights-200"
 															invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
 														>
 															<button type="submit" className="h-full w-full">
 																WITHDRAW
 															</button>
-														</CoreCardConnectButton>
+														</SingleEntityConnectButton>
 													</div>
 												</div>
 											</Form>
