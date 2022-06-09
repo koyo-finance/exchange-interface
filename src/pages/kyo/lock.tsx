@@ -51,7 +51,7 @@ const LockIndexPage: ExtendedNextPage = () => {
 							participating in the governance votes.
 						</p>
 					</div>
-					<div className="flex w-full flex-wrap items-center justify-center gap-[10vw]">
+					<div className="flex w-full flex-wrap items-center justify-center gap-[5vw]">
 						<BalanceCard text="My KYO Balance" value={formatBalance(kyoBalance)} />
 						<BalanceCard
 							text="Share of veKYO power"
@@ -71,7 +71,7 @@ const LockIndexPage: ExtendedNextPage = () => {
 						<h2 className="text-3xl font-bold">Total voting power</h2>
 						{/* <p className="text-xl">General stats about the veKYO system</p> */}
 						<div className="">
-							<div className="flex w-full flex-row flex-wrap items-center justify-evenly gap-x-[10vw] gap-y-6">
+							<div className="flex w-full flex-row flex-wrap items-center justify-evenly gap-x-[5vw] gap-y-6">
 								<BalanceCard text="Total KYO vote-locked" value={formatBalance(kyoEscrowed)} />
 								<BalanceCard
 									text="Percentage of KYO locked"
