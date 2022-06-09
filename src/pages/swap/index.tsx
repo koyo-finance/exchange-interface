@@ -4,7 +4,7 @@ import { TokenInfo } from '@uniswap/token-lists';
 import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
 import FormApproveAsset from 'components/UI/Cards/FormApproveAsset';
 import SwapCard from 'components/UI/Cards/Swap/SwapCard';
-import GuideLink from 'components/UI/GuideLink';
+import GuideLink from 'components/GuideLink';
 import TokenModal from 'components/UI/Modals/TokenModal';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
 import { BigNumber } from 'ethers';

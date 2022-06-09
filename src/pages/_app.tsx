@@ -1,7 +1,7 @@
 import { config } from '@fortawesome/fontawesome-svg-core';
-import { darkTheme, RainbowKitProvider } from '@rainbow-me/rainbowkit';
-import InitialStateWrapper from 'components/wrappers/InitialStateWrapper';
+import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import Navbar from 'components/Navbar';
+import InitialStateWrapper from 'components/wrappers/InitialStateWrapper';
 import { ROOT } from 'constants/links';
 import { queryClient } from 'core/query';
 import { chains, wagmiClient } from 'core/wallet';
@@ -17,6 +17,7 @@ import { ReactQueryDevtools } from 'react-query/devtools';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from 'state';
+import { koyoDarkTheme } from 'styling/rainbowkit';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
 import { WagmiProvider } from 'wagmi';
 import DefaultSeoProps from '../DefaultSeoProps';
@@ -35,12 +36,7 @@ const App: NextPage<AppProps> = ({ Component, pageProps }) => {
 		<>
 			<React.StrictMode>
 				<WagmiProvider client={wagmiClient}>
-					<RainbowKitProvider
-						chains={chains}
-						showRecentTransactions={true}
-						coolMode={true}
-						theme={darkTheme({ accentColor: '#F0932C', accentColorForeground: '#000' })}
-					>
+					<RainbowKitProvider chains={chains} showRecentTransactions={true} coolMode={true} theme={koyoDarkTheme()}>
 						<QueryClientProvider client={queryClient}>
 							<PlausibleProvider domain={ROOT}>
 								<Provider store={store}>

@@ -5,7 +5,7 @@ import DepositLPGetCalculation from 'components/UI/Cards/Deposit/DepositLPGetCal
 import DepositPoolAPYCard from 'components/UI/Cards/Deposit/DepositPoolAPYCard';
 import DepositTokenCard from 'components/UI/Cards/Deposit/DepositTokenCard';
 import FormApproveAsset from 'components/UI/Cards/FormApproveAsset';
-import GuideLink from 'components/UI/GuideLink';
+import GuideLink from 'components/GuideLink';
 import PoolsModal from 'components/UI/Modals/PoolsModal';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
 import { BigNumber } from 'ethers';

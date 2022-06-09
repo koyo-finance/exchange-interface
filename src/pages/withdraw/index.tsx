@@ -3,7 +3,7 @@ import { AugmentedPool, Pool } from '@koyofinance/swap-sdk';
 import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
 import WithdrawLPBurnCalculation from 'components/UI/Cards/Withdraw/WithdrawLPBurnCalculation';
 import WithdrawTokenCard from 'components/UI/Cards/Withdraw/WithdrawTokenCard';
-import GuideLink from 'components/UI/GuideLink';
+import GuideLink from 'components/GuideLink';
 import PoolsModal from 'components/UI/Modals/PoolsModal';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
 import { parseUnits } from 'ethers/lib/utils';

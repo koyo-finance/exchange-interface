@@ -35,8 +35,7 @@ const Navbar: React.FC = () => {
 								<div
 									className={`absolute z-0 flex w-full transform-gpu flex-row items-center justify-center duration-100 ${
 										router.pathname === '/' ? 'opacity-0' : 'opacity-100'
-									}
-				`}
+									}`}
 								>
 									<div className="relative hidden flex-row items-center rounded-2xl bg-black bg-opacity-50 p-0 text-center text-white md:w-1/3 lg:flex xl:w-1/4">
 										<div className="group relative z-10 w-1/2">
