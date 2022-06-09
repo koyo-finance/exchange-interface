@@ -1,4 +1,4 @@
-import { ChainId, formatBalance, formatDollarAmount, fromBigNumber } from '@koyofinance/core-sdk';
+import { ChainId, formatAmount, formatBalance, formatDollarAmount, fromBigNumber } from '@koyofinance/core-sdk';
 import CoreCardConnectButton from 'components/UI/Cards/CoreCardConnectButton';
 import FormApproveAsset from 'components/UI/Cards/FormApproveAsset';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
@@ -102,7 +102,7 @@ const FarmsPage: ExtendedNextPage = () => {
 											invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400 hidden"
 										>
 											<button type="button" className=" h-full w-full uppercase" onClick={() => claimEmissions([gauge])}>
-												Claim - {fromBigNumber(gaugeClaimAmounts[i].data || 0)} KYO
+												Claim - {formatAmount(fromBigNumber(gaugeClaimAmounts[i].data || 0))} KYO
 											</button>
 										</CoreCardConnectButton>
 										<hr className="w-full bg-white" />
