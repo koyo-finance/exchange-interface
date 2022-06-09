@@ -1,4 +1,4 @@
-import DatePickerFormik from 'components/forms/fields/DatePickerFormik';
+import DatePickerFormik from 'components/Field/DatePickerFormik';
 import { Form, Formik } from 'formik';
 import { useExtendLockTimeEscrow } from 'hooks/contracts/KYO/useExtendLockTimeEscrow';
 import React from 'react';

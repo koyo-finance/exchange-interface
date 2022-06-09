@@ -1,6 +1,6 @@
 import { formatBalance, fromBigNumber, toBigNumber } from '@koyofinance/core-sdk';
 import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
-import DatePickerFormik from 'components/forms/fields/DatePickerFormik';
+import DatePickerFormik from 'components/Field/DatePickerFormik';
 import FormApproveAsset from 'components/UI/Cards/FormApproveAsset';
 import { kyoContract, votingEscrowContract } from 'core/contracts';
 import { BigNumber } from 'ethers';
