@@ -2,7 +2,11 @@ import { ROOT_WITH_PROTOCOL } from 'constants/links';
 import type { DefaultSeoProps as DefaultSeoPropsType } from 'next-seo';
 
 export const BaseUrl = ROOT_WITH_PROTOCOL;
-export const Summary = '';
+export const Summary = [
+	'Kōyō is the first next-generation AMM protocol in the Boba ecosystem.',
+	'It is inspired by Curve and Balancer.',
+	"At its core it's a decentralized exchange (DEX) that minimizes unnecessary losses from swaps between assets of equal value."
+].join(' ');
 
 export const DefaultSeoProps: DefaultSeoPropsType = {
 	titleTemplate: 'Kōyō | %s',
