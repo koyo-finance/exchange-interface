@@ -94,7 +94,7 @@ const GaugesPage: ExtendedNextPage = () => {
 							maximumFractionDigits: 3
 						})}
 					/>
-					<BalanceCard text="VOTING POWER USED" value={votePower.div(100).toString() + '%'} />
+					<BalanceCard text="VOTING POWER USED" value={`${votePower.div(100).toString()}%`} />
 				</div>
 				<div className="mx-auto flex w-full flex-col gap-3 rounded-xl border-2 border-lights-400 bg-black bg-opacity-50 p-3 md:w-3/4 md:gap-4 md:p-4 lg:w-2/3 xl:w-1/2">
 					{fromBigNumber(claimableGauges[0].data || 0) > 0 && (
