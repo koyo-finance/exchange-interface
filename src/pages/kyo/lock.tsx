@@ -1,6 +1,6 @@
 import { calculatePercentage, formatBalance } from '@koyofinance/core-sdk';
 import Footer from 'components/Footer';
-import BalanceCard from 'components/UI/Cards/lock/BalanceCard';
+import BalanceCard from 'components/UI/Cards/Lock/BalanceCard';
 import LockerForm from 'components/UI/Forms/LockerForm';
 import GuideLink from 'components/UI/GuideLink';
 import ForceWithdrawModal from 'components/UI/Modals/ForceWithdrawModal';
