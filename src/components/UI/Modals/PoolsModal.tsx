@@ -24,7 +24,8 @@ const PoolsModal: React.FC<PoolsModalProps> = (props) => {
 				pool.id.includes(e.target.value) ||
 				pool.id.toLowerCase().includes(e.target.value) ||
 				pool.id.includes(e.target.value) ||
-				pool.id.toLowerCase().includes(e.target.value)
+				pool.id.toLowerCase().includes(e.target.value) ||
+				pool.addresses.swap.includes(e.target.value)
 		);
 		setFilteredPoolList(filteredList);
 	};
@@ -32,7 +33,7 @@ const PoolsModal: React.FC<PoolsModalProps> = (props) => {
 	return (
 		<div className=" fixed top-0 left-0 z-40 flex min-h-screen w-full items-center justify-center px-4 ">
 			<div className="fixed top-0 left-0 z-0 min-h-screen w-full cursor-pointer bg-black bg-opacity-50" onClick={props.closeModal}></div>
-			<div className="z-20 flex w-[30rem] flex-col gap-4 rounded-xl bg-gray-800 p-4 text-white">
+			<div className="z-20 flex w-full flex-col gap-4 rounded-xl bg-gray-800 p-4 text-white md:w-[40rem] lg:w-[30vw]">
 				<div className=" flex w-full flex-row items-center justify-between">
 					<div>Select Pool</div>
 					<div className="cursor-pointer text-2xl" onClick={props.closeModal}>
@@ -47,7 +48,7 @@ const PoolsModal: React.FC<PoolsModalProps> = (props) => {
 						className="w-full rounded-xl border-2 border-darks-300 bg-transparent p-2 text-lg outline-none"
 					/>
 				</div>
-				<div className="flex  max-h-[50vh] w-full flex-col overflow-y-scroll">
+				<div className="flex max-h-[50vh] flex-col overflow-y-scroll">
 					{filteredPoolList.map((pool) => (
 						<div
 							key={pool.id}
@@ -58,7 +59,7 @@ const PoolsModal: React.FC<PoolsModalProps> = (props) => {
 							}}
 						>
 							<div>{pool.id}</div>
-							<div className="flex flex-row gap-1 text-gray-300">{pool.assets}</div>
+							<div className=" max-w-[60%] flex-row gap-1 truncate text-gray-300">{pool.assets}</div>
 						</div>
 					))}
 				</div>
