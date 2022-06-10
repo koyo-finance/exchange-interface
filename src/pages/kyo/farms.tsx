@@ -56,7 +56,7 @@ const FarmsPage: ExtendedNextPage = () => {
 				<div className=" flex w-full flex-row flex-wrap items-center justify-center">
 					{gauges.map((gauge, i) => (
 						<div className="flex w-full flex-col gap-4 rounded-xl border-2 border-lights-400 bg-black bg-opacity-50 p-4 text-base text-white sm:w-3/4 md:w-1/2 lg:w-2/5 lg:text-lg xl:w-1/3 xl:text-xl">
-							<div className="w-full text-center">4pool - 4koyo (FRAX + DAI stablecoin + USDT + USDC)</div>
+							<div className="w-full text-center">4koyo - 4pool (FRAX + DAI stablecoin + USDT + USDC)</div>
 							<div className=" flex w-full flex-row justify-between ">
 								<div>TVL </div>
 								<div className=" font-bold">{formatDollarAmount(fromBigNumber(LPtotal))}</div>
