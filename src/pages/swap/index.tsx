@@ -1,16 +1,15 @@
 import { ChainId, fromBigNumber, toBigNumber } from '@koyofinance/core-sdk';
-import { Pool, pools } from '@koyofinance/swap-sdk';
+import { Pool, pools, StableSwap, useExchange, useGetDY } from '@koyofinance/swap-sdk';
 import { TokenInfo } from '@uniswap/token-lists';
 import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
+import GuideLink from 'components/GuideLink';
 import FormApproveAsset from 'components/UI/Cards/FormApproveAsset';
 import SwapCard from 'components/UI/Cards/Swap/SwapCard';
-import GuideLink from 'components/GuideLink';
 import TokenModal from 'components/UI/Modals/TokenModal';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
 import { BigNumber } from 'ethers';
-import useExchange from 'hooks/contracts/StableSwap/useExchange';
-import useGetDY from 'hooks/contracts/StableSwap/useGetDY';
 import useMultiTokenAllowance from 'hooks/contracts/useMultiTokenAllowance';
+import { bobaReadonlyProvider } from 'hooks/useProviders';
 import { SwapLayout, SwapLayoutCard } from 'layouts/SwapLayout';
 import { NextSeo } from 'next-seo';
 import React, { useEffect, useState } from 'react';
@@ -50,14 +49,16 @@ const SwapIndexPage: ExtendedNextPage = () => {
 		tokenTwoIndex,
 		tokenOneIndex,
 		toBigNumber(tokenTwoAmount, tokenTwo.decimals),
-		pool?.id || ''
+		bobaReadonlyProvider,
+		pool?.addresses.swap || ''
 	);
 
 	const { data: calculatedAmountTokenTwo = 0 } = useGetDY(
 		tokenOneIndex,
 		tokenTwoIndex,
 		toBigNumber(tokenOneAmount, tokenOne.decimals),
-		pool?.id || ''
+		bobaReadonlyProvider,
+		pool?.addresses.swap || ''
 	);
 
 	const allowances = useMultiTokenAllowance(
@@ -176,7 +177,12 @@ const SwapIndexPage: ExtendedNextPage = () => {
 		dispatch(setTokenTwo(tokenTwoTransformed));
 	};
 
-	const { mutate: exchange, status: swapStatus } = useExchange(signer || undefined, tokenTwo.poolId);
+	const { mutate: exchange, status: swapStatus } = useExchange(
+		StableSwap.FourPool,
+		signer || undefined,
+		bobaReadonlyProvider,
+		tokenTwo.poolAddress
+	);
 
 	return (
 		<>

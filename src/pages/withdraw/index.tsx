@@ -1,16 +1,15 @@
 import { ChainId, formatBalance } from '@koyofinance/core-sdk';
-import { AugmentedPool, Pool } from '@koyofinance/swap-sdk';
+import { AugmentedPool, Pool, StableSwap, useGetVirtualPrice, useRemoveLiquidityImbalance } from '@koyofinance/swap-sdk';
 import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
+import GuideLink from 'components/GuideLink';
 import WithdrawLPBurnCalculation from 'components/UI/Cards/Withdraw/WithdrawLPBurnCalculation';
 import WithdrawTokenCard from 'components/UI/Cards/Withdraw/WithdrawTokenCard';
-import GuideLink from 'components/GuideLink';
 import PoolsModal from 'components/UI/Modals/PoolsModal';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
 import { parseUnits } from 'ethers/lib/utils';
 import { Form, Formik } from 'formik';
-import useGetVirtualPrice from 'hooks/contracts/StableSwap/useGetVirtualPrice';
-import useRemoveLiquidityImbalance from 'hooks/contracts/StableSwap/useRemoveLiquidityImbalance';
 import useTokenBalance from 'hooks/contracts/useTokenBalance';
+import { bobaReadonlyProvider } from 'hooks/useProviders';
 import { SwapLayout, SwapLayoutCard } from 'layouts/SwapLayout';
 import { NextSeo } from 'next-seo';
 import React, { useEffect, useState } from 'react';
@@ -32,8 +31,13 @@ const WithdrawPage: ExtendedNextPage = () => {
 	// const [balancedAmounts, setBalancedAounts] = useState<number[]>([]);
 
 	const { data: lpTokenBalance = 0, refetch: refetchLPBalance } = useTokenBalance(account?.address, selectedPool?.addresses.lpToken);
-	const { data: virtualPrice = 0 } = useGetVirtualPrice(selectedPool?.id || '');
-	const { mutate: removeLiquidityImbalance, status: withdrawStatus } = useRemoveLiquidityImbalance(signer || undefined, selectedPool?.id || '');
+	const { data: virtualPrice = 0 } = useGetVirtualPrice(bobaReadonlyProvider, selectedPool?.addresses.swap || '');
+	const { mutate: removeLiquidityImbalance, status: withdrawStatus } = useRemoveLiquidityImbalance(
+		StableSwap.FourPool,
+		signer || undefined,
+		bobaReadonlyProvider,
+		selectedPool?.addresses.swap || ''
+	);
 
 	useEffect(() => {
 		if (withdrawStatus === 'success') refetchLPBalance();
@@ -111,7 +115,6 @@ const WithdrawPage: ExtendedNextPage = () => {
 										initialValues={Object.fromEntries(selectedPool.coins.map((coin) => [coin.name, 0]))}
 										onSubmit={(values) => {
 											return removeLiquidityImbalance([
-												// @ts-expect-error Huh
 												Object.entries(values)
 													.slice(0, selectedPool.coins.length)
 													.map((coins) => coins[1] || 0)
@@ -140,7 +143,7 @@ const WithdrawPage: ExtendedNextPage = () => {
 														LP Tokens Burned:{' '}
 														<span className="underline">
 															<WithdrawLPBurnCalculation
-																poolId={selectedPool.id}
+																poolAddress={selectedPool.addresses.swap}
 																amounts={Object.values(props.values).map((amount) => amount || 0)}
 																decimals={selectedPool.coins.map((coin) => coin.decimals)}
 															/>
