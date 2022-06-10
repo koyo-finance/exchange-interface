@@ -72,7 +72,7 @@ const SwapCard: React.FC<SwapCardProps> = ({ tokenNum, token, swapStatus, conver
 		<div className=" flex w-full flex-col gap-2 rounded-xl bg-darks-500 p-4">
 			{error !== '' && <div className=" w-full text-red-600">{error}</div>}
 			<div className="flex w-full flex-row justify-between ">
-				<div className=" text-2xl text-darks-200">{tokenNum === 1 ? 'You pay' : 'You recieve'}</div>
+				<div className=" text-2xl text-darks-200">{tokenNum === 1 ? 'You pay' : 'You receive'}</div>
 				<div
 					className="flex transform-gpu cursor-pointer flex-row items-center gap-2 rounded-xl bg-darks-400 py-2 px-2 duration-100 hover:bg-darks-300"
 					onClick={openModalHandler}
