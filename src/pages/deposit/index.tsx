@@ -1,20 +1,20 @@
 import { ChainId, formatBalance } from '@koyofinance/core-sdk';
-import { AugmentedPool, Pool, StableSwap, useAddLiquidity } from '@koyofinance/swap-sdk';
+import { AugmentedPool, Pool } from '@koyofinance/swap-sdk';
 import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
-import GuideLink from 'components/GuideLink';
 import DepositLPGetCalculation from 'components/UI/Cards/Deposit/DepositLPGetCalculation';
 import DepositPoolAPYCard from 'components/UI/Cards/Deposit/DepositPoolAPYCard';
 import DepositTokenCard from 'components/UI/Cards/Deposit/DepositTokenCard';
 import FormApproveAsset from 'components/UI/Cards/FormApproveAsset';
+import GuideLink from 'components/GuideLink';
 import PoolsModal from 'components/UI/Modals/PoolsModal';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
 import { BigNumber } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
 import { Form, Formik } from 'formik';
+import useAddLiquidity from 'hooks/contracts/StableSwap/useAddLiquidity';
 import useMultiTokenAllowance from 'hooks/contracts/useMultiTokenAllowance';
 import useMultiTokenBalances from 'hooks/contracts/useMultiTokenBalances';
 import useTokenBalance from 'hooks/contracts/useTokenBalance';
-import { bobaReadonlyProvider } from 'hooks/useProviders';
 import { SwapLayout, SwapLayoutCard } from 'layouts/SwapLayout';
 import { NextSeo } from 'next-seo';
 import React, { useEffect, useState } from 'react';
@@ -49,12 +49,7 @@ const DepositPage: ExtendedNextPage = () => {
 
 	const { data: lpTokenBalance = BigNumber.from(0) } = useTokenBalance(account?.address, selectedPool?.addresses.lpToken);
 
-	const { mutate: addLiqudity, status: deposited } = useAddLiquidity(
-		StableSwap.FourPool,
-		signer || undefined,
-		bobaReadonlyProvider,
-		selectedPool?.addresses.swap || ''
-	);
+	const { mutate: addLiqudity, status: deposited } = useAddLiquidity(signer || undefined, selectedPool?.id || '');
 
 	useEffect(() => {
 		if (deposited === 'success') {
@@ -135,6 +130,7 @@ const DepositPage: ExtendedNextPage = () => {
 										initialValues={Object.fromEntries(selectedPool.coins.map((coin) => [coin.name, 0]))}
 										onSubmit={(values) => {
 											return addLiqudity([
+												// @ts-expect-error Huh
 												Object.entries(values)
 													.slice(0, selectedPool.coins.length)
 													.map((coins) => coins[1] || 0)
@@ -165,7 +161,7 @@ const DepositPage: ExtendedNextPage = () => {
 															LP tokens recieved:{' '}
 															<span className="underline">
 																<DepositLPGetCalculation
-																	poolAddress={selectedPool.addresses.swap}
+																	poolId={selectedPool.id}
 																	amounts={Object.values(props.values).map((amount) => amount || 0)}
 																	decimals={selectedPool.coins.map((coin) => coin.decimals)}
 																/>

@@ -1,21 +1,18 @@
 import { formatBalance, toBigNumber } from '@koyofinance/core-sdk';
-import { StableSwap, useGetCalculateTokenAmount } from '@koyofinance/swap-sdk';
-import { bobaReadonlyProvider } from 'hooks/useProviders';
+import useCalculateTokenAmount from 'hooks/contracts/StableSwap/useCalculateTokenAmount';
 import React from 'react';
 
 export interface WithdrawLPBurnCalculationProps {
-	poolAddress: string;
+	poolId: string;
 	amounts: number[];
 	decimals: number[];
 }
 
-const WithdrawLPBurnCalculation: React.FC<WithdrawLPBurnCalculationProps> = ({ poolAddress, amounts, decimals }) => {
-	const { data: tokenAmount = 0, error } = useGetCalculateTokenAmount(
-		StableSwap.FourPool,
+const WithdrawLPBurnCalculation: React.FC<WithdrawLPBurnCalculationProps> = ({ poolId, amounts, decimals }) => {
+	const { data: tokenAmount = 0, error } = useCalculateTokenAmount(
 		amounts.map((amount, i) => toBigNumber(amount, decimals[i])),
 		false,
-		bobaReadonlyProvider,
-		poolAddress
+		poolId
 	);
 
 	if (error) throw new Error(`Error: ${error}`);
