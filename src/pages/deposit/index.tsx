@@ -25,6 +25,7 @@ import { useSelector } from 'react-redux';
 import { selectAllPoolsByChainId } from 'state/reducers/lists';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
 import { useAccount, useSigner } from 'wagmi';
+import { VscListSelection } from 'react-icons/vsc';
 
 const DepositPage: ExtendedNextPage = () => {
 	const pools = useSelector(selectAllPoolsByChainId(ChainId.BOBA));
@@ -108,7 +109,10 @@ const DepositPage: ExtendedNextPage = () => {
 										className="text-md btn mt-2 w-full bg-lights-400 text-black hover:bg-lights-200 lg:text-lg"
 										onClick={openPoolsModalHandler}
 									>
-										Choose liquidity pool&nbsp;<span className=" text-md lg:text-2xl">+</span>
+										Choose liquidity pool&nbsp;
+										<span className=" text-md lg:text-2xl">
+											<VscListSelection />
+										</span>
 									</button>
 								)}
 								{selectedPool && (
