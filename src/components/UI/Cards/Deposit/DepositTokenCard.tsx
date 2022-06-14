@@ -37,8 +37,9 @@ const DepositTokenCard: React.FC<DepositCardProps> = ({ coin, balance, resetValu
 
 	const setMaxTokenAmount = () => {
 		const maxAmount = Number(fromBigNumber(balance, coin.decimals).toFixed(5));
-		setInputAmount(coin.name, maxAmount);
-		setTokenAmount(maxAmount);
+		const flooredAmount = Math.floor(maxAmount * 1000000) / 1000000;
+		setInputAmount(coin.name, flooredAmount);
+		setTokenAmount(flooredAmount);
 	};
 
 	return (

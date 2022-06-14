@@ -52,15 +52,17 @@ const SwapCard: React.FC<SwapCardProps> = ({ tokenNum, token, swapStatus, conver
 		const newAmount = Number(e.target.value);
 		setActiveToken(tokenNum);
 		setTokenAmount(e.target.value);
-		setInputAmount(Number(newAmount.toFixed(5)), tokenNum, false);
+		const flooredAmount = Math.floor(newAmount * 100000) / 100000;
+		setInputAmount(flooredAmount, tokenNum, false);
 		setError('');
 	};
 
 	const setMaxTokenAmount = () => {
-		const maxAmount = Number(fromBigNumber(tokenBalance, token.decimals).toFixed(5));
+		const maxAmount = Number(fromBigNumber(tokenBalance, token.decimals));
+		const flooredAmount = Math.floor(maxAmount * 1000000) / 1000000;
 		setActiveToken(tokenNum);
-		setTokenAmount(maxAmount);
-		setInputAmount(maxAmount, tokenNum, false);
+		setTokenAmount(flooredAmount);
+		setInputAmount(flooredAmount, tokenNum, false);
 		setError('');
 	};
 
