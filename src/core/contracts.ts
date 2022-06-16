@@ -4,10 +4,19 @@ import {
 	BOBA_GAUGE_DISTRIBUTOR_ADDRESS,
 	BOBA_KYO_ADDRESS,
 	BOBA_KYO_MINTER_ADDRESS,
-	BOBA_veKYO_ADDRESS
+	BOBA_ORACLE_WEIGHTED_POOL_FACTORY_ADDRESS,
+	BOBA_VAULT_ADDRESS,
+	BOBA_veKYO_ADDRESS,
+	BOBA_WEIGHTED_POOL_FACTORY_ADDRESS
 } from 'constants/contracts';
 import { bobaReadonlyProvider } from 'hooks/useProviders';
-import { StableSwap4Pool, StableSwap4Pool__factory } from 'types/contracts/exchange';
+import {
+	OracleWeightedPoolFactory__factory,
+	StableSwap4Pool,
+	StableSwap4Pool__factory,
+	Vault__factory,
+	WeightedPoolFactory__factory
+} from 'types/contracts/exchange';
 import { GaugeController__factory, GaugeDistributor__factory, Koyo__factory, Minter__factory, VotingEscrow__factory } from 'types/contracts/koyo';
 
 export const kyoContract = Koyo__factory.connect(
@@ -28,6 +37,19 @@ export const gaugeControllerContract = GaugeController__factory.connect(
 );
 export const gaugeDistributorContract = GaugeDistributor__factory.connect(
 	BOBA_GAUGE_DISTRIBUTOR_ADDRESS, //
+	bobaReadonlyProvider
+);
+
+export const vaultContract = Vault__factory.connect(
+	BOBA_VAULT_ADDRESS, //
+	bobaReadonlyProvider
+);
+export const oracleWeightedPoolFactoryContract = OracleWeightedPoolFactory__factory.connect(
+	BOBA_ORACLE_WEIGHTED_POOL_FACTORY_ADDRESS, //
+	bobaReadonlyProvider
+);
+export const weightedPoolFactoryContract = WeightedPoolFactory__factory.connect(
+	BOBA_WEIGHTED_POOL_FACTORY_ADDRESS, //
 	bobaReadonlyProvider
 );
 
