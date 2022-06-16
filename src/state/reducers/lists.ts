@@ -1,9 +1,8 @@
 import { ChainId } from '@koyofinance/core-sdk';
-import { AugmentedPool } from '@koyofinance/swap-sdk';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { fetch as sFetch, FetchResultTypes } from '@sapphire/fetch';
 import { TokenInfo, TokenList } from '@uniswap/token-lists';
-import { EXCLUDED_POOLS, KOYO_POOL_LISTS } from 'config/pool-lists';
+import { KOYO_POOL_LISTS } from 'config/pool-lists';
 import { DEFAULT_ACTIVE_LIST_URLS } from 'config/token-lists';
 import { RootState } from 'state';
 import { Gauge } from 'types/contracts/koyo';
@@ -13,7 +12,7 @@ export interface ListsState {
 	fetchedLists: TokenList[];
 	tokens: TokenInfo[];
 	poolLists: string[];
-	pools: AugmentedPool[];
+	// pools: AugmentedPool[];
 	gaugeList: Gauge[];
 }
 
@@ -22,7 +21,7 @@ const initialState: ListsState = {
 	fetchedLists: [],
 	tokens: [],
 	poolLists: KOYO_POOL_LISTS,
-	pools: [],
+	// pools: [],
 	gaugeList: []
 };
 
@@ -35,18 +34,18 @@ export const fetchTokenLists = createAsyncThunk('tokens/fetchTokenList', async (
 	return tokenLists.map((promiseResult) => promiseResult.value);
 });
 
-export const fetchPoolLists = createAsyncThunk('tokens/fetchPoolList', async (_, { getState }) => {
-	const state = getState() as RootState;
+// export const fetchPoolLists = createAsyncThunk('tokens/fetchPoolList', async (_, { getState }) => {
+// 	const state = getState() as RootState;
 
-	const poolListPromises = await Promise.allSettled(
-		state.lists.poolLists.map((list) => sFetch<{ data: { [K: string]: AugmentedPool } }>(list, 'json' as FetchResultTypes.JSON))
-	);
-	const poolLists = poolListPromises.filter((promise) => promise.status === 'fulfilled') as PromiseFulfilledResult<{
-		data: { [K: string]: AugmentedPool };
-	}>[];
+// 	const poolListPromises = await Promise.allSettled(
+// 		state.lists.poolLists.map((list) => sFetch<{ data: { [K: string]: AugmentedPool } }>(list, 'json' as FetchResultTypes.JSON))
+// 	);
+// 	const poolLists = poolListPromises.filter((promise) => promise.status === 'fulfilled') as PromiseFulfilledResult<{
+// 		data: { [K: string]: AugmentedPool };
+// 	}>[];
 
-	return poolLists.map((promiseResult) => Object.values(promiseResult.value.data));
-});
+// 	return poolLists.map((promiseResult) => Object.values(promiseResult.value.data));
+// });
 
 export const listsSlice = createSlice({
 	name: 'lists',
@@ -57,15 +56,14 @@ export const listsSlice = createSlice({
 		}
 	},
 	extraReducers: (builder) => {
-		builder
-			.addCase(fetchTokenLists.fulfilled, (state, action) => {
-				state.fetchedLists = action.payload;
-				state.tokens = action.payload.flatMap((list) => list.tokens);
-			})
-			.addCase(fetchPoolLists.fulfilled, (state, action) => {
-				state.pools = action.payload.flat() || [];
-				state.pools = state.pools.filter((pool) => !EXCLUDED_POOLS.includes(pool.id));
-			});
+		builder.addCase(fetchTokenLists.fulfilled, (state, action) => {
+			state.fetchedLists = action.payload;
+			state.tokens = action.payload.flatMap((list) => list.tokens);
+		});
+		// .addCase(fetchPoolLists.fulfilled, (state, action) => {
+		// 	state.pools = action.payload.flat() || [];
+		// 	state.pools = state.pools.filter((pool) => !EXCLUDED_POOLS.includes(pool.id));
+		// });
 	}
 });
 
@@ -74,9 +72,9 @@ export const { setLists } = listsSlice.actions;
 export const selectAllTokens = () => (state: RootState) => state.lists.tokens;
 export const selectAllTokensByChainId = (chainId: ChainId) => (state: RootState) => state.lists.tokens.filter((token) => token.chainId === chainId);
 
-export const selectAllPools = () => (state: RootState) => state.lists.pools;
-export const selectPoolBySwapAndChainId = (swap: string, chainId: ChainId) => (state: RootState) =>
-	state.lists.pools.find((pool) => pool.addresses.swap === swap && pool.chainId === chainId);
-export const selectAllPoolsByChainId = (chainId: ChainId) => (state: RootState) => state.lists.pools.filter((pool) => pool.chainId === chainId);
+// export const selectAllPools = () => (state: RootState) => state.lists.pools;
+// export const selectPoolBySwapAndChainId = (swap: string, chainId: ChainId) => (state: RootState) =>
+// 	state.lists.pools.find((pool) => pool.addresses.swap === swap && pool.chainId === chainId);
+// export const selectAllPoolsByChainId = (chainId: ChainId) => (state: RootState) => state.lists.pools.filter((pool) => pool.chainId === chainId);
 
 export default listsSlice.reducer;

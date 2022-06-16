@@ -21,19 +21,20 @@ import React, { useEffect, useState } from 'react';
 import { BsFillGearFill } from 'react-icons/bs';
 import { HiSwitchHorizontal } from 'react-icons/hi';
 import { Case, Default, Switch } from 'react-if';
-import { useSelector } from 'react-redux';
-import { selectAllPoolsByChainId } from 'state/reducers/lists';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
 import { useAccount, useSigner } from 'wagmi';
 import { VscListSelection } from 'react-icons/vsc';
+import { LitePoolFragment, useGetPoolsQuery } from 'query/generated/graphql-codegen-generated';
 
 const DepositPage: ExtendedNextPage = () => {
-	const pools = useSelector(selectAllPoolsByChainId(ChainId.BOBA));
+	const { data: fetchedPools } = useGetPoolsQuery({ endpoint: 'https://api.thegraph.com/subgraphs/name/koyo-finance/exchange-subgraph-boba' });
+	const pools = fetchedPools?.allPools || [];
+	console.log(pools);
 
 	const { data: account } = useAccount();
 	const { data: signer } = useSigner();
 
-	const [selectedPool, setSelectedPool] = useState<AugmentedPool | undefined>(undefined);
+	const [selectedPool, setSelectedPool] = useState<any>(undefined);
 	const [poolsModalIsOpen, setPoolsModalIsOpen] = useState(false);
 	const [resetInputs, setResetInputs] = useState(false);
 
@@ -69,7 +70,7 @@ const DepositPage: ExtendedNextPage = () => {
 	};
 
 	const setPoolHandler = (poolId: string) => {
-		const [selectedPoolFilter] = pools.filter((pool: Pool) => {
+		const [selectedPoolFilter] = pools.filter((pool: LitePoolFragment) => {
 			return pool.id.toLowerCase().includes(poolId.toLowerCase());
 		});
 		setSelectedPool(selectedPoolFilter);

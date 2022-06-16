@@ -1,0 +1,12 @@
+query GetPools {
+	allPools: pools {
+		...LitePool
+	}
+}
+
+fragment LitePool on Pool {
+	id
+	address
+	poolType
+	name
+}
