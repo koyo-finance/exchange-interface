@@ -3377,19 +3377,72 @@ export type GetPoolsQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetPoolsQuery = {
 	__typename: 'Query';
-	allPools: Array<{ __typename: 'Pool'; id: string; address: string; poolType?: string | null; name?: string | null }>;
+	allPools: Array<{
+		__typename: 'Pool';
+		id: string;
+		name?: string | null;
+		address: string;
+		poolType?: string | null;
+		tokens?: Array<{
+			__typename: 'PoolToken';
+			id: string;
+			name: string;
+			address: string;
+			symbol: string;
+			decimals: number;
+			weight?: string | null;
+		}> | null;
+	}>;
 };
 
-export type LitePoolFragment = { __typename: 'Pool'; id: string; address: string; poolType?: string | null; name?: string | null };
+export type TokenFragment = {
+	__typename: 'PoolToken';
+	id: string;
+	name: string;
+	address: string;
+	symbol: string;
+	decimals: number;
+	weight?: string | null;
+};
 
+export type LitePoolFragment = {
+	__typename: 'Pool';
+	id: string;
+	name?: string | null;
+	address: string;
+	poolType?: string | null;
+	tokens?: Array<{
+		__typename: 'PoolToken';
+		id: string;
+		name: string;
+		address: string;
+		symbol: string;
+		decimals: number;
+		weight?: string | null;
+	}> | null;
+};
+
+export const TokenFragmentDoc = `
+    fragment Token on PoolToken {
+  id
+  name
+  address
+  symbol
+  decimals
+  weight
+}
+    `;
 export const LitePoolFragmentDoc = `
     fragment LitePool on Pool {
   id
+  name
   address
   poolType
-  name
+  tokens {
+    ...Token
+  }
 }
-    `;
+    ${TokenFragmentDoc}`;
 export const GetPoolsDocument = `
     query GetPools {
   allPools: pools {

@@ -25,9 +25,10 @@ import { ExtendedNextPage } from 'types/ExtendedNextPage';
 import { useAccount, useSigner } from 'wagmi';
 import { VscListSelection } from 'react-icons/vsc';
 import { LitePoolFragment, useGetPoolsQuery } from 'query/generated/graphql-codegen-generated';
+import { EXCHANGE_SUBGRAPH_URL } from 'constants/subgraphs';
 
 const DepositPage: ExtendedNextPage = () => {
-	const { data: fetchedPools } = useGetPoolsQuery({ endpoint: 'https://api.thegraph.com/subgraphs/name/koyo-finance/exchange-subgraph-boba' });
+	const { data: fetchedPools } = useGetPoolsQuery({ endpoint: EXCHANGE_SUBGRAPH_URL });
 	const pools = fetchedPools?.allPools || [];
 	console.log(pools);
 
@@ -69,9 +70,9 @@ const DepositPage: ExtendedNextPage = () => {
 		setPoolsModalIsOpen(false);
 	};
 
-	const setPoolHandler = (poolId: string) => {
+	const setPoolHandler = (poolAddress: string) => {
 		const [selectedPoolFilter] = pools.filter((pool: LitePoolFragment) => {
-			return pool.id.toLowerCase().includes(poolId.toLowerCase());
+			return pool.address.toLowerCase().includes(poolAddress.toLowerCase());
 		});
 		setSelectedPool(selectedPoolFilter);
 	};

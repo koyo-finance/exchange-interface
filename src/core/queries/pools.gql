@@ -4,9 +4,21 @@ query GetPools {
 	}
 }
 
+fragment Token on PoolToken {
+	id
+	name
+	address
+	symbol
+	decimals
+	weight
+}
+
 fragment LitePool on Pool {
 	id
+	name
 	address
 	poolType
-	name
+	tokens {
+		...Token
+	}
 }

@@ -1,17 +1,19 @@
-import { ChainId } from '@koyofinance/core-sdk';
-import { Pool } from '@koyofinance/swap-sdk';
+import { EXCHANGE_SUBGRAPH_URL } from 'constants/subgraphs';
+import { LitePoolFragment, useGetPoolsQuery } from 'query/generated/graphql-codegen-generated';
 import React, { useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
-import { useSelector } from 'react-redux';
-import { selectAllPoolsByChainId } from 'state/reducers/lists';
+import { getPoolWeightRatio } from 'utils/getPoolWeightRatio';
+import { getShortPoolName } from 'utils/getShortPoolName';
 
 export interface PoolsModalProps {
-	setPool: (pool: string) => void;
+	setPool: (poolAddress: string) => void;
 	closeModal: () => void;
 }
 
 const PoolsModal: React.FC<PoolsModalProps> = (props) => {
-	const pools = useSelector(selectAllPoolsByChainId(ChainId.BOBA));
+	const { data: poolsQuery } = useGetPoolsQuery({ endpoint: EXCHANGE_SUBGRAPH_URL });
+	const pools = poolsQuery?.allPools;
+
 	const [filteredPoolList, setFilteredPoolList] = useState(pools);
 
 	const filterPoolsHandler = (e: any) => {
@@ -19,13 +21,13 @@ const PoolsModal: React.FC<PoolsModalProps> = (props) => {
 			setFilteredPoolList(pools);
 			return;
 		}
-		const filteredList = pools.filter(
-			(pool: Pool) =>
-				pool.id.includes(e.target.value) ||
-				pool.id.toLowerCase().includes(e.target.value) ||
-				pool.id.includes(e.target.value) ||
-				pool.id.toLowerCase().includes(e.target.value) ||
-				pool.addresses.swap.includes(e.target.value)
+		const filteredList = pools?.filter(
+			(pool: LitePoolFragment) =>
+				getShortPoolName(pool).includes(e.target.value) ||
+				getShortPoolName(pool).toLowerCase().includes(e.target.value) ||
+				getShortPoolName(pool).includes(e.target.value) ||
+				getShortPoolName(pool).toLowerCase().includes(e.target.value) ||
+				pool.address.includes(e.target.value)
 		);
 		setFilteredPoolList(filteredList);
 	};
@@ -49,17 +51,17 @@ const PoolsModal: React.FC<PoolsModalProps> = (props) => {
 					/>
 				</div>
 				<div className="flex max-h-[50vh] flex-col overflow-y-scroll">
-					{filteredPoolList.map((pool) => (
+					{filteredPoolList?.map((pool) => (
 						<div
-							key={pool.id}
+							key={pool.name}
 							className="flex transform-gpu cursor-pointer flex-row justify-between rounded-lg p-3 text-lg duration-100 hover:bg-gray-700"
 							onClick={() => {
-								props.setPool(pool.id);
+								props.setPool(pool.address);
 								props.closeModal();
 							}}
 						>
-							<div>{pool.id}</div>
-							<div className=" max-w-[60%] flex-row gap-1 truncate text-gray-300">{pool.assets}</div>
+							<div>{getShortPoolName(pool)}</div>
+							<div className=" max-w-[60%] flex-row gap-1 truncate text-gray-300">{getPoolWeightRatio(pool)}</div>
 						</div>
 					))}
 				</div>
