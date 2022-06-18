@@ -16,7 +16,7 @@ const PoolsModal: React.FC<PoolsModalProps> = (props) => {
 
 	const [filteredPoolList, setFilteredPoolList] = useState(pools);
 
-	const filterPoolsHandler = (e: any) => {
+	const filterPoolsHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (e.target.value === '') {
 			setFilteredPoolList(pools);
 			return;
@@ -29,6 +29,7 @@ const PoolsModal: React.FC<PoolsModalProps> = (props) => {
 				getShortPoolName(pool).toLowerCase().includes(e.target.value) ||
 				pool.address.includes(e.target.value)
 		);
+
 		setFilteredPoolList(filteredList);
 	};
 
@@ -53,7 +54,7 @@ const PoolsModal: React.FC<PoolsModalProps> = (props) => {
 				<div className="flex max-h-[50vh] flex-col overflow-y-scroll">
 					{filteredPoolList?.map((pool) => (
 						<div
-							key={pool.name}
+							key={pool.address}
 							className="flex transform-gpu cursor-pointer flex-row justify-between rounded-lg p-3 text-lg duration-100 hover:bg-gray-700"
 							onClick={() => {
 								props.setPool(pool.address);

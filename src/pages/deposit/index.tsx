@@ -1,5 +1,4 @@
-import { ChainId, formatBalance } from '@koyofinance/core-sdk';
-import { AugmentedPool, Pool } from '@koyofinance/swap-sdk';
+import { formatBalance } from '@koyofinance/core-sdk';
 import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
 import DepositLPGetCalculation from 'components/UI/Cards/Deposit/DepositLPGetCalculation';
 import DepositPoolAPYCard from 'components/UI/Cards/Deposit/DepositPoolAPYCard';
@@ -24,34 +23,32 @@ import { Case, Default, Switch } from 'react-if';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
 import { useAccount, useSigner } from 'wagmi';
 import { VscListSelection } from 'react-icons/vsc';
-import { LitePoolFragment, useGetPoolsQuery } from 'query/generated/graphql-codegen-generated';
+import { LitePoolFragment, TokenFragment, useGetPoolsQuery } from 'query/generated/graphql-codegen-generated';
 import { EXCHANGE_SUBGRAPH_URL } from 'constants/subgraphs';
 
 const DepositPage: ExtendedNextPage = () => {
 	const { data: fetchedPools } = useGetPoolsQuery({ endpoint: EXCHANGE_SUBGRAPH_URL });
 	const pools = fetchedPools?.allPools || [];
-	console.log(pools);
 
 	const { data: account } = useAccount();
 	const { data: signer } = useSigner();
 
-	const [selectedPool, setSelectedPool] = useState<any>(undefined);
+	const [selectedPool, setSelectedPool] = useState<LitePoolFragment | undefined>(undefined);
 	const [poolsModalIsOpen, setPoolsModalIsOpen] = useState(false);
 	const [resetInputs, setResetInputs] = useState(false);
 
 	const allowances = useMultiTokenAllowance(
 		account?.address,
-		selectedPool?.addresses.swap,
-		selectedPool?.coins?.map((coin) => coin.address)
+		selectedPool?.address,
+		selectedPool?.tokens?.map((coin) => coin.address)
 	);
 
 	const balances = useMultiTokenBalances(
 		account?.address,
-		selectedPool?.coins?.map((coin) => coin.address)
+		selectedPool?.tokens?.map((coin) => coin.address)
 	);
 
-	const { data: lpTokenBalance = BigNumber.from(0) } = useTokenBalance(account?.address, selectedPool?.addresses.lpToken);
-
+	const { data: lpTokenBalance = BigNumber.from(0) } = useTokenBalance(account?.address, selectedPool?.address);
 	const { mutate: addLiqudity, status: deposited } = useAddLiquidity(signer || undefined, selectedPool?.id || '');
 
 	useEffect(() => {
@@ -133,14 +130,17 @@ const DepositPage: ExtendedNextPage = () => {
 							{selectedPool && (
 								<div className={selectedPool ? 'block' : 'hidden'}>
 									<Formik
-										initialValues={Object.fromEntries(selectedPool.coins.map((coin) => [coin.name, 0]))}
+										initialValues={Object.fromEntries(selectedPool.tokens?.map((token: TokenFragment) => [token.name, 0]))}
 										onSubmit={(values) => {
 											return addLiqudity([
 												// @ts-expect-error Huh
 												Object.entries(values)
-													.slice(0, selectedPool.coins.length)
-													.map((coins) => coins[1] || 0)
-													.map((amount, i) => parseUnits(amount.toString(), selectedPool.coins[i].decimals)),
+													.slice(0, selectedPool?.tokens?.length)
+													.map((tokens) => tokens[1] || 0)
+													.map((amount, i) => {
+														const token = selectedPool.tokens || [];
+														parseUnits(amount.toString(), token[i].decimals);
+													}),
 												0,
 												{ gasLimit: 600_000 }
 											]);
@@ -150,8 +150,8 @@ const DepositPage: ExtendedNextPage = () => {
 											<Form>
 												<div>
 													<div className="mt-4 grid grid-cols-1 gap-8 md:grid-cols-2">
-														{selectedPool.coins.map((coin, i) => (
-															<div key={coin.id}>
+														{selectedPool.tokens?.map((coin: TokenFragment, i) => (
+															<div key={coin.address}>
 																<DepositTokenCard
 																	key={coin.id}
 																	coin={coin}
@@ -169,7 +169,7 @@ const DepositPage: ExtendedNextPage = () => {
 																<DepositLPGetCalculation
 																	poolId={selectedPool.id}
 																	amounts={Object.values(props.values).map((amount) => amount || 0)}
-																	decimals={selectedPool.coins.map((coin) => coin.decimals)}
+																	decimals={selectedPool?.tokens?.map((coin) => coin.decimals) || []}
 																/>
 															</span>
 														</div>
@@ -183,7 +183,7 @@ const DepositPage: ExtendedNextPage = () => {
 															invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
 														>
 															<Switch>
-																{selectedPool.coins.map((coin, i) => (
+																{selectedPool.tokens?.map((coin, i) => (
 																	<Case
 																		condition={BigNumber.from(allowances[i].data || 0).lt(
 																			parseUnits((props.values[coin.name] || 0).toString(), coin.decimals)
@@ -192,7 +192,7 @@ const DepositPage: ExtendedNextPage = () => {
 																	>
 																		<FormApproveAsset
 																			asset={coin.address}
-																			spender={selectedPool.addresses.swap}
+																			spender={selectedPool.address}
 																			amount={100_000}
 																			decimals={coin.decimals}
 																			className="h-full w-full"

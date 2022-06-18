@@ -2,13 +2,14 @@ import { ChainId, formatBalance, fromBigNumber } from '@koyofinance/core-sdk';
 import { RawCoin } from '@koyofinance/swap-sdk';
 import { TokenInfo } from '@uniswap/token-lists';
 import { BigNumberish } from 'ethers';
+import { TokenFragment } from 'query/generated/graphql-codegen-generated';
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectAllTokensByChainId } from 'state/reducers/lists';
 import { TokenWithPoolInfo } from 'types/tokens';
 
 export interface DepositCardProps {
-	coin: RawCoin;
+	coin: TokenFragment;
 	balance: BigNumberish;
 	resetValues: boolean | undefined;
 	setInputAmount: (name: string, value: number) => void;
