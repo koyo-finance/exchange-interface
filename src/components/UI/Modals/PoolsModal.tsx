@@ -1,8 +1,8 @@
+import { EXLUDED_POOL_IDS } from 'config/pool-lists';
 import { EXCHANGE_SUBGRAPH_URL } from 'constants/subgraphs';
 import { LitePoolFragment, useGetPoolsQuery } from 'query/generated/graphql-codegen-generated';
 import React, { useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
-import { getPoolWeightRatio } from 'utils/pools/getPoolWeightRatio';
 import { getShortPoolName } from 'utils/pools/getShortPoolName';
 
 export interface PoolsModalProps {
@@ -14,21 +14,23 @@ const PoolsModal: React.FC<PoolsModalProps> = (props) => {
 	const { data: poolsQuery } = useGetPoolsQuery({ endpoint: EXCHANGE_SUBGRAPH_URL });
 	const pools = poolsQuery?.allPools;
 
-	const [filteredPoolList, setFilteredPoolList] = useState(pools);
+	const [filteredPoolList, setFilteredPoolList] = useState(pools?.filter((pool) => !EXLUDED_POOL_IDS.includes(pool.id)));
 
 	const filterPoolsHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (e.target.value === '') {
 			setFilteredPoolList(pools);
 			return;
 		}
-		const filteredList = pools?.filter(
-			(pool: LitePoolFragment) =>
-				getShortPoolName(pool).includes(e.target.value) ||
-				getShortPoolName(pool).toLowerCase().includes(e.target.value) ||
-				getShortPoolName(pool).includes(e.target.value) ||
-				getShortPoolName(pool).toLowerCase().includes(e.target.value) ||
-				pool.address.includes(e.target.value)
-		);
+		const filteredList = pools
+			?.filter((pool) => !EXLUDED_POOL_IDS.includes(pool.id))
+			.filter(
+				(pool: LitePoolFragment) =>
+					getShortPoolName(pool).includes(e.target.value) ||
+					getShortPoolName(pool).toLowerCase().includes(e.target.value) ||
+					getShortPoolName(pool).includes(e.target.value) ||
+					getShortPoolName(pool).toLowerCase().includes(e.target.value) ||
+					pool.address.includes(e.target.value)
+			);
 
 		setFilteredPoolList(filteredList);
 	};
@@ -62,7 +64,7 @@ const PoolsModal: React.FC<PoolsModalProps> = (props) => {
 							}}
 						>
 							<div>{getShortPoolName(pool)}</div>
-							<div className=" max-w-[60%] flex-row gap-1 truncate text-gray-300">{getPoolWeightRatio(pool)}</div>
+							<div className="max-w-[60%] flex-row gap-1 truncate text-gray-300">{parseFloat(pool.swapFee) * 100}%</div>
 						</div>
 					))}
 				</div>
