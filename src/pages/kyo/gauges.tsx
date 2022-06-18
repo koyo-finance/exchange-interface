@@ -2,7 +2,7 @@ import { formatBalance, fromBigNumber } from '@koyofinance/core-sdk';
 import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
 import BalanceCard from 'components/UI/Cards/Gauges/BalanceCard';
 import GaugeModal from 'components/UI/Modals/GaugeModal';
-import { ROOT_WITH_PROTOCOL } from 'constants/links';
+import { ANALYTICS_LINK, ROOT_WITH_PROTOCOL } from 'constants/links';
 import { EXCHANGE_SUBGRAPH_URL } from 'constants/subgraphs';
 import { votingEscrowContract } from 'core/contracts';
 import { BigNumber } from 'ethers';
@@ -82,7 +82,7 @@ const GaugesPage: ExtendedNextPage = () => {
 				canonical={`${ROOT_WITH_PROTOCOL}/kyo/gauges`}
 				description="Use your voting power to boost your gauges with veKYO (locked KYO)."
 			/>
-			<div className=" flex min-h-screen w-full flex-col items-center gap-[5vh] bg-darks-500 px-4 pb-8 pt-24 md:px-0 lg:pt-20 ">
+			<div className="flex min-h-screen w-full flex-col items-center gap-[5vh] bg-darks-500 px-4 pb-8 pt-24 md:px-0 lg:pt-20">
 				{gaugeListModalIsOpen && (
 					<GaugeModal
 						setGauge={setGaugeHanlder}
@@ -97,7 +97,7 @@ const GaugesPage: ExtendedNextPage = () => {
 						Use your voting power to boost your gauges with veKYO (locked KYO).
 					</div>
 				</div>
-				<div className=" flex flex-row flex-wrap justify-center gap-[10vw]">
+				<div className="flex flex-row flex-wrap justify-center gap-[10vw]">
 					<BalanceCard
 						text="veKYO VOTING POWER"
 						value={formatBalance(veKYOBalance, {
@@ -107,7 +107,7 @@ const GaugesPage: ExtendedNextPage = () => {
 					<BalanceCard text="VOTING POWER USED" value={`${votePower.div(100).toString()}%`} />
 				</div>
 				<div className="mx-auto flex w-full flex-col gap-3 rounded-xl border-2 border-lights-400 bg-black bg-opacity-50 p-3 md:w-3/4 md:gap-4 md:p-4 lg:w-2/3 xl:w-1/2">
-					{fromBigNumber(claimableGauges[0].data || 0) > 0 && (
+					{claimableGauges.some((cG) => fromBigNumber(cG?.data || 0) > 0) && (
 						<div>
 							{/* Table */}
 							<div className=" flex w-full flex-col rounded-xl border-2 border-darks-200">
@@ -253,6 +253,16 @@ const GaugesPage: ExtendedNextPage = () => {
 							<button className="z-20 h-full w-full">GAUGE NOT SELECTED</button>
 						</SingleEntityConnectButton>
 					)}
+				</div>
+				<div className="w-full rounded-xl border-2 border-lights-400 bg-black bg-opacity-40 px-2 py-4 text-center md:px-8 lg:w-2/3 xl:w-1/2">
+					<a
+						className="w-full text-sm font-semibold text-gray-400 underline decoration-dotted md:text-lg lg:text-xl"
+						href={`${ANALYTICS_LINK}/#/gauges`}
+						target="_blank"
+						rel="noreferrer"
+					>
+						For more information check out the analytics page.
+					</a>
 				</div>
 			</div>
 		</>

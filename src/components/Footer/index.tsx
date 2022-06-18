@@ -1,4 +1,4 @@
-import { DISCORD_LINK, DOCS_LINK, GITHUB_LINK, TWITTER_LINK } from 'constants/links';
+import { ANALYTICS_LINK, DISCORD_LINK, DOCS_LINK, GITHUB_LINK, TWITTER_LINK } from 'constants/links';
 import React from 'react';
 
 const Footer: React.FC = () => {
@@ -19,6 +19,9 @@ const Footer: React.FC = () => {
 							</a>
 							<a href={GITHUB_LINK} className="link link-hover" target="_blank" rel="noreferrer">
 								Github
+							</a>
+							<a href={ANALYTICS_LINK} className="link link-hover" target="_blank" rel="noreferrer">
+								Analytics
 							</a>
 						</div>
 						<div className=" text-lg font-semibold text-white">
