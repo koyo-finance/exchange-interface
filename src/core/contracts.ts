@@ -6,6 +6,7 @@ import {
 	BOBA_KYO_MINTER_ADDRESS,
 	BOBA_ORACLE_WEIGHTED_POOL_FACTORY_ADDRESS,
 	BOBA_VAULT_ADDRESS,
+	BOBA_VAULT_HELPER_ADDRESS,
 	BOBA_veKYO_ADDRESS,
 	BOBA_WEIGHTED_POOL_FACTORY_ADDRESS
 } from 'constants/contracts';
@@ -17,6 +18,7 @@ import {
 	Vault__factory,
 	WeightedPoolFactory__factory
 } from 'types/contracts/exchange';
+import { KoyoHelpers__factory } from 'types/contracts/exchange/factories/KoyoHelpers__factory';
 import { GaugeController__factory, GaugeDistributor__factory, Koyo__factory, Minter__factory, VotingEscrow__factory } from 'types/contracts/koyo';
 
 export const kyoContract = Koyo__factory.connect(
@@ -42,6 +44,10 @@ export const gaugeDistributorContract = GaugeDistributor__factory.connect(
 
 export const vaultContract = Vault__factory.connect(
 	BOBA_VAULT_ADDRESS, //
+	bobaReadonlyProvider
+);
+export const vaultHelperContract = KoyoHelpers__factory.connect(
+	BOBA_VAULT_HELPER_ADDRESS, //
 	bobaReadonlyProvider
 );
 export const oracleWeightedPoolFactoryContract = OracleWeightedPoolFactory__factory.connect(
