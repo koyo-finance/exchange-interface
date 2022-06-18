@@ -3,6 +3,7 @@ import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEnti
 import BalanceCard from 'components/UI/Cards/Gauges/BalanceCard';
 import GaugeModal from 'components/UI/Modals/GaugeModal';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
+import { EXCHANGE_SUBGRAPH_URL } from 'constants/subgraphs';
 import { votingEscrowContract } from 'core/contracts';
 import { BigNumber } from 'ethers';
 import { useDistributeGaugeEmissions } from 'hooks/contracts/KYO/gauges/useDistributeGaugeEmissions';
@@ -13,15 +14,21 @@ import { useVoteForGaugeWeights } from 'hooks/contracts/KYO/gauges/useVoteForGau
 import useTokenBalance from 'hooks/contracts/useTokenBalance';
 import { SwapLayout } from 'layouts/SwapLayout';
 import { NextSeo } from 'next-seo';
+import { useGetAllGaugesQuery } from 'query/generated/graphql-codegen-generated';
 import React, { useState } from 'react';
 import { BsInfoCircle } from 'react-icons/bs';
 import { HiSwitchHorizontal } from 'react-icons/hi';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
 import { useAccount, useSigner } from 'wagmi';
 
+const weekSeconds = 604800;
+
 const GaugesPage: ExtendedNextPage = () => {
-	const FourKoyoGaugeAddress = '0x24f47A11AEE5d1bF96C18dDA7bB0c0Ef248A8e71';
-	const weekSeconds = 604800;
+	const { data: allGaugesQueryData } = useGetAllGaugesQuery({
+		endpoint: EXCHANGE_SUBGRAPH_URL
+	});
+	const gaugeList = (allGaugesQueryData?.allGauges || []) //
+		.map((gauge) => ({ address: gauge.address, name: gauge.symbol.replace('-gauge', '') }));
 
 	const [selectedGauge, setSelectedGauge] = useState('');
 	const [gaugeListModalIsOpen, setGaugeListModalIsOpen] = useState(false);
@@ -34,7 +41,10 @@ const GaugesPage: ExtendedNextPage = () => {
 	const accountAddress = account?.address;
 
 	const { data: veKYOBalance = 0 } = useTokenBalance(accountAddress, votingEscrowContract.address);
-	const claimableGauges = useMultiCheckClaimableTokens(accountAddress, [FourKoyoGaugeAddress]);
+	const claimableGauges = useMultiCheckClaimableTokens(
+		accountAddress,
+		gaugeList.map((g) => g.address)
+	);
 	const { data: votePower = BigNumber.from(0) } = useGetVoteUserPower(accountAddress);
 	const { data: lastVoteTime = BigNumber.from(0) } = useGetLastUserVoteTime(accountAddress, selectedGauge);
 	const transformedLastVoteTime = new Date(lastVoteTime.toNumber() * 1000);
@@ -58,7 +68,7 @@ const GaugesPage: ExtendedNextPage = () => {
 
 	const submitVoteHandler = () => {
 		const transformedVoteAmount = voteAmount * 100;
-		submitVote([FourKoyoGaugeAddress, transformedVoteAmount, { gasLimit: 700_000 }]);
+		submitVote([selectedGauge, transformedVoteAmount, { gasLimit: 700_000 }]);
 	};
 
 	const setGaugeHanlder = (gauge: string) => {
@@ -109,16 +119,16 @@ const GaugesPage: ExtendedNextPage = () => {
 									<div className="w-full sm:w-1/4">Reset</div>
 								</div>
 								{/* Rows */}
-								{claimableGauges.map((gauge) => (
+								{gaugeList.map((gauge, i) => (
 									<div className="flex w-full flex-col items-center justify-between gap-2  border-darks-200 p-2 text-center text-white sm:flex-row sm:gap-0 sm:border-t-2">
-										<div className="w-full truncate text-center sm:w-1/4 sm:text-left">4koyo (DAI + USDC + USDT+ FRAX)</div>
-										<div className="w-full text-xl sm:w-1/4">{votePower.div(100).toString()}%</div>
+										<div className="w-full truncate text-center sm:w-1/4 sm:text-left">{gauge.name}</div>
+										<div className="w-full text-xl sm:w-1/4">? %</div>
 										<div className="w-full px-1 sm:w-1/4">
 											<button
 												className="btn w-full bg-lights-400 bg-opacity-100 text-black hover:bg-lights-200"
-												onClick={() => claimEmissions([FourKoyoGaugeAddress, { gasLimit: 700_000 }])}
+												onClick={() => claimEmissions([gauge.address, { gasLimit: 700_000 }])}
 											>
-												{Number(fromBigNumber(gauge.data || 0)).toLocaleString(navigator.language, {
+												{Number(fromBigNumber(claimableGauges[i].data || 0)).toLocaleString(navigator.language, {
 													minimumFractionDigits: 2,
 													maximumFractionDigits: 2
 												})}{' '}
@@ -128,7 +138,7 @@ const GaugesPage: ExtendedNextPage = () => {
 										<div className="w-full px-1 sm:w-1/4">
 											<button
 												className="btn w-full border-2  border-red-600 bg-transparent text-red-600 hover:bg-red-600 hover:text-white"
-												onClick={() => submitVote([FourKoyoGaugeAddress, 0, { gasLimit: 700_000 }])}
+												onClick={() => submitVote([gauge.address, 0, { gasLimit: 700_000 }])}
 											>
 												RESET
 											</button>
@@ -161,7 +171,9 @@ const GaugesPage: ExtendedNextPage = () => {
 									<HiSwitchHorizontal />
 								</div>
 							</div>
-							<div className="w-full text-center text-lg font-semibold text-white">Chosen gauge: 4koyo</div>
+							<div className="w-full text-center text-lg font-semibold text-white">
+								Chosen gauge: {gaugeList.find((g) => g.address === selectedGauge)?.name || '?'}
+							</div>
 						</>
 					)}
 					{error !== '' && <div className="w-full text-xl text-red-600 ">{error}</div>}

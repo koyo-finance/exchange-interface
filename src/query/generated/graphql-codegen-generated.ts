@@ -3373,6 +3373,15 @@ export type _SubgraphErrorPolicy_ =
 	/** If the subgraph has indexing errors, data will be omitted. The default. */
 	| 'deny';
 
+export type GetAllGaugesQueryVariables = Exact<{ [key: string]: never }>;
+
+export type GetAllGaugesQuery = {
+	__typename: 'Query';
+	allGauges: Array<{ __typename: 'Gauge'; id: string; address: string; name: string; symbol: string; killed: boolean }>;
+};
+
+export type KoyoGaugeFragment = { __typename: 'Gauge'; id: string; address: string; name: string; symbol: string; killed: boolean };
+
 export type GetPoolsQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetPoolsQuery = {
@@ -3426,6 +3435,15 @@ export type LitePoolFragment = {
 	}> | null;
 };
 
+export const KoyoGaugeFragmentDoc = `
+    fragment KoyoGauge on Gauge {
+  id
+  address
+  name
+  symbol
+  killed
+}
+    `;
 export const TokenFragmentDoc = `
     fragment Token on PoolToken {
   id
@@ -3449,6 +3467,23 @@ export const LitePoolFragmentDoc = `
   }
 }
     ${TokenFragmentDoc}`;
+export const GetAllGaugesDocument = `
+    query GetAllGauges {
+  allGauges: gauges {
+    ...KoyoGauge
+  }
+}
+    ${KoyoGaugeFragmentDoc}`;
+export const useGetAllGaugesQuery = <TData = GetAllGaugesQuery, TError = unknown>(
+	dataSource: { endpoint: string; fetchParams?: RequestInit },
+	variables?: GetAllGaugesQueryVariables,
+	options?: UseQueryOptions<GetAllGaugesQuery, TError, TData>
+) =>
+	useQuery<GetAllGaugesQuery, TError, TData>(
+		variables === undefined ? ['GetAllGauges'] : ['GetAllGauges', variables],
+		fetcher<GetAllGaugesQuery, GetAllGaugesQueryVariables>(dataSource.endpoint, dataSource.fetchParams || {}, GetAllGaugesDocument, variables),
+		options
+	);
 export const GetPoolsDocument = `
     query GetPools {
   allPools: pools {

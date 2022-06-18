@@ -1,3 +1,5 @@
+import { EXCHANGE_SUBGRAPH_URL } from 'constants/subgraphs';
+import { useGetAllGaugesQuery } from 'query/generated/graphql-codegen-generated';
 import React, { useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
 
@@ -7,8 +9,11 @@ export interface PoolsModalProps {
 }
 
 const GaugeModal: React.FC<PoolsModalProps> = ({ setGauge, closeModal }) => {
-	const FourKoyoGaugeAddress = '0x24f47A11AEE5d1bF96C18dDA7bB0c0Ef248A8e71';
-	const gaugeList = [{ name: '4koyo', address: FourKoyoGaugeAddress, pools: ['4pool'] }];
+	const { data: allGaugesQueryData } = useGetAllGaugesQuery({
+		endpoint: EXCHANGE_SUBGRAPH_URL
+	});
+	const gaugeList = (allGaugesQueryData?.allGauges || []) //
+		.map((gauge) => ({ address: gauge.address, name: gauge.symbol.replace('-gauge', '') }));
 
 	const [filteredGaugeList, setFilteredGaugeList] = useState(gaugeList);
 
@@ -51,13 +56,6 @@ const GaugeModal: React.FC<PoolsModalProps> = ({ setGauge, closeModal }) => {
 						>
 							<div className="flex w-full flex-row justify-between">
 								<div className=" max-w-1/2">{gauge.name}</div>
-								<div className=" max-w-1/2 text-gray-400">
-									(
-									{gauge.pools.map((pool) => (
-										<span className="">{pool}</span>
-									))}
-									)
-								</div>
 							</div>
 						</div>
 					))}
