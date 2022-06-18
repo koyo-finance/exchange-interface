@@ -13,8 +13,10 @@ export const LitePool = gql`
 	fragment LitePool on Pool {
 		id
 		name
+		symbol
 		address
 		poolType
+		swapFee
 		tokens {
 			...Token
 		}

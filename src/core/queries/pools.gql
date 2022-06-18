@@ -16,8 +16,10 @@ fragment Token on PoolToken {
 fragment LitePool on Pool {
 	id
 	name
+	symbol
 	address
 	poolType
+	swapFee
 	tokens {
 		...Token
 	}

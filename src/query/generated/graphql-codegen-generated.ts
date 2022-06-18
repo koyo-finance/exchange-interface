@@ -3381,8 +3381,10 @@ export type GetPoolsQuery = {
 		__typename: 'Pool';
 		id: string;
 		name?: string | null;
+		symbol?: string | null;
 		address: string;
 		poolType?: string | null;
+		swapFee: string;
 		tokens?: Array<{
 			__typename: 'PoolToken';
 			id: string;
@@ -3409,8 +3411,10 @@ export type LitePoolFragment = {
 	__typename: 'Pool';
 	id: string;
 	name?: string | null;
+	symbol?: string | null;
 	address: string;
 	poolType?: string | null;
+	swapFee: string;
 	tokens?: Array<{
 		__typename: 'PoolToken';
 		id: string;
@@ -3436,8 +3440,10 @@ export const LitePoolFragmentDoc = `
     fragment LitePool on Pool {
   id
   name
+  symbol
   address
   poolType
+  swapFee
   tokens {
     ...Token
   }

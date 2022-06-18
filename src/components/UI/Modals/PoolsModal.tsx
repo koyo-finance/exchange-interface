@@ -2,8 +2,8 @@ import { EXCHANGE_SUBGRAPH_URL } from 'constants/subgraphs';
 import { LitePoolFragment, useGetPoolsQuery } from 'query/generated/graphql-codegen-generated';
 import React, { useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
-import { getPoolWeightRatio } from 'utils/getPoolWeightRatio';
-import { getShortPoolName } from 'utils/getShortPoolName';
+import { getPoolWeightRatio } from 'utils/pools/getPoolWeightRatio';
+import { getShortPoolName } from 'utils/pools/getShortPoolName';
 
 export interface PoolsModalProps {
 	setPool: (poolAddress: string) => void;
