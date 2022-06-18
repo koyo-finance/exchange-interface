@@ -1,6 +1,6 @@
 import { defaultAbiCoder } from '@ethersproject/abi';
 import { JOIN_KIND_ABI_STRUCTURE } from 'constants/vault';
-import { JoinKind } from 'enums/JoinKind';
+import { JoinKind } from 'constants/JoinKind';
 import { BigNumber, BigNumberish } from 'ethers';
 
 export function joinInit(amountsIn: BigNumber[]) {

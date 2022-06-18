@@ -1,5 +1,5 @@
-import { ExitKind } from 'enums/ExitKind';
-import { JoinKind } from 'enums/JoinKind';
+import { ExitKind } from 'constants/ExitKind';
+import { JoinKind } from 'constants/JoinKind';
 
 export const JOIN_KIND_ABI_STRUCTURE: { [kind in JoinKind]: string[] } = {
 	[JoinKind.INIT]: ['uint256', 'uint256[]'],

@@ -3,7 +3,7 @@ import { EXCHANGE_SUBGRAPH_URL } from 'constants/subgraphs';
 import { LitePoolFragment, useGetPoolsQuery } from 'query/generated/graphql-codegen-generated';
 import React, { useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
-import { getShortPoolName } from 'utils/pools/getShortPoolName';
+import { getShortPoolName } from 'utils/exchange/getShortPoolName';
 
 export interface PoolsModalProps {
 	setPool: (poolAddress: string) => void;

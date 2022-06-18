@@ -17,11 +17,13 @@
 		"test:e2e:headless": "start-server-and-test dev http://localhost:3069 cypress:headless",
 		"generate:typechain:exchange": "typechain --target ethers-v5 --always-generate-overloads --discriminate-types --out-dir ./src/types/contracts/exchange './src/constants/abis/exchange/*.json'",
 		"generate:typechain:koyo": "typechain --target ethers-v5 --always-generate-overloads --discriminate-types --out-dir ./src/types/contracts/koyo './src/constants/abis/koyo/*.json'",
+		"generate:typechain:util": "typechain --target ethers-v5 --always-generate-overloads --discriminate-types --out-dir ./src/types/contracts/util './src/constants/abis/util/*.json'",
 		"generate:graphql": "graphql-codegen --config codegen.yml -r dotenv/config",
-		"postinstall": "yarn generate:typechain:exchange && yarn generate:typechain:koyo && yarn generate:graphql"
+		"postinstall": "yarn generate:typechain:exchange && yarn generate:typechain:koyo && yarn generate:typechain:util && yarn generate:graphql"
 	},
 	"dependencies": {
 		"@balancer-labs/balancer-js": "^1.0.1",
+		"@balancer-labs/sor": "^4.0.0-beta.8",
 		"@elementfi/elf-council-typechain": "^1.0.2",
 		"@ethersproject/abi": "^5.6.1",
 		"@ethersproject/providers": "^5.6.4",
@@ -45,6 +47,7 @@
 		"formik": "^2.2.9",
 		"graphql": "^16.1.0",
 		"graphql-tag": "^2.11.0",
+		"lodash.set": "^4.3.2",
 		"next": "12.1.0",
 		"next-plausible": "^3.1.5",
 		"next-seo": "^5.1.0",
@@ -86,6 +89,8 @@
 		"@storybook/addon-viewport": "^6.4.19",
 		"@storybook/react": "^6.4.19",
 		"@typechain/ethers-v5": "^10.0.0",
+		"@types/lodash": "^4.14.182",
+		"@types/lodash.set": "^4.3.7",
 		"@types/node": "^17.0.21",
 		"@types/react": "17.0.39",
 		"@types/react-datepicker": "^4.3.4",
