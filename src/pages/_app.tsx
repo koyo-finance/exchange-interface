@@ -21,6 +21,7 @@ import { koyoDarkTheme } from 'styles/rainbowkit';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
 import { WagmiProvider } from 'wagmi';
 import DefaultSeoProps from '../DefaultSeoProps';
+import { useInstantiateSORConstant } from 'hooks/sor/useInstantiateSORConstant';
 
 import '@rainbow-me/rainbowkit/styles.css';
 import 'styles/_App.css';
@@ -28,6 +29,8 @@ import 'styles/_App.css';
 config.autoAddCss = false;
 
 const App: NextPage<AppProps> = ({ Component, pageProps }) => {
+	useInstantiateSORConstant();
+
 	const ExtendedPage = Component as ExtendedNextPage<NextPageContext, any>;
 
 	const Layout = ExtendedPage.Layout || DefaultLayout;

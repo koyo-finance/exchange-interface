@@ -2691,6 +2691,11 @@
     "@types/yargs" "^15.0.0"
     chalk "^4.0.0"
 
+"@jpex-js/babel-plugin@^1.3.0", "@jpex-js/babel-plugin@^1.6.0":
+  version "1.6.0"
+  resolved "https://registry.yarnpkg.com/@jpex-js/babel-plugin/-/babel-plugin-1.6.0.tgz#d1301fa556ee4ea5d29e30accc59f85a3c2d1cbd"
+  integrity sha512-dd2lOWFb2XudJSPkO8vgwjQv+KxQqYM+V3yjZAEtZ3KX4B+PJYeBxDfob2YsDl1SKqZ3xtZHK0CJFaWQZY4t0g==
+
 "@jridgewell/gen-mapping@^0.1.0":
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/@jridgewell/gen-mapping/-/gen-mapping-0.1.1.tgz#e5d2e450306a9491e3bd77e323e38d7aff315996"
@@ -10635,6 +10640,13 @@ joi@^17.4.0:
     "@sideway/formula" "^3.0.0"
     "@sideway/pinpoint" "^2.0.0"
 
+jpex@^4.3.3:
+  version "4.3.3"
+  resolved "https://registry.yarnpkg.com/jpex/-/jpex-4.3.3.tgz#b2824169d79e8d45f05849dd744ae62fb04916bf"
+  integrity sha512-0Zke6xDqbDS2+Qz6vMoXMAnzotQl2t8MrNmk8ChrL2GKeE0lLZH8ts0LAMGS+i6SocBen3Hs+/e5qUNd0m0cvg==
+  dependencies:
+    "@jpex-js/babel-plugin" "^1.3.0"
+
 js-sha256@0.9.0:
   version "0.9.0"
   resolved "https://registry.yarnpkg.com/js-sha256/-/js-sha256-0.9.0.tgz#0b89ac166583e91ef9123644bd3c5334ce9d0966"
@@ -13629,6 +13641,11 @@ react-is@^18.0.0:
   version "18.1.0"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-18.1.0.tgz#61aaed3096d30eacf2a2127118b5b41387d32a67"
   integrity sha512-Fl7FuabXsJnV5Q1qIOQwx/sagGF18kogb4gpfcG4gjLBWO0WDiiz1ko/ExayuxE7InyQkBLkxRFG5oxY6Uu3Kg==
+
+react-jpex@^2.2.0:
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/react-jpex/-/react-jpex-2.2.0.tgz#2cde2f99e1db84a4aa128e82553073970ce655ad"
+  integrity sha512-wOVdWhCnBHL4+1Re3kG8+xOvgELqoUhThVwNOYKH08bznDl+rcptBvpZXqEzkvoASgHJ5gsJa0KmHAhmol6G1Q==
 
 react-onclickoutside@^6.12.0:
   version "6.12.1"

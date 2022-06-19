@@ -11,6 +11,26 @@ import React from 'react';
 const IndexPage: NextPage = () => {
 	const deviceWidth = window.visualViewport.width;
 
+	// const sor = jpex.resolve<SOR>();
+	// console.log(sor);
+
+	// useEffect(() => {
+	// 	void sor.fetchPools().then(() => {
+	// 		void sor
+	// 			.getSwaps(
+	// 				'0x7562F525106F5d54E891e005867Bf489B5988CD9',
+	// 				'0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000',
+	// 				SwapTypes.SwapExactIn,
+	// 				BigNumber.from(1).mul(10 ** 12),
+	// 				{
+	// 					maxPools: 4,
+	// 					gasPrice: BigNumber.from('40000000000')
+	// 				}
+	// 			)
+	// 			.then(console.log);
+	// 	});
+	// }, []);
+
 	return (
 		<div
 			className={`${

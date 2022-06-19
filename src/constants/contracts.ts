@@ -20,3 +20,6 @@ export const ChainMulticall1 = {
 export const ChainVault = {
 	[ChainId.BOBA]: BOBA_VAULT_ADDRESS
 };
+export const ChainNativeWrappedAsset = {
+	[ChainId.BOBA]: BOBA_WETH_ADDRESS
+};
