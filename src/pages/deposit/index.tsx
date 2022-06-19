@@ -27,6 +27,7 @@ import { EXCHANGE_SUBGRAPH_URL } from 'constants/subgraphs';
 import useJoinPool from 'hooks/contracts/exchange/useJoinPool';
 import { assetHelperBoba } from 'utils/assets';
 import { joinExactTokensInForKPTOut } from 'utils/exchange/userData/joins';
+import { vaultContract } from 'core/contracts';
 
 const DepositPage: ExtendedNextPage = () => {
 	const { data: fetchedPools } = useGetPoolsQuery({ endpoint: EXCHANGE_SUBGRAPH_URL });
@@ -44,7 +45,7 @@ const DepositPage: ExtendedNextPage = () => {
 
 	const allowances = useMultiTokenAllowance(
 		account?.address,
-		selectedPool?.address,
+		vaultContract.address,
 		selectedPool?.tokens?.map((coin) => coin.address)
 	);
 
@@ -138,19 +139,21 @@ const DepositPage: ExtendedNextPage = () => {
 										// @ts-expect-error Huh
 										initialValues={Object.fromEntries(selectedPool.tokens?.map((token: TokenFragment) => [token.name, 0]))}
 										onSubmit={(values) => {
+											console.log(values);
+											// @ts-expect-error We know what we passed.
+											const [tokens, amounts]: [tokens: string[], amounts: BigNumber[]] = assetHelperBoba.sortTokens(
+												selectedPool.tokens?.map((token) => token.address) || [],
+												selectedPool.tokens?.map((token) => toBigNumber(values[token.name], token.decimals)) || []
+											);
+
 											return addLiqudity([
 												selectedPool.id,
 												accountAddress,
 												accountAddress,
 												{
-													assets: assetHelperBoba.sortTokens(
-														selectedPool.tokens?.map((token) => token.address) || ['', '']
-													),
-													maxAmountsIn: selectedPool.tokens?.map((token) => values[token.name]) || [],
-													userData: joinExactTokensInForKPTOut(
-														selectedPool.tokens?.map((token) => toBigNumber(values[token.name], token.decimals)) || [],
-														toBigNumber(0)
-													),
+													assets: tokens,
+													maxAmountsIn: amounts,
+													userData: joinExactTokensInForKPTOut(amounts, toBigNumber(0)),
 													fromInternalBalance: false
 												}
 											]);
@@ -202,7 +205,7 @@ const DepositPage: ExtendedNextPage = () => {
 																	>
 																		<FormApproveAsset
 																			asset={coin.address}
-																			spender={selectedPool.address}
+																			spender={vaultContract.address}
 																			amount={100_000}
 																			decimals={coin.decimals}
 																			className="h-full w-full"
