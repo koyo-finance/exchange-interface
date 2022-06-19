@@ -1345,7 +1345,6 @@ export interface PoolShare {
 	__typename: 'PoolShare';
 	account: Account;
 	balance: Scalars['BigDecimal'];
-	balanceRaw: Scalars['BigInt'];
 	id: Scalars['ID'];
 	poolId: Pool;
 }
@@ -1374,14 +1373,6 @@ export interface PoolShare_Filter {
 	account_starts_with?: InputMaybe<Scalars['String']>;
 	account_starts_with_nocase?: InputMaybe<Scalars['String']>;
 	balance?: InputMaybe<Scalars['BigDecimal']>;
-	balanceRaw?: InputMaybe<Scalars['BigInt']>;
-	balanceRaw_gt?: InputMaybe<Scalars['BigInt']>;
-	balanceRaw_gte?: InputMaybe<Scalars['BigInt']>;
-	balanceRaw_in?: InputMaybe<Array<Scalars['BigInt']>>;
-	balanceRaw_lt?: InputMaybe<Scalars['BigInt']>;
-	balanceRaw_lte?: InputMaybe<Scalars['BigInt']>;
-	balanceRaw_not?: InputMaybe<Scalars['BigInt']>;
-	balanceRaw_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
 	balance_gt?: InputMaybe<Scalars['BigDecimal']>;
 	balance_gte?: InputMaybe<Scalars['BigDecimal']>;
 	balance_in?: InputMaybe<Array<Scalars['BigDecimal']>>;
@@ -1419,7 +1410,7 @@ export interface PoolShare_Filter {
 	poolId_starts_with_nocase?: InputMaybe<Scalars['String']>;
 }
 
-export type PoolShare_OrderBy = 'account' | 'balance' | 'balanceRaw' | 'id' | 'poolId';
+export type PoolShare_OrderBy = 'account' | 'balance' | 'id' | 'poolId';
 
 export interface PoolToken {
 	__typename: 'PoolToken';

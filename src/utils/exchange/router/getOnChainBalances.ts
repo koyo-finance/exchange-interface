@@ -2,6 +2,7 @@ import { PoolFilter, SubgraphPoolBase } from '@balancer-labs/sor';
 import { formatFixed } from '@ethersproject/bignumber';
 import { Provider } from '@ethersproject/providers';
 import { OracleWeightedPool__factory, Vault__factory, WeightedPool__factory } from 'types/contracts/exchange';
+import { StablePool__factory } from 'types/contracts/exchange/factories/StablePool__factory';
 import { isSameAddress } from 'utils/isSameAddress';
 import { Multicaller } from '../Multicaller';
 
@@ -16,11 +17,12 @@ export async function getOnChainBalances(
 	const abis: any = Object.values(
 		// Remove duplicate entries using their names
 		Object.fromEntries(
-			[...Vault__factory.abi, OracleWeightedPool__factory.abi, WeightedPool__factory.abi].map((row) => [
-				// @ts-expect-error There's no stricty type for this so it's fucky.
-				row.name,
-				row
-			])
+			[
+				...Vault__factory.abi, //
+				...OracleWeightedPool__factory.abi,
+				...WeightedPool__factory.abi,
+				...StablePool__factory.abi
+			].map((row) => [row.name, row])
 		)
 	);
 
@@ -41,6 +43,9 @@ export async function getOnChainBalances(
 
 		if (pool.poolType === 'Weighted') {
 			multiPool.call(`${pool.id}.weights`, pool.address, 'getNormalizedWeights');
+			multiPool.call(`${pool.id}.swapFee`, pool.address, 'getSwapFeePercentage');
+		} else if (pool.poolType === 'Stable') {
+			multiPool.call(`${pool.id}.amp`, pool.address, 'getAmplificationParameter');
 			multiPool.call(`${pool.id}.swapFee`, pool.address, 'getSwapFeePercentage');
 		}
 	});

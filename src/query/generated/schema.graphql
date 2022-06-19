@@ -1382,7 +1382,6 @@ enum PoolHistoricalLiquidity_orderBy {
 type PoolShare {
 	account: Account!
 	balance: BigDecimal!
-	balanceRaw: BigInt!
 	id: ID!
 	poolId: Pool!
 }
@@ -1413,14 +1412,6 @@ input PoolShare_filter {
 	account_starts_with: String
 	account_starts_with_nocase: String
 	balance: BigDecimal
-	balanceRaw: BigInt
-	balanceRaw_gt: BigInt
-	balanceRaw_gte: BigInt
-	balanceRaw_in: [BigInt!]
-	balanceRaw_lt: BigInt
-	balanceRaw_lte: BigInt
-	balanceRaw_not: BigInt
-	balanceRaw_not_in: [BigInt!]
 	balance_gt: BigDecimal
 	balance_gte: BigDecimal
 	balance_in: [BigDecimal!]
@@ -1461,7 +1452,6 @@ input PoolShare_filter {
 enum PoolShare_orderBy {
 	account
 	balance
-	balanceRaw
 	id
 	poolId
 }
