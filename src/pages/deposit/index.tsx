@@ -1,4 +1,4 @@
-import { formatBalance } from '@koyofinance/core-sdk';
+import { formatBalance, toBigNumber } from '@koyofinance/core-sdk';
 import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
 import DepositLPGetCalculation from 'components/UI/Cards/Deposit/DepositLPGetCalculation';
 import DepositPoolAPYCard from 'components/UI/Cards/Deposit/DepositPoolAPYCard';
@@ -10,7 +10,6 @@ import { ROOT_WITH_PROTOCOL } from 'constants/links';
 import { BigNumber } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
 import { Form, Formik } from 'formik';
-import useAddLiquidity from 'hooks/contracts/StableSwap/useAddLiquidity';
 import useMultiTokenAllowance from 'hooks/contracts/useMultiTokenAllowance';
 import useMultiTokenBalances from 'hooks/contracts/useMultiTokenBalances';
 import useTokenBalance from 'hooks/contracts/useTokenBalance';
@@ -25,17 +24,23 @@ import { useAccount, useSigner } from 'wagmi';
 import { VscListSelection } from 'react-icons/vsc';
 import { LitePoolFragment, TokenFragment, useGetPoolsQuery } from 'query/generated/graphql-codegen-generated';
 import { EXCHANGE_SUBGRAPH_URL } from 'constants/subgraphs';
+import useJoinPool from 'hooks/contracts/exchange/useJoinPool';
+import { assetHelperBoba } from 'utils/assets';
+import { joinExactTokensInForKPTOut } from 'utils/exchange/userData/joins';
 
 const DepositPage: ExtendedNextPage = () => {
 	const { data: fetchedPools } = useGetPoolsQuery({ endpoint: EXCHANGE_SUBGRAPH_URL });
 	const pools = fetchedPools?.allPools || [];
 
 	const { data: account } = useAccount();
+	const accountAddress = account?.address || '';
 	const { data: signer } = useSigner();
 
 	const [selectedPool, setSelectedPool] = useState<LitePoolFragment | undefined>(undefined);
 	const [poolsModalIsOpen, setPoolsModalIsOpen] = useState(false);
 	const [resetInputs, setResetInputs] = useState(false);
+
+	console.log(selectedPool);
 
 	const allowances = useMultiTokenAllowance(
 		account?.address,
@@ -49,7 +54,7 @@ const DepositPage: ExtendedNextPage = () => {
 	);
 
 	const { data: lpTokenBalance = BigNumber.from(0) } = useTokenBalance(account?.address, selectedPool?.address);
-	const { mutate: addLiqudity, status: deposited } = useAddLiquidity(signer || undefined, selectedPool?.id || '');
+	const { mutate: addLiqudity, status: deposited } = useJoinPool(signer || undefined);
 
 	useEffect(() => {
 		if (deposited === 'success') {
@@ -130,19 +135,24 @@ const DepositPage: ExtendedNextPage = () => {
 							{selectedPool && (
 								<div className={selectedPool ? 'block' : 'hidden'}>
 									<Formik
+										// @ts-expect-error Huh
 										initialValues={Object.fromEntries(selectedPool.tokens?.map((token: TokenFragment) => [token.name, 0]))}
 										onSubmit={(values) => {
 											return addLiqudity([
-												// @ts-expect-error Huh
-												Object.entries(values)
-													.slice(0, selectedPool?.tokens?.length)
-													.map((tokens) => tokens[1] || 0)
-													.map((amount, i) => {
-														const token = selectedPool.tokens || [];
-														parseUnits(amount.toString(), token[i].decimals);
-													}),
-												0,
-												{ gasLimit: 600_000 }
+												selectedPool.id,
+												accountAddress,
+												accountAddress,
+												{
+													assets: assetHelperBoba.sortTokens(
+														selectedPool.tokens?.map((token) => token.address) || ['', '']
+													),
+													maxAmountsIn: selectedPool.tokens?.map((token) => values[token.name]) || [],
+													userData: joinExactTokensInForKPTOut(
+														selectedPool.tokens?.map((token) => toBigNumber(values[token.name], token.decimals)) || [],
+														toBigNumber(0)
+													),
+													fromInternalBalance: false
+												}
 											]);
 										}}
 									>
