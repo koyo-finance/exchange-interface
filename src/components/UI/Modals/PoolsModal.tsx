@@ -18,7 +18,7 @@ const PoolsModal: React.FC<PoolsModalProps> = (props) => {
 
 	const filterPoolsHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (e.target.value === '') {
-			setFilteredPoolList(pools);
+			setFilteredPoolList(pools?.filter((pool) => !EXLUDED_POOL_IDS.includes(pool.id)));
 			return;
 		}
 		const filteredList = pools
