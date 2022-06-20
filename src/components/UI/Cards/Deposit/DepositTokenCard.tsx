@@ -1,5 +1,4 @@
 import { ChainId, formatBalance, fromBigNumber } from '@koyofinance/core-sdk';
-import { RawCoin } from '@koyofinance/swap-sdk';
 import { TokenInfo } from '@uniswap/token-lists';
 import { BigNumberish } from 'ethers';
 import { TokenFragment } from 'query/generated/graphql-codegen-generated';

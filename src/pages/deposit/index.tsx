@@ -1,34 +1,34 @@
 import { formatBalance, toBigNumber } from '@koyofinance/core-sdk';
 import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
-import DepositLPGetCalculation from 'components/UI/Cards/Deposit/DepositLPGetCalculation';
+import GuideLink from 'components/GuideLink';
 import DepositPoolAPYCard from 'components/UI/Cards/Deposit/DepositPoolAPYCard';
 import DepositTokenCard from 'components/UI/Cards/Deposit/DepositTokenCard';
+import DepostKPTCalculation from 'components/UI/Cards/Deposit/DepostKPTCalculation';
 import FormApproveAsset from 'components/UI/Cards/FormApproveAsset';
-import GuideLink from 'components/GuideLink';
 import PoolsModal from 'components/UI/Modals/PoolsModal';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
+import { EXCHANGE_SUBGRAPH_URL } from 'constants/subgraphs';
+import { vaultContract } from 'core/contracts';
 import { BigNumber } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
 import { Form, Formik } from 'formik';
+import useJoinPool from 'hooks/contracts/exchange/useJoinPool';
 import useMultiTokenAllowance from 'hooks/contracts/useMultiTokenAllowance';
 import useMultiTokenBalances from 'hooks/contracts/useMultiTokenBalances';
 import useTokenBalance from 'hooks/contracts/useTokenBalance';
+import useTokenTotalSupply from 'hooks/contracts/useTokenTotalSupply';
 import { SwapLayout, SwapLayoutCard } from 'layouts/SwapLayout';
 import { NextSeo } from 'next-seo';
+import { LitePoolFragment, TokenFragment, useGetPoolsQuery } from 'query/generated/graphql-codegen-generated';
 import React, { useEffect, useState } from 'react';
 import { BsFillGearFill } from 'react-icons/bs';
 import { HiSwitchHorizontal } from 'react-icons/hi';
+import { VscListSelection } from 'react-icons/vsc';
 import { Case, Default, Switch } from 'react-if';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
-import { useAccount, useSigner } from 'wagmi';
-import { VscListSelection } from 'react-icons/vsc';
-import { LitePoolFragment, TokenFragment, useGetPoolsQuery } from 'query/generated/graphql-codegen-generated';
-import { EXCHANGE_SUBGRAPH_URL } from 'constants/subgraphs';
-import useJoinPool from 'hooks/contracts/exchange/useJoinPool';
 import { assetHelperBoba } from 'utils/assets';
 import { joinExactTokensInForKPTOut, joinInit } from 'utils/exchange/userData/joins';
-import { vaultContract } from 'core/contracts';
-import useTokenTotalSupply from 'hooks/contracts/useTokenTotalSupply';
+import { useAccount, useSigner } from 'wagmi';
 
 const DepositPage: ExtendedNextPage = () => {
 	const { data: fetchedPools } = useGetPoolsQuery({ endpoint: EXCHANGE_SUBGRAPH_URL });
@@ -140,7 +140,6 @@ const DepositPage: ExtendedNextPage = () => {
 										// @ts-expect-error Huh
 										initialValues={Object.fromEntries(selectedPool.tokens?.map((token: TokenFragment) => [token.name, 0]))}
 										onSubmit={(values) => {
-											console.log(values);
 											// @ts-expect-error We know what we passed.
 											const [tokens, amounts]: [tokens: string[], amounts: BigNumber[]] = assetHelperBoba.sortTokens(
 												selectedPool.tokens?.map((token) => token.address) || [],
@@ -182,10 +181,10 @@ const DepositPage: ExtendedNextPage = () => {
 														<div>
 															LP tokens recieved:{' '}
 															<span className="underline">
-																<DepositLPGetCalculation
-																	poolId={selectedPool.id}
-																	amounts={Object.values(props.values).map((amount) => amount || 0)}
-																	decimals={selectedPool?.tokens?.map((coin) => coin.decimals) || []}
+																<DepostKPTCalculation
+																	pool={selectedPool}
+																	values={props.values}
+																	account={accountAddress}
 																/>
 															</span>
 														</div>
