@@ -4,22 +4,20 @@ import React, { useEffect, useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { FiEdit } from 'react-icons/fi';
 import { useSelector } from 'react-redux';
-import { selectAllPoolsByChainId, selectAllTokensByChainId } from 'state/reducers/lists';
-import { TokenWithPoolInfo } from 'types/tokens';
+import { selectAllTokensByChainId } from 'state/reducers/lists';
 
 export interface TokenModalProps {
 	tokenNum: number;
 	oppositeToken: TokenInfo;
 	closeModal: () => void;
-	setToken: (token: TokenInfo | TokenWithPoolInfo, tokenNum: number) => void;
+	setToken: (token: TokenInfo, tokenNum: number) => void;
 }
 
 const TokenModal: React.FC<TokenModalProps> = (props) => {
 	const TOKENS = useSelector(selectAllTokensByChainId(ChainId.BOBA));
-	const pools = useSelector(selectAllPoolsByChainId(ChainId.BOBA));
 
-	const [tokenList, setTokenList] = useState<(TokenInfo | TokenWithPoolInfo)[]>(TOKENS);
-	const [filteredTokenList, setFilteredTokenList] = useState<(TokenInfo | TokenWithPoolInfo)[]>(tokenList);
+	const [tokenList, setTokenList] = useState<TokenInfo[]>(TOKENS);
+	const [filteredTokenList, setFilteredTokenList] = useState<TokenInfo[]>(tokenList);
 
 	useEffect(() => {
 		setFilteredTokenList(tokenList);
@@ -28,46 +26,14 @@ const TokenModal: React.FC<TokenModalProps> = (props) => {
 	useEffect(() => {
 		const newTokenList = TOKENS.filter((token) => token.address !== props.oppositeToken.address);
 
-		if (props.tokenNum === 1) {
-			setTokenList(newTokenList);
-			return;
-		}
-
-		const newFilteredTokenList = newTokenList
-			.flatMap((token) =>
-				pools.map((pool) => {
-					const oppositeTokenInPool = pool.coins.findIndex((poolToken) => poolToken.address === props.oppositeToken.address);
-					if (oppositeTokenInPool === -1) return -1;
-					const [tokenInPool] = pool.coins.filter((coin) => {
-						return coin.address === token.address;
-					});
-					if (!tokenInPool) return -1;
-					const tokenId = newTokenList.findIndex((wantedToken) => tokenInPool?.address === wantedToken.address);
-					const tokenWithPool: TokenWithPoolInfo = {
-						...newTokenList[tokenId],
-						poolId: pool.id,
-						poolAddress: pool.addresses.swap
-					};
-					return tokenWithPool;
-				})
-			)
-			.filter((tList) => tList !== -1) as TokenWithPoolInfo[];
-
-		setTokenList(newFilteredTokenList);
+		setTokenList(newTokenList);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [props.oppositeToken.address, (props.oppositeToken as TokenWithPoolInfo).poolId]);
+	}, [props.oppositeToken.address]);
 
-	const setTokenHandler = (address: string, poolId: string) => {
+	const setTokenHandler = (address: string) => {
 		const chosenTokens = tokenList.filter((token) => token.address === address);
 
-		if (poolId === undefined) {
-			props.setToken(chosenTokens[0], props.tokenNum);
-			props.closeModal();
-			return;
-		}
-
-		const [chosenTokenByPool] = chosenTokens.filter((token) => (token as TokenWithPoolInfo).poolId === poolId);
-		props.setToken(chosenTokenByPool, props.tokenNum);
+		props.setToken(chosenTokens[0], props.tokenNum);
 		props.closeModal();
 	};
 
@@ -76,6 +42,7 @@ const TokenModal: React.FC<TokenModalProps> = (props) => {
 			setFilteredTokenList(tokenList);
 			return;
 		}
+
 		const filteredList = tokenList.filter(
 			(token) =>
 				token.name.includes(e.target.value) ||
@@ -83,6 +50,7 @@ const TokenModal: React.FC<TokenModalProps> = (props) => {
 				token.symbol.includes(e.target.value) ||
 				token.symbol.toLowerCase().includes(e.target.value)
 		);
+
 		setFilteredTokenList(filteredList);
 	};
 
@@ -110,7 +78,7 @@ const TokenModal: React.FC<TokenModalProps> = (props) => {
 							key={i}
 							id={token.symbol}
 							className=" flex w-full transform-gpu cursor-pointer flex-row items-center justify-start  gap-3 p-2 duration-150 hover:bg-gray-900"
-							onClick={() => setTokenHandler(token.address, (token as TokenWithPoolInfo).poolId)}
+							onClick={() => setTokenHandler(token.address)}
 						>
 							<div>
 								{/* eslint-disable-next-line @next/next/no-img-element */}
@@ -120,9 +88,6 @@ const TokenModal: React.FC<TokenModalProps> = (props) => {
 								<div>{token.symbol}</div>
 								<div>{token.name}</div>
 							</div>
-							{props.tokenNum === 2 && (token as TokenWithPoolInfo).poolId && (
-								<div className=" w-1/2 pr-4 text-right text-gray-500">{(token as TokenWithPoolInfo).poolId}</div>
-							)}
 						</div>
 					))}
 				</div>

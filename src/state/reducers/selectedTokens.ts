@@ -3,30 +3,29 @@ import { TokenInfo } from '@uniswap/token-lists';
 import { RootState } from 'state';
 import { TokenWithPoolInfo } from 'types/tokens';
 
-export interface selectedTokensState {
+export interface SelectedTokensState {
 	tokenOne: TokenInfo;
-	tokenTwo: TokenWithPoolInfo;
+	tokenTwo: TokenInfo;
 	amount: number;
 }
 
-const initialState: selectedTokensState = {
+const initialState: SelectedTokensState = {
 	tokenOne: {
-		name: 'Dai',
-		address: '0xf74195Bb8a5cf652411867c5C2C5b8C2a402be35',
-		symbol: 'DAI',
-		decimals: 18,
-		chainId: 288,
-		logoURI: 'https://tassets.koyo.finance/logos/DAI/512x512.png'
-	},
-	tokenTwo: {
 		name: 'Frax',
 		address: '0x7562F525106F5d54E891e005867Bf489B5988CD9',
 		symbol: 'FRAX',
 		decimals: 18,
 		chainId: 288,
 		logoURI: 'https://tassets.koyo.finance/logos/FRAX/512x512.png',
-		poolAddress: '0x9f0a572be1fcfe96e94c0a730c5f4bc2993fe3f6',
-		poolId: '4pool'
+		tags: ['stablecoin']
+	},
+	tokenTwo: {
+		name: 'Boba',
+		address: '0xa18bF3994C0Cc6E3b63ac420308E5383f53120D7',
+		symbol: 'BOBA',
+		decimals: 18,
+		chainId: 288,
+		logoURI: 'https://tassets.koyo.finance/logos/BOBA/512x512.png'
 	},
 	amount: 0
 };

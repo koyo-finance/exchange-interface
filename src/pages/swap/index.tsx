@@ -2,11 +2,12 @@ import { ChainId, fromBigNumber, toBigNumber } from '@koyofinance/core-sdk';
 import { Pool, pools } from '@koyofinance/swap-sdk';
 import { TokenInfo } from '@uniswap/token-lists';
 import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
+import GuideLink from 'components/GuideLink';
 import FormApproveAsset from 'components/UI/Cards/FormApproveAsset';
 import SwapCard from 'components/UI/Cards/Swap/SwapCard';
-import GuideLink from 'components/GuideLink';
 import TokenModal from 'components/UI/Modals/TokenModal';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
+import { vaultContract } from 'core/contracts';
 import { BigNumber } from 'ethers';
 import useExchange from 'hooks/contracts/StableSwap/useExchange';
 import useGetDY from 'hooks/contracts/StableSwap/useGetDY';
@@ -19,7 +20,7 @@ import { IoSwapVertical } from 'react-icons/io5';
 import { Case, Default, Switch } from 'react-if';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from 'state/hooks';
-import { selectAllTokensByChainId, selectPoolBySwapAndChainId } from 'state/reducers/lists';
+import { selectAllTokensByChainId } from 'state/reducers/lists';
 import { selectAmount, selectTokenOne, selectTokenTwo, setAmount, setTokenOne, setTokenTwo } from 'state/reducers/selectedTokens';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
 import { TokenWithPoolInfo } from 'types/tokens';
@@ -37,33 +38,15 @@ const SwapIndexPage: ExtendedNextPage = () => {
 	const [tokenTwoAmount, setTokenTwoAmount] = useState(0);
 	const [invertedTokenOneAmount, setInvertedTokenOneAmount] = useState(0);
 
-	const [tokenOneIndex, setTokenOneIndex] = useState(0);
-	const [tokenTwoIndex, setTokenTwoIndex] = useState(1);
-
 	const tokenOne = useSelector(selectTokenOne);
 	const tokenTwo = useSelector(selectTokenTwo);
 	const tokenAmount = useSelector(selectAmount);
-	const pool = useSelector(selectPoolBySwapAndChainId(tokenTwo.poolAddress, ChainId.BOBA));
 	const TOKENS = useSelector(selectAllTokensByChainId(ChainId.BOBA));
-
-	const { data: calculatedAmountTokenOne = 0 } = useGetDY(
-		tokenTwoIndex,
-		tokenOneIndex,
-		toBigNumber(tokenTwoAmount, tokenTwo.decimals),
-		pool?.id || ''
-	);
-
-	const { data: calculatedAmountTokenTwo = 0 } = useGetDY(
-		tokenOneIndex,
-		tokenTwoIndex,
-		toBigNumber(tokenOneAmount, tokenOne.decimals),
-		pool?.id || ''
-	);
 
 	const allowances = useMultiTokenAllowance(
 		account?.address,
-		pool?.addresses?.swap,
-		pool?.coins?.map((coin) => coin.address)
+		vaultContract.address,
+		TOKENS.map((token) => token.address)
 	);
 
 	useEffect(() => {
@@ -77,11 +60,6 @@ const SwapIndexPage: ExtendedNextPage = () => {
 		setInvertedTokenOneAmount(calculatedSumAmount);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [calculatedAmountTokenOne, calculatedAmountTokenTwo]);
-
-	useEffect(() => {
-		setTokenOneIndex((pool?.coins || []).findIndex((token) => token.address === tokenOne.address));
-		setTokenTwoIndex((pool?.coins || []).findIndex((token) => token.address === tokenTwo.address));
-	}, [tokenOne, tokenTwo, pool]);
 
 	const setTokenAmountHandler = (amount: number, tokenNum: number, settingConvertedAmount: boolean) => {
 		if (tokenNum === 1) {

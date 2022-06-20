@@ -18,13 +18,13 @@ const IndexPage: NextPage = () => {
 	// 	void sor.fetchPools().then(() => {
 	// 		void sor
 	// 			.getSwaps(
-	// 				'0x7562F525106F5d54E891e005867Bf489B5988CD9',
-	// 				'0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000',
+	// 				'0x7562F525106F5d54E891e005867Bf489B5988CD9', // token in
+	// 				'0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000',  // token out
 	// 				SwapTypes.SwapExactIn,
-	// 				BigNumber.from(1).mul(10 ** 12),
+	// 				BigNumber.from(1).mul(10 ** 12), // amount
 	// 				{
-	// 					maxPools: 4,
-	// 					gasPrice: BigNumber.from('40000000000')
+	// 					maxPools: 4, // max hops
+	// 					gasPrice: BigNumber.from('40000000000') // gas price
 	// 				}
 	// 			)
 	// 			.then(console.log);
