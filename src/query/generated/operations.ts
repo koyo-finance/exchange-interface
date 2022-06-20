@@ -6,6 +6,11 @@ export const KoyoGauge = gql`
 		name
 		symbol
 		killed
+		pool {
+			id
+			address
+			name
+		}
 	}
 `;
 export const Token = gql`

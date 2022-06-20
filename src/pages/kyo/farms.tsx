@@ -1,43 +1,22 @@
-import { ChainId, formatAmount, formatBalance, formatDollarAmount, fromBigNumber } from '@koyofinance/core-sdk';
-import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
-import FormApproveAsset from 'components/UI/Cards/FormApproveAsset';
+import FarmCard, { Gauge } from 'components/UI/Cards/Farms/FarmCard';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
-import { BigNumber } from 'ethers';
-import { useDepositIntoGauge } from 'hooks/contracts/KYO/gauges/useDepositIntoGauge';
-import { useDistributeGaugeEmissions } from 'hooks/contracts/KYO/gauges/useDistributeGaugeEmissions';
-import useMultiCheckClaimableTokens from 'hooks/contracts/KYO/gauges/useMultiCheckClaimableTokens';
-import { useWithdrawFromGauge } from 'hooks/contracts/KYO/gauges/useWithdrawFromGauge';
-import useMultiTokenBalances from 'hooks/contracts/useMultiTokenBalances';
-import useTokenAllowance from 'hooks/contracts/useTokenAllowance';
-import useTokenBalance from 'hooks/contracts/useTokenBalance';
+import { EXCHANGE_SUBGRAPH_URL } from 'constants/subgraphs';
 import { SwapLayout } from 'layouts/SwapLayout';
 import { NextSeo } from 'next-seo';
+import { useGetAllGaugesQuery } from 'query/generated/graphql-codegen-generated';
 import React from 'react';
-import { Case, Default, Switch } from 'react-if';
-import { useSelector } from 'react-redux';
-import { selectAllPoolsByChainId } from 'state/reducers/lists';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
-import { useAccount, useSigner } from 'wagmi';
 
 const FarmsPage: ExtendedNextPage = () => {
-	const FourKoyoGaugeAddress = '0x24f47A11AEE5d1bF96C18dDA7bB0c0Ef248A8e71';
-	const gauges = [FourKoyoGaugeAddress];
-
-	const { data: account } = useAccount();
-	const accountAddress = account?.address;
-	const { data: signer } = useSigner();
-
-	const [pool] = useSelector(selectAllPoolsByChainId(ChainId.BOBA)).filter((pool) => pool.name === '4pool');
-
-	const { data: lpTokenBalance = BigNumber.from(0) } = useTokenBalance(accountAddress, pool?.addresses.lpToken);
-	const gaugeTokenBalances = useMultiTokenBalances(account?.address, gauges);
-	const gaugeClaimAmounts = useMultiCheckClaimableTokens(accountAddress, gauges);
-	const { data: LPtotal = BigNumber.from(0) } = useTokenBalance(FourKoyoGaugeAddress, pool?.addresses.lpToken || '');
-	const { data: lpTokenAllowance = BigNumber.from(0) } = useTokenAllowance(account?.address, FourKoyoGaugeAddress, pool?.addresses.lpToken);
-
-	const { mutate: gaugeDeposit } = useDepositIntoGauge(signer || undefined, FourKoyoGaugeAddress);
-	const { mutate: gaugeWithdraw } = useWithdrawFromGauge(signer || undefined, FourKoyoGaugeAddress);
-	const { mutate: claimEmissions } = useDistributeGaugeEmissions(signer || undefined);
+	const { data: allGaugesQueryData } = useGetAllGaugesQuery({
+		endpoint: EXCHANGE_SUBGRAPH_URL
+	});
+	const gaugeList: Gauge[] = (allGaugesQueryData?.allGauges || []) //
+		.map((gauge) => ({
+			address: gauge.address,
+			name: gauge.symbol.replace('-gauge', ''),
+			pool: { id: gauge.pool?.id || '', address: gauge.pool?.address || '', name: gauge.pool?.name || '' }
+		}));
 
 	return (
 		<>
@@ -53,75 +32,9 @@ const FarmsPage: ExtendedNextPage = () => {
 						Stake your LP tokens into desired gauges to earn and claim emissions.
 					</div>
 				</div>
-				<div className=" flex w-full flex-row flex-wrap items-center justify-center">
-					{gauges.map((gauge, i) => (
-						<div className="flex w-full flex-col gap-4 rounded-xl border-2 border-lights-400 bg-black bg-opacity-50 p-4 text-base text-white sm:w-3/4 md:w-1/2 lg:w-2/5 lg:text-lg xl:w-1/3 xl:text-xl">
-							<div className="w-full text-center">4koyo - 4pool (FRAX + DAI stablecoin + USDT + USDC)</div>
-							<div className=" flex w-full flex-row justify-between ">
-								<div>TVL </div>
-								<div className=" font-bold">{formatDollarAmount(fromBigNumber(LPtotal))}</div>
-							</div>
-							<div className="flex flex-row justify-between">
-								<div>LP token balance:</div> <div className=" font-bold">{formatBalance(lpTokenBalance)}</div>
-							</div>
-							<div className="flex flex-row justify-between">
-								Gauge share balance:{' '}
-								<span className=" font-bold">
-									{formatBalance(gaugeTokenBalances[i].data || 0, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-								</span>
-							</div>
-							<div className=" flex w-full flex-col gap-2 ">
-								<SingleEntityConnectButton
-									className=" btn w-full bg-lights-400 bg-opacity-100 p-0 text-black hover:bg-lights-200"
-									invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
-								>
-									<Switch>
-										<Case condition={BigNumber.from(lpTokenAllowance).lt(lpTokenBalance)}>
-											<FormApproveAsset
-												asset={pool.addresses.lpToken}
-												spender={FourKoyoGaugeAddress}
-												amount={100_000}
-												decimals={18}
-												className="h-full w-full"
-											>
-												APPROVE - <span className="italic">4KOYO LP TOKEN</span>
-											</FormApproveAsset>
-										</Case>
-										<Default>
-											<button type="button" className=" h-full w-full" onClick={() => gaugeDeposit([lpTokenBalance])}>
-												DEPOSIT LP TOKENS
-											</button>
-										</Default>
-									</Switch>
-								</SingleEntityConnectButton>
-								{(gaugeTokenBalances[i].data || 0) > 0 && (
-									<>
-										<hr className="w-full bg-white" />
-										<SingleEntityConnectButton
-											className=" btn w-full bg-lights-400 bg-opacity-100 p-0 text-black hover:bg-lights-200"
-											invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400 hidden"
-										>
-											<button type="button" className=" h-full w-full uppercase" onClick={() => claimEmissions([gauge])}>
-												Claim - {formatAmount(fromBigNumber(gaugeClaimAmounts[i].data || 0))} KYO
-											</button>
-										</SingleEntityConnectButton>
-										<hr className="w-full bg-white" />
-										<SingleEntityConnectButton
-											className=" btn w-full border-red-600 bg-transparent bg-opacity-100 p-0 text-red-600 hover:bg-red-600 hover:text-white"
-											invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400 hidden"
-										>
-											<button
-												type="button"
-												className="h-full w-full"
-												onClick={() => gaugeWithdraw([gaugeTokenBalances[i].data || 0])}
-											>
-												WITHDRAW LP TOKENS
-											</button>
-										</SingleEntityConnectButton>
-									</>
-								)}
-							</div>
-						</div>
+				<div className="flex w-full flex-row flex-wrap items-center justify-center gap-x-4">
+					{gaugeList.map((gauge) => (
+						<FarmCard gauge={gauge} key={gauge.address} />
 					))}
 				</div>
 			</div>

@@ -264,6 +264,7 @@ export interface Gauge {
 	id: Scalars['ID'];
 	killed: Scalars['Boolean'];
 	name: Scalars['String'];
+	pool?: Maybe<Pool>;
 	symbol: Scalars['String'];
 	type: GaugeType;
 	weightVotes?: Maybe<Array<GaugeWeightVote>>;
@@ -928,6 +929,26 @@ export interface Gauge_Filter {
 	name_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
 	name_starts_with?: InputMaybe<Scalars['String']>;
 	name_starts_with_nocase?: InputMaybe<Scalars['String']>;
+	pool?: InputMaybe<Scalars['String']>;
+	pool_contains?: InputMaybe<Scalars['String']>;
+	pool_contains_nocase?: InputMaybe<Scalars['String']>;
+	pool_ends_with?: InputMaybe<Scalars['String']>;
+	pool_ends_with_nocase?: InputMaybe<Scalars['String']>;
+	pool_gt?: InputMaybe<Scalars['String']>;
+	pool_gte?: InputMaybe<Scalars['String']>;
+	pool_in?: InputMaybe<Array<Scalars['String']>>;
+	pool_lt?: InputMaybe<Scalars['String']>;
+	pool_lte?: InputMaybe<Scalars['String']>;
+	pool_not?: InputMaybe<Scalars['String']>;
+	pool_not_contains?: InputMaybe<Scalars['String']>;
+	pool_not_contains_nocase?: InputMaybe<Scalars['String']>;
+	pool_not_ends_with?: InputMaybe<Scalars['String']>;
+	pool_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+	pool_not_in?: InputMaybe<Array<Scalars['String']>>;
+	pool_not_starts_with?: InputMaybe<Scalars['String']>;
+	pool_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+	pool_starts_with?: InputMaybe<Scalars['String']>;
+	pool_starts_with_nocase?: InputMaybe<Scalars['String']>;
 	symbol?: InputMaybe<Scalars['String']>;
 	symbol_contains?: InputMaybe<Scalars['String']>;
 	symbol_contains_nocase?: InputMaybe<Scalars['String']>;
@@ -978,6 +999,7 @@ export type Gauge_OrderBy =
 	| 'id'
 	| 'killed'
 	| 'name'
+	| 'pool'
 	| 'symbol'
 	| 'type'
 	| 'weightVotes'
@@ -3677,10 +3699,26 @@ export type GetAllGaugesQueryVariables = Exact<{ [key: string]: never }>;
 
 export type GetAllGaugesQuery = {
 	__typename: 'Query';
-	allGauges: Array<{ __typename: 'Gauge'; id: string; address: string; name: string; symbol: string; killed: boolean }>;
+	allGauges: Array<{
+		__typename: 'Gauge';
+		id: string;
+		address: string;
+		name: string;
+		symbol: string;
+		killed: boolean;
+		pool?: { __typename: 'Pool'; id: string; address: string; name?: string | null } | null;
+	}>;
 };
 
-export type KoyoGaugeFragment = { __typename: 'Gauge'; id: string; address: string; name: string; symbol: string; killed: boolean };
+export type KoyoGaugeFragment = {
+	__typename: 'Gauge';
+	id: string;
+	address: string;
+	name: string;
+	symbol: string;
+	killed: boolean;
+	pool?: { __typename: 'Pool'; id: string; address: string; name?: string | null } | null;
+};
 
 export type GetPoolsQueryVariables = Exact<{ [key: string]: never }>;
 
@@ -3772,6 +3810,11 @@ export const KoyoGaugeFragmentDoc = `
   name
   symbol
   killed
+  pool {
+    id
+    address
+    name
+  }
 }
     `;
 export const TokenFragmentDoc = `

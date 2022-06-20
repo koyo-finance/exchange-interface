@@ -10,4 +10,9 @@ fragment KoyoGauge on Gauge {
 	name
 	symbol
 	killed
+	pool {
+		id
+		address
+		name
+	}
 }

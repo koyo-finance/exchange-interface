@@ -111,6 +111,7 @@
 		"eslint-plugin-prettier": "^4.0.0",
 		"eslint-plugin-react": "^7.28.0",
 		"eslint-plugin-react-hooks": "^4.3.0",
+		"jws": "^4.0.0",
 		"postcss": "^8.4.13",
 		"postcss-flexbugs-fixes": "^5.0.2",
 		"postcss-import": "^14.1.0",

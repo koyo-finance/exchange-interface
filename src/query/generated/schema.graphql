@@ -266,6 +266,7 @@ type Gauge {
 	id: ID!
 	killed: Boolean!
 	name: String!
+	pool: Pool
 	symbol: String!
 	type: GaugeType!
 	weightVotes(
@@ -957,6 +958,26 @@ input Gauge_filter {
 	name_not_starts_with_nocase: String
 	name_starts_with: String
 	name_starts_with_nocase: String
+	pool: String
+	pool_contains: String
+	pool_contains_nocase: String
+	pool_ends_with: String
+	pool_ends_with_nocase: String
+	pool_gt: String
+	pool_gte: String
+	pool_in: [String!]
+	pool_lt: String
+	pool_lte: String
+	pool_not: String
+	pool_not_contains: String
+	pool_not_contains_nocase: String
+	pool_not_ends_with: String
+	pool_not_ends_with_nocase: String
+	pool_not_in: [String!]
+	pool_not_starts_with: String
+	pool_not_starts_with_nocase: String
+	pool_starts_with: String
+	pool_starts_with_nocase: String
 	symbol: String
 	symbol_contains: String
 	symbol_contains_nocase: String
@@ -1007,6 +1028,7 @@ enum Gauge_orderBy {
 	id
 	killed
 	name
+	pool
 	symbol
 	type
 	weightVotes
