@@ -26,8 +26,9 @@ import { LitePoolFragment, TokenFragment, useGetPoolsQuery } from 'query/generat
 import { EXCHANGE_SUBGRAPH_URL } from 'constants/subgraphs';
 import useJoinPool from 'hooks/contracts/exchange/useJoinPool';
 import { assetHelperBoba } from 'utils/assets';
-import { joinExactTokensInForKPTOut } from 'utils/exchange/userData/joins';
+import { joinExactTokensInForKPTOut, joinInit } from 'utils/exchange/userData/joins';
 import { vaultContract } from 'core/contracts';
+import useTokenTotalSupply from 'hooks/contracts/useTokenTotalSupply';
 
 const DepositPage: ExtendedNextPage = () => {
 	const { data: fetchedPools } = useGetPoolsQuery({ endpoint: EXCHANGE_SUBGRAPH_URL });
@@ -41,8 +42,6 @@ const DepositPage: ExtendedNextPage = () => {
 	const [poolsModalIsOpen, setPoolsModalIsOpen] = useState(false);
 	const [resetInputs, setResetInputs] = useState(false);
 
-	console.log(selectedPool);
-
 	const allowances = useMultiTokenAllowance(
 		account?.address,
 		vaultContract.address,
@@ -53,6 +52,8 @@ const DepositPage: ExtendedNextPage = () => {
 		account?.address,
 		selectedPool?.tokens?.map((coin) => coin.address)
 	);
+
+	const { data: poolTotalSupply = BigNumber.from(0) } = useTokenTotalSupply(selectedPool?.address);
 
 	const { data: lpTokenBalance = BigNumber.from(0) } = useTokenBalance(account?.address, selectedPool?.address);
 	const { mutate: addLiqudity, status: deposited } = useJoinPool(signer || undefined);
@@ -153,7 +154,9 @@ const DepositPage: ExtendedNextPage = () => {
 												{
 													assets: tokens,
 													maxAmountsIn: amounts,
-													userData: joinExactTokensInForKPTOut(amounts, toBigNumber(0)),
+													userData: BigNumber.from(poolTotalSupply).gt(0)
+														? joinExactTokensInForKPTOut(amounts, toBigNumber(0))
+														: joinInit(amounts),
 													fromInternalBalance: false
 												}
 											]);
