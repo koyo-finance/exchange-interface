@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 import { selectAmount, selectTokenOne } from 'state/reducers/selectedTokens';
 import { useAccount } from 'wagmi';
 
-const SwapTokenApproval: React.FC = () => {
+const SwapTokenApprovalCase: React.FC = () => {
 	const { data: account } = useAccount();
 	const accountAddress = account?.address || '';
 
@@ -33,4 +33,4 @@ const SwapTokenApproval: React.FC = () => {
 	);
 };
 
-export default SwapTokenApproval;
+export default SwapTokenApprovalCase;

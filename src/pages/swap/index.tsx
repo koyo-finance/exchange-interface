@@ -4,12 +4,13 @@ import { TokenInfo } from '@uniswap/token-lists';
 import SwapCardToken from 'components/apps/amm/unified/swap/cards/SwapCardToken';
 import SwapCardTop from 'components/apps/amm/unified/swap/cards/SwapCardTop';
 import SwapSwapTokensSlot from 'components/apps/amm/unified/swap/SwapSwapTokensSlot';
-import SwapTokenApproval from 'components/apps/amm/unified/swap/SwapTokenApprovalCase';
+import SwapTokenApprovalCase from 'components/apps/amm/unified/swap/SwapTokenApprovalCase';
 import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
 import GuideLink from 'components/GuideLink';
 import TokenModal from 'components/UI/Modals/TokenModal';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
 import { SwapTokenNumber } from 'constants/swaps';
+import { BigNumber } from 'ethers';
 import { useAmountScaled } from 'hooks/sor/useAmountScaled';
 import { useGetSwaps } from 'hooks/sor/useGetSwaps';
 import { DEFAULT_SWAP_OPTIONS, SwapOptions, useSwap } from 'hooks/useSwap';
@@ -105,13 +106,13 @@ const SwapIndexPage: ExtendedNextPage = () => {
 							setActiveToken={(tokenNum: number) => setActiveToken(tokenNum)}
 						/>
 
-						{swapInfo && swapInfo.swaps.length > 0 && (
+						{swapInfo && !(swapInfo.swapAmount.lte(BigNumber.from(0)) || swapInfo.swaps.length === 0) && (
 							<SingleEntityConnectButton
 								className="btn mt-2 w-full bg-lights-400 bg-opacity-100 text-black hover:bg-lights-200"
 								invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
 							>
 								<Switch>
-									<SwapTokenApproval />
+									<SwapTokenApprovalCase />
 									<Default>
 										<button
 											onClick={() =>
@@ -138,9 +139,10 @@ const SwapIndexPage: ExtendedNextPage = () => {
 								</Switch>
 							</SingleEntityConnectButton>
 						)}
-						{swapInfo && swapInfo.swaps.length === 0 && (
+
+						{swapInfo && (swapInfo.swapAmount.lte(BigNumber.from(0)) || swapInfo.swaps.length === 0) && (
 							<button className="mt-2 w-full rounded-lg bg-gray-600 bg-opacity-100 p-3 text-center text-black">
-								Cannot swap - Invalid path
+								Cannot swap - {swapInfo.swapAmount.lte(BigNumber.from(0)) ? 'No amount' : 'Invalid path'}
 							</button>
 						)}
 					</div>
