@@ -1,6 +1,5 @@
 import { PoolFilter, SOR, SwapTypes } from '@balancer-labs/sor';
 import { MaxUint256 } from '@ethersproject/constants';
-import { mergeDefault } from '@sapphire/utilities';
 import { BigNumber, ContractReceipt, PayableOverrides, Signer } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
 import jpex from 'jpex';
@@ -36,12 +35,12 @@ export interface SwapVariables {
 }
 
 export function useSwap(signer: Signer | undefined) {
-	const { mutateAsync: batchSwap } = useBatchSwap(signer);
+	const { mutate: batchSwap } = useBatchSwap(signer);
 	const sor = jpex.resolve<SOR>();
 
 	return useMutation({
 		mutationFn: async (variables: SwapVariables): Promise<ContractReceipt> => {
-			const { options, overrides } = variables;
+			const { options, overrides: _overrides } = variables;
 			if (!options.tokenIn || !options.tokenOut || !options.amount) {
 				console.warn('Tried to swap without appropriate parameters.');
 				return undefined as unknown as ContractReceipt;
@@ -53,7 +52,7 @@ export function useSwap(signer: Signer | undefined) {
 				return undefined as unknown as ContractReceipt;
 			}
 
-			const defaultedOptions: Required<SwapOptions> = mergeDefault(DEFAULT_SWAP_OPTIONS, options);
+			const defaultedOptions = { ...DEFAULT_SWAP_OPTIONS, ...options } as Required<SwapOptions>;
 			const { tokenIn, tokenOut, amount, swapType } = defaultedOptions;
 
 			const swapInfo = await sor.getSwaps(tokenIn, tokenOut, swapType, amount, {
@@ -82,8 +81,7 @@ export function useSwap(signer: Signer | undefined) {
 				swapInfo.tokenAddresses,
 				defaultedOptions.funds,
 				limits,
-				MaxUint256,
-				overrides
+				MaxUint256
 			]);
 
 			return tx as unknown as ContractReceipt;

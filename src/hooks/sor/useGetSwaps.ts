@@ -5,12 +5,14 @@ import { useQuery } from 'react-query';
 
 const IDENTITY_FN = (v: unknown) => v;
 
-export function useGetSwaps(options: Required<SwapOptions>) {
+export function useGetSwaps(options: Required<Omit<SwapOptions, 'funds'>>) {
 	const sor = jpex.resolve<SOR>();
 
 	return useQuery({
 		queryKey: ['swapRouting', options.tokenIn, options.tokenOut, options.swapType, options.amount],
 		queryFn: async () => {
+			await sor.fetchPools();
+
 			const swapInfo = await sor.getSwaps(options.tokenIn, options.tokenOut, options.swapType, options.amount, {
 				maxPools: options.maxHops,
 				gasPrice: options.gasPrice,
@@ -20,6 +22,7 @@ export function useGetSwaps(options: Required<SwapOptions>) {
 
 			return swapInfo;
 		},
+		enabled: Boolean(options.tokenIn && options.tokenOut && options.amount),
 		select: IDENTITY_FN as (v: SwapInfo) => SwapInfo
 	});
 }

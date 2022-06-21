@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TokenInfo } from '@uniswap/token-lists';
 import { RootState } from 'state';
-import { TokenWithPoolInfo } from 'types/tokens';
 
 export interface SelectedTokensState {
 	tokenOne: TokenInfo;
@@ -37,7 +36,7 @@ export const selectedTokensSlice = createSlice({
 		setTokenOne(state, action: PayloadAction<TokenInfo>) {
 			state.tokenOne = action.payload;
 		},
-		setTokenTwo(state, action: PayloadAction<TokenWithPoolInfo>) {
+		setTokenTwo(state, action: PayloadAction<TokenInfo>) {
 			state.tokenTwo = action.payload;
 		},
 		setAmount(state, action) {

@@ -85,7 +85,6 @@ export class SubgraphPoolDataService implements PoolDataService {
 			},
 			'json' as FetchResultTypes.JSON
 		);
-		console.log(data);
 
 		const pools = [...data.pool0, ...data.pool1000];
 

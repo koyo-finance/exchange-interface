@@ -21,17 +21,12 @@ const SwapCard: React.FC<SwapCardProps> = ({ tokenNum, token, swapStatus, conver
 	const [tokenAmount, setTokenAmount] = useState(convertedAmount);
 	const inputAmountRef = useRef<HTMLInputElement>(null);
 
-	useEffect(() => {
-		const formattedAmount = Number(convertedAmount.toFixed(5));
-
-		setTokenAmount(formattedAmount);
-
-		if (tokenNum === 1) setInputAmount(formattedAmount, tokenNum, true);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [convertedAmount]);
+	console.log(tokenAmount, convertedAmount);
 
 	const { data: account } = useAccount();
 	const { data: tokenBalance = 0, refetch: refetchBalance } = useTokenBalance(account?.address, token.address);
+
+	useEffect(() => setTokenAmount(Number(convertedAmount.toFixed(5))), [convertedAmount]);
 
 	useEffect(() => {
 		if (swapStatus === 'success') {
@@ -99,7 +94,7 @@ const SwapCard: React.FC<SwapCardProps> = ({ tokenNum, token, swapStatus, conver
 						onChange={changeTokenAmountHandler}
 						value={tokenAmount > 0 ? tokenAmount : ''}
 						placeholder={'0,00'}
-						onBlur={() => setTokenAmount(Number(Number(tokenAmount).toFixed(5)))}
+						onBlur={() => setTokenAmount(Number(tokenAmount.toFixed(5)))}
 						className=" w-full
 					   bg-darks-500 font-jtm text-3xl font-extralight text-white outline-none md:text-4xl"
 					/>

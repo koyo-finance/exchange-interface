@@ -1,33 +1,29 @@
-import { ChainId, fromBigNumber, toBigNumber } from '@koyofinance/core-sdk';
-import { Pool, pools } from '@koyofinance/swap-sdk';
+import { SwapTypes } from '@balancer-labs/sor';
+import { toBigNumber } from '@koyofinance/core-sdk';
 import { TokenInfo } from '@uniswap/token-lists';
 import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
 import GuideLink from 'components/GuideLink';
-import FormApproveAsset from 'components/UI/Cards/FormApproveAsset';
 import SwapCard from 'components/UI/Cards/Swap/SwapCard';
 import TokenModal from 'components/UI/Modals/TokenModal';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
-import { vaultContract } from 'core/contracts';
-import { BigNumber } from 'ethers';
-import useExchange from 'hooks/contracts/StableSwap/useExchange';
-import useGetDY from 'hooks/contracts/StableSwap/useGetDY';
-import useMultiTokenAllowance from 'hooks/contracts/useMultiTokenAllowance';
-import { useSwap } from 'hooks/useSwap';
+import { useAmountScaled } from 'hooks/sor/useAmountScaled';
+import { useGetSwaps } from 'hooks/sor/useGetSwaps';
+import { DEFAULT_SWAP_OPTIONS, SwapOptions, useSwap } from 'hooks/useSwap';
 import { SwapLayout, SwapLayoutCard } from 'layouts/SwapLayout';
 import { NextSeo } from 'next-seo';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { BsFillGearFill } from 'react-icons/bs';
 import { IoSwapVertical } from 'react-icons/io5';
-import { Case, Default, Switch } from 'react-if';
+import { Default, Switch } from 'react-if';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from 'state/hooks';
-import { selectAllTokensByChainId } from 'state/reducers/lists';
 import { selectAmount, selectTokenOne, selectTokenTwo, setAmount, setTokenOne, setTokenTwo } from 'state/reducers/selectedTokens';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
-import { TokenWithPoolInfo } from 'types/tokens';
 import { useAccount, useSigner } from 'wagmi';
 
 const SwapIndexPage: ExtendedNextPage = () => {
+	const swapType = SwapTypes.SwapExactIn;
+
 	const dispatch = useAppDispatch();
 
 	const { data: account } = useAccount();
@@ -36,28 +32,13 @@ const SwapIndexPage: ExtendedNextPage = () => {
 
 	const [tokenModalOneIsOpen, setTokenModalIsOpen] = useState(false);
 	const [activeToken, setActiveToken] = useState(1);
-	const [tokenOneAmount, setTokenOneAmount] = useState(0);
-	const [tokenTwoAmount, setTokenTwoAmount] = useState(0);
-	const [invertedTokenOneAmount, setInvertedTokenOneAmount] = useState(0);
 
 	const tokenOne = useSelector(selectTokenOne);
 	const tokenTwo = useSelector(selectTokenTwo);
 	const tokenAmount = useSelector(selectAmount);
-	const TOKENS = useSelector(selectAllTokensByChainId(ChainId.BOBA));
 
-	const allowances = useMultiTokenAllowance(
-		account?.address,
-		vaultContract.address,
-		TOKENS.map((token) => token.address)
-	);
-
-	const setTokenAmountHandler = (amount: number, tokenNum: number, settingConvertedAmount: boolean) => {
-		if (tokenNum === 1) {
-			if (!settingConvertedAmount) setTokenOneAmount(amount);
-			dispatch(setAmount({ amount }));
-			return;
-		}
-		setTokenTwoAmount(amount);
+	const setTokenAmountHandler = (amount: number, tokenNum: number, _settingConvertedAmount: boolean) => {
+		if (tokenNum === 1) dispatch(setAmount({ amount: amount && amount > 0 ? amount : 0 }));
 	};
 
 	const openTokenModalHandler = (tokenNum: number) => {
@@ -65,82 +46,28 @@ const SwapIndexPage: ExtendedNextPage = () => {
 		setTokenModalIsOpen(true);
 	};
 
-	const setTokenHandler = (token: TokenInfo | TokenWithPoolInfo, tokenNum: number) => {
+	const setTokenHandler = (token: TokenInfo, tokenNum: number) => {
 		if (tokenNum === 1) {
-			const [selectedPool] = pools.filter((pool) => pool.id === tokenTwo.poolId);
-
-			const tokenOneIsInSelectedPool = selectedPool.coins.findIndex((coin) => coin.address === token.address);
-
-			if (tokenOneIsInSelectedPool === -1) {
-				const filteredPools = pools.map((pool) => {
-					const tokenIndex = pool.coins.findIndex((coin) => coin.address === token.address);
-					if (tokenIndex === -1) return false;
-					return pool;
-				});
-
-				const [poolWithSelectedToken] = filteredPools.filter((pool) => pool !== false);
-				if (poolWithSelectedToken) {
-					const filterTokenFromPool = (poolWithSelectedToken as Pool).coins.filter((coin) => coin.address !== token.address);
-					const [selectSecondTokenFromPool] = TOKENS.filter((coin) => filterTokenFromPool[0].address === coin.address);
-
-					const secondToken = {
-						...selectSecondTokenFromPool,
-						poolId: (poolWithSelectedToken as Pool).id,
-						poolAddress: (poolWithSelectedToken as Pool).addresses.swap
-					};
-
-					setTokenOneIndex(((poolWithSelectedToken as Pool)?.coins || []).findIndex((token) => token.address === tokenOne.address));
-					dispatch(setTokenTwo(secondToken));
-				}
-			}
-
 			dispatch(setTokenOne(token));
-			return;
+		} else if (tokenNum === 2) {
+			dispatch(setTokenTwo(token));
 		}
-
-		const tokenTwoFormatted: TokenWithPoolInfo = {
-			address: token.address,
-			chainId: token.chainId,
-			decimals: token.decimals,
-			logoURI: token.logoURI,
-			name: token.name,
-			symbol: token.symbol,
-			poolId: (token as TokenWithPoolInfo)?.poolId || '',
-			poolAddress: (token as TokenWithPoolInfo)?.poolAddress || ''
-		};
-
-		setTokenOneIndex((pool?.coins || []).findIndex((token) => token.address === tokenOne.address));
-		setTokenTwoIndex((pool?.coins || []).findIndex((token) => token.address === tokenTwoFormatted.address));
-
-		dispatch(setTokenTwo(tokenTwoFormatted));
 	};
 
 	const swapTokensHandler = () => {
-		const tokenTwoTransformed: TokenWithPoolInfo = {
-			address: tokenOne.address,
-			chainId: tokenOne.chainId,
-			decimals: tokenOne.decimals,
-			logoURI: tokenOne.logoURI,
-			name: tokenOne.name,
-			symbol: tokenOne.symbol,
-			poolId: tokenTwo.poolId,
-			poolAddress: tokenTwo.poolAddress
-		};
-
-		const tokenOneTransformed = {
-			address: tokenTwo.address,
-			chainId: tokenTwo.chainId,
-			decimals: tokenTwo.decimals,
-			logoURI: tokenTwo.logoURI,
-			name: tokenTwo.name,
-			symbol: tokenTwo.symbol
-		};
-
-		dispatch(setTokenOne(tokenOneTransformed));
-		dispatch(setTokenTwo(tokenTwoTransformed));
+		dispatch(setTokenOne(tokenTwo));
+		dispatch(setTokenTwo(tokenOne));
 	};
 
-	const { mutate: swap } = useSwap(signer || undefined);
+	const { data: swapInfo } = useGetSwaps({
+		...(DEFAULT_SWAP_OPTIONS as Required<Omit<SwapOptions, 'funds'>>),
+		tokenIn: tokenOne.address,
+		tokenOut: tokenTwo.address,
+		amount: toBigNumber(tokenAmount, tokenOne.decimals),
+		swapType
+	});
+	const swapAmounts = useAmountScaled(swapInfo, tokenOne, tokenTwo, swapType);
+	const { mutate: swap, status: swapStatus } = useSwap(signer || undefined);
 
 	return (
 		<>
@@ -170,7 +97,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 							tokenNum={1}
 							token={tokenOne}
 							swapStatus={swapStatus}
-							convertedAmount={invertedTokenOneAmount}
+							convertedAmount={parseFloat(swapAmounts.in)}
 							openTokenModal={openTokenModalHandler}
 							setInputAmount={setTokenAmountHandler}
 							setActiveToken={(tokenNum: number) => setActiveToken(tokenNum)}
@@ -185,19 +112,19 @@ const SwapIndexPage: ExtendedNextPage = () => {
 							tokenNum={2}
 							token={tokenTwo}
 							swapStatus={swapStatus}
-							convertedAmount={fromBigNumber(calculatedAmountTokenTwo, tokenTwo.decimals)}
+							convertedAmount={parseFloat(swapAmounts.out)}
 							openTokenModal={openTokenModalHandler}
 							setInputAmount={setTokenAmountHandler}
 							setActiveToken={(tokenNum: number) => setActiveToken(tokenNum)}
 						/>
 
-						{(pool?.coins.findIndex((coin) => tokenOne.address === coin.address) || 0) > -1 && (
+						{swapInfo && swapInfo.swaps.length > 0 && (
 							<SingleEntityConnectButton
 								className="btn mt-2 w-full bg-lights-400 bg-opacity-100 text-black hover:bg-lights-200"
 								invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
 							>
 								<Switch>
-									<Case
+									{/* <Case
 										condition={BigNumber.from(allowances[tokenOneIndex]?.data || 0).lt(
 											toBigNumber(tokenAmount, pool?.coins[tokenOneIndex]?.decimals)
 										)}
@@ -213,7 +140,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 												APPROVE - <span className="italic">{pool.coins[tokenOneIndex].name.toUpperCase()}</span>
 											</FormApproveAsset>
 										)}
-									</Case>
+									</Case> */}
 									<Default>
 										<button
 											onClick={() =>
@@ -222,6 +149,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 														tokenIn: tokenOne.address,
 														tokenOut: tokenTwo.address,
 														amount: toBigNumber(tokenAmount, tokenOne.decimals),
+														swapType,
 														funds: {
 															sender: accountAddress,
 															fromInternalBalance: false,
@@ -239,7 +167,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 								</Switch>
 							</SingleEntityConnectButton>
 						)}
-						{!((pool?.coins.findIndex((coin) => tokenOne.address === coin.address) || 0) > -1) && (
+						{swapInfo && swapInfo.swaps.length === 0 && (
 							<button className="mt-2 w-full rounded-lg bg-gray-600 bg-opacity-100 p-3 text-center text-black">
 								Cannot swap - Invalid path
 							</button>

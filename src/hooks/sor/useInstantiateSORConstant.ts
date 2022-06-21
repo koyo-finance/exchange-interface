@@ -4,8 +4,8 @@ import { ChainMulticall1, ChainNativeWrappedAsset, ChainVault } from 'constants/
 import { EXCHANGE_SUBGRAPH_URL } from 'constants/subgraphs';
 import { bobaReadonlyProvider } from 'hooks/useProviders';
 import jpex from 'jpex';
+import { CoingeckoTokenPriceService } from 'utils/exchange/router/CoingeckoTokenPriceService';
 import { SubgraphPoolDataService } from 'utils/exchange/router/SubgraphPoolDataService';
-import { SubgraphTokenPriceService } from 'utils/exchange/router/SubgraphTokenPriceService';
 
 export function useInstantiateSORConstant() {
 	const poolDataService = new SubgraphPoolDataService({
@@ -16,7 +16,8 @@ export function useInstantiateSORConstant() {
 		onchain: true,
 		subgraphUrl: EXCHANGE_SUBGRAPH_URL
 	});
-	const priceService = new SubgraphTokenPriceService(ChainNativeWrappedAsset[ChainId.BOBA]);
+	// const priceService = new SubgraphTokenPriceService(ChainNativeWrappedAsset[ChainId.BOBA]);
+	const priceService = new CoingeckoTokenPriceService(ChainId.BOBA);
 
 	const sor = new SOR(
 		bobaReadonlyProvider,
