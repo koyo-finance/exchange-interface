@@ -6,13 +6,13 @@ import { useSelector } from 'react-redux';
 import { selectAllTokensByChainId } from 'state/reducers/lists';
 import { TokenWithPoolInfo } from 'types/tokens';
 
-export interface WithdrawTokenCardProps {
+export interface WithdrawCardTokenProps {
 	coin: TokenFragment;
 	status: string;
 	setInputAmount: (name: string, value: number) => void;
 }
 
-const WithdrawTokenCard: React.FC<WithdrawTokenCardProps> = ({ coin, status, setInputAmount }) => {
+const WithdrawCardToken: React.FC<WithdrawCardTokenProps> = ({ coin, status, setInputAmount }) => {
 	const TOKENS = useSelector(selectAllTokensByChainId(ChainId.BOBA));
 
 	const [tokenAmount, setTokenAmount] = useState<number | string>(0);
@@ -54,8 +54,7 @@ const WithdrawTokenCard: React.FC<WithdrawTokenCardProps> = ({ coin, status, set
 					placeholder={'0,00'}
 					value={tokenAmount > 0 ? tokenAmount : ''}
 					onBlur={() => setTokenAmount(Number(Number(tokenAmount).toFixed(5)))}
-					className=" w-full
-				  border-0 bg-darks-500 font-jtm text-3xl font-extralight text-white outline-none md:text-4xl"
+					className="w-full border-0 bg-darks-500 font-jtm text-3xl font-extralight text-white outline-none md:text-4xl"
 				/>
 				<div className=" mb-2 transform-gpu cursor-pointer rounded-xl border-2 border-lights-400 p-1 text-lights-400 duration-100 ease-out hover:bg-lights-400 hover:text-black active:scale-90 ">
 					MAX
@@ -65,4 +64,4 @@ const WithdrawTokenCard: React.FC<WithdrawTokenCardProps> = ({ coin, status, set
 	);
 };
 
-export default WithdrawTokenCard;
+export default WithdrawCardToken;

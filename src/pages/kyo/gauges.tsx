@@ -1,6 +1,6 @@
 import { formatBalance, fromBigNumber } from '@koyofinance/core-sdk';
 import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
-import BalanceCard from 'components/UI/Cards/Gauges/BalanceCard';
+import TitledDisplayBox from 'components/TitledDisplayBox';
 import GaugeModal from 'components/UI/Modals/GaugeModal';
 import { ANALYTICS_LINK, ROOT_WITH_PROTOCOL } from 'constants/links';
 import { EXCHANGE_SUBGRAPH_URL } from 'constants/subgraphs';
@@ -98,13 +98,13 @@ const GaugesPage: ExtendedNextPage = () => {
 					</div>
 				</div>
 				<div className="flex flex-row flex-wrap justify-center gap-[10vw]">
-					<BalanceCard
+					<TitledDisplayBox
 						text="veKYO VOTING POWER"
 						value={formatBalance(veKYOBalance, {
 							maximumFractionDigits: 3
 						})}
 					/>
-					<BalanceCard text="VOTING POWER USED" value={`${votePower.div(100).toString()}%`} />
+					<TitledDisplayBox text="VOTING POWER USED" value={`${votePower.div(100).toString()}%`} />
 				</div>
 				<div className="mx-auto flex w-full flex-col gap-3 rounded-xl border-2 border-lights-400 bg-black bg-opacity-50 p-3 md:w-3/4 md:gap-4 md:p-4 lg:w-2/3 xl:w-1/2">
 					{claimableGauges.some((cG) => fromBigNumber(cG?.data || 0) > 0) && (

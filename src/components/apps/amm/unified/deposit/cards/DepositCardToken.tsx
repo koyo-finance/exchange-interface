@@ -6,17 +6,17 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectAllTokensByChainId } from 'state/reducers/lists';
 
-export interface DepositCardProps {
+export interface DepositCardTokenProps {
 	coin: TokenFragment;
 	balance: BigNumberish;
 	resetValues: boolean | undefined;
 	setInputAmount: (name: string, value: number) => void;
 }
 
-const DepositTokenCard: React.FC<DepositCardProps> = ({ coin, balance, resetValues, setInputAmount }) => {
+const DepositCardToken: React.FC<DepositCardTokenProps> = ({ coin, balance, resetValues, setInputAmount }) => {
 	const TOKENS = useSelector(selectAllTokensByChainId(ChainId.BOBA));
 
-	const [tokenAmount, setTokenAmount] = useState<number | string | undefined>(undefined);
+	const [tokenAmount, setTokenAmount] = useState<number>(0);
 
 	const inputAmountRef = useRef<HTMLInputElement>(null);
 
@@ -31,7 +31,6 @@ const DepositTokenCard: React.FC<DepositCardProps> = ({ coin, balance, resetValu
 	const tokenAmountChangeHandler = () => {
 		const inputAmount = inputAmountRef.current ? Number(inputAmountRef.current?.value) : 0;
 		if (inputAmount === 0) {
-			setTokenAmount(undefined);
 			setInputAmount(coin.name, 0);
 			return;
 		}
@@ -68,9 +67,8 @@ const DepositTokenCard: React.FC<DepositCardProps> = ({ coin, balance, resetValu
 						onChange={tokenAmountChangeHandler}
 						placeholder={'0,00'}
 						value={tokenAmount}
-						onBlur={() => setTokenAmount(Number(Number(tokenAmount).toFixed(5)))}
-						className=" w-4/5
-					   bg-darks-500 font-jtm text-3xl font-extralight text-white outline-none md:text-4xl"
+						onBlur={() => setTokenAmount(Number(tokenAmount.toFixed(5)))}
+						className="w-4/5 bg-darks-500 font-jtm text-3xl font-extralight text-white outline-none md:text-4xl"
 					/>
 					<button
 						type="button"
@@ -88,4 +86,4 @@ const DepositTokenCard: React.FC<DepositCardProps> = ({ coin, balance, resetValu
 	);
 };
 
-export default DepositTokenCard;
+export default DepositCardToken;

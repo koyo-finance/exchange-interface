@@ -60,7 +60,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ gauge }) => {
 			</div>
 			<div className=" flex w-full flex-col gap-2 ">
 				<SingleEntityConnectButton
-					className=" btn w-full bg-lights-400 bg-opacity-100 p-0 text-black hover:bg-lights-200"
+					className="btn w-full bg-lights-400 bg-opacity-100 p-0 text-black hover:bg-lights-200"
 					invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
 				>
 					<Switch>

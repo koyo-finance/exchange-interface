@@ -1,8 +1,8 @@
 import { formatBalance, toBigNumber } from '@koyofinance/core-sdk';
+import WithdrawCardToken from 'components/apps/amm/unified/withdraw/cards/WithdrawCardToken';
+import WithdrawKPTCalculation from 'components/apps/amm/unified/withdraw/WithdrawKPTCalculation';
 import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
 import GuideLink from 'components/GuideLink';
-import WithdrawKPTCalculation from 'components/UI/Cards/Withdraw/WithdrawKPTCalculation';
-import WithdrawTokenCard from 'components/UI/Cards/Withdraw/WithdrawTokenCard';
 import PoolsModal from 'components/UI/Modals/PoolsModal';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
 import { EXCHANGE_SUBGRAPH_URL } from 'constants/subgraphs';
@@ -135,7 +135,7 @@ const WithdrawPage: ExtendedNextPage = () => {
 													<div className="mt-4 grid grid-cols-1 gap-8 md:grid-cols-2">
 														{selectedPool.tokens?.map((coin) => (
 															<div key={coin.id}>
-																<WithdrawTokenCard
+																<WithdrawCardToken
 																	key={coin.id}
 																	coin={coin}
 																	status={exitStatus}
@@ -151,6 +151,7 @@ const WithdrawPage: ExtendedNextPage = () => {
 																pool={selectedPool}
 																account={accountAddress}
 																values={props.values}
+																status={exitStatus}
 															/>
 														</span>
 													</div>

@@ -1,9 +1,8 @@
 import { formatBalance, toBigNumber } from '@koyofinance/core-sdk';
 import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
 import GuideLink from 'components/GuideLink';
-import DepositPoolAPYCard from 'components/UI/Cards/Deposit/DepositPoolAPYCard';
-import DepositTokenCard from 'components/UI/Cards/Deposit/DepositTokenCard';
-import DepostKPTCalculation from 'components/UI/Cards/Deposit/DepostKPTCalculation';
+import DepositCardToken from 'components/apps/amm/unified/deposit/cards/DepositCardToken';
+import DepositKPTCalculation from 'components/apps/amm/unified/deposit/DepositKPTCalculation';
 import FormApproveAsset from 'components/UI/Cards/FormApproveAsset';
 import PoolsModal from 'components/UI/Modals/PoolsModal';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
@@ -167,7 +166,7 @@ const DepositPage: ExtendedNextPage = () => {
 													<div className="mt-4 grid grid-cols-1 gap-8 md:grid-cols-2">
 														{selectedPool.tokens?.map((coin: TokenFragment, i) => (
 															<div key={coin.address}>
-																<DepositTokenCard
+																<DepositCardToken
 																	key={coin.id}
 																	coin={coin}
 																	balance={balances[i].data || 0}
@@ -181,7 +180,7 @@ const DepositPage: ExtendedNextPage = () => {
 														<div>
 															LP tokens recieved:{' '}
 															<span className="underline">
-																<DepostKPTCalculation
+																<DepositKPTCalculation
 																	pool={selectedPool}
 																	values={props.values}
 																	account={accountAddress}
@@ -230,13 +229,6 @@ const DepositPage: ExtendedNextPage = () => {
 										)}
 									</Formik>
 								</div>
-							)}
-
-							{selectedPool && (
-								<DepositPoolAPYCard
-									poolId={selectedPool.id}
-									className="mt-4 w-full rounded-xl bg-gray-500 bg-opacity-50 p-4 text-gray-300"
-								/>
 							)}
 						</div>
 					</div>
