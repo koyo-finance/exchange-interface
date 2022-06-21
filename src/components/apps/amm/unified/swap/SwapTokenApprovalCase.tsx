@@ -1,4 +1,5 @@
 import { toBigNumber } from '@koyofinance/core-sdk';
+import FormApproveAsset from 'components/UI/Cards/FormApproveAsset';
 import { vaultContract } from 'core/contracts';
 import { BigNumber } from 'ethers';
 import useTokenAllowance from 'hooks/contracts/useTokenAllowance';
@@ -7,7 +8,6 @@ import { Case } from 'react-if';
 import { useSelector } from 'react-redux';
 import { selectAmount, selectTokenOne } from 'state/reducers/selectedTokens';
 import { useAccount } from 'wagmi';
-import FormApproveAsset from '../FormApproveAsset';
 
 const SwapTokenApproval: React.FC = () => {
 	const { data: account } = useAccount();

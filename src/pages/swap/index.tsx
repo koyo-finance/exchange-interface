@@ -1,20 +1,21 @@
 import { SwapTypes } from '@balancer-labs/sor';
 import { toBigNumber } from '@koyofinance/core-sdk';
 import { TokenInfo } from '@uniswap/token-lists';
+import SwapCardToken from 'components/apps/amm/unified/swap/cards/SwapCardToken';
+import SwapCardTop from 'components/apps/amm/unified/swap/cards/SwapCardTop';
+import SwapSwapTokensSlot from 'components/apps/amm/unified/swap/SwapSwapTokensSlot';
+import SwapTokenApproval from 'components/apps/amm/unified/swap/SwapTokenApprovalCase';
 import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
 import GuideLink from 'components/GuideLink';
-import SwapCard from 'components/UI/Cards/Swap/SwapCard';
-import SwapTokenApproval from 'components/UI/Cards/Swap/SwapTokenApproval';
 import TokenModal from 'components/UI/Modals/TokenModal';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
+import { SwapTokenNumber } from 'constants/swaps';
 import { useAmountScaled } from 'hooks/sor/useAmountScaled';
 import { useGetSwaps } from 'hooks/sor/useGetSwaps';
 import { DEFAULT_SWAP_OPTIONS, SwapOptions, useSwap } from 'hooks/useSwap';
 import { SwapLayout, SwapLayoutCard } from 'layouts/SwapLayout';
 import { NextSeo } from 'next-seo';
 import React, { useState } from 'react';
-import { BsFillGearFill } from 'react-icons/bs';
-import { IoSwapVertical } from 'react-icons/io5';
 import { Default, Switch } from 'react-if';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from 'state/hooks';
@@ -32,14 +33,14 @@ const SwapIndexPage: ExtendedNextPage = () => {
 	const { data: signer } = useSigner();
 
 	const [tokenModalOneIsOpen, setTokenModalIsOpen] = useState(false);
-	const [activeToken, setActiveToken] = useState(1);
+	const [activeToken, setActiveToken] = useState<SwapTokenNumber>(SwapTokenNumber.IN);
 
 	const tokenOne = useSelector(selectTokenOne);
 	const tokenTwo = useSelector(selectTokenTwo);
 	const tokenAmount = useSelector(selectAmount);
 
-	const setTokenAmountHandler = (amount: number, tokenNum: number, _settingConvertedAmount: boolean) => {
-		if (tokenNum === 1) dispatch(setAmount({ amount: amount && amount > 0 ? amount : 0 }));
+	const setTokenAmountHandler = (amount: number, tokenNum: SwapTokenNumber, _settingConvertedAmount: boolean) => {
+		if (tokenNum === SwapTokenNumber.IN) dispatch(setAmount({ amount: amount && amount > 0 ? amount : 0 }));
 	};
 
 	const openTokenModalHandler = (tokenNum: number) => {
@@ -48,16 +49,11 @@ const SwapIndexPage: ExtendedNextPage = () => {
 	};
 
 	const setTokenHandler = (token: TokenInfo, tokenNum: number) => {
-		if (tokenNum === 1) {
+		if (tokenNum === SwapTokenNumber.IN) {
 			dispatch(setTokenOne(token));
-		} else if (tokenNum === 2) {
+		} else if (tokenNum === SwapTokenNumber.OUT) {
 			dispatch(setTokenTwo(token));
 		}
-	};
-
-	const swapTokensHandler = () => {
-		dispatch(setTokenOne(tokenTwo));
-		dispatch(setTokenTwo(tokenOne));
 	};
 
 	const { data: swapInfo } = useGetSwaps({
@@ -88,14 +84,9 @@ const SwapIndexPage: ExtendedNextPage = () => {
 				)}
 				<SwapLayoutCard className="w-[95vw] sm:w-[75vw] md:w-[55vw] lg:w-[45vw] xl:w-[40vw] 2xl:w-[30vw]">
 					<div className="flex w-full flex-col gap-1">
-						<div className="mb-2 flex w-full flex-row items-center justify-between text-lg font-semibold text-white">
-							<div>Swap</div>
-							<div>
-								<BsFillGearFill />
-							</div>
-						</div>
-						<SwapCard
-							tokenNum={1}
+						<SwapCardTop />
+						<SwapCardToken
+							tokenNum={SwapTokenNumber.IN}
 							token={tokenOne}
 							swapStatus={swapStatus}
 							convertedAmount={parseFloat(swapAmounts.in)}
@@ -103,14 +94,9 @@ const SwapIndexPage: ExtendedNextPage = () => {
 							setInputAmount={setTokenAmountHandler}
 							setActiveToken={(tokenNum: number) => setActiveToken(tokenNum)}
 						/>
-						<div
-							className=" mx-auto h-8 w-auto transform-gpu cursor-pointer text-3xl text-white duration-150 hover:text-lights-400"
-							onClick={swapTokensHandler}
-						>
-							<IoSwapVertical />
-						</div>
-						<SwapCard
-							tokenNum={2}
+						<SwapSwapTokensSlot />
+						<SwapCardToken
+							tokenNum={SwapTokenNumber.OUT}
 							token={tokenTwo}
 							swapStatus={swapStatus}
 							convertedAmount={parseFloat(swapAmounts.out)}

@@ -5,7 +5,6 @@ import { TokenFragment } from 'query/generated/graphql-codegen-generated';
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectAllTokensByChainId } from 'state/reducers/lists';
-import { TokenWithPoolInfo } from 'types/tokens';
 
 export interface DepositCardProps {
 	coin: TokenFragment;
@@ -27,7 +26,7 @@ const DepositTokenCard: React.FC<DepositCardProps> = ({ coin, balance, resetValu
 		}
 	}, [resetValues]);
 
-	const [{ logoURI: coinLogo }] = TOKENS.filter((token: TokenInfo | TokenWithPoolInfo) => token.symbol.toLowerCase() === coin.symbol.toLowerCase());
+	const [{ logoURI: coinLogo }] = TOKENS.filter((token: TokenInfo) => token.symbol.toLowerCase() === coin.symbol.toLowerCase());
 
 	const tokenAmountChangeHandler = () => {
 		const inputAmount = inputAmountRef.current ? Number(inputAmountRef.current?.value) : 0;

@@ -1,21 +1,32 @@
 import { formatBalance, fromBigNumber } from '@koyofinance/core-sdk';
 import { TokenInfo } from '@uniswap/token-lists';
+import { SwapTokenNumber } from 'constants/swaps';
 import useTokenBalance from 'hooks/contracts/useTokenBalance';
 import React, { useEffect, useRef, useState } from 'react';
 import { RiArrowDownSLine } from 'react-icons/ri';
 import { useAccount } from 'wagmi';
 
-export interface SwapCardProps {
-	tokenNum: number;
+export type TokenNumRelativeCallback = (tokenNum: number) => void;
+
+export interface SwapCardTokenProps {
+	tokenNum: SwapTokenNumber;
 	token: TokenInfo;
 	swapStatus: string;
 	convertedAmount: number;
-	openTokenModal: (tokenNum: number) => void;
+	openTokenModal: TokenNumRelativeCallback;
 	setInputAmount: (amount: number, tokenNum: number, settingConvertedAmount: boolean) => void;
-	setActiveToken: (tokenNum: number) => void;
+	setActiveToken: TokenNumRelativeCallback;
 }
 
-const SwapCard: React.FC<SwapCardProps> = ({ tokenNum, token, swapStatus, convertedAmount, openTokenModal, setInputAmount, setActiveToken }) => {
+const SwapCardToken: React.FC<SwapCardTokenProps> = ({
+	tokenNum,
+	token,
+	swapStatus,
+	convertedAmount,
+	openTokenModal,
+	setInputAmount,
+	setActiveToken
+}) => {
 	const [error, setError] = useState('');
 
 	const [tokenAmount, setTokenAmount] = useState(convertedAmount);
@@ -69,7 +80,7 @@ const SwapCard: React.FC<SwapCardProps> = ({ tokenNum, token, swapStatus, conver
 		<div className=" flex w-full flex-col gap-2 rounded-xl bg-darks-500 p-4">
 			{error !== '' && <div className=" w-full text-red-600">{error}</div>}
 			<div className="flex w-full flex-row justify-between ">
-				<div className=" text-2xl text-darks-200">{tokenNum === 1 ? 'You pay' : 'You receive'}</div>
+				<div className=" text-2xl text-darks-200">{tokenNum === SwapTokenNumber.IN ? 'You pay' : 'You receive'}</div>
 				<div
 					className="flex transform-gpu cursor-pointer flex-row items-center gap-2 rounded-xl bg-darks-400 py-2 px-2 duration-100 hover:bg-darks-300"
 					onClick={openModalHandler}
@@ -89,14 +100,13 @@ const SwapCard: React.FC<SwapCardProps> = ({ tokenNum, token, swapStatus, conver
 					<input
 						ref={inputAmountRef}
 						type="number"
-						name={`swap ${tokenNum === 1 ? 'from' : 'to'}`}
+						name={`swap ${tokenNum === SwapTokenNumber.IN ? 'from' : 'to'}`}
 						max={1000000}
 						onChange={changeTokenAmountHandler}
 						value={tokenAmount > 0 ? tokenAmount : ''}
 						placeholder={'0,00'}
 						onBlur={() => setTokenAmount(Number(tokenAmount.toFixed(5)))}
-						className=" w-full
-					   bg-darks-500 font-jtm text-3xl font-extralight text-white outline-none md:text-4xl"
+						className="w-full bg-darks-500 font-jtm text-3xl font-extralight text-white outline-none md:text-4xl"
 					/>
 					<button
 						type="button"
@@ -115,4 +125,4 @@ const SwapCard: React.FC<SwapCardProps> = ({ tokenNum, token, swapStatus, conver
 	);
 };
 
-export default SwapCard;
+export default SwapCardToken;

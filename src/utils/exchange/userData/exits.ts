@@ -1,6 +1,6 @@
 import { defaultAbiCoder } from '@ethersproject/abi';
 import { EXIT_KIND_ABI_STRUCTURE } from 'constants/vault';
-import { ExitKind } from 'constants/ExitKind';
+import { ExitKind } from 'constants/kinds';
 import { BigNumber, BigNumberish } from 'ethers';
 
 export function exitExactKPTInForOneTokenOut(kptAmountIn: BigNumber, exitTokenIndex: BigNumberish) {

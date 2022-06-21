@@ -1,5 +1,5 @@
 import CallToAction from 'components/apps/_/Home/CallToAction';
-import HomeCardsRows from 'components/apps/_/Home/cards/rows';
+import HomeCardsRows from 'components/apps/_/Home/cards/rows/HomeCardsRows';
 import GroundLeafs from 'components/apps/_/Home/GroundLeafs';
 import Header from 'components/apps/_/Home/Header';
 import Footer from 'components/Footer';
@@ -10,26 +10,6 @@ import React from 'react';
 
 const IndexPage: NextPage = () => {
 	const deviceWidth = window.visualViewport.width;
-
-	// const sor = jpex.resolve<SOR>();
-	// console.log(sor);
-
-	// useEffect(() => {
-	// 	void sor.fetchPools().then(() => {
-	// 		void sor
-	// 			.getSwaps(
-	// 				'0x7562F525106F5d54E891e005867Bf489B5988CD9', // token in
-	// 				'0xDeadDeAddeAddEAddeadDEaDDEAdDeaDDeAD0000',  // token out
-	// 				SwapTypes.SwapExactIn,
-	// 				BigNumber.from(1).mul(10 ** 12), // amount
-	// 				{
-	// 					maxPools: 4, // max hops
-	// 					gasPrice: BigNumber.from('40000000000') // gas price
-	// 				}
-	// 			)
-	// 			.then(console.log);
-	// 	});
-	// }, []);
 
 	return (
 		<div
