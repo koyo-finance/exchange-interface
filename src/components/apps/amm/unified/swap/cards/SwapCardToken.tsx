@@ -1,5 +1,6 @@
 import { formatBalance, fromBigNumber } from '@koyofinance/core-sdk';
 import { TokenInfo } from '@uniswap/token-lists';
+import SymbolCurrencyIcon from 'components/CurrencyIcon/SymbolCurrencyIcon';
 import { SwapTokenNumber } from 'constants/swaps';
 import useTokenBalance from 'hooks/contracts/useTokenBalance';
 import React, { useEffect, useRef, useState } from 'react';
@@ -88,8 +89,7 @@ const SwapCardToken: React.FC<SwapCardTokenProps> = ({
 					onClick={openModalHandler}
 				>
 					<div>
-						{/* eslint-disable-next-line @next/next/no-img-element */}
-						<img src={token.logoURI} alt={token.name} className="w-8" />
+						<SymbolCurrencyIcon symbol={token.symbol} className="h-8 w-8" />
 					</div>
 					<div>{token.symbol}</div>
 					<div>

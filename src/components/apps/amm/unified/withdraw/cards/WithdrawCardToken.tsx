@@ -1,9 +1,6 @@
-import { ChainId } from '@koyofinance/core-sdk';
-import { TokenInfo } from '@uniswap/token-lists';
+import SymbolCurrencyIcon from 'components/CurrencyIcon/SymbolCurrencyIcon';
 import { TokenFragment } from 'query/generated/graphql-codegen-generated';
 import React, { useEffect, useRef, useState } from 'react';
-import { useSelector } from 'react-redux';
-import { selectAllTokensByChainId } from 'state/reducers/lists';
 
 export interface WithdrawCardTokenProps {
 	coin: TokenFragment;
@@ -12,8 +9,6 @@ export interface WithdrawCardTokenProps {
 }
 
 const WithdrawCardToken: React.FC<WithdrawCardTokenProps> = ({ coin, status, setInputAmount }) => {
-	const TOKENS = useSelector(selectAllTokensByChainId(ChainId.BOBA));
-
 	const [tokenAmount, setTokenAmount] = useState<number | undefined>(undefined);
 
 	const inputAmountRef = useRef<HTMLInputElement>(null);
@@ -23,8 +18,6 @@ const WithdrawCardToken: React.FC<WithdrawCardTokenProps> = ({ coin, status, set
 			setTokenAmount(0);
 		}
 	}, [status]);
-
-	const [{ logoURI: coinLogo }] = TOKENS.filter((token: TokenInfo) => token.symbol.toLowerCase() === coin.symbol.toLowerCase());
 
 	const tokenAmountChangeHandler = () => {
 		const inputAmount = inputAmountRef.current ? Number(inputAmountRef.current?.value) : 0;
@@ -43,8 +36,7 @@ const WithdrawCardToken: React.FC<WithdrawCardTokenProps> = ({ coin, status, set
 				<div className=" text-2xl text-darks-200">{coin.name}</div>
 				<div className="flex transform-gpu cursor-pointer flex-row items-center gap-2 rounded-xl bg-darks-400 py-2 px-2 duration-100 hover:bg-darks-300">
 					<div>
-						{/* eslint-disable-next-line @next/next/no-img-element */}
-						<img src={coinLogo} alt={coin.name} className="w-8" />
+						<SymbolCurrencyIcon symbol={coin.symbol} className="h-8 w-8" />
 					</div>
 					<div>{coin.symbol.toUpperCase()}</div>
 				</div>
