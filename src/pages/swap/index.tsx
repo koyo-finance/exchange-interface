@@ -4,6 +4,7 @@ import { TokenInfo } from '@uniswap/token-lists';
 import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
 import GuideLink from 'components/GuideLink';
 import SwapCard from 'components/UI/Cards/Swap/SwapCard';
+import SwapTokenApproval from 'components/UI/Cards/Swap/SwapTokenApproval';
 import TokenModal from 'components/UI/Modals/TokenModal';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
 import { useAmountScaled } from 'hooks/sor/useAmountScaled';
@@ -124,23 +125,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 								invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
 							>
 								<Switch>
-									{/* <Case
-										condition={BigNumber.from(allowances[tokenOneIndex]?.data || 0).lt(
-											toBigNumber(tokenAmount, pool?.coins[tokenOneIndex]?.decimals)
-										)}
-									>
-										{pool && pool.coins.length !== 0 && tokenOneIndex !== -1 && (
-											<FormApproveAsset
-												asset={pool.coins[tokenOneIndex].address}
-												spender={pool.addresses.swap}
-												amount={100_000}
-												decimals={pool.coins[tokenOneIndex].decimals}
-												className="h-full w-full"
-											>
-												APPROVE - <span className="italic">{pool.coins[tokenOneIndex].name.toUpperCase()}</span>
-											</FormApproveAsset>
-										)}
-									</Case> */}
+									<SwapTokenApproval />
 									<Default>
 										<button
 											onClick={() =>
