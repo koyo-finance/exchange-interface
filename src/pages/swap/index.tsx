@@ -12,6 +12,7 @@ import { BigNumber } from 'ethers';
 import useExchange from 'hooks/contracts/StableSwap/useExchange';
 import useGetDY from 'hooks/contracts/StableSwap/useGetDY';
 import useMultiTokenAllowance from 'hooks/contracts/useMultiTokenAllowance';
+import { useSwap } from 'hooks/useSwap';
 import { SwapLayout, SwapLayoutCard } from 'layouts/SwapLayout';
 import { NextSeo } from 'next-seo';
 import React, { useEffect, useState } from 'react';
@@ -30,6 +31,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 	const dispatch = useAppDispatch();
 
 	const { data: account } = useAccount();
+	const accountAddress = account?.address || '';
 	const { data: signer } = useSigner();
 
 	const [tokenModalOneIsOpen, setTokenModalIsOpen] = useState(false);
@@ -49,18 +51,6 @@ const SwapIndexPage: ExtendedNextPage = () => {
 		TOKENS.map((token) => token.address)
 	);
 
-	useEffect(() => {
-		const convertedAmount = fromBigNumber(calculatedAmountTokenOne, tokenOne.decimals);
-		if (convertedAmount === 0) {
-			setInvertedTokenOneAmount(convertedAmount);
-			return;
-		}
-		const calculatedAmountDiff = tokenTwoAmount - convertedAmount;
-		const calculatedSumAmount = tokenTwoAmount + calculatedAmountDiff;
-		setInvertedTokenOneAmount(calculatedSumAmount);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [calculatedAmountTokenOne, calculatedAmountTokenTwo]);
-
 	const setTokenAmountHandler = (amount: number, tokenNum: number, settingConvertedAmount: boolean) => {
 		if (tokenNum === 1) {
 			if (!settingConvertedAmount) setTokenOneAmount(amount);
@@ -73,10 +63,6 @@ const SwapIndexPage: ExtendedNextPage = () => {
 	const openTokenModalHandler = (tokenNum: number) => {
 		setActiveToken(tokenNum);
 		setTokenModalIsOpen(true);
-	};
-
-	const closeTokenModalHandler = () => {
-		setTokenModalIsOpen(false);
 	};
 
 	const setTokenHandler = (token: TokenInfo | TokenWithPoolInfo, tokenNum: number) => {
@@ -154,7 +140,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 		dispatch(setTokenTwo(tokenTwoTransformed));
 	};
 
-	const { mutate: exchange, status: swapStatus } = useExchange(signer || undefined, tokenTwo.poolId);
+	const { mutate: swap } = useSwap(signer || undefined);
 
 	return (
 		<>
@@ -168,7 +154,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 					<TokenModal
 						tokenNum={activeToken}
 						oppositeToken={activeToken === 2 ? tokenOne : tokenTwo}
-						closeModal={closeTokenModalHandler}
+						closeModal={() => setTokenModalIsOpen(false)}
 						setToken={setTokenHandler}
 					/>
 				)}
@@ -231,13 +217,19 @@ const SwapIndexPage: ExtendedNextPage = () => {
 									<Default>
 										<button
 											onClick={() =>
-												exchange([
-													tokenOneIndex,
-													tokenTwoIndex,
-													toBigNumber(tokenAmount, pool?.coins[tokenOneIndex]?.decimals),
-													0,
-													{ gasLimit: 600_000 }
-												])
+												swap({
+													options: {
+														tokenIn: tokenOne.address,
+														tokenOut: tokenTwo.address,
+														amount: toBigNumber(tokenAmount, tokenOne.decimals),
+														funds: {
+															sender: accountAddress,
+															fromInternalBalance: false,
+															recipient: accountAddress,
+															toInternalBalance: false
+														}
+													}
+												})
 											}
 											className="h-full w-full"
 										>
