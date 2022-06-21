@@ -1,3 +1,5 @@
+const { neutral } = require('daisyui/src/colors');
+
 module.exports = {
 	content: ['./src/**/*.{js,ts,jsx,tsx}'],
 	darkMode: 'class', // or 'media' or 'class'
@@ -65,5 +67,15 @@ module.exports = {
 			}
 		}
 	},
-	plugins: [require('daisyui'), require('tailwindcss-border-gradient-radius')]
+	plugins: [require('daisyui'), require('tailwindcss-border-gradient-radius')],
+	daisyui: {
+		themes: [
+			{
+				mytheme: {
+					primary: '#F0932C',
+					neutral: '#444'
+				}
+			}
+		]
+	}
 };
