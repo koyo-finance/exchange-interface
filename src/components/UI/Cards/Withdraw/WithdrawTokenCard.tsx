@@ -1,13 +1,13 @@
 import { ChainId } from '@koyofinance/core-sdk';
-import { RawCoin } from '@koyofinance/swap-sdk';
 import { TokenInfo } from '@uniswap/token-lists';
+import { TokenFragment } from 'query/generated/graphql-codegen-generated';
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectAllTokensByChainId } from 'state/reducers/lists';
 import { TokenWithPoolInfo } from 'types/tokens';
 
 export interface WithdrawTokenCardProps {
-	coin: RawCoin;
+	coin: TokenFragment;
 	status: string;
 	setInputAmount: (name: string, value: number) => void;
 }
