@@ -1,10 +1,12 @@
-import { ChainId } from '@koyofinance/core-sdk';
+import { ChainId, formatBalance } from '@koyofinance/core-sdk';
 import { TokenInfo } from '@uniswap/token-lists';
+import useTokenBalance from 'hooks/contracts/useTokenBalance';
 import React, { useEffect, useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { FiEdit } from 'react-icons/fi';
 import { useSelector } from 'react-redux';
 import { selectAllTokensByChainId } from 'state/reducers/lists';
+import { useAccount } from 'wagmi';
 
 export interface TokenModalProps {
 	tokenNum: number;
@@ -19,9 +21,12 @@ const TokenModal: React.FC<TokenModalProps> = (props) => {
 	const [tokenList, setTokenList] = useState<TokenInfo[]>(TOKENS);
 	const [filteredTokenList, setFilteredTokenList] = useState<TokenInfo[]>(tokenList);
 
-	useEffect(() => {
-		setFilteredTokenList(tokenList);
-	}, [tokenList]);
+	const { data: account } = useAccount();
+
+	const balances = filteredTokenList.map((token) => {
+		const { data: tokenBalance = 0 } = useTokenBalance(account?.address, token.address);
+		return formatBalance(tokenBalance, undefined, token.decimals);
+	});
 
 	useEffect(() => {
 		const newTokenList = TOKENS.filter((token) => token.address !== props.oppositeToken.address);
@@ -77,17 +82,20 @@ const TokenModal: React.FC<TokenModalProps> = (props) => {
 						<div
 							key={i}
 							id={token.symbol}
-							className=" flex w-full transform-gpu cursor-pointer flex-row items-center justify-start  gap-3 p-2 duration-150 hover:bg-gray-900"
+							className=" flex w-full transform-gpu cursor-pointer flex-row items-center justify-between p-2 duration-150 hover:bg-gray-900"
 							onClick={() => setTokenHandler(token.address)}
 						>
-							<div>
-								{/* eslint-disable-next-line @next/next/no-img-element */}
-								<img src={token.logoURI} className="w-10" alt={token.name} />
+							<div className="flex w-full flex-row items-center justify-start  gap-3">
+								<div>
+									{/* eslint-disable-next-line @next/next/no-img-element */}
+									<img src={token.logoURI} className="w-10" alt={token.name} />
+								</div>
+								<div className=" w-1/2">
+									<div>{token.symbol}</div>
+									<div>{token.name}</div>
+								</div>
 							</div>
-							<div className=" w-1/2">
-								<div>{token.symbol}</div>
-								<div>{token.name}</div>
-							</div>
+							<div className=" text-right text-gray-400">{balances[i]}</div>
 						</div>
 					))}
 				</div>

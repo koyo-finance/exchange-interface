@@ -29,10 +29,8 @@ const SwapCardToken: React.FC<SwapCardTokenProps> = ({
 }) => {
 	const [error, setError] = useState('');
 
-	const [tokenAmount, setTokenAmount] = useState(convertedAmount);
+	const [tokenAmount, setTokenAmount] = useState<number | undefined>(convertedAmount || undefined);
 	const inputAmountRef = useRef<HTMLInputElement>(null);
-
-	console.log(tokenAmount, convertedAmount);
 
 	const { data: account } = useAccount();
 	const { data: tokenBalance = 0, refetch: refetchBalance } = useTokenBalance(account?.address, token.address);
@@ -41,7 +39,7 @@ const SwapCardToken: React.FC<SwapCardTokenProps> = ({
 
 	useEffect(() => {
 		if (swapStatus === 'success') {
-			setTokenAmount(0);
+			setTokenAmount(undefined);
 			setTimeout(() => {
 				refetchBalance();
 			}, 3000);
@@ -57,7 +55,11 @@ const SwapCardToken: React.FC<SwapCardTokenProps> = ({
 		}
 		const newAmount = Number(e.target.value);
 		setActiveToken(tokenNum);
-		setTokenAmount(e.target.value);
+		if (newAmount === 0) {
+			setTokenAmount(undefined);
+		} else {
+			setTokenAmount(newAmount);
+		}
 		const flooredAmount = Math.floor(newAmount * 100000) / 100000;
 		setInputAmount(flooredAmount, tokenNum, false);
 		setError('');
@@ -103,9 +105,9 @@ const SwapCardToken: React.FC<SwapCardTokenProps> = ({
 						name={`swap ${tokenNum === SwapTokenNumber.IN ? 'from' : 'to'}`}
 						max={1000000}
 						onChange={changeTokenAmountHandler}
-						value={tokenAmount > 0 ? tokenAmount : ''}
+						value={tokenAmount}
 						placeholder={'0,00'}
-						onBlur={() => setTokenAmount(Number(tokenAmount.toFixed(5)))}
+						onBlur={() => setTokenAmount(Number(tokenAmount?.toFixed(5)) || undefined)}
 						className="w-full bg-darks-500 font-jtm text-3xl font-extralight text-white outline-none md:text-4xl"
 					/>
 					<button

@@ -4,7 +4,6 @@ import { TokenFragment } from 'query/generated/graphql-codegen-generated';
 import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectAllTokensByChainId } from 'state/reducers/lists';
-import { TokenWithPoolInfo } from 'types/tokens';
 
 export interface WithdrawCardTokenProps {
 	coin: TokenFragment;
@@ -15,7 +14,7 @@ export interface WithdrawCardTokenProps {
 const WithdrawCardToken: React.FC<WithdrawCardTokenProps> = ({ coin, status, setInputAmount }) => {
 	const TOKENS = useSelector(selectAllTokensByChainId(ChainId.BOBA));
 
-	const [tokenAmount, setTokenAmount] = useState<number | string>(0);
+	const [tokenAmount, setTokenAmount] = useState<number | undefined>(undefined);
 
 	const inputAmountRef = useRef<HTMLInputElement>(null);
 
@@ -25,10 +24,15 @@ const WithdrawCardToken: React.FC<WithdrawCardTokenProps> = ({ coin, status, set
 		}
 	}, [status]);
 
-	const [{ logoURI: coinLogo }] = TOKENS.filter((token: TokenInfo | TokenWithPoolInfo) => token.symbol.toLowerCase() === coin.symbol.toLowerCase());
+	const [{ logoURI: coinLogo }] = TOKENS.filter((token: TokenInfo) => token.symbol.toLowerCase() === coin.symbol.toLowerCase());
 
 	const tokenAmountChangeHandler = () => {
 		const inputAmount = inputAmountRef.current ? Number(inputAmountRef.current?.value) : 0;
+		if (inputAmount === 0) {
+			setTokenAmount(undefined);
+			setInputAmount(coin.name, 0);
+			return;
+		}
 		setTokenAmount(inputAmount);
 		setInputAmount(coin.name, Number(inputAmount.toFixed(5)));
 	};
@@ -52,7 +56,7 @@ const WithdrawCardToken: React.FC<WithdrawCardTokenProps> = ({ coin, status, set
 					name={coin.name}
 					onChange={tokenAmountChangeHandler}
 					placeholder={'0,00'}
-					value={tokenAmount > 0 ? tokenAmount : ''}
+					value={tokenAmount}
 					onBlur={() => setTokenAmount(Number(Number(tokenAmount).toFixed(5)))}
 					className="w-full border-0 bg-darks-500 font-jtm text-3xl font-extralight text-white outline-none md:text-4xl"
 				/>

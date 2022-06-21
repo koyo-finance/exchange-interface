@@ -120,7 +120,10 @@ const GaugesPage: ExtendedNextPage = () => {
 								</div>
 								{/* Rows */}
 								{gaugeList.map((gauge, i) => (
-									<div className="flex w-full flex-col items-center justify-between gap-2  border-darks-200 p-2 text-center text-white sm:flex-row sm:gap-0 sm:border-t-2">
+									<div
+										key={i}
+										className="flex w-full flex-col items-center justify-between gap-2  border-darks-200 p-2 text-center text-white sm:flex-row sm:gap-0 sm:border-t-2"
+									>
 										<div className="w-full truncate text-center sm:w-1/4 sm:text-left">{gauge.name}</div>
 										<div className="w-full text-xl sm:w-1/4">? %</div>
 										<div className="w-full px-1 sm:w-1/4">
@@ -240,7 +243,7 @@ const GaugesPage: ExtendedNextPage = () => {
 							invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
 						>
 							<button className="z-20 h-full w-full" onClick={submitVoteHandler}>
-								SUBMIT VOTE - 4KOYO
+								SUBMIT VOTE - {gaugeList[gaugeList.findIndex((gauge) => gauge.address === selectedGauge)].name}
 							</button>
 						</SingleEntityConnectButton>
 					)}

@@ -16,7 +16,7 @@ export interface DepositCardTokenProps {
 const DepositCardToken: React.FC<DepositCardTokenProps> = ({ coin, balance, resetValues, setInputAmount }) => {
 	const TOKENS = useSelector(selectAllTokensByChainId(ChainId.BOBA));
 
-	const [tokenAmount, setTokenAmount] = useState<number>(0);
+	const [tokenAmount, setTokenAmount] = useState<number | undefined>(undefined);
 
 	const inputAmountRef = useRef<HTMLInputElement>(null);
 
@@ -32,6 +32,7 @@ const DepositCardToken: React.FC<DepositCardTokenProps> = ({ coin, balance, rese
 		const inputAmount = inputAmountRef.current ? Number(inputAmountRef.current?.value) : 0;
 		if (inputAmount === 0) {
 			setInputAmount(coin.name, 0);
+			setTokenAmount(undefined);
 			return;
 		}
 		setTokenAmount(Number(inputAmount));
@@ -67,7 +68,7 @@ const DepositCardToken: React.FC<DepositCardTokenProps> = ({ coin, balance, rese
 						onChange={tokenAmountChangeHandler}
 						placeholder={'0,00'}
 						value={tokenAmount}
-						onBlur={() => setTokenAmount(Number(tokenAmount.toFixed(5)))}
+						onBlur={() => setTokenAmount(Number(tokenAmount?.toFixed(5)))}
 						className="w-4/5 bg-darks-500 font-jtm text-3xl font-extralight text-white outline-none md:text-4xl"
 					/>
 					<button
