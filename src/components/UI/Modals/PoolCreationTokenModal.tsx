@@ -1,10 +1,9 @@
-import { ChainId, formatBalance } from '@koyofinance/core-sdk';
+import { ChainId } from '@koyofinance/core-sdk';
 import { TokenInfo } from '@uniswap/token-lists';
-import useTokenBalance from 'hooks/contracts/useTokenBalance';
 import React, { useEffect, useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { FiEdit } from 'react-icons/fi';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { selectAllTokensByChainId } from 'state/reducers/lists';
 import { useAccount } from 'wagmi';
 
@@ -15,15 +14,15 @@ export interface PoolCreationTokenModalProps {
 	setTokens: (tokens: TokenInfo[]) => void;
 }
 
-const PoolCreationTokenModal: React.FC<PoolCreationTokenModalProps> = ({ chosenTokens, activeToken, setModalIsOpen, setTokens }) => {
-	const dispatch = useDispatch();
+const PoolCreationTokenModal: React.FC<PoolCreationTokenModalProps> = ({ chosenTokens, activeToken: _, setModalIsOpen, setTokens: __ }) => {
+	// const dispatch = useDispatch();
 
 	const TOKENS = useSelector(selectAllTokensByChainId(ChainId.BOBA));
 
 	const [tokenList, setTokenList] = useState<TokenInfo[]>(TOKENS);
 	const [filteredTokenList, setFilteredTokenList] = useState<TokenInfo[]>(tokenList);
 
-	const { data: account } = useAccount();
+	const { data: _account } = useAccount();
 
 	useEffect(() => {
 		const newTokenList = chosenTokens.flatMap((chosenToken) => tokenList.filter((token) => token.address !== chosenToken.address));
@@ -37,8 +36,8 @@ const PoolCreationTokenModal: React.FC<PoolCreationTokenModalProps> = ({ chosenT
 	// 	return formatBalance(tokenBalance, undefined, token.decimals);
 	// });
 
-	const setTokenHandler = (address: string) => {
-		const chosenToken = tokenList.filter((token) => token.address === address);
+	const setTokenHandler = (_address: string) => {
+		// const chosenToken = tokenList.filter((token) => token.address === address);
 
 		// dispatch(setTokens[chosen]);
 		setModalIsOpen(false);

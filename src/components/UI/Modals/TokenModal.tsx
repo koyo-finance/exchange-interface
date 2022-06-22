@@ -1,6 +1,7 @@
 import { ChainId, formatBalance } from '@koyofinance/core-sdk';
 import { TokenInfo } from '@uniswap/token-lists';
-import useTokenBalance from 'hooks/contracts/useTokenBalance';
+import { BigNumber } from 'ethers';
+import useMultiTokenBalances from 'hooks/contracts/useMultiTokenBalances';
 import React, { useEffect, useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { FiEdit } from 'react-icons/fi';
@@ -22,10 +23,15 @@ const TokenModal: React.FC<TokenModalProps> = (props) => {
 	const [filteredTokenList, setFilteredTokenList] = useState<TokenInfo[]>(tokenList);
 
 	const { data: account } = useAccount();
+	const accountAddress = account?.address || '';
 
-	const balances = filteredTokenList.map((token) => {
-		const { data: tokenBalance = 0 } = useTokenBalance(account?.address, token.address);
-		return formatBalance(tokenBalance, undefined, token.decimals);
+	const tokensBalance = useMultiTokenBalances(
+		accountAddress,
+		filteredTokenList.map((fToken) => fToken.address)
+	);
+
+	const balances = filteredTokenList.map((token, i) => {
+		return formatBalance(tokensBalance[i].data || BigNumber.from(0), undefined, token.decimals);
 	});
 
 	useEffect(() => {

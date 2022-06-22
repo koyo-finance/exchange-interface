@@ -4,7 +4,6 @@ import SymbolCurrencyIcon from 'components/CurrencyIcon/SymbolCurrencyIcon';
 import PoolCreationTokenModal from 'components/UI/Modals/PoolCreationTokenModal';
 import React, { Fragment, useState } from 'react';
 import { RiArrowDownSLine } from 'react-icons/ri';
-import { useDispatch, useSelector } from 'react-redux';
 
 export interface ChooseTokensProps {
 	setStep: (step: number) => void;
@@ -14,7 +13,7 @@ export interface ChooseTokensProps {
 	setWeights: (weights: number[]) => void;
 }
 
-const ChooseTokens: React.FC<ChooseTokensProps> = ({ setStep, selectedTokens, setTokens, weights, setWeights }) => {
+const ChooseTokens: React.FC<ChooseTokensProps> = ({ setStep, selectedTokens, setTokens }) => {
 	const [modalIsOpen, setModalIsOpen] = useState(false);
 	const [activeToken, setActiveToken] = useState(0);
 
