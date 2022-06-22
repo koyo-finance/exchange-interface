@@ -1,7 +1,5 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { HelpCircle } from 'react-feather';
-
-const BAD_SRCS: { [tokenAddress: string]: true } = {};
 
 export interface FallbackCurrencyIconProps
 	extends Pick<React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>, 'style' | 'alt' | 'className'> {
@@ -9,26 +7,27 @@ export interface FallbackCurrencyIconProps
 }
 
 const FallbackCurrencyIcon: React.FC<FallbackCurrencyIconProps> = ({ srcs, alt, ...rest }) => {
-	const [, refresh] = useState<number>(0);
+	const [fallback, setFallback] = useState<boolean>(false);
 
-	const src: string | undefined = srcs.find((src) => !BAD_SRCS[src]);
+	const src = useMemo(() => {
+		console.log(srcs);
+		setFallback(false);
+		return srcs[0];
+	}, [srcs]);
 
-	if (src) {
-		return (
-			// eslint-disable-next-line @next/next/no-img-element
-			<img
-				{...rest}
-				alt={alt}
-				src={src}
-				onError={() => {
-					if (src) BAD_SRCS[src] = true;
-					refresh((i) => i + 1);
-				}}
-			/>
-		);
-	}
+	if (fallback) return <HelpCircle {...rest} className={`${rest.className} !bg-white !text-gray-500`} />;
 
-	return <HelpCircle {...rest} className={`${rest.className} !bg-white !text-gray-500`} />;
+	return (
+		// eslint-disable-next-line @next/next/no-img-element
+		<img
+			{...rest}
+			alt={alt}
+			src={src}
+			onError={() => {
+				setFallback(true);
+			}}
+		/>
+	);
 };
 
 export default FallbackCurrencyIcon;

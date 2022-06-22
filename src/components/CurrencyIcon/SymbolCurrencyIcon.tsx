@@ -13,7 +13,7 @@ const SymbolCurrencyIcon: React.FC<SymbolCurrencyIconProps> = ({ symbol, style, 
 			[`${symbol}`]: `https://tassets.koyo.finance/logos/${symbol?.toUpperCase()}/512x512.png`
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, []);
+	}, [symbol]);
 
 	const srcs: string[] = useMemo(() => {
 		if (symbol) {

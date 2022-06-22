@@ -1,7 +1,8 @@
 import { formatBalance, toBigNumber } from '@koyofinance/core-sdk';
 import WithdrawCardToken from 'components/apps/amm/unified/withdraw/cards/WithdrawCardToken';
+import WithdrawCardTop from 'components/apps/amm/unified/withdraw/cards/WithdrawCardTop';
+import WithdrawCardWithdrawButton from 'components/apps/amm/unified/withdraw/cards/WithdrawCardWithdrawButton';
 import WithdrawKPTCalculation from 'components/apps/amm/unified/withdraw/WithdrawKPTCalculation';
-import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
 import GuideLink from 'components/GuideLink';
 import PoolsModal from 'components/UI/Modals/PoolsModal';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
@@ -13,7 +14,6 @@ import { SwapLayout, SwapLayoutCard } from 'layouts/SwapLayout';
 import { NextSeo } from 'next-seo';
 import { LitePoolFragment, useGetPoolsQuery } from 'query/generated/graphql-codegen-generated';
 import React, { useEffect, useState } from 'react';
-import { BsFillGearFill } from 'react-icons/bs';
 import { HiSwitchHorizontal } from 'react-icons/hi';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
 import { assetHelperBoba } from 'utils/assets';
@@ -73,12 +73,7 @@ const WithdrawPage: ExtendedNextPage = () => {
 					>
 						<div className="m-auto rounded-xl">
 							<div className="flex flex-col gap-2">
-								<div className="flex w-full flex-row items-center justify-between text-lg font-semibold text-white">
-									<div>Remove Liquidity</div>
-									<div>
-										<BsFillGearFill />
-									</div>
-								</div>
+								<WithdrawCardTop />
 								{!selectedPool && (
 									<button
 										className="text-md btn mt-2 w-full bg-lights-400 text-black hover:bg-lights-200 lg:text-xl"
@@ -155,16 +150,7 @@ const WithdrawPage: ExtendedNextPage = () => {
 															/>
 														</span>
 													</div>
-													<div className="mt-4">
-														<SingleEntityConnectButton
-															className="btn mt-2 w-full bg-lights-400 bg-opacity-100 font-sora text-black hover:bg-lights-200"
-															invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
-														>
-															<button type="submit" className="h-full w-full">
-																WITHDRAW
-															</button>
-														</SingleEntityConnectButton>
-													</div>
+													<WithdrawCardWithdrawButton />
 												</div>
 											</Form>
 										)}
