@@ -34,11 +34,11 @@ export const createPoolSlice = createSlice({
 	name: 'Create Pool',
 	initialState,
 	reducers: {
-		setTokens(state, action: PayloadAction<TokenInfo>) {
+		setTokens(state, action: PayloadAction<TokenInfo[]>) {
 			state.tokens = action.payload;
 		},
 		setWeights(state, action) {
-			state.weights = action.payload.amount;
+			state.weights = action.payload.weights;
 		}
 	}
 });
