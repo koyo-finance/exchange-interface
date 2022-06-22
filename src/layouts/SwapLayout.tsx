@@ -14,7 +14,7 @@ export const SwapLayoutCard: React.FC<SwapLayoutCardProps> = ({ children, classN
 	return (
 		<div
 			className={classNames(
-				'mx-auto flex w-auto transform-gpu animate-fade-in flex-col gap-2 rounded-xl bg-black bg-opacity-50 p-4 sm:p-6',
+				' flex w-auto transform-gpu animate-fade-in flex-col gap-2 rounded-xl bg-black bg-opacity-50 p-4 sm:p-6',
 				className
 			)}
 		>

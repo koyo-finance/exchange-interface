@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { persistReducer, persistStore } from 'redux-persist';
 import reducer from './reducer';
+import { createPoolSlice } from './reducers/createPool';
 import { listsSlice } from './reducers/lists';
 import { selectedTokensSlice } from './reducers/selectedTokens';
 import storage from './storage';
@@ -21,7 +22,8 @@ export const store = configureStore({
 	devTools: {
 		actionCreators: {
 			...listsSlice.actions,
-			...selectedTokensSlice.actions
+			...selectedTokensSlice.actions,
+			...createPoolSlice.actions
 		}
 	},
 	middleware: (getDefaultMiddleware) =>

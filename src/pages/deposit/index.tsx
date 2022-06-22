@@ -12,6 +12,7 @@ import { VscListSelection } from 'react-icons/vsc';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
 import DepositIntoPool from 'components/apps/amm/unified/deposit/DepositIntoPool';
 import PoolCreationIndicatior from 'components/UI/Indicators/PoolCreationIndicatior';
+import CreatePool from 'components/apps/amm/unified/deposit/CreatePool';
 
 const DepositPage: ExtendedNextPage = () => {
 	const { data: fetchedPools } = useGetPoolsQuery({ endpoint: EXCHANGE_SUBGRAPH_URL });
@@ -44,10 +45,10 @@ const DepositPage: ExtendedNextPage = () => {
 				canonical={`${ROOT_WITH_PROTOCOL}/deposit`}
 				description="Deposit your assets into the desired pools and get LP tokens that represent your position in the pools, to earn fees."
 			/>
-			<div className=" relative flex min-h-screen w-full flex-col items-center justify-center bg-darks-500 px-8 pb-8 pt-24 md:px-0 lg:pt-20 ">
+			<div className=" relative flex min-h-screen w-full flex-row-reverse items-center justify-center gap-10 bg-darks-500 px-8 pb-8 pt-24 md:px-0 lg:pt-20 ">
 				{poolsModalIsOpen && <PoolsModal setPool={setPoolHandler} closeModal={closePoolsModalHandler} />}
 				{poolCreationActive && <PoolCreationIndicatior step={poolCreationStep} />}
-				<SwapLayoutCard>
+				<SwapLayoutCard className="w-fit">
 					<div
 						className={
 							selectedPool
@@ -57,11 +58,11 @@ const DepositPage: ExtendedNextPage = () => {
 					>
 						<div className="mx-auto rounded-xl">
 							<div className="flex flex-col gap-2">
-								<div className="flex w-full cursor-pointer flex-row items-center justify-between text-lg font-semibold text-white">
+								<div className="flex w-auto cursor-pointer flex-row items-center justify-between text-lg font-semibold text-white">
 									<div>{poolCreationActive ? 'Create Liquidity Pool' : 'Add Liquidity'}</div>
 									{(poolCreationActive || selectedPool) && (
 										<div
-											className="flex flex-row items-center gap-2"
+											className="transform-gpuflex-row flex items-center gap-2 duration-100 hover:text-lights-400"
 											onClick={() => {
 												setPoolCreationActive(false);
 												setSelectedPool(undefined);
@@ -119,6 +120,7 @@ const DepositPage: ExtendedNextPage = () => {
 								)}
 							</div>
 							{selectedPool && <DepositIntoPool selectedPool={selectedPool} />}
+							{poolCreationActive && <CreatePool step={poolCreationStep} setStep={setPoolCreationStep} />}
 						</div>
 					</div>
 				</SwapLayoutCard>

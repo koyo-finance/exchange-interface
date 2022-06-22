@@ -32,7 +32,7 @@ const FarmsPage: ExtendedNextPage = () => {
 						Stake your LP tokens into desired gauges to earn and claim emissions.
 					</div>
 				</div>
-				<div className="flex w-full flex-row flex-wrap items-center justify-center gap-x-4">
+				<div className="flex w-full flex-row flex-wrap items-center justify-center gap-5">
 					{gaugeList.map((gauge) => (
 						<FarmCard gauge={gauge} key={gauge.address} />
 					))}
