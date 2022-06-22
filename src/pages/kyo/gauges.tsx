@@ -1,4 +1,5 @@
 import { formatBalance, fromBigNumber } from '@koyofinance/core-sdk';
+import GaugePowerPercentageUsed from 'components/apps/dao/voting/GaugePowerPercentageUsed';
 import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
 import TitledDisplayBox from 'components/TitledDisplayBox';
 import GaugeModal from 'components/UI/Modals/GaugeModal';
@@ -125,7 +126,9 @@ const GaugesPage: ExtendedNextPage = () => {
 										className="flex w-full flex-col items-center justify-between gap-2  border-darks-200 p-2 text-center text-white sm:flex-row sm:gap-0 sm:border-t-2"
 									>
 										<div className="w-full truncate text-center sm:w-1/4 sm:text-left">{gauge.name}</div>
-										<div className="w-full text-xl sm:w-1/4">? %</div>
+										<div className="w-full text-xl sm:w-1/4">
+											<GaugePowerPercentageUsed account={accountAddress} gauge={gauge.address} />
+										</div>
 										<div className="w-full px-1 sm:w-1/4">
 											<button
 												className="btn w-full bg-lights-400 bg-opacity-100 text-black hover:bg-lights-200"
