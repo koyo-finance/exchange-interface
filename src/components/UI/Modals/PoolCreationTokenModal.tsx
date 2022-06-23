@@ -9,47 +9,38 @@ import { useAccount } from 'wagmi';
 
 export interface PoolCreationTokenModalProps {
 	chosenTokens: TokenInfo[];
-	activeToken: number;
 	setModalIsOpen: (state: boolean) => void;
-	setTokens: (tokens: TokenInfo[]) => void;
+	setTokens: (tokens: TokenInfo) => void;
 }
 
-const PoolCreationTokenModal: React.FC<PoolCreationTokenModalProps> = ({ chosenTokens, activeToken: _, setModalIsOpen, setTokens: __ }) => {
-	// const dispatch = useDispatch();
-
+const PoolCreationTokenModal: React.FC<PoolCreationTokenModalProps> = ({ chosenTokens, setModalIsOpen, setTokens }) => {
 	const TOKENS = useSelector(selectAllTokensByChainId(ChainId.BOBA));
 
 	const [tokenList, setTokenList] = useState<TokenInfo[]>(TOKENS);
-	const [filteredTokenList, setFilteredTokenList] = useState<TokenInfo[]>(tokenList);
+	const [filteredTokenList, setFilteredTokenList] = useState(tokenList);
 
 	const { data: _account } = useAccount();
 
 	useEffect(() => {
-		const newTokenList = chosenTokens.flatMap((chosenToken) => tokenList.filter((token) => token.address !== chosenToken.address));
-
+		const newTokenList = tokenList.filter((token) => chosenTokens.filter((chosenToken) => token.address === chosenToken.address).length === 0);
 		setTokenList(newTokenList);
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+		setFilteredTokenList(newTokenList);
 	}, [chosenTokens]);
 
-	// const balances = filteredTokenList.map((token) => {
-	// 	const { data: tokenBalance = 0 } = useTokenBalance(account?.address, token.address);
-	// 	return formatBalance(tokenBalance, undefined, token.decimals);
-	// });
+	const setTokenHandler = (address: string) => {
+		const [chosenToken] = filteredTokenList.filter((token) => token.address === address);
 
-	const setTokenHandler = (_address: string) => {
-		// const chosenToken = tokenList.filter((token) => token.address === address);
-
-		// dispatch(setTokens[chosen]);
+		setTokens(chosenToken);
 		setModalIsOpen(false);
 	};
 
 	const filterTokensHandler = (e: any) => {
 		if (e.target.value === '') {
-			setFilteredTokenList(TOKENS);
+			setFilteredTokenList(tokenList);
 			return;
 		}
 
-		const filteredList = TOKENS.filter(
+		const filteredList = tokenList.filter(
 			(token) =>
 				token.name.includes(e.target.value) ||
 				token.name.toLowerCase().includes(e.target.value) ||

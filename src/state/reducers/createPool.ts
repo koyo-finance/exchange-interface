@@ -37,8 +37,8 @@ export const createPoolSlice = createSlice({
 		setTokens(state, action: PayloadAction<TokenInfo[]>) {
 			state.tokens = action.payload;
 		},
-		setWeights(state, action) {
-			state.weights = action.payload.weights;
+		setWeights(state, action: PayloadAction<number[]>) {
+			state.weights = action.payload;
 		}
 	}
 });
