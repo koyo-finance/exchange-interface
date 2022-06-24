@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { TokenInfo } from '@uniswap/token-lists';
-import SetPoolFees from 'components/apps/amm/unified/deposit/CreatePool/SetPoolFees';
 import { BigNumber } from 'ethers';
 import { RootState } from 'state';
 

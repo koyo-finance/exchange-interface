@@ -15,7 +15,7 @@ const CreatePool: React.FC<CreatePoolProps> = ({ step, setStep }) => {
 	const weights = useSelector(selectWeights);
 
 	return (
-		<div className="flex h-auto w-full flex-col gap-4">
+		<div className="mt-2 flex h-auto w-full flex-col gap-4">
 			{step === 1 && <ChooseTokens setStep={setStep} selectedTokens={selectedTokens} weights={weights} />}
 			{step === 2 && <SetPoolFees setStep={setStep} />}
 			{step === 3 && <AddInitialLiquidity setStep={setStep} />}

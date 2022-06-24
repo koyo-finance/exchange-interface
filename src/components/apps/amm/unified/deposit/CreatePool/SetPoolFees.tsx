@@ -6,6 +6,13 @@ import { selectPoolFee, setFeeAddress, setPoolFees } from 'state/reducers/create
 import { useAccount } from 'wagmi';
 import PoolFeeCard from '../cards/PoolFeeCard';
 
+const feeSets: [fee: number, description: string][] = [
+	[0.01, 'Best for very stable pools'],
+	[0.05, 'Best for most stable pools'],
+	[0.3, 'Best for most pools'],
+	[1, 'Best for exotic pairs']
+];
+
 export interface SetPoolFeesProps {
 	setStep: (step: number) => void;
 }
@@ -52,10 +59,9 @@ const SetPoolFees: React.FC<SetPoolFeesProps> = ({ setStep }) => {
 			<div className="flex w-full flex-col gap-3 rounded-xl bg-darks-500 p-2">
 				{error !== '' && <DefaultError message={error} />}
 				<div className="flex w-full flex-row items-center justify-between gap-2">
-					<PoolFeeCard value={0.01} comment="Best for very stable pools" setPoolFee={setChosenPoolFee} />
-					<PoolFeeCard value={0.05} comment="Best for most stable pools" setPoolFee={setChosenPoolFee} />
-					<PoolFeeCard value={0.3} comment="Best for most pools" setPoolFee={setChosenPoolFee} />
-					<PoolFeeCard value={1} comment="Best for exotic pairs" setPoolFee={setChosenPoolFee} />
+					{feeSets.map(([fee, description]) => (
+						<PoolFeeCard value={fee} active={currentPoolFee === fee} comment={description} setPoolFee={setChosenPoolFee} />
+					))}
 				</div>
 				<div className="w-full text-center text-xl text-white">Chosen Fee: {currentPoolFee}%</div>
 				<fieldset className="flex flex-col gap-1">
