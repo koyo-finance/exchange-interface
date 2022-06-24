@@ -1,6 +1,7 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { TokenInfo } from '@uniswap/token-lists';
 import SymbolCurrencyIcon from 'components/CurrencyIcon/SymbolCurrencyIcon';
+import DefaultError from 'components/UI/Errors/DefaultError';
 import PoolCreationTokenModal from 'components/UI/Modals/PoolCreationTokenModal';
 import React, { Fragment, useState } from 'react';
 import { BsTrash, BsTrashFill } from 'react-icons/bs';
@@ -42,6 +43,7 @@ const ChooseTokens: React.FC<ChooseTokensProps> = ({ setStep, selectedTokens, we
 
 		newTokens[activeToken] = token;
 		dispatch(setTokens(newTokens));
+		setError('');
 	};
 
 	const removeTokenHandler = (tokenIndex: number) => {
@@ -58,6 +60,7 @@ const ChooseTokens: React.FC<ChooseTokensProps> = ({ setStep, selectedTokens, we
 		dispatch(setTokens(newTokens));
 		dispatch(setWeights(newWeights));
 		setTokenWeights(newWeights);
+		setError('');
 	};
 
 	const setTokenWeight = (newWeight: number, weightIndex: number) => {
@@ -73,6 +76,17 @@ const ChooseTokens: React.FC<ChooseTokensProps> = ({ setStep, selectedTokens, we
 		setError('');
 	};
 
+	const confirmTokensHandler = () => {
+		const weightSum = weights.reduce((acc, w) => (acc += w));
+		if (weightSum !== 100) {
+			setError('Weights must sum up to exeactly 100%');
+			return;
+		}
+
+		setError('');
+		setStep(2);
+	};
+
 	return (
 		<>
 			<Transition appear show={modalIsOpen} as={Fragment}>
@@ -85,7 +99,7 @@ const ChooseTokens: React.FC<ChooseTokensProps> = ({ setStep, selectedTokens, we
 				<div>Weight (%)</div>
 			</div>
 			<div className="flex w-full flex-col gap-4 rounded-xl bg-darks-500 p-4">
-				{error !== '' && <div className="w-full text-center text-xl text-red-500">{error}</div>}
+				{error !== '' && <DefaultError message={error} />}
 				{selectedTokens.map((token, i) => (
 					<div className=" flex w-full flex-row items-center justify-between " key={token.symbol}>
 						<div
@@ -132,7 +146,7 @@ const ChooseTokens: React.FC<ChooseTokensProps> = ({ setStep, selectedTokens, we
 					Add token +
 				</button>
 			</div>
-			<button className="btn w-full bg-lights-400 bg-opacity-100 p-0 text-lg text-black hover:bg-lights-300" onClick={() => setStep(2)}>
+			<button className="btn w-full bg-lights-400 bg-opacity-100 p-0 text-lg text-black hover:bg-lights-300" onClick={confirmTokensHandler}>
 				Confirm Tokens
 			</button>
 		</>
