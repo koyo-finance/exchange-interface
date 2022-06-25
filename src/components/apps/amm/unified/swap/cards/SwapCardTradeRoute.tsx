@@ -1,5 +1,4 @@
 import SymbolCurrencyIcon from 'components/CurrencyIcon/SymbolCurrencyIcon';
-import { getAddress } from 'ethers/lib/utils';
 import { useFormikContext } from 'formik';
 import { useGetRoutes } from 'hooks/sor/useGetRoutes';
 import { useGetSORPools } from 'hooks/sor/useGetSORPools';
@@ -8,6 +7,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { selectAllTokens } from 'state/reducers/lists';
 import { selectTokenOne, selectTokenTwo } from 'state/reducers/selectedTokens';
+import { isSameAddress } from 'utils/isSameAddress';
 
 const SwapCardTradeRoute: React.FC = () => {
 	const TOKENS = useSelector(selectAllTokens());
@@ -32,11 +32,11 @@ const SwapCardTradeRoute: React.FC = () => {
 					<div className="pair-line absolute mx-9 h-1/2 border-b border-dashed border-gray-500" />
 					<div className="relative z-10 flex justify-between">
 						<SymbolCurrencyIcon
-							symbol={TOKENS.find((t) => getAddress(t.address) === getAddress(addressIn))?.symbol}
+							symbol={TOKENS.find((t) => isSameAddress(t.address, addressIn))?.symbol}
 							className="inline-block h-9 w-9 leading-none"
 						/>
 						<SymbolCurrencyIcon
-							symbol={TOKENS.find((t) => getAddress(t.address) === getAddress(addressOut))?.symbol}
+							symbol={TOKENS.find((t) => isSameAddress(t.address, addressOut))?.symbol}
 							className="inline-block h-9 w-9 leading-none"
 						/>
 					</div>
@@ -67,7 +67,7 @@ const SwapCardTradeRoute: React.FC = () => {
 									<a href="/" target="_blank" className="flex p-1.5">
 										{hop.pool.tokens.map((token) => (
 											<SymbolCurrencyIcon
-												symbol={TOKENS.find((t) => getAddress(t.address) === getAddress(token.address))?.symbol}
+												symbol={TOKENS.find((t) => isSameAddress(t.address, token.address))?.symbol}
 												className="inline-block h-5 w-5 leading-none"
 											/>
 										))}

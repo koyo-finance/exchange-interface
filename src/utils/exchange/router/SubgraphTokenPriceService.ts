@@ -14,7 +14,6 @@ export class SubgraphTokenPriceService implements TokenPriceService {
 
 	public async getNativeAssetPriceInToken(tokenAddress: string): Promise<string> {
 		const ethPerToken = await this.getLatestPriceInEthFromSubgraph(tokenAddress);
-		console.log(ethPerToken);
 
 		if (!ethPerToken) {
 			throw Error('No price found in the subgraph');
@@ -47,8 +46,6 @@ export class SubgraphTokenPriceService implements TokenPriceService {
 		const { latestPrices } = tokenLatestPricesData;
 		const pricesKeyedOnId = keyBy(latestPrices, 'id');
 
-		console.log(latestPrices, pricesKeyedOnId);
-
 		// the ids are set as ${asset}-${pricingAsset}
 		// first try to find an exact match
 		if (pricesKeyedOnId[`${tokenAddress}-${this.weth}`]) {
@@ -57,7 +54,6 @@ export class SubgraphTokenPriceService implements TokenPriceService {
 
 		// no exact match, try to traverse the path
 		const matchingLatestPrices = latestPrices.filter((price) => price.asset === tokenAddress);
-		console.log(matchingLatestPrices);
 
 		// pick the first one we match on.
 		// There is no timestamp on latestPrice, should get introduced to allow for sorting by latest

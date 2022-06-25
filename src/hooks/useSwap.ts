@@ -22,11 +22,11 @@ export interface SwapOptions {
 export type OptionalSwapOptions = Omit<SwapOptions, 'tokenIn' | 'tokenOut' | 'amount' | 'funds'>;
 
 export const DEFAULT_SWAP_OPTIONS: OptionalSwapOptions = {
-	maxHops: 5,
+	maxHops: 10,
 	gasPrice: parseUnits('1', 'gwei'),
 	swapType: SwapTypes.SwapExactIn,
 	poolTypeFilter: PoolFilter.All,
-	forceRefresh: true
+	forceRefresh: false
 };
 
 export interface SwapVariables {

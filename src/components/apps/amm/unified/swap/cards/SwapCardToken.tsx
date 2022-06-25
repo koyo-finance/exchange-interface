@@ -41,7 +41,8 @@ const SwapCardToken: React.FC<SwapCardTokenProps> = ({ tokenNum, token, swapStat
 		tokenIn: tokenOne.address,
 		tokenOut: tokenTwo.address,
 		amount: toBigNumber(values[SwapTokenNumber.IN] || 0, tokenOne.decimals),
-		swapType: values.swapType
+		swapType: values.swapType,
+		forceRefresh: false
 	});
 	const swapAmounts = useAmountScaled(swapInfo, tokenOne, tokenTwo, values.swapType);
 

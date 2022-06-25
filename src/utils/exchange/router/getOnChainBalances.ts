@@ -103,23 +103,6 @@ export async function getOnChainBalances(
 				subgraphPools[index].amp = formatFixed(onchainData.amp[0], 3);
 			}
 
-			if (subgraphPools[index].poolType.includes('Linear')) {
-				if (!onchainData.targets) {
-					console.error(`Linear Pool Missing Targets: ${poolId}`);
-					return;
-				}
-				subgraphPools[index].lowerTarget = formatFixed(onchainData.targets[0], 18);
-				subgraphPools[index].upperTarget = formatFixed(onchainData.targets[1], 18);
-
-				const { wrappedIndex } = subgraphPools[index];
-				if (wrappedIndex === undefined || onchainData.rate === undefined) {
-					console.error(`Linear Pool Missing WrappedIndex or PriceRate: ${poolId}`);
-					return;
-				}
-				// Update priceRate of wrappedToken
-				subgraphPools[index].tokens[wrappedIndex].priceRate = formatFixed(onchainData.rate, 18);
-			}
-
 			subgraphPools[index].swapFee = formatFixed(swapFee, 18);
 
 			poolTokens.tokens.forEach((token, i) => {
