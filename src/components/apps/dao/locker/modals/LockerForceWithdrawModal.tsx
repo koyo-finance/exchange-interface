@@ -2,7 +2,11 @@ import { useForceWithdrawLockedEscrow } from 'hooks/contracts/KYO/useForceWithdr
 import React, { useEffect } from 'react';
 import { useSigner } from 'wagmi';
 
-const ForceWithdrawModal: React.FC<{ closeForceWithdrawModal: () => void }> = ({ closeForceWithdrawModal }) => {
+export interface LockerForceWithdrawModalProps {
+	closeForceWithdrawModal: () => void;
+}
+
+const LockerForceWithdrawModal: React.FC<LockerForceWithdrawModalProps> = ({ closeForceWithdrawModal }) => {
 	const { data: signer } = useSigner();
 	const signerDefaulted = signer || undefined;
 
@@ -44,4 +48,4 @@ const ForceWithdrawModal: React.FC<{ closeForceWithdrawModal: () => void }> = ({
 	);
 };
 
-export default ForceWithdrawModal;
+export default LockerForceWithdrawModal;

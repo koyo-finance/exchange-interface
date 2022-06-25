@@ -2,7 +2,7 @@ import { formatBalance, fromBigNumber } from '@koyofinance/core-sdk';
 import GaugePowerPercentageUsed from 'components/apps/dao/voting/GaugePowerPercentageUsed';
 import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
 import TitledDisplayBox from 'components/TitledDisplayBox';
-import GaugeModal from 'components/UI/Modals/GaugeModal';
+import GaugeModal from 'components/apps/dao/voting/modals/GaugeModal';
 import { ANALYTICS_LINK, ROOT_WITH_PROTOCOL } from 'constants/links';
 import { EXCHANGE_SUBGRAPH_URL } from 'constants/subgraphs';
 import { votingEscrowContract } from 'core/contracts';

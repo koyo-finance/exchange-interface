@@ -9,14 +9,14 @@ import { useSelector } from 'react-redux';
 import { selectAllTokensByChainId } from 'state/reducers/lists';
 import { useAccount } from 'wagmi';
 
-export interface TokenModalProps {
+export interface SwapTokenModalProps {
 	tokenNum: number;
 	oppositeToken: TokenInfo;
 	closeModal: () => void;
 	setToken: (token: TokenInfo, tokenNum: number) => void;
 }
 
-const TokenModal: React.FC<TokenModalProps> = (props) => {
+const SwapTokenModal: React.FC<SwapTokenModalProps> = (props) => {
 	const TOKENS = useSelector(selectAllTokensByChainId(ChainId.BOBA));
 
 	const [tokenList, setTokenList] = useState<TokenInfo[]>(TOKENS.filter((token) => token.address !== props.oppositeToken.address));
@@ -116,4 +116,4 @@ const TokenModal: React.FC<TokenModalProps> = (props) => {
 	);
 };
 
-export default TokenModal;
+export default SwapTokenModal;

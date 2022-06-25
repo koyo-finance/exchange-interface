@@ -18,7 +18,7 @@ export class CoingeckoTokenPriceService implements TokenPriceService {
 
 		const { data } = await sapphireFetch(endpoint, 'json' as FetchResultTypes.JSON);
 
-		if (data[tokenAddress.toLowerCase()][this.nativeAssetId] === undefined) {
+		if (!data || data[tokenAddress.toLowerCase()][this.nativeAssetId] === undefined) {
 			throw Error('No price returned from Coingecko');
 		}
 

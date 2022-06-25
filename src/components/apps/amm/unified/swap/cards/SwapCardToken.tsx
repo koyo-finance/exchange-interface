@@ -1,11 +1,19 @@
-import { formatBalance, fromBigNumber } from '@koyofinance/core-sdk';
+import { formatBalance, fromBigNumber, toBigNumber } from '@koyofinance/core-sdk';
 import { TokenInfo } from '@uniswap/token-lists';
 import SymbolCurrencyIcon from 'components/CurrencyIcon/SymbolCurrencyIcon';
 import { SwapTokenNumber } from 'constants/swaps';
+import { Field, useFormikContext } from 'formik';
 import useTokenBalance from 'hooks/contracts/useTokenBalance';
-import React, { useEffect, useRef, useState } from 'react';
+import { useAmountScaled } from 'hooks/sor/useAmountScaled';
+import { useGetSwaps } from 'hooks/sor/useGetSwaps';
+import { DEFAULT_SWAP_OPTIONS, SwapOptions } from 'hooks/useSwap';
+import { SwapFormValues } from 'pages/swap';
+import React, { useEffect, useState } from 'react';
 import { RiArrowDownSLine } from 'react-icons/ri';
+import { useSelector } from 'react-redux';
+import { selectTokenOne, selectTokenTwo } from 'state/reducers/selectedTokens';
 import { useAccount } from 'wagmi';
+import SwapCardTokenInput from './SwapCardTokenInput';
 
 export type TokenNumRelativeCallback = (tokenNum: number) => void;
 
@@ -13,65 +21,56 @@ export interface SwapCardTokenProps {
 	tokenNum: SwapTokenNumber;
 	token: TokenInfo;
 	swapStatus: string;
-	convertedAmount: number;
+	isIn: boolean;
 	openTokenModal: TokenNumRelativeCallback;
-	setInputAmount: (amount: number, tokenNum: number, settingConvertedAmount: boolean) => void;
 	setActiveToken: TokenNumRelativeCallback;
 }
 
-const SwapCardToken: React.FC<SwapCardTokenProps> = ({
-	tokenNum,
-	token,
-	swapStatus,
-	convertedAmount,
-	openTokenModal,
-	setInputAmount,
-	setActiveToken
-}) => {
+const SwapCardToken: React.FC<SwapCardTokenProps> = ({ tokenNum, token, swapStatus, isIn, openTokenModal, setActiveToken }) => {
+	const { setFieldValue, values } = useFormikContext<SwapFormValues>();
 	const [error, setError] = useState('');
-
-	const [tokenAmount, setTokenAmount] = useState<number | undefined>(convertedAmount || undefined);
-	const inputAmountRef = useRef<HTMLInputElement>(null);
 
 	const { data: account } = useAccount();
 	const { data: tokenBalance = 0, refetch: refetchBalance } = useTokenBalance(account?.address, token.address);
 
-	useEffect(() => setTokenAmount(Number(convertedAmount.toFixed(5))), [convertedAmount]);
+	const tokenOne = useSelector(selectTokenOne);
+	const tokenTwo = useSelector(selectTokenTwo);
+
+	const { data: swapInfo } = useGetSwaps({
+		...(DEFAULT_SWAP_OPTIONS as Required<Omit<SwapOptions, 'funds'>>),
+		tokenIn: tokenOne.address,
+		tokenOut: tokenTwo.address,
+		amount: toBigNumber(values[SwapTokenNumber.IN] || 0, tokenOne.decimals),
+		swapType: values.swapType
+	});
+	const swapAmounts = useAmountScaled(swapInfo, tokenOne, tokenTwo, values.swapType);
+
+	useEffect(() => {
+		const flooredConvertedAmount = Math.floor(parseFloat(isIn ? swapAmounts.in : swapAmounts.out) * 10000) / 10000;
+
+		if (!isIn && flooredConvertedAmount !== values[tokenNum]) {
+			setFieldValue(tokenNum as unknown as string, flooredConvertedAmount);
+		}
+	}, [setFieldValue, isIn, tokenNum, values, swapAmounts.in, swapAmounts.out]);
+
+	useEffect(() => setFieldValue('info', swapInfo), [setFieldValue, swapInfo]);
 
 	useEffect(() => {
 		if (swapStatus === 'success') {
-			setTokenAmount(undefined);
+			setFieldValue(tokenNum as unknown as string, 0);
 			setTimeout(() => {
 				refetchBalance();
 			}, 3000);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [swapStatus]);
-
-	const changeTokenAmountHandler = (e: any) => {
-		if (e.target.value > 1000000) {
-			setError('Cannot swap that amount! Amount too large!');
-			setTokenAmount(e.target.value);
-			return;
-		}
-		const newAmount = Number(e.target.value);
-		setActiveToken(tokenNum);
-		if (newAmount === 0) {
-			setTokenAmount(undefined);
-		} else {
-			setTokenAmount(newAmount);
-		}
-		const flooredAmount = Math.floor(newAmount * 100000) / 100000;
-		setInputAmount(flooredAmount, tokenNum, false);
-		setError('');
-	};
+	}, [swapStatus, setFieldValue]);
 
 	const setMaxTokenAmount = () => {
 		const maxAmount = Number(fromBigNumber(tokenBalance, token.decimals));
-		const flooredAmount = Math.floor(maxAmount * 1000000) / 1000000;
+		const flooredAmount = Math.floor(maxAmount * 10000) / 10000;
+
 		setActiveToken(tokenNum);
-		setTokenAmount(flooredAmount);
-		setInputAmount(flooredAmount, tokenNum, false);
+		setFieldValue(tokenNum as unknown as string, flooredAmount);
 		setError('');
 	};
 
@@ -99,17 +98,7 @@ const SwapCardToken: React.FC<SwapCardTokenProps> = ({
 			</div>
 			<div className="flex w-full flex-row items-end justify-between">
 				<div className="flex w-10/12 flex-row items-center border-0 border-b-2 border-darks-200">
-					<input
-						ref={inputAmountRef}
-						type="number"
-						name={`swap ${tokenNum === SwapTokenNumber.IN ? 'from' : 'to'}`}
-						max={1000000}
-						onChange={changeTokenAmountHandler}
-						value={tokenAmount}
-						placeholder={'0,00'}
-						onBlur={() => setTokenAmount(Number(tokenAmount?.toFixed(5)) || undefined)}
-						className="w-full bg-darks-500 font-jtm text-3xl font-extralight text-white outline-none md:text-4xl"
-					/>
+					<Field name={tokenNum} placeholder="0,00" component={SwapCardTokenInput} />
 					<button
 						type="button"
 						onClick={setMaxTokenAmount}

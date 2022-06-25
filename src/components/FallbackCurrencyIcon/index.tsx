@@ -10,7 +10,6 @@ const FallbackCurrencyIcon: React.FC<FallbackCurrencyIconProps> = ({ srcs, alt, 
 	const [fallback, setFallback] = useState<boolean>(false);
 
 	const src = useMemo(() => {
-		console.log(srcs);
 		setFallback(false);
 		return srcs[0];
 	}, [srcs]);

@@ -127,7 +127,7 @@ const SetPoolFees: React.FC<SetPoolFeesProps> = ({ setStep }) => {
 										setError('');
 									}}
 								/>
-								<label htmlFor="koyoAddress">Let koyo manage the pool fees</label>
+								<label htmlFor="koyoAddress">Let Kōyō manage the pool</label>
 							</div>
 							<div className="flex w-full flex-row items-center gap-2 pl-2">
 								<input
