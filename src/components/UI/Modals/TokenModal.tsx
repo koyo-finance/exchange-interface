@@ -19,7 +19,7 @@ export interface TokenModalProps {
 const TokenModal: React.FC<TokenModalProps> = (props) => {
 	const TOKENS = useSelector(selectAllTokensByChainId(ChainId.BOBA));
 
-	const [tokenList, setTokenList] = useState<TokenInfo[]>(TOKENS);
+	const [tokenList, setTokenList] = useState<TokenInfo[]>(TOKENS.filter((token) => token.address !== props.oppositeToken.address));
 	const [filteredTokenList, setFilteredTokenList] = useState<TokenInfo[]>(tokenList);
 
 	const { data: account } = useAccount();
