@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectPoolFee, setFeeAddress, setPoolFees } from 'state/reducers/createPool';
 import { useAccount } from 'wagmi';
-import PoolFeeCard from '../cards/PoolFeeCard';
+import PoolFeeCard from '../../cards/PoolFeeCard';
 
 const feeSets: [fee: number, description: string][] = [
 	[0.01, 'Best for very stable pools'],

@@ -1,9 +1,9 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { selectTokens, selectWeights } from 'state/reducers/createPool';
-import AddInitialLiquidity from './AddInitialLiquidity';
-import ChooseTokens from './ChooseTokens';
-import SetPoolFees from './SetPoolFees';
+import AddInitialLiquidity from './flows/CreatePool/AddInitialLiquidity';
+import ChooseTokens from './flows/CreatePool/ChooseTokens';
+import SetPoolFees from './flows/CreatePool/SetPoolFees';
 
 export interface CreatePoolProps {
 	step: number;

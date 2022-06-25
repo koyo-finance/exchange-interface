@@ -1,4 +1,7 @@
+import CreatePool from 'components/apps/amm/unified/deposit/CreatePool';
+import DepositIntoPool from 'components/apps/amm/unified/deposit/DepositIntoPool';
 import GuideLink from 'components/GuideLink';
+import PoolCreationIndicatior from 'components/UI/Indicators/PoolCreationIndicatior';
 import PoolsModal from 'components/UI/Modals/PoolsModal';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
 import { EXCHANGE_SUBGRAPH_URL } from 'constants/subgraphs';
@@ -6,13 +9,11 @@ import { SwapLayout, SwapLayoutCard } from 'layouts/SwapLayout';
 import { NextSeo } from 'next-seo';
 import { LitePoolFragment, useGetPoolsQuery } from 'query/generated/graphql-codegen-generated';
 import React, { useState } from 'react';
-import { BsArrow90DegLeft, BsPlus } from 'react-icons/bs';
+// import { BsArrow90DegLeft, BsPlus } from 'react-icons/bs';
+import { BsArrow90DegLeft } from 'react-icons/bs';
 import { HiSwitchHorizontal } from 'react-icons/hi';
 import { VscListSelection } from 'react-icons/vsc';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
-import DepositIntoPool from 'components/apps/amm/unified/deposit/DepositIntoPool';
-import PoolCreationIndicatior from 'components/UI/Indicators/PoolCreationIndicatior';
-import CreatePool from 'components/apps/amm/unified/deposit/CreatePool';
 
 const DepositPage: ExtendedNextPage = () => {
 	const { data: fetchedPools } = useGetPoolsQuery({ endpoint: EXCHANGE_SUBGRAPH_URL });
@@ -87,7 +88,7 @@ const DepositPage: ExtendedNextPage = () => {
 												<VscListSelection />
 											</span>
 										</button>
-										<button
+										{/* <button
 											className="text-md btn mt-2 w-full bg-lights-400 text-black hover:bg-lights-200 lg:text-lg"
 											onClick={() => {
 												setPoolCreationActive(true);
@@ -98,7 +99,7 @@ const DepositPage: ExtendedNextPage = () => {
 											<span className=" text-md lg:text-2xl">
 												<BsPlus />
 											</span>
-										</button>
+										</button> */}
 									</>
 								)}
 								{selectedPool && (

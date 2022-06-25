@@ -25,6 +25,7 @@ const PoolCreationTokenModal: React.FC<PoolCreationTokenModalProps> = ({ chosenT
 		const newTokenList = tokenList.filter((token) => chosenTokens.filter((chosenToken) => token.address === chosenToken.address).length === 0);
 		setTokenList(newTokenList);
 		setFilteredTokenList(newTokenList);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [chosenTokens]);
 
 	const setTokenHandler = (address: string) => {
