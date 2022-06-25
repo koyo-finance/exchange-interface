@@ -9,8 +9,7 @@ import { SwapLayout, SwapLayoutCard } from 'layouts/SwapLayout';
 import { NextSeo } from 'next-seo';
 import { LitePoolFragment, useGetPoolsQuery } from 'query/generated/graphql-codegen-generated';
 import React, { useState } from 'react';
-// import { BsArrow90DegLeft, BsPlus } from 'react-icons/bs';
-import { BsArrow90DegLeft } from 'react-icons/bs';
+import { BsArrow90DegLeft, BsPlus } from 'react-icons/bs';
 import { HiSwitchHorizontal } from 'react-icons/hi';
 import { VscListSelection } from 'react-icons/vsc';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
@@ -88,18 +87,19 @@ const DepositPage: ExtendedNextPage = () => {
 												<VscListSelection />
 											</span>
 										</button>
-										{/* <button
+										<button
 											className="text-md btn mt-2 w-full bg-lights-400 text-black hover:bg-lights-200 lg:text-lg"
 											onClick={() => {
 												setPoolCreationActive(true);
 												setPoolCreationStep(1);
 											}}
+											disabled={Boolean(process.env.NEXT_PUBLIC_HIDE_POOL_CREATION)}
 										>
 											Create liquidity pool&nbsp;
 											<span className=" text-md lg:text-2xl">
 												<BsPlus />
 											</span>
-										</button> */}
+										</button>
 									</>
 								)}
 								{selectedPool && (
