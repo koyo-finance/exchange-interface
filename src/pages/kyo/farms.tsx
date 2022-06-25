@@ -1,4 +1,4 @@
-import FarmCard, { Gauge } from 'components/UI/Cards/Farms/FarmCard';
+import FarmCard, { Gauge } from 'components/apps/dao/gauges/cards/FarmCard';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
 import { EXCHANGE_SUBGRAPH_URL } from 'constants/subgraphs';
 import { SwapLayout } from 'layouts/SwapLayout';

@@ -1,6 +1,6 @@
 import { fromBigNumber, toBigNumber } from '@koyofinance/core-sdk';
 import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
-import FormApproveAsset from 'components/UI/Cards/FormApproveAsset';
+import FormApproveAsset from 'components/FormApproveAsset';
 import { kyoContract, votingEscrowContract } from 'core/contracts';
 import { BigNumber, BigNumberish } from 'ethers';
 import { Form, Formik } from 'formik';

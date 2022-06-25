@@ -1,6 +1,6 @@
 import { formatAmount, formatBalance, formatDollarAmount, fromBigNumber } from '@koyofinance/core-sdk';
 import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
-import FormApproveAsset from 'components/UI/Cards/FormApproveAsset';
+import FormApproveAsset from 'components/FormApproveAsset';
 import { BigNumber } from 'ethers';
 import useCheckClaimableTokens from 'hooks/contracts/KYO/gauges/useCheckClaimableTokens';
 import { useDepositIntoGauge } from 'hooks/contracts/KYO/gauges/useDepositIntoGauge';

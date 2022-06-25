@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectPoolFee, setFeeAddress, setPoolFees } from 'state/reducers/createPool';
 import { useAccount } from 'wagmi';
-import PoolFeeCard from '../../cards/PoolFeeCard';
+import PoolCreationCardFee from '../../cards/PoolCreationCardFee';
 
 const feeSets: [fee: number, description: string][] = [
 	[0.01, 'Best for very stable pools'],
@@ -60,7 +60,7 @@ const SetPoolFees: React.FC<SetPoolFeesProps> = ({ setStep }) => {
 				{error !== '' && <DefaultError message={error} />}
 				<div className="flex w-full flex-row items-center justify-between gap-2">
 					{feeSets.map(([fee, description]) => (
-						<PoolFeeCard value={fee} active={currentPoolFee === fee} comment={description} setPoolFee={setChosenPoolFee} />
+						<PoolCreationCardFee value={fee} active={currentPoolFee === fee} comment={description} setPoolFee={setChosenPoolFee} />
 					))}
 				</div>
 				<div className="w-full text-center text-xl text-white">Chosen Fee: {currentPoolFee}%</div>

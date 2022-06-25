@@ -2,7 +2,7 @@ import { formatBalance, toBigNumber } from '@koyofinance/core-sdk';
 import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
 import DepositCardToken from 'components/apps/amm/unified/deposit/cards/DepositCardToken';
 import DepositKPTCalculation from 'components/apps/amm/unified/deposit/DepositKPTCalculation';
-import FormApproveAsset from 'components/UI/Cards/FormApproveAsset';
+import FormApproveAsset from 'components/FormApproveAsset';
 import { vaultContract } from 'core/contracts';
 import { BigNumber } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';

@@ -1,5 +1,5 @@
 import { toBigNumber } from '@koyofinance/core-sdk';
-import FormApproveAsset from 'components/UI/Cards/FormApproveAsset';
+import FormApproveAsset from 'components/FormApproveAsset';
 import { vaultContract } from 'core/contracts';
 import { BigNumber } from 'ethers';
 import useTokenAllowance from 'hooks/contracts/useTokenAllowance';

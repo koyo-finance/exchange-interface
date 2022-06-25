@@ -1,7 +1,7 @@
 import CreatePool from 'components/apps/amm/unified/deposit/CreatePool';
 import DepositIntoPool from 'components/apps/amm/unified/deposit/DepositIntoPool';
 import GuideLink from 'components/GuideLink';
-import PoolCreationIndicatior from 'components/UI/Indicators/PoolCreationIndicatior';
+import PoolCreationIndicatior from 'components/apps/amm/unified/deposit/flows/CreatePool/PoolCreationIndicatior';
 import PoolsModal from 'components/UI/Modals/PoolsModal';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
 import { EXCHANGE_SUBGRAPH_URL } from 'constants/subgraphs';
