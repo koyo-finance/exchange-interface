@@ -3,6 +3,7 @@ import { toBigNumber } from '@koyofinance/core-sdk';
 import { TokenInfo } from '@uniswap/token-lists';
 import SwapCardToken from 'components/apps/amm/unified/swap/cards/SwapCardToken';
 import SwapCardTop from 'components/apps/amm/unified/swap/cards/SwapCardTop';
+import SwapCardTradeRoute from 'components/apps/amm/unified/swap/cards/SwapCardTradeRoute';
 import SwapTokenModal from 'components/apps/amm/unified/swap/modals/SwapTokenModal';
 import SwapSwapTokensSlot from 'components/apps/amm/unified/swap/SwapSwapTokensSlot';
 import SwapTokenApprovalCase from 'components/apps/amm/unified/swap/SwapTokenApprovalCase';
@@ -123,34 +124,39 @@ const SwapIndexPage: ExtendedNextPage = () => {
 									/>
 
 									{props.values.info && (
-										<If
-											condition={!(props.values.info.swapAmount.lte(BigNumber.from(0)) || props.values.info.swaps.length === 0)}
-										>
-											<Then>
-												<SingleEntityConnectButton
-													className="btn mt-2 w-full bg-lights-400 bg-opacity-100 text-black hover:bg-lights-200"
-													invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
-												>
-													<Switch>
-														<SwapTokenApprovalCase />
-														<Default>
-															<button className="h-full w-full">SWAP</button>
-														</Default>
-													</Switch>
-												</SingleEntityConnectButton>
-											</Then>
-											<Else>
-												<button
-													type="button"
-													className="mt-2 w-full rounded-lg bg-gray-600 bg-opacity-100 p-3 text-center text-black"
-												>
-													Cannot swap -{' '}
-													{props.values.info.swapAmount.lte(BigNumber.from(0))
-														? 'No amount or insufficient liquidity'
-														: 'Invalid path'}
-												</button>
-											</Else>
-										</If>
+										<>
+											<SwapCardTradeRoute />
+											<If
+												condition={
+													!(props.values.info.swapAmount.lte(BigNumber.from(0)) || props.values.info.swaps.length === 0)
+												}
+											>
+												<Then>
+													<SingleEntityConnectButton
+														className="btn mt-2 w-full bg-lights-400 bg-opacity-100 text-black hover:bg-lights-200"
+														invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
+													>
+														<Switch>
+															<SwapTokenApprovalCase />
+															<Default>
+																<button className="h-full w-full">SWAP</button>
+															</Default>
+														</Switch>
+													</SingleEntityConnectButton>
+												</Then>
+												<Else>
+													<button
+														type="button"
+														className="mt-2 w-full rounded-lg bg-gray-600 bg-opacity-100 p-3 text-center text-black"
+													>
+														Cannot swap -{' '}
+														{props.values.info.swapAmount.lte(BigNumber.from(0))
+															? 'No amount or insufficient liquidity'
+															: 'Invalid path'}
+													</button>
+												</Else>
+											</If>
+										</>
 									)}
 								</div>
 							</Form>
