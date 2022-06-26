@@ -74,7 +74,8 @@ module.exports = {
 			{
 				mytheme: {
 					primary: '#F0932C',
-					neutral: '#444'
+					neutral: '#444444',
+					'base-100': '#1110'
 				}
 			}
 		]

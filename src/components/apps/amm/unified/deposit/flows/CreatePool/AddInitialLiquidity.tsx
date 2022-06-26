@@ -3,6 +3,7 @@ import SymbolCurrencyIcon from 'components/CurrencyIcon/SymbolCurrencyIcon';
 import { BigNumber } from 'ethers';
 import useMultiTokenBalances from 'hooks/contracts/useMultiTokenBalances';
 import React, { useRef, useState } from 'react';
+import { BsArrowLeft } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectTokens, setInitialLiquidity } from 'state/reducers/createPool';
 import { useAccount } from 'wagmi';
@@ -55,7 +56,14 @@ const AddInitialLiquidity: React.FC<AddInitialLiquidityProps> = ({ setStep }) =>
 	};
 
 	return (
-		<div>
+		<>
+			<div
+				className="mt-1 flex w-full transform-gpu cursor-pointer flex-row items-center gap-1 text-lights-400 duration-100 hover:translate-x-1 hover:text-lights-300"
+				onClick={() => setStep(2)}
+			>
+				<BsArrowLeft className=" text-xl font-bold" />
+				<div>Back to pool fees</div>
+			</div>
 			<div className="flex w-full flex-col gap-2 rounded-xl bg-darks-500 p-2 sm:gap-4 sm:p-4">
 				{chosenTokens.map((token, i) => (
 					<div className=" flex w-full flex-row items-center justify-between " key={token.symbol}>
@@ -96,7 +104,7 @@ const AddInitialLiquidity: React.FC<AddInitialLiquidityProps> = ({ setStep }) =>
 			<button className="btn mt-2 w-full bg-lights-400 bg-opacity-100 p-0 text-black hover:bg-lights-400" onClick={confirmLiquidity}>
 				Add Initial liquidity
 			</button>
-		</div>
+		</>
 	);
 };
 

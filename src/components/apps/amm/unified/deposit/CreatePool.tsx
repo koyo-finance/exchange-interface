@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { selectTokens, selectWeights } from 'state/reducers/createPool';
 import AddInitialLiquidity from './flows/CreatePool/AddInitialLiquidity';
 import ChooseTokens from './flows/CreatePool/ChooseTokens';
+import PoolConfirmation from './flows/CreatePool/PoolConfirmation';
 import SetPoolFees from './flows/CreatePool/SetPoolFees';
 
 export interface CreatePoolProps {
@@ -19,6 +20,7 @@ const CreatePool: React.FC<CreatePoolProps> = ({ step, setStep }) => {
 			{step === 1 && <ChooseTokens setStep={setStep} selectedTokens={selectedTokens} weights={weights} />}
 			{step === 2 && <SetPoolFees setStep={setStep} />}
 			{step === 3 && <AddInitialLiquidity setStep={setStep} />}
+			{step === 4 && <PoolConfirmation setStep={setStep} />}
 		</div>
 	);
 };

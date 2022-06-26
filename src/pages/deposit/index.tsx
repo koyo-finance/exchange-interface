@@ -53,7 +53,7 @@ const DepositPage: ExtendedNextPage = () => {
 						className={
 							selectedPool
 								? 'w-[85vw] sm:w-[60vw] md:w-[80vw] lg:w-[70vw] xl:w-[55vw]'
-								: 'w-[85vw] sm:w-[60vw] md:w-[60vw] lg:w-[35vw] xl:w-[30vw]'
+								: 'w-[85vw] sm:w-[85vw] md:w-[60vw] lg:w-[50vw] xl:w-[30vw]'
 						}
 					>
 						<div className="mx-auto rounded-xl">
@@ -68,7 +68,7 @@ const DepositPage: ExtendedNextPage = () => {
 												setSelectedPool(undefined);
 											}}
 										>
-											<div>Go Back</div>
+											<div>Cancel</div>
 											<div className=" text-xl">
 												<BsArrow90DegLeft />
 											</div>

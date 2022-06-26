@@ -95,7 +95,7 @@ const DepositIntoPool: React.FC<DepositIntoPoolProps> = ({ selectedPool }) => {
 									</div>
 								))}
 							</div>
-							<div className="mt-4 flex flex-row justify-between rounded-xl bg-darks-500 p-4">
+							<div className="mt-4 flex flex-col justify-between rounded-xl bg-darks-500 p-4 md:flex-row">
 								<div>
 									LP tokens recieved:{' '}
 									<span className="underline">

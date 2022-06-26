@@ -1,7 +1,7 @@
 import DefaultError from 'components/UI/Errors/DefaultError';
 import { isAddress } from 'ethers/lib/utils';
 import React, { useState } from 'react';
-import { BsArrowLeft } from 'react-icons/bs';
+import { BsArrowLeft, BsInfoCircleFill } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectPoolFee, setFeeAddress, setPoolFees } from 'state/reducers/createPool';
 import { useAccount } from 'wagmi';
@@ -72,13 +72,13 @@ const SetPoolFees: React.FC<SetPoolFeesProps> = ({ setStep }) => {
 					))}
 				</div>
 				<fieldset className="flex flex-col gap-1">
-					<div className="flex w-full flex-row items-center gap-2 pl-2">
+					<div key={'fixedFees'} className="flex w-full flex-row items-center gap-2 pl-2">
 						<input
 							type="radio"
 							name="fixedFees"
 							checked={isFeesFixed}
 							className=" radio radio-primary radio-sm checked:text-transparent "
-							onClick={() => {
+							onChange={() => {
 								setIsFeesFixed(true);
 								setFeeManagerAddress(zeroAddress);
 								setError('');
@@ -86,13 +86,13 @@ const SetPoolFees: React.FC<SetPoolFeesProps> = ({ setStep }) => {
 						/>
 						<label htmlFor="fixedFees">Fix the fees to the chosen rate</label>
 					</div>
-					<div className="flex w-full flex-row items-center gap-2 pl-2">
+					<div key={'dynamicFees'} className="flex w-full flex-row items-center gap-2 pl-2">
 						<input
 							type="radio"
 							name="dynamicFees"
 							checked={!isFeesFixed}
 							className=" radio radio-primary radio-sm "
-							onClick={() => {
+							onChange={() => {
 								setIsFeesFixed(false);
 								setFeeManagerAddress(accountAddress || '');
 								setError('');
@@ -102,13 +102,13 @@ const SetPoolFees: React.FC<SetPoolFeesProps> = ({ setStep }) => {
 					</div>
 					{!isFeesFixed && (
 						<>
-							<div className="mt-2 flex w-full flex-row items-center gap-2 pl-2">
+							<div key={'myAddress'} className="mt-2 flex w-full flex-row items-center gap-2 pl-2">
 								<input
 									type="radio"
 									name="myAddress"
 									checked={feeManager === 1}
 									className=" radio radio-primary radio-sm "
-									onClick={() => {
+									onChange={() => {
 										setFeeManager(1);
 										setFeeManagerAddress(accountAddress || '');
 										setError('');
@@ -122,13 +122,13 @@ const SetPoolFees: React.FC<SetPoolFeesProps> = ({ setStep }) => {
 									)}`}
 								</label>
 							</div>
-							<div className=" flex w-full flex-row items-center gap-2 pl-2">
+							<div key={'koyoAddress'} className=" flex w-full flex-row items-center gap-2 pl-2">
 								<input
 									type="radio"
 									name="koyoAddress"
 									checked={feeManager === 2}
 									className=" radio radio-primary radio-sm "
-									onClick={() => {
+									onChange={() => {
 										setFeeManager(2);
 										setFeeManagerAddress(koyoManageAddress);
 										setError('');
@@ -136,13 +136,13 @@ const SetPoolFees: React.FC<SetPoolFeesProps> = ({ setStep }) => {
 								/>
 								<label htmlFor="koyoAddress">Let Kōyō manage the pool</label>
 							</div>
-							<div className="flex w-full flex-row items-center gap-2 pl-2">
+							<div key={'costumAddress'} className="flex w-full flex-row items-center gap-2 pl-2">
 								<input
 									type="radio"
 									name="costumAddress"
 									checked={feeManager === 3}
 									className=" radio radio-primary radio-sm "
-									onClick={() => {
+									onChange={() => {
 										setFeeManager(3);
 										setFeeManagerAddress('');
 									}}
@@ -152,10 +152,7 @@ const SetPoolFees: React.FC<SetPoolFeesProps> = ({ setStep }) => {
 						</>
 					)}
 					{feeManager === 3 && (
-						<div className="flex flex-col gap-3">
-							<div className="mt-1 w-full rounded-xl bg-gray-500 bg-opacity-60 p-2 text-gray-300">
-								You cannot change the address after you set it.
-							</div>
+						<div key={'costumAddressInput'}>
 							<input
 								type="text"
 								name="address"
@@ -168,11 +165,15 @@ const SetPoolFees: React.FC<SetPoolFeesProps> = ({ setStep }) => {
 									setError('');
 								}}
 								onBlur={checkEnteredAddress}
-								className="border-b-2 border-darks-300 bg-transparent px-2 text-white"
+								className="mt-1 w-full border-b-2 border-darks-300 bg-transparent px-2 text-lg text-white outline-none"
 							/>
 						</div>
 					)}
 				</fieldset>
+				<div className=" flex w-full flex-row justify-start gap-2 rounded-xl bg-gray-500 bg-opacity-60 p-2 text-gray-300 sm:items-start md:items-center">
+					<BsInfoCircleFill className="text-xl" />
+					<div>You cannot change the address after you set it.</div>
+				</div>
 			</div>
 			<button className="btn mt-2 w-full bg-lights-400 bg-opacity-100 p-0 text-black hover:bg-lights-400" onClick={confirmPoolFeeHandler}>
 				Confirm pool fees
