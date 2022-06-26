@@ -94,16 +94,16 @@ const ChooseTokens: React.FC<ChooseTokensProps> = ({ setStep, selectedTokens, we
 					<PoolCreationTokenModal chosenTokens={selectedTokens} setTokens={setTokenHandler} setModalIsOpen={setModalIsOpen} />
 				</Dialog>
 			</Transition>
-			<div className="mt-2 flex w-full flex-row items-center justify-between px-16">
+			<div className="mt-2 flex w-full flex-row items-center justify-between pl-[15%] pr-[15%] 2xl:pl-[10%]">
 				<div>Token</div>
 				<div>Weight (%)</div>
 			</div>
-			<div className="flex w-full flex-col gap-4 rounded-xl bg-darks-500 p-4">
+			<div className="flex w-full flex-col gap-4 rounded-xl bg-darks-500 p-2 sm:p-4">
 				{error !== '' && <DefaultError message={error} />}
 				{selectedTokens.map((token, i) => (
 					<div className=" flex w-full flex-row items-center justify-between " key={token.symbol}>
 						<div
-							className="flex w-2/5 transform-gpu cursor-pointer flex-row items-center justify-between gap-2 rounded-xl bg-darks-400 py-2 px-2 duration-100 hover:bg-darks-300"
+							className="flex w-1/2 transform-gpu cursor-pointer flex-row items-center justify-between gap-2 rounded-xl bg-darks-400 py-2 px-2 duration-100 hover:bg-darks-300 md:w-2/5 2xl:w-1/4"
 							onClick={() => {
 								setActiveToken(i);
 								setModalIsOpen(true);
@@ -119,14 +119,14 @@ const ChooseTokens: React.FC<ChooseTokensProps> = ({ setStep, selectedTokens, we
 								<RiArrowDownSLine className="text-xl" />
 							</div>
 						</div>
-						<div className="flex w-3/5 flex-row items-center justify-end gap-5">
+						<div className="flex w-3/5 flex-row items-center justify-end gap-1 sm:gap-5">
 							<input
 								type="number"
 								step={1}
 								placeholder={`${tokenWeights[i]}%`}
 								value={tokenWeights[i] ? tokenWeights[i] : undefined}
 								onChange={(e) => setTokenWeight(Number(e.target.value), i)}
-								className="w-1/2 border-b-2 border-darks-300 bg-transparent text-center text-white outline-none"
+								className="w-3/4 border-b-2 border-darks-300 bg-transparent text-center text-white outline-none md:w-1/2"
 							/>
 							<div className="group w-fit cursor-pointer text-xl text-red-600" onClick={() => removeTokenHandler(i)}>
 								<div className="block group-hover:hidden">

@@ -1,6 +1,7 @@
 import DefaultError from 'components/UI/Errors/DefaultError';
 import { isAddress } from 'ethers/lib/utils';
 import React, { useState } from 'react';
+import { BsArrowLeft } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectPoolFee, setFeeAddress, setPoolFees } from 'state/reducers/createPool';
 import { useAccount } from 'wagmi';
@@ -56,14 +57,20 @@ const SetPoolFees: React.FC<SetPoolFeesProps> = ({ setStep }) => {
 
 	return (
 		<>
+			<div
+				className="mt-1 flex w-full transform-gpu cursor-pointer flex-row items-center gap-1 text-lights-400 duration-100 hover:translate-x-1 hover:text-lights-300"
+				onClick={() => setStep(1)}
+			>
+				<BsArrowLeft className=" text-xl font-bold" />
+				<div>Back to token selection</div>
+			</div>
 			<div className="flex w-full flex-col gap-3 rounded-xl bg-darks-500 p-2">
 				{error !== '' && <DefaultError message={error} />}
-				<div className="flex w-full flex-row items-center justify-between gap-2">
+				<div className="flex w-full flex-row flex-wrap items-center justify-evenly gap-2 md:flex-nowrap md:justify-between">
 					{feeSets.map(([fee, description]) => (
 						<PoolCreationCardFee value={fee} active={currentPoolFee === fee} comment={description} setPoolFee={setChosenPoolFee} />
 					))}
 				</div>
-				<div className="w-full text-center text-xl text-white">Chosen Fee: {currentPoolFee}%</div>
 				<fieldset className="flex flex-col gap-1">
 					<div className="flex w-full flex-row items-center gap-2 pl-2">
 						<input

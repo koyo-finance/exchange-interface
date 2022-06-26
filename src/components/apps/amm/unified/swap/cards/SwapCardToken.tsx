@@ -98,7 +98,7 @@ const SwapCardToken: React.FC<SwapCardTokenProps> = ({ tokenNum, token, swapStat
 				</div>
 			</div>
 			<div className="flex w-full flex-col items-end justify-between gap-2 sm:flex-row sm:gap-0">
-				<div className="flex w-full flex-row items-center border-0 border-b-2 border-darks-200 sm:w-10/12">
+				<div className=" flex w-full flex-row items-center border-0 border-b-2 border-darks-200">
 					<Field name={tokenNum} placeholder="0,00" component={SwapCardTokenInput} />
 					<button
 						type="button"

@@ -15,6 +15,7 @@ import { NextSeo } from 'next-seo';
 import { LitePoolFragment, useGetPoolsQuery } from 'query/generated/graphql-codegen-generated';
 import React, { useEffect, useState } from 'react';
 import { HiSwitchHorizontal } from 'react-icons/hi';
+import { VscListSelection } from 'react-icons/vsc';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
 import { assetHelperBoba } from 'utils/assets';
 import { exitKPTInForExactTokensOut } from 'utils/exchange/userData/exits';
@@ -79,7 +80,10 @@ const WithdrawPage: ExtendedNextPage = () => {
 										className="text-md btn mt-2 w-full bg-lights-400 text-black hover:bg-lights-200 lg:text-xl"
 										onClick={openPoolsModalHandler}
 									>
-										Choose liquidity pool&nbsp;<span className=" text-md lg:text-2xl">+</span>
+										Choose liquidity pool&nbsp;
+										<span className=" text-md lg:text-2xl">
+											<VscListSelection />
+										</span>
 									</button>
 								)}
 								{selectedPool && (

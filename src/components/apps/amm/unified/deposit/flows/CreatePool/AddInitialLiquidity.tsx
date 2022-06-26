@@ -56,10 +56,10 @@ const AddInitialLiquidity: React.FC<AddInitialLiquidityProps> = ({ setStep }) =>
 
 	return (
 		<div>
-			<div className="flex w-full flex-col gap-4 rounded-xl bg-darks-500 p-4">
+			<div className="flex w-full flex-col gap-2 rounded-xl bg-darks-500 p-2 sm:gap-4 sm:p-4">
 				{chosenTokens.map((token, i) => (
 					<div className=" flex w-full flex-row items-center justify-between " key={token.symbol}>
-						<div className="flex w-1/4 transform-gpu cursor-pointer flex-row items-center justify-between gap-2 rounded-xl bg-darks-400 py-2 px-2 duration-100 hover:bg-darks-300">
+						<div className="flex w-2/5 transform-gpu cursor-pointer flex-row items-center justify-between gap-2 rounded-xl bg-darks-400 py-2 px-2 duration-100 hover:bg-darks-300 sm:w-1/3 lg:w-1/4">
 							<div className="flex flex-row items-center gap-2">
 								<div>
 									<SymbolCurrencyIcon symbol={token.symbol} className="h-8 w-8" />
@@ -78,12 +78,12 @@ const AddInitialLiquidity: React.FC<AddInitialLiquidityProps> = ({ setStep }) =>
 									placeholder={'0,00'}
 									value={inputAmounts[i] || undefined}
 									onBlur={() => tokenAmountChangeHandler(i)}
-									className="w-4/5 border-b-2 border-darks-400 bg-darks-500 font-jtm text-2xl font-extralight text-white outline-none md:text-4xl"
+									className="w-2/3 border-b-2 border-darks-400 bg-darks-500 font-jtm text-2xl font-extralight text-white outline-none sm:w-4/5 md:text-4xl"
 								/>
 								<button
 									type="button"
 									onClick={() => setMaxTokenAmount(i)}
-									className="mb-2 transform-gpu cursor-pointer rounded-xl border-2 border-lights-400 p-1 text-lights-400 duration-100 hover:bg-lights-400 hover:text-black"
+									className="mb-1 transform-gpu cursor-pointer rounded-xl border-2 border-lights-400 p-1 text-lights-400 duration-100 hover:bg-lights-400 hover:text-black"
 								>
 									MAX
 								</button>
@@ -94,7 +94,7 @@ const AddInitialLiquidity: React.FC<AddInitialLiquidityProps> = ({ setStep }) =>
 				))}
 			</div>
 			<button className="btn mt-2 w-full bg-lights-400 bg-opacity-100 p-0 text-black hover:bg-lights-400" onClick={confirmLiquidity}>
-				Confirm pool fees
+				Add Initial liquidity
 			</button>
 		</div>
 	);

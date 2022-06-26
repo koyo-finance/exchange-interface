@@ -14,9 +14,9 @@ export interface PoolCreationIndicatorProps {
 const PoolCreationIndicatior: React.FC<PoolCreationIndicatorProps> = ({ step }) => {
 	return (
 		<div>
-			<ul className="steps steps-vertical">
+			<ul className="steps w-full md:steps-vertical">
 				{steps.map(([step_, name]) => (
-					<li className={`step ${step >= step_ ? 'step-primary' : ''}`}>{name}</li>
+					<li className={`step text-sm md:text-base ${step >= step_ ? 'step-primary' : ''}`}>{name}</li>
 				))}
 			</ul>
 		</div>
