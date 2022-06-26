@@ -63,7 +63,8 @@ module.exports = {
 			backgroundImage: {
 				trees: "url('/assets/wallpappers/trees.svg')",
 				leaves: "url('/assets/wallpappers/leaves.svg')",
-				'title-gradient': 'radial-gradient(#300729,  transparent)'
+				'title-gradient': 'radial-gradient(#300729,  transparent)',
+				'router-label-gradient': 'linear-gradient(90deg, #D58A9F 0%, #F0932C 163.16%)'
 			}
 		}
 	},

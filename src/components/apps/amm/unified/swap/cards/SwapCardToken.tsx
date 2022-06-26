@@ -80,7 +80,7 @@ const SwapCardToken: React.FC<SwapCardTokenProps> = ({ tokenNum, token, swapStat
 	};
 
 	return (
-		<div className=" flex w-full flex-col gap-2 rounded-xl bg-darks-500 p-4">
+		<div className="flex w-full flex-col gap-2 rounded-xl bg-darks-500 p-4">
 			{error !== '' && <div className=" w-full text-red-600">{error}</div>}
 			<div className="flex w-full flex-row justify-between ">
 				<div className=" text-2xl text-darks-200">{tokenNum === SwapTokenNumber.IN ? 'You pay' : 'You receive'}</div>
