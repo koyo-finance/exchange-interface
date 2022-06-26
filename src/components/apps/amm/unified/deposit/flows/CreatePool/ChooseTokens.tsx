@@ -101,7 +101,7 @@ const ChooseTokens: React.FC<ChooseTokensProps> = ({ setStep, selectedTokens, we
 			<div className="flex w-full flex-col gap-4 rounded-xl bg-darks-500 p-2 sm:p-4">
 				{error !== '' && <DefaultError message={error} />}
 				{selectedTokens.map((token, i) => (
-					<div className=" flex w-full flex-row items-center justify-between " key={token.symbol}>
+					<div className="flex w-full flex-row items-center justify-between" key={token.symbol}>
 						<div
 							className="flex w-1/2 transform-gpu cursor-pointer flex-row items-center justify-between gap-2 rounded-xl bg-darks-400 py-2 px-2 duration-100 hover:bg-darks-300 md:w-2/5 2xl:w-1/4"
 							onClick={() => {

@@ -2,7 +2,7 @@ import { formatBalance, toBigNumber } from '@koyofinance/core-sdk';
 import SymbolCurrencyIcon from 'components/CurrencyIcon/SymbolCurrencyIcon';
 import { BigNumber } from 'ethers';
 import useMultiTokenBalances from 'hooks/contracts/useMultiTokenBalances';
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { BsArrowLeft } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectTokens, setInitialLiquidity } from 'state/reducers/createPool';
@@ -19,9 +19,7 @@ const AddInitialLiquidity: React.FC<AddInitialLiquidityProps> = ({ setStep }) =>
 	const { data: account } = useAccount();
 	const accountAddress = account?.address;
 
-	const inputAmountRef = useRef<HTMLInputElement>(null);
-
-	const [inputAmounts, setInputAmounts] = useState<number[]>([]);
+	const [inputAmounts, setInputAmounts] = useState<number[]>(chosenTokens.map(() => 0));
 
 	const tokensBalance = useMultiTokenBalances(
 		accountAddress,
@@ -32,8 +30,8 @@ const AddInitialLiquidity: React.FC<AddInitialLiquidityProps> = ({ setStep }) =>
 		return formatBalance(tokensBalance[i].data || BigNumber.from(0), undefined, token.decimals);
 	});
 
-	const tokenAmountChangeHandler = (tokenIndex: number) => {
-		const inputAmount = inputAmountRef.current ? Number(inputAmountRef.current?.value) : 0;
+	const tokenAmountChangeHandler = (tokenIndex: number, input: string) => {
+		const inputAmount = Number(input);
 
 		const newAmountsArr = [...inputAmounts];
 		newAmountsArr[tokenIndex] = inputAmount;
@@ -46,7 +44,7 @@ const AddInitialLiquidity: React.FC<AddInitialLiquidityProps> = ({ setStep }) =>
 
 		const newAmountsArr = [...inputAmounts];
 		newAmountsArr[tokenIndex] = flooredAmount;
-		setInputAmounts(newAmountsArr);
+		setInputAmounts([...newAmountsArr]);
 	};
 
 	const confirmLiquidity = () => {
@@ -78,14 +76,13 @@ const AddInitialLiquidity: React.FC<AddInitialLiquidityProps> = ({ setStep }) =>
 						<div className="flex w-3/5 flex-col items-end justify-end gap-1">
 							<div className="flex w-full flex-row">
 								<input
-									ref={inputAmountRef}
 									type="number"
 									name={token.name}
 									max={1000000}
-									onChange={() => tokenAmountChangeHandler(i)}
+									onChange={(e) => tokenAmountChangeHandler(i, e.target.value)}
 									placeholder={'0,00'}
 									value={inputAmounts[i] || undefined}
-									onBlur={() => tokenAmountChangeHandler(i)}
+									onBlur={(e) => tokenAmountChangeHandler(i, e.target.value)}
 									className="w-2/3 border-b-2 border-darks-400 bg-darks-500 font-jtm text-2xl font-extralight text-white outline-none sm:w-4/5 md:text-4xl"
 								/>
 								<button
@@ -101,7 +98,7 @@ const AddInitialLiquidity: React.FC<AddInitialLiquidityProps> = ({ setStep }) =>
 					</div>
 				))}
 			</div>
-			<button className="btn mt-2 w-full bg-lights-400 bg-opacity-100 p-0 text-black hover:bg-lights-400" onClick={confirmLiquidity}>
+			<button className="btn mt-2 w-full bg-lights-400 bg-opacity-100 p-0 text-black hover:bg-lights-300" onClick={confirmLiquidity}>
 				Add Initial liquidity
 			</button>
 		</>

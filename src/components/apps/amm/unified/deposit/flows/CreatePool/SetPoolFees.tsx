@@ -68,7 +68,13 @@ const SetPoolFees: React.FC<SetPoolFeesProps> = ({ setStep }) => {
 				{error !== '' && <DefaultError message={error} />}
 				<div className="flex w-full flex-row flex-wrap items-center justify-evenly gap-2 md:flex-nowrap md:justify-between">
 					{feeSets.map(([fee, description]) => (
-						<PoolCreationCardFee value={fee} active={currentPoolFee === fee} comment={description} setPoolFee={setChosenPoolFee} />
+						<PoolCreationCardFee
+							key={fee}
+							value={fee}
+							active={currentPoolFee === fee}
+							comment={description}
+							setPoolFee={setChosenPoolFee}
+						/>
 					))}
 				</div>
 				<fieldset className="flex flex-col gap-1">
@@ -175,7 +181,7 @@ const SetPoolFees: React.FC<SetPoolFeesProps> = ({ setStep }) => {
 					<div>You cannot change the address after you set it.</div>
 				</div>
 			</div>
-			<button className="btn mt-2 w-full bg-lights-400 bg-opacity-100 p-0 text-black hover:bg-lights-400" onClick={confirmPoolFeeHandler}>
+			<button className="btn mt-2 w-full bg-lights-400 bg-opacity-100 p-0 text-black hover:bg-lights-300" onClick={confirmPoolFeeHandler}>
 				Confirm pool fees
 			</button>
 		</>
