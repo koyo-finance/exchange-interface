@@ -29,7 +29,7 @@ const SwapCardTradeRoute: React.FC = () => {
 
 	return (
 		<div className="mt-2 rounded-xl bg-darks-500 p-4">
-			<button onClick={() => toggleRoutes()} className="w-full min-w-full text-left">
+			<button type="button" onClick={() => toggleRoutes()} className="w-full min-w-full text-left">
 				<SwapCardRouterIcon className="inline-block" />{' '}
 				<span
 					className="bg-router-label-gradient"
@@ -97,6 +97,7 @@ const SwapCardTradeRoute: React.FC = () => {
 													<SymbolCurrencyIcon
 														symbol={TOKENS.find((t) => isSameAddress(t.address, token.address))?.symbol}
 														className="inline-block h-5 w-5 leading-none"
+														key={token.address}
 													/>
 												))}
 											</a>

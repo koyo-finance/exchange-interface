@@ -80,10 +80,10 @@ const SwapCardToken: React.FC<SwapCardTokenProps> = ({ tokenNum, token, swapStat
 	};
 
 	return (
-		<div className="flex w-full flex-col gap-2 rounded-xl bg-darks-500 p-4">
+		<div className="flex w-full flex-col gap-2 rounded-xl bg-darks-500 px-4 py-3">
 			{error !== '' && <div className=" w-full text-red-600">{error}</div>}
 			<div className="flex w-full flex-row justify-between ">
-				<div className=" text-2xl text-darks-200">{tokenNum === SwapTokenNumber.IN ? 'You pay' : 'You receive'}</div>
+				<div className=" text-lg text-darks-200 md:text-xl lg:text-2xl">{tokenNum === SwapTokenNumber.IN ? 'You pay' : 'You receive'}</div>
 				<div
 					className="flex transform-gpu cursor-pointer flex-row items-center gap-2 rounded-xl bg-darks-400 py-2 px-2 duration-100 hover:bg-darks-300"
 					onClick={openModalHandler}
@@ -97,8 +97,8 @@ const SwapCardToken: React.FC<SwapCardTokenProps> = ({ tokenNum, token, swapStat
 					</div>
 				</div>
 			</div>
-			<div className="flex w-full flex-row items-end justify-between">
-				<div className="flex w-10/12 flex-row items-center border-0 border-b-2 border-darks-200">
+			<div className="flex w-full flex-col items-end justify-between gap-2 sm:flex-row sm:gap-0">
+				<div className="flex w-full flex-row items-center border-0 border-b-2 border-darks-200 sm:w-10/12">
 					<Field name={tokenNum} placeholder="0,00" component={SwapCardTokenInput} />
 					<button
 						type="button"
@@ -108,7 +108,7 @@ const SwapCardToken: React.FC<SwapCardTokenProps> = ({ tokenNum, token, swapStat
 						MAX
 					</button>
 				</div>
-				<div className="max-w-2/12 flex flex-row flex-wrap justify-center gap-2 text-left">
+				<div className="flex w-full flex-row flex-wrap justify-center gap-2 text-left sm:w-1/4">
 					<div>Balance:</div>
 					<div>{formatBalance(tokenBalance, undefined, token.decimals)}</div>
 				</div>
