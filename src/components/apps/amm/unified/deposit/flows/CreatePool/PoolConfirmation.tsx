@@ -1,11 +1,14 @@
 import { TokenPriceService } from '@balancer-labs/sor';
 import { fromBigNumber } from '@koyofinance/core-sdk';
 import SymbolCurrencyIcon from 'components/CurrencyIcon/SymbolCurrencyIcon';
+import { useCreatePool } from 'hooks/useCreatePool';
 import jpex from 'jpex';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectFeeAddress, selectInitialLiquidity, selectPoolFee, selectPoolType, selectTokens, selectWeights } from 'state/reducers/createPool';
-import { useAccount } from 'wagmi';
+import { assetHelperBoba } from 'utils/assets';
+import { switchPoolCreationParameters } from 'utils/exchange/switchPoolCreationParameters';
+import { useAccount, useSigner } from 'wagmi';
 import StepBackCard from '../../cards/StepBackCard';
 import TokenUSDPrice from '../../cards/TokenUSDPrice';
 
@@ -25,10 +28,13 @@ const PoolConfirmation: React.FC<PoolConfirmationProps> = ({ setStep }) => {
 
 	const { data: account } = useAccount();
 	const accountAddress = account?.address;
+	const { data: signer } = useSigner();
 	const koyoManageAddress = '0xBA1BA1ba1BA1bA1bA1Ba1BA1ba1BA1bA1ba1ba1B';
 	const zeroAddress = '0x0000000000000000000000000000000000000000';
 
 	const priceService = jpex.resolve<TokenPriceService>();
+
+	const { mutate: createPool } = useCreatePool(signer || undefined);
 
 	useEffect(() => {
 		const fetchETHPrice = async () => {
@@ -61,6 +67,12 @@ const PoolConfirmation: React.FC<PoolConfirmationProps> = ({ setStep }) => {
 		void Promise.all(tokenPricesInUSD).then((data) => setTokenPrices(data));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [tokens]);
+
+	// @ts-expect-error Types can be weird ya know.
+	const [tokensSorted, weightsSorted]: [tokensSorted: string[], weightsSorted: number[]] = assetHelperBoba.sortTokens(
+		tokens.map((t) => t.address),
+		weights
+	);
 
 	return (
 		<>
@@ -118,7 +130,24 @@ const PoolConfirmation: React.FC<PoolConfirmationProps> = ({ setStep }) => {
 					</div>
 				</div>
 			</div>
-			<button className="btn w-full bg-lights-400 bg-opacity-100 p-0 text-black hover:bg-lights-300">Create liquidity pool</button>
+			<button
+				type="button"
+				className="btn w-full bg-lights-400 bg-opacity-100 p-0 text-black hover:bg-lights-300"
+				onClick={() =>
+					createPool([
+						poolType,
+						[
+							'', //
+							'',
+							tokensSorted,
+							...switchPoolCreationParameters(poolType, weights, 200, poolFee),
+							feeManagerAddress
+						]
+					])
+				}
+			>
+				Create liquidity pool
+			</button>
 		</>
 	);
 };
