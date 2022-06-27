@@ -5,6 +5,7 @@ import { RootState } from 'state';
 
 export interface createPoolState {
 	tokens: TokenInfo[];
+	poolType: string;
 	weights: number[];
 	poolFee: number;
 	feeAddress: string;
@@ -31,6 +32,7 @@ const initialState: createPoolState = {
 			logoURI: 'https://tassets.koyo.finance/logos/BOBA/512x512.png'
 		}
 	],
+	poolType: 'weighted',
 	weights: [50, 50],
 	poolFee: 0.3,
 	feeAddress: '',

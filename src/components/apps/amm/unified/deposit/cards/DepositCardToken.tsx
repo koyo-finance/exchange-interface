@@ -58,6 +58,7 @@ const DepositCardToken: React.FC<DepositCardTokenProps> = ({ coin, balance, rese
 						type="number"
 						name={coin.name}
 						max={1000000}
+						step={0.00001}
 						onChange={tokenAmountChangeHandler}
 						placeholder={'0,00'}
 						value={tokenAmount}

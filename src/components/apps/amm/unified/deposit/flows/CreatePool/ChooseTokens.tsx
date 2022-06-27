@@ -15,9 +15,12 @@ export interface ChooseTokensProps {
 	weights: number[];
 }
 
+const poolTypes = ['weighted', 'oracle', 'stable'];
+
 const ChooseTokens: React.FC<ChooseTokensProps> = ({ setStep, selectedTokens, weights }) => {
 	const dispatch = useDispatch();
 
+	const [poolType, setPoolType] = useState(poolTypes[0]);
 	const [modalIsOpen, setModalIsOpen] = useState(false);
 	const [activeToken, setActiveToken] = useState(0);
 	const [error, setError] = useState('');
@@ -76,6 +79,14 @@ const ChooseTokens: React.FC<ChooseTokensProps> = ({ setStep, selectedTokens, we
 		setError('');
 	};
 
+	const poolTypeChangeHandler = (type: string) => {
+		if (type === 'oracle') {
+			const newTokenArr = [...selectedTokens];
+			dispatch(setTokens(newTokenArr.splice(0, 2)));
+		}
+		setPoolType(type);
+	};
+
 	const confirmTokensHandler = () => {
 		const weightSum = weights.reduce((acc, w) => (acc += w));
 		if (weightSum !== 100) {
@@ -94,7 +105,19 @@ const ChooseTokens: React.FC<ChooseTokensProps> = ({ setStep, selectedTokens, we
 					<PoolCreationTokenModal chosenTokens={selectedTokens} setTokens={setTokenHandler} setModalIsOpen={setModalIsOpen} />
 				</Dialog>
 			</Transition>
-			<div className="mt-2 flex w-full flex-row items-center justify-between pl-[15%] pr-[15%] 2xl:pl-[10%]">
+			<div className="flex w-full cursor-pointer flex-row items-center">
+				{poolTypes.map((type, i) => (
+					<div
+						className={`w-1/3 p-2 text-center ${i === 0 ? 'rounded-l-xl' : ''} ${i === 2 ? 'rounded-r-xl' : ''} ${
+							poolType === type ? 'bg-darks-300' : 'bg-darks-500'
+						}`}
+						onClick={() => poolTypeChangeHandler(type)}
+					>
+						{type} pool
+					</div>
+				))}
+			</div>
+			<div className=" flex w-full flex-row items-center justify-between pl-[15%] pr-[15%] 2xl:pl-[12.5%]">
 				<div>Token</div>
 				<div>Weight (%)</div>
 			</div>
@@ -103,7 +126,7 @@ const ChooseTokens: React.FC<ChooseTokensProps> = ({ setStep, selectedTokens, we
 				{selectedTokens.map((token, i) => (
 					<div className="flex w-full flex-row items-center justify-between" key={token.symbol}>
 						<div
-							className="flex w-1/2 transform-gpu cursor-pointer flex-row items-center justify-between gap-2 rounded-xl bg-darks-400 py-2 px-2 duration-100 hover:bg-darks-300 md:w-2/5 2xl:w-1/4"
+							className="flex w-1/2 transform-gpu cursor-pointer flex-row items-center justify-between gap-2 rounded-xl bg-darks-400 py-2 px-2 duration-100 hover:bg-darks-300 md:w-2/5 2xl:w-1/3"
 							onClick={() => {
 								setActiveToken(i);
 								setModalIsOpen(true);
@@ -120,14 +143,16 @@ const ChooseTokens: React.FC<ChooseTokensProps> = ({ setStep, selectedTokens, we
 							</div>
 						</div>
 						<div className="flex w-3/5 flex-row items-center justify-end gap-1 sm:gap-5">
-							<input
-								type="number"
-								step={1}
-								placeholder={`${tokenWeights[i]}%`}
-								value={tokenWeights[i] ? tokenWeights[i] : undefined}
-								onChange={(e) => setTokenWeight(Number(e.target.value), i)}
-								className="w-3/4 border-b-2 border-darks-300 bg-transparent text-center text-white outline-none md:w-1/2"
-							/>
+							{poolType !== 'stable' && (
+								<input
+									type="number"
+									step={1}
+									placeholder={`${tokenWeights[i]}%`}
+									value={tokenWeights[i] ? tokenWeights[i] : undefined}
+									onChange={(e) => setTokenWeight(Number(e.target.value), i)}
+									className="w-3/4 border-b-2 border-darks-300 bg-transparent text-center text-white outline-none md:w-1/2"
+								/>
+							)}
 							<div className="group w-fit cursor-pointer text-xl text-red-600" onClick={() => removeTokenHandler(i)}>
 								<div className="block group-hover:hidden">
 									<BsTrash />
@@ -139,12 +164,14 @@ const ChooseTokens: React.FC<ChooseTokensProps> = ({ setStep, selectedTokens, we
 						</div>
 					</div>
 				))}
-				<button
-					className="btn w-full border-2 border-lights-400 bg-transparent bg-opacity-100 p-0 text-lg text-lights-400 hover:bg-lights-400 hover:text-black"
-					onClick={addNewTokenHandler}
-				>
-					Add token +
-				</button>
+				{poolType !== 'oracle' && (
+					<button
+						className="btn w-full border-2 border-lights-400 bg-transparent bg-opacity-100 p-0 text-lg text-lights-400 hover:bg-lights-400 hover:text-black"
+						onClick={addNewTokenHandler}
+					>
+						Add token +
+					</button>
+				)}
 			</div>
 			<button className="btn w-full bg-lights-400 bg-opacity-100 p-0 text-lg text-black hover:bg-lights-300" onClick={confirmTokensHandler}>
 				Confirm Tokens

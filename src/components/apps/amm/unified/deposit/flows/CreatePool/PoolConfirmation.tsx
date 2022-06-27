@@ -2,10 +2,12 @@ import { TokenPriceService } from '@balancer-labs/sor';
 import { fromBigNumber } from '@koyofinance/core-sdk';
 import SymbolCurrencyIcon from 'components/CurrencyIcon/SymbolCurrencyIcon';
 import jpex from 'jpex';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BsArrowLeft } from 'react-icons/bs';
 import { useSelector } from 'react-redux';
-import { selectInitialLiquidity, selectTokens, selectWeights } from 'state/reducers/createPool';
+import { selectFeeAddress, selectInitialLiquidity, selectPoolFee, selectTokens, selectWeights } from 'state/reducers/createPool';
+import { useAccount } from 'wagmi';
+import TokenUSDPrice from '../../cards/TokenUSDPrice';
 
 export interface PoolConfirmationProps {
 	setStep: (step: number) => void;
@@ -15,6 +17,15 @@ const PoolConfirmation: React.FC<PoolConfirmationProps> = ({ setStep }) => {
 	const tokens = useSelector(selectTokens);
 	const weights = useSelector(selectWeights);
 	const initialLiquidity = useSelector(selectInitialLiquidity);
+	const poolFee = useSelector(selectPoolFee);
+	const feeManagerAddress = useSelector(selectFeeAddress);
+
+	const [tokenPrices, setTokenPrices] = useState<number[]>([]);
+
+	const { data: account } = useAccount();
+	const accountAddress = account?.address;
+	const koyoManageAddress = '0xBA1BA1ba1BA1bA1bA1Ba1BA1ba1BA1bA1ba1ba1B';
+	const zeroAddress = '0x0000000000000000000000000000000000000000';
 
 	const priceService = jpex.resolve<TokenPriceService>();
 
@@ -37,14 +48,15 @@ const PoolConfirmation: React.FC<PoolConfirmationProps> = ({ setStep }) => {
 
 		tokens.map(async (token, i) => {
 			const usdPrice = await fetched.then((data) => Number(data));
-			const priceInETH = await priceService.getNativeAssetPriceInToken(token.address);
+			const priceInETH = await priceService.getNativeAssetPriceInToken(token.address.toLowerCase());
 			const tokenPriceInETH = Number(priceInETH);
-			console.log(tokenPriceInETH);
 
 			const tokenAmount = fromBigNumber(initialLiquidity[i], token.decimals);
+			const tokenPriceInUSD = Math.floor((tokenPriceInETH / usdPrice) * tokenAmount * 100000) / 100000;
 
-			const tokenPriceInUSD = (tokenPriceInETH / usdPrice) * tokenAmount;
-			console.log(tokenPriceInUSD);
+			const newTokenPrices = [...tokenPrices];
+			newTokenPrices.push(tokenPriceInUSD);
+			setTokenPrices(newTokenPrices);
 		});
 	}, [tokens]);
 
@@ -57,9 +69,9 @@ const PoolConfirmation: React.FC<PoolConfirmationProps> = ({ setStep }) => {
 				<BsArrowLeft className=" text-xl font-bold" />
 				<div>Back to initital liquidity</div>
 			</div>
-			<div className="flex w-full flex-col gap-4 rounded-xl bg-darks-500 p-4">
+			<div className="flex w-full flex-col gap-4 rounded-xl bg-darks-500 p-3">
 				{tokens.map((token, i) => (
-					<div key={token.symbol} className="flex w-full flex-row items-center justify-between">
+					<div key={token.symbol} className="flex w-full flex-row items-center justify-between text-right">
 						<div className="flex w-1/2 flex-row items-center justify-between gap-2 text-xl">
 							<SymbolCurrencyIcon symbol={token.symbol} className="h-8 w-8" />
 							<div>{token.symbol}</div>
@@ -68,12 +80,45 @@ const PoolConfirmation: React.FC<PoolConfirmationProps> = ({ setStep }) => {
 						</div>
 						<div>
 							<div>{fromBigNumber(initialLiquidity[i], token.decimals)}</div>
-							{/* <TokenUSDPrice token={token} amount={initialLiquidity[i]} /> */}
+							<TokenUSDPrice amount={tokenPrices[i]} />
 						</div>
 					</div>
 				))}
 			</div>
-			<button className="btn mt-2 w-full bg-lights-400 bg-opacity-100 p-0 text-black hover:bg-lights-300">Confirm Initial Liquidity</button>
+			<div className=" flex flex-col gap-2">
+				<div className="w-full text-center text-xl">SUMMARY</div>
+				<div className="flex w-full flex-row items-center justify-between">
+					<div>Pool Name:</div>
+					<div className="flex flex-row underline">
+						<div>K</div>
+						{tokens.map((token, i) => (
+							<div className="flex w-full flex-row items-center justify-center">
+								<div>{Math.round(weights[i])}</div>
+								<div>{token.symbol}</div>
+								{i + 1 !== tokens.length && <div>-</div>}
+							</div>
+						))}
+					</div>
+				</div>
+				<div className="flex flex-row items-center justify-between">
+					<div>Swap fee:</div>
+					<div className="underline">{poolFee}%</div>
+				</div>
+				<div className="flex flex-row items-center justify-between">
+					<div>Fee Manager</div>
+					<div className="underline">
+						{feeManagerAddress === accountAddress && `My address: `}
+						{feeManagerAddress === koyoManageAddress && `Koyo Finance: `}
+						{feeManagerAddress === zeroAddress && `No manager`}
+						{feeManagerAddress !== zeroAddress &&
+							`${feeManagerAddress?.substring(0, 5)}...${feeManagerAddress?.substring(
+								feeManagerAddress.length - 5,
+								feeManagerAddress.length
+							)}}`}
+					</div>
+				</div>
+			</div>
+			<button className="btn w-full bg-lights-400 bg-opacity-100 p-0 text-black hover:bg-lights-300">Confirm Initial Liquidity</button>
 		</>
 	);
 };
