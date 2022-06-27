@@ -46,6 +46,9 @@ export const createPoolSlice = createSlice({
 		setTokens(state, action: PayloadAction<TokenInfo[]>) {
 			state.tokens = action.payload;
 		},
+		setPoolType(state, action: PayloadAction<string>) {
+			state.poolType = action.payload;
+		},
 		setWeights(state, action: PayloadAction<number[]>) {
 			state.weights = action.payload;
 		},
@@ -61,9 +64,10 @@ export const createPoolSlice = createSlice({
 	}
 });
 
-export const { setTokens, setWeights, setPoolFees, setFeeAddress, setInitialLiquidity } = createPoolSlice.actions;
+export const { setTokens, setPoolType, setWeights, setPoolFees, setFeeAddress, setInitialLiquidity } = createPoolSlice.actions;
 
 export const selectTokens = (state: RootState) => state.createPool.tokens;
+export const selectPoolType = (state: RootState) => state.createPool.poolType;
 export const selectWeights = (state: RootState) => state.createPool.weights;
 export const selectPoolFee = (state: RootState) => state.createPool.poolFee;
 export const selectFeeAddress = (state: RootState) => state.createPool.feeAddress;

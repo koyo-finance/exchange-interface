@@ -3,10 +3,10 @@ import { fromBigNumber } from '@koyofinance/core-sdk';
 import SymbolCurrencyIcon from 'components/CurrencyIcon/SymbolCurrencyIcon';
 import jpex from 'jpex';
 import React, { useEffect, useState } from 'react';
-import { BsArrowLeft } from 'react-icons/bs';
 import { useSelector } from 'react-redux';
-import { selectFeeAddress, selectInitialLiquidity, selectPoolFee, selectTokens, selectWeights } from 'state/reducers/createPool';
+import { selectFeeAddress, selectInitialLiquidity, selectPoolFee, selectPoolType, selectTokens, selectWeights } from 'state/reducers/createPool';
 import { useAccount } from 'wagmi';
+import StepBackCard from '../../cards/StepBackCard';
 import TokenUSDPrice from '../../cards/TokenUSDPrice';
 
 export interface PoolConfirmationProps {
@@ -19,6 +19,7 @@ const PoolConfirmation: React.FC<PoolConfirmationProps> = ({ setStep }) => {
 	const initialLiquidity = useSelector(selectInitialLiquidity);
 	const poolFee = useSelector(selectPoolFee);
 	const feeManagerAddress = useSelector(selectFeeAddress);
+	const poolType = useSelector(selectPoolType);
 
 	const [tokenPrices, setTokenPrices] = useState<number[]>([]);
 
@@ -46,7 +47,7 @@ const PoolConfirmation: React.FC<PoolConfirmationProps> = ({ setStep }) => {
 
 		const fetched = fetchETHPrice();
 
-		tokens.map(async (token, i) => {
+		const tokenPricesInUSD = tokens.map(async (token, i) => {
 			const usdPrice = await fetched.then((data) => Number(data));
 			const priceInETH = await priceService.getNativeAssetPriceInToken(token.address.toLowerCase());
 			const tokenPriceInETH = Number(priceInETH);
@@ -54,25 +55,19 @@ const PoolConfirmation: React.FC<PoolConfirmationProps> = ({ setStep }) => {
 			const tokenAmount = fromBigNumber(initialLiquidity[i], token.decimals);
 			const tokenPriceInUSD = Math.floor((tokenPriceInETH / usdPrice) * tokenAmount * 100000) / 100000;
 
-			const newTokenPrices = [...tokenPrices];
-			newTokenPrices.push(tokenPriceInUSD);
-			setTokenPrices(newTokenPrices);
+			return tokenPriceInUSD;
 		});
+
+		Promise.all(tokenPricesInUSD).then((data) => setTokenPrices(data));
 	}, [tokens]);
 
 	return (
 		<>
-			<div
-				className="mt-1 flex w-full transform-gpu cursor-pointer flex-row items-center gap-1 text-lights-400 duration-100 hover:translate-x-1 hover:text-lights-300"
-				onClick={() => setStep(3)}
-			>
-				<BsArrowLeft className=" text-xl font-bold" />
-				<div>Back to initital liquidity</div>
-			</div>
-			<div className="flex w-full flex-col gap-4 rounded-xl bg-darks-500 p-3">
+			<StepBackCard setStep={setStep} step={3} previousStep="initial liquidity" />
+			<div className="flex w-full flex-col gap-3 rounded-xl bg-darks-500 p-2 sm:p-3">
 				{tokens.map((token, i) => (
 					<div key={token.symbol} className="flex w-full flex-row items-center justify-between text-right">
-						<div className="flex w-1/2 flex-row items-center justify-between gap-2 text-xl">
+						<div className="flex flex-row items-center justify-between gap-2 sm:w-2/5 md:text-xl">
 							<SymbolCurrencyIcon symbol={token.symbol} className="h-8 w-8" />
 							<div>{token.symbol}</div>
 							<div>-</div>
@@ -87,13 +82,13 @@ const PoolConfirmation: React.FC<PoolConfirmationProps> = ({ setStep }) => {
 			</div>
 			<div className=" flex flex-col gap-2">
 				<div className="w-full text-center text-xl">SUMMARY</div>
-				<div className="flex w-full flex-row items-center justify-between">
+				<div className="flex w-full flex-row flex-wrap items-center justify-between">
 					<div>Pool Name:</div>
-					<div className="flex flex-row underline">
-						<div>K</div>
+					<div className="flex flex-row text-sm underline sm:text-base md:no-underline ">
+						<div>K-</div>
 						{tokens.map((token, i) => (
 							<div className="flex w-full flex-row items-center justify-center">
-								<div>{Math.round(weights[i])}</div>
+								<div>{poolType === 'stable' ? '' : Math.round(weights[i])}</div>
 								<div>{token.symbol}</div>
 								{i + 1 !== tokens.length && <div>-</div>}
 							</div>
@@ -101,24 +96,28 @@ const PoolConfirmation: React.FC<PoolConfirmationProps> = ({ setStep }) => {
 					</div>
 				</div>
 				<div className="flex flex-row items-center justify-between">
+					<div>Pool type:</div>
+					<div>{poolType}</div>
+				</div>
+				<div className="flex flex-row items-center justify-between">
 					<div>Swap fee:</div>
-					<div className="underline">{poolFee}%</div>
+					<div>{poolFee}%</div>
 				</div>
 				<div className="flex flex-row items-center justify-between">
 					<div>Fee Manager</div>
-					<div className="underline">
+					<div className="text-right">
 						{feeManagerAddress === accountAddress && `My address: `}
-						{feeManagerAddress === koyoManageAddress && `Koyo Finance: `}
+						{feeManagerAddress === koyoManageAddress && `Kōyō Finance: `}
 						{feeManagerAddress === zeroAddress && `No manager`}
 						{feeManagerAddress !== zeroAddress &&
 							`${feeManagerAddress?.substring(0, 5)}...${feeManagerAddress?.substring(
 								feeManagerAddress.length - 5,
 								feeManagerAddress.length
-							)}}`}
+							)}`}
 					</div>
 				</div>
 			</div>
-			<button className="btn w-full bg-lights-400 bg-opacity-100 p-0 text-black hover:bg-lights-300">Confirm Initial Liquidity</button>
+			<button className="btn w-full bg-lights-400 bg-opacity-100 p-0 text-black hover:bg-lights-300">Create liquidity pool</button>
 		</>
 	);
 };

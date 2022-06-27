@@ -1,11 +1,12 @@
 import DefaultError from 'components/UI/Errors/DefaultError';
 import { isAddress } from 'ethers/lib/utils';
 import React, { useState } from 'react';
-import { BsArrowLeft, BsInfoCircleFill } from 'react-icons/bs';
+import { BsInfoCircleFill } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectPoolFee, setFeeAddress, setPoolFees } from 'state/reducers/createPool';
 import { useAccount } from 'wagmi';
 import PoolCreationCardFee from '../../cards/PoolCreationCardFee';
+import StepBackCard from '../../cards/StepBackCard';
 
 const feeSets: [fee: number, description: string][] = [
 	[0.01, 'Best for very stable pools'],
@@ -57,13 +58,7 @@ const SetPoolFees: React.FC<SetPoolFeesProps> = ({ setStep }) => {
 
 	return (
 		<>
-			<div
-				className="mt-1 flex w-full transform-gpu cursor-pointer flex-row items-center gap-1 text-lights-400 duration-100 hover:translate-x-1 hover:text-lights-300"
-				onClick={() => setStep(1)}
-			>
-				<BsArrowLeft className=" text-xl font-bold" />
-				<div>Back to token selection</div>
-			</div>
+			<StepBackCard setStep={setStep} step={1} previousStep="token selection" />
 			<div className="flex w-full flex-col gap-3 rounded-xl bg-darks-500 p-2">
 				{error !== '' && <DefaultError message={error} />}
 				<div className="flex w-full flex-row flex-wrap items-center justify-evenly gap-2 md:flex-nowrap md:justify-between">
@@ -140,7 +135,7 @@ const SetPoolFees: React.FC<SetPoolFeesProps> = ({ setStep }) => {
 										setError('');
 									}}
 								/>
-								<label htmlFor="koyoAddress">Let Kōyō manage the pool</label>
+								<label htmlFor="koyoAddress">Let Kōyō manage the pool fees</label>
 							</div>
 							<div key={'costumAddress'} className="flex w-full flex-row items-center gap-2 pl-2">
 								<input

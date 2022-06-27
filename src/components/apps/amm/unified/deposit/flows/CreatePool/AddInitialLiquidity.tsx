@@ -3,10 +3,10 @@ import SymbolCurrencyIcon from 'components/CurrencyIcon/SymbolCurrencyIcon';
 import { BigNumber } from 'ethers';
 import useMultiTokenBalances from 'hooks/contracts/useMultiTokenBalances';
 import React, { useState } from 'react';
-import { BsArrowLeft } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectTokens, setInitialLiquidity } from 'state/reducers/createPool';
 import { useAccount } from 'wagmi';
+import StepBackCard from '../../cards/StepBackCard';
 
 export interface AddInitialLiquidityProps {
 	setStep: (step: number) => void;
@@ -55,13 +55,7 @@ const AddInitialLiquidity: React.FC<AddInitialLiquidityProps> = ({ setStep }) =>
 
 	return (
 		<>
-			<div
-				className="mt-1 flex w-full transform-gpu cursor-pointer flex-row items-center gap-1 text-lights-400 duration-100 hover:translate-x-1 hover:text-lights-300"
-				onClick={() => setStep(2)}
-			>
-				<BsArrowLeft className=" text-xl font-bold" />
-				<div>Back to pool fees</div>
-			</div>
+			<StepBackCard setStep={setStep} step={2} previousStep="pool fees" />
 			<div className="flex w-full flex-col gap-2 rounded-xl bg-darks-500 p-2 sm:gap-4 sm:p-4">
 				{chosenTokens.map((token, i) => (
 					<div className=" flex w-full flex-row items-center justify-between " key={token.symbol}>
@@ -73,7 +67,7 @@ const AddInitialLiquidity: React.FC<AddInitialLiquidityProps> = ({ setStep }) =>
 								<div>{token.symbol}</div>
 							</div>
 						</div>
-						<div className="flex w-3/5 flex-col items-end justify-end gap-1">
+						<div className="flex w-1/2 flex-col justify-end gap-1">
 							<div className="flex w-full flex-row">
 								<input
 									type="number"

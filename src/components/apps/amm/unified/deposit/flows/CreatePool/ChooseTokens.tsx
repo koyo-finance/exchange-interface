@@ -7,7 +7,7 @@ import React, { Fragment, useState } from 'react';
 import { BsTrash, BsTrashFill } from 'react-icons/bs';
 import { RiArrowDownSLine } from 'react-icons/ri';
 import { useDispatch } from 'react-redux';
-import { setTokens, setWeights } from 'state/reducers/createPool';
+import { setPoolType, setTokens, setWeights } from 'state/reducers/createPool';
 
 export interface ChooseTokensProps {
 	setStep: (step: number) => void;
@@ -20,7 +20,7 @@ const poolTypes = ['weighted', 'oracle', 'stable'];
 const ChooseTokens: React.FC<ChooseTokensProps> = ({ setStep, selectedTokens, weights }) => {
 	const dispatch = useDispatch();
 
-	const [poolType, setPoolType] = useState(poolTypes[0]);
+	const [poolType, setPoolTypeState] = useState(poolTypes[0]);
 	const [modalIsOpen, setModalIsOpen] = useState(false);
 	const [activeToken, setActiveToken] = useState(0);
 	const [error, setError] = useState('');
@@ -39,7 +39,6 @@ const ChooseTokens: React.FC<ChooseTokensProps> = ({ setStep, selectedTokens, we
 			newTokens.push(token);
 			const newWeights = newTokens.map(() => 100 / newTokens.length);
 			dispatch(setTokens(newTokens));
-			dispatch(setWeights(newWeights));
 			setTokenWeights(newWeights);
 			return;
 		}
@@ -60,9 +59,8 @@ const ChooseTokens: React.FC<ChooseTokensProps> = ({ setStep, selectedTokens, we
 
 		const newWeights = newTokens.map(() => 100 / newTokens.length);
 
-		dispatch(setTokens(newTokens));
-		dispatch(setWeights(newWeights));
-		setTokenWeights(newWeights);
+		dispatch(setTokens([...newTokens]));
+		setTokenWeights([...newWeights]);
 		setError('');
 	};
 
@@ -74,7 +72,6 @@ const ChooseTokens: React.FC<ChooseTokensProps> = ({ setStep, selectedTokens, we
 			setError('Weights must not be over 100%!');
 			return;
 		}
-		dispatch(setWeights(newWeights));
 		setTokenWeights(newWeights);
 		setError('');
 	};
@@ -82,18 +79,27 @@ const ChooseTokens: React.FC<ChooseTokensProps> = ({ setStep, selectedTokens, we
 	const poolTypeChangeHandler = (type: string) => {
 		if (type === 'oracle') {
 			const newTokenArr = [...selectedTokens];
+			setTokenWeights([50, 50]);
 			dispatch(setTokens(newTokenArr.splice(0, 2)));
 		}
-		setPoolType(type);
+		setPoolTypeState(type);
+		setError('');
 	};
 
 	const confirmTokensHandler = () => {
-		const weightSum = weights.reduce((acc, w) => (acc += w));
+		let weightSum = tokenWeights.reduce((acc, w) => (acc += w));
+
+		if (tokenWeights.length === 6) {
+			weightSum = Math.round(weightSum * 10000000) / 10000000;
+		}
+
 		if (weightSum !== 100) {
 			setError('Weights must sum up to exeactly 100%');
 			return;
 		}
 
+		dispatch(setWeights(tokenWeights));
+		dispatch(setPoolType(poolType));
 		setError('');
 		setStep(2);
 	};
@@ -108,38 +114,42 @@ const ChooseTokens: React.FC<ChooseTokensProps> = ({ setStep, selectedTokens, we
 			<div className="flex w-full cursor-pointer flex-row items-center">
 				{poolTypes.map((type, i) => (
 					<div
-						className={`w-1/3 p-2 text-center ${i === 0 ? 'rounded-l-xl' : ''} ${i === 2 ? 'rounded-r-xl' : ''} ${
-							poolType === type ? 'bg-darks-300' : 'bg-darks-500'
-						}`}
+						className={`flex h-12 w-1/3 transform-gpu flex-row flex-wrap items-center justify-center p-1 text-center text-sm duration-100 md:text-base  ${
+							i === 0 ? 'rounded-l-xl' : ''
+						} ${i === 2 ? 'rounded-r-xl' : ''} ${poolType === type ? 'bg-darks-300' : 'bg-darks-500 hover:bg-darks-400'}`}
 						onClick={() => poolTypeChangeHandler(type)}
 					>
 						{type} pool
 					</div>
 				))}
 			</div>
-			<div className=" flex w-full flex-row items-center justify-between pl-[15%] pr-[15%] 2xl:pl-[12.5%]">
+			<div
+				className={` flex w-full flex-row items-center justify-between pl-[15%] ${
+					poolType === 'oracle' ? 'pr-[7.5%]' : 'pr-[16.5%]'
+				} 2xl:pl-[12.5%]`}
+			>
 				<div>Token</div>
-				<div>Weight (%)</div>
+				{poolType !== 'stable' && <div>Weight (%)</div>}
 			</div>
 			<div className="flex w-full flex-col gap-4 rounded-xl bg-darks-500 p-2 sm:p-4">
 				{error !== '' && <DefaultError message={error} />}
 				{selectedTokens.map((token, i) => (
 					<div className="flex w-full flex-row items-center justify-between" key={token.symbol}>
 						<div
-							className="flex w-1/2 transform-gpu cursor-pointer flex-row items-center justify-between gap-2 rounded-xl bg-darks-400 py-2 px-2 duration-100 hover:bg-darks-300 md:w-2/5 2xl:w-1/3"
+							className="flex w-1/2 transform-gpu cursor-pointer flex-row items-center justify-between gap-1 rounded-xl bg-darks-400 py-2 px-2 duration-100 hover:bg-darks-300 sm:gap-2 md:w-2/5 2xl:w-1/3"
 							onClick={() => {
 								setActiveToken(i);
 								setModalIsOpen(true);
 							}}
 						>
-							<div className="flex flex-row items-center gap-2">
+							<div className="sm:text-md flex flex-row items-center gap-1 text-sm sm:gap-2">
 								<div>
 									<SymbolCurrencyIcon symbol={token.symbol} className="h-8 w-8" />
 								</div>
 								<div>{token.symbol}</div>
 							</div>
 							<div>
-								<RiArrowDownSLine className="text-xl" />
+								<RiArrowDownSLine className=" text-lg sm:text-xl" />
 							</div>
 						</div>
 						<div className="flex w-3/5 flex-row items-center justify-end gap-1 sm:gap-5">
@@ -150,17 +160,19 @@ const ChooseTokens: React.FC<ChooseTokensProps> = ({ setStep, selectedTokens, we
 									placeholder={`${tokenWeights[i]}%`}
 									value={tokenWeights[i] ? tokenWeights[i] : undefined}
 									onChange={(e) => setTokenWeight(Number(e.target.value), i)}
-									className="w-3/4 border-b-2 border-darks-300 bg-transparent text-center text-white outline-none md:w-1/2"
+									className="w-3/4 border-b-2 border-darks-300 bg-transparent text-center text-lg text-white outline-none md:w-1/2"
 								/>
 							)}
-							<div className="group w-fit cursor-pointer text-xl text-red-600" onClick={() => removeTokenHandler(i)}>
-								<div className="block group-hover:hidden">
-									<BsTrash />
+							{poolType !== 'oracle' && (
+								<div className="group w-fit cursor-pointer text-xl text-red-600" onClick={() => removeTokenHandler(i)}>
+									<div className="block group-hover:hidden">
+										<BsTrash />
+									</div>
+									<div className="hidden group-hover:block">
+										<BsTrashFill />
+									</div>
 								</div>
-								<div className="hidden group-hover:block">
-									<BsTrashFill />
-								</div>
-							</div>
+							)}
 						</div>
 					</div>
 				))}

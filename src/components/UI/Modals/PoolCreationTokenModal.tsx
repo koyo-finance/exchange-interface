@@ -55,7 +55,7 @@ const PoolCreationTokenModal: React.FC<PoolCreationTokenModalProps> = ({ chosenT
 	};
 
 	return (
-		<div className=" absolute top-0 left-0 z-50 flex min-h-screen w-screen items-center justify-center ">
+		<div className=" absolute top-0 left-0 z-50 flex min-h-screen w-screen items-center justify-center px-2">
 			<div
 				className="fixed top-0 left-0 z-0 min-h-screen w-screen cursor-pointer bg-black bg-opacity-50"
 				onClick={() => setModalIsOpen(false)}
