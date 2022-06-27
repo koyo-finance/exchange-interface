@@ -7,7 +7,7 @@ import React, { Fragment, useState } from 'react';
 import { BsTrash, BsTrashFill } from 'react-icons/bs';
 import { RiArrowDownSLine } from 'react-icons/ri';
 import { useDispatch } from 'react-redux';
-import { setPoolType, setTokens, setWeights } from 'state/reducers/createPool';
+import { PoolType, setPoolType, setTokens, setWeights } from 'state/reducers/createPool';
 
 export interface ChooseTokensProps {
 	setStep: (step: number) => void;
@@ -15,7 +15,7 @@ export interface ChooseTokensProps {
 	weights: number[];
 }
 
-const poolTypes = ['weighted', 'oracle', 'stable'];
+const poolTypes: PoolType[] = [PoolType.WEIGHTED, PoolType.ORACLE_WEIGHTED, PoolType.STABLE];
 
 const ChooseTokens: React.FC<ChooseTokensProps> = ({ setStep, selectedTokens, weights }) => {
 	const dispatch = useDispatch();
@@ -76,8 +76,8 @@ const ChooseTokens: React.FC<ChooseTokensProps> = ({ setStep, selectedTokens, we
 		setError('');
 	};
 
-	const poolTypeChangeHandler = (type: string) => {
-		if (type === 'oracle') {
+	const poolTypeChangeHandler = (type: PoolType) => {
+		if (type === PoolType.ORACLE_WEIGHTED) {
 			const newTokenArr = [...selectedTokens];
 			setTokenWeights([50, 50]);
 			dispatch(setTokens(newTokenArr.splice(0, 2)));

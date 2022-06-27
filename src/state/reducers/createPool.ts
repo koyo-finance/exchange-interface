@@ -3,9 +3,15 @@ import { TokenInfo } from '@uniswap/token-lists';
 import { BigNumber } from 'ethers';
 import { RootState } from 'state';
 
+export enum PoolType {
+	WEIGHTED = 'weighted',
+	ORACLE_WEIGHTED = 'oracle',
+	STABLE = 'stable'
+}
+
 export interface createPoolState {
 	tokens: TokenInfo[];
-	poolType: string;
+	poolType: PoolType;
 	weights: number[];
 	poolFee: number;
 	feeAddress: string;
@@ -32,7 +38,7 @@ const initialState: createPoolState = {
 			logoURI: 'https://tassets.koyo.finance/logos/BOBA/512x512.png'
 		}
 	],
-	poolType: 'weighted',
+	poolType: PoolType.WEIGHTED,
 	weights: [50, 50],
 	poolFee: 0.3,
 	feeAddress: '',
@@ -46,7 +52,7 @@ export const createPoolSlice = createSlice({
 		setTokens(state, action: PayloadAction<TokenInfo[]>) {
 			state.tokens = action.payload;
 		},
-		setPoolType(state, action: PayloadAction<string>) {
+		setPoolType(state, action: PayloadAction<PoolType>) {
 			state.poolType = action.payload;
 		},
 		setWeights(state, action: PayloadAction<number[]>) {
