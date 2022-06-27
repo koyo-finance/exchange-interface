@@ -58,7 +58,8 @@ const PoolConfirmation: React.FC<PoolConfirmationProps> = ({ setStep }) => {
 			return tokenPriceInUSD;
 		});
 
-		Promise.all(tokenPricesInUSD).then((data) => setTokenPrices(data));
+		void Promise.all(tokenPricesInUSD).then((data) => setTokenPrices(data));
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [tokens]);
 
 	return (
