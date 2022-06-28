@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import { selectFeeAddress, selectInitialLiquidity, selectPoolFee, selectPoolType, selectTokens, selectWeights } from 'state/reducers/createPool';
 import { assetHelperBoba } from 'utils/assets';
 import { switchPoolCreationParameters } from 'utils/exchange/switchPoolCreationParameters';
+import { isSameAddress } from 'utils/isSameAddress';
 import { useAccount, useSigner } from 'wagmi';
 import StepBackCard from '../../cards/StepBackCard';
 import TokenUSDPrice from '../../cards/TokenUSDPrice';
@@ -137,8 +138,12 @@ const PoolConfirmation: React.FC<PoolConfirmationProps> = ({ setStep }) => {
 					createPool([
 						poolType,
 						[
-							'', //
-							'',
+							`Koyo ${tokensSorted
+								.map((st, i) => `${weightsSorted[i].toFixed(2)} ${tokens.find((t) => isSameAddress(st, t.address))?.symbol}`)
+								.join(' ')}`, //
+							`K-${tokensSorted
+								.map((st, i) => `${weightsSorted[i].toFixed(2)}${tokens.find((t) => isSameAddress(st, t.address))?.symbol}`)
+								.join('-')}`,
 							tokensSorted,
 							...switchPoolCreationParameters(poolType, weights, 200, poolFee),
 							feeManagerAddress

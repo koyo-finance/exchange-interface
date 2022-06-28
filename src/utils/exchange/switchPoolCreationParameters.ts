@@ -7,6 +7,8 @@ export function switchPoolCreationParameters(
 	amplificationParameter: BigNumberish = BigNumber.from(0),
 	swapFeePercentage: BigNumberish = BigNumber.from(0)
 ): [BigNumberish[], string[], BigNumberish] | [BigNumberish[], BigNumberish, boolean] | [BigNumberish, BigNumberish] {
+	weights = weights.map((w) => BigNumber.from(w).mul(BigNumber.from(10).pow(16)));
+
 	switch (poolType) {
 		case PoolType.WEIGHTED: {
 			return [weights, weights.map(() => '0x0000000000000000000000000000000000000000'), swapFeePercentage];
