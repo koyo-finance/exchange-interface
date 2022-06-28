@@ -3853,7 +3853,7 @@ export const SubgraphTokenLatestPriceFragmentDoc = `
     `;
 export const GetAllGaugesDocument = `
     query GetAllGauges {
-  allGauges: gauges {
+  allGauges: gauges(first: 1000) {
     ...KoyoGauge
   }
 }
@@ -3870,7 +3870,7 @@ export const useGetAllGaugesQuery = <TData = GetAllGaugesQuery, TError = unknown
 	);
 export const GetPoolsDocument = `
     query GetPools {
-  allPools: pools {
+  allPools: pools(first: 1000) {
     ...LitePool
   }
 }

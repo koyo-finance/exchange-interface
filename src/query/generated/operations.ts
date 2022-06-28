@@ -50,7 +50,7 @@ export const SubgraphTokenLatestPrice = gql`
 `;
 export const GetAllGauges = gql`
 	query GetAllGauges {
-		allGauges: gauges {
+		allGauges: gauges(first: 1000) {
 			...KoyoGauge
 		}
 	}
@@ -58,7 +58,7 @@ export const GetAllGauges = gql`
 `;
 export const GetPools = gql`
 	query GetPools {
-		allPools: pools {
+		allPools: pools(first: 1000) {
 			...LitePool
 		}
 	}

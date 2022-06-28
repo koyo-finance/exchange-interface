@@ -1,5 +1,5 @@
 query GetPools {
-	allPools: pools {
+	allPools: pools(first: 1000) {
 		...LitePool
 	}
 }
