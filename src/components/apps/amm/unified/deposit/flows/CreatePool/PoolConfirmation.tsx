@@ -1,6 +1,7 @@
 import { TokenPriceService } from '@balancer-labs/sor';
 import { fromBigNumber } from '@koyofinance/core-sdk';
 import SymbolCurrencyIcon from 'components/CurrencyIcon/SymbolCurrencyIcon';
+import useJoinPool from 'hooks/contracts/exchange/useJoinPool';
 import { useCreatePool } from 'hooks/useCreatePool';
 import jpex from 'jpex';
 import React, { useEffect, useState } from 'react';
@@ -35,7 +36,10 @@ const PoolConfirmation: React.FC<PoolConfirmationProps> = ({ setStep }) => {
 
 	const priceService = jpex.resolve<TokenPriceService>();
 
-	const { mutate: createPool } = useCreatePool(signer || undefined);
+	const { mutate: createPool, status: poolCreationStatus } = useCreatePool(signer || undefined);
+
+	const { mutate: addLiqudity, status: deposited, data: createdPoolData } = useJoinPool(signer || undefined);
+
 
 	useEffect(() => {
 		const fetchETHPrice = async () => {
@@ -131,28 +135,51 @@ const PoolConfirmation: React.FC<PoolConfirmationProps> = ({ setStep }) => {
 					</div>
 				</div>
 			</div>
-			<button
-				type="button"
-				className="btn w-full bg-lights-400 bg-opacity-100 p-0 text-black hover:bg-lights-300"
-				onClick={() =>
-					createPool([
-						poolType,
-						[
-							`Koyo ${tokensSorted
-								.map((st, i) => `${weightsSorted[i].toFixed(0)} ${tokens.find((t) => isSameAddress(st, t.address))?.symbol}`)
-								.join(' ')}`, //
-							`K-${tokensSorted
-								.map((st, i) => `${weightsSorted[i].toFixed(0)}${tokens.find((t) => isSameAddress(st, t.address))?.symbol}`)
-								.join('-')}`,
-							tokensSorted,
-							...switchPoolCreationParameters(poolType, weights, 200, poolFee),
-							feeManagerAddress
-						]
-					])
-				}
-			>
-				Create liquidity pool
-			</button>
+			{poolCreationStatus !== 'success' && (
+				<button
+					type="button"
+					className="btn w-full bg-lights-400 bg-opacity-100 p-0 text-black hover:bg-lights-300"
+					onClick={() =>
+						createPool([
+							poolType,
+							[
+								`Koyo ${tokensSorted
+									.map((st, i) => `${weightsSorted[i].toFixed(0)} ${tokens.find((t) => isSameAddress(st, t.address))?.symbol}`)
+									.join(' ')}`, //
+								`K-${tokensSorted
+									.map((st, i) => `${weightsSorted[i].toFixed(0)}${tokens.find((t) => isSameAddress(st, t.address))?.symbol}`)
+									.join('-')}`,
+								tokensSorted,
+								...switchPoolCreationParameters(poolType, weights, 200, poolFee),
+								feeManagerAddress
+							]
+						])
+					}
+				>
+					Create liquidity pool
+				</button>
+			)}
+			{poolCreationStatus === 'success' && (
+				<button
+					type="button"
+					className="btn w-full bg-lights-400 bg-opacity-100 p-0 text-black hover:bg-lights-300"
+					onClick={() =>
+						addLiqudity([
+							(createdPoolData?.events?.find(event => event.event === 'PoolCreated')?.args || [])[0] || '',
+							accountAddress,
+							accountAddress,
+							{
+								assets: tokens,
+								maxAmountsIn: amounts,
+								userData: BigNumber.from(poolTotalSupply).gt(0) ? joinExactTokensInForKPTOut(amounts, toBigNumber(0)) : joinInit(amounts),
+								fromInternalBalance: false
+							}
+						]);
+					}
+				>
+					Add Initial Liquidity
+				</button>
+			)}
 		</>
 	);
 };

@@ -16,7 +16,8 @@ export default function useCreateOracleWeightedPool(
 				hash: tx.hash,
 				description: 'Creating oracle weighted pool.'
 			});
-		}
+		},
+		blockConfirmations: 2
 	});
 
 	return createOracleWeightedPool;

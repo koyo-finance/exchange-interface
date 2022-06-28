@@ -16,7 +16,8 @@ export default function useCreateStablePool(
 				hash: tx.hash,
 				description: 'Creating stable pool.'
 			});
-		}
+		},
+		blockConfirmations: 2
 	});
 
 	return createStablePool;

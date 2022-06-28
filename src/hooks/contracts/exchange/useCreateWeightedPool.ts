@@ -16,7 +16,8 @@ export default function useCreateWeightedPool(
 				hash: tx.hash,
 				description: 'Creating weighted pool.'
 			});
-		}
+		},
+		blockConfirmations: 2
 	});
 
 	return createWeightedPool;
