@@ -4,9 +4,17 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 export interface SingleEntityConnectButtonProps {
 	className?: string;
 	invalidNetworkClassName?: string;
+	textClassName?: string;
+	customText?: string;
 }
 
-const SingleEntityConnectButton: React.FC<SingleEntityConnectButtonProps> = ({ children, className, invalidNetworkClassName }) => {
+const SingleEntityConnectButton: React.FC<SingleEntityConnectButtonProps> = ({
+	children,
+	className,
+	invalidNetworkClassName,
+	textClassName,
+	customText
+}) => {
 	return (
 		<ConnectButton.Custom>
 			{({ account, chain, openChainModal, openConnectModal, mounted }) => {
@@ -25,16 +33,16 @@ const SingleEntityConnectButton: React.FC<SingleEntityConnectButtonProps> = ({ c
 						{(() => {
 							if (!mounted || !account || !chain) {
 								return (
-									<button onClick={openConnectModal} type="button" className="h-full w-full">
-										Connect Wallet
+									<button onClick={openConnectModal} type="button" className={`h-full w-full ${textClassName || ''}`}>
+										Connect Wallet{customText || ''}
 									</button>
 								);
 							}
 
 							if (chain.unsupported) {
 								return (
-									<button onClick={openChainModal} type="button" className="h-full w-full">
-										Wrong network
+									<button onClick={openChainModal} type="button" className={`h-full w-full ${textClassName || ''}`}>
+										Wrong network{customText || ''}
 									</button>
 								);
 							}

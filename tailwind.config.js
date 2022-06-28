@@ -1,3 +1,5 @@
+const { neutral } = require('daisyui/src/colors');
+
 module.exports = {
 	content: ['./src/**/*.{js,ts,jsx,tsx}'],
 	darkMode: 'class', // or 'media' or 'class'
@@ -61,9 +63,21 @@ module.exports = {
 			backgroundImage: {
 				trees: "url('/assets/wallpappers/trees.svg')",
 				leaves: "url('/assets/wallpappers/leaves.svg')",
-				'title-gradient': 'radial-gradient(#300729,  transparent)'
+				'title-gradient': 'radial-gradient(#300729,  transparent)',
+				'router-label-gradient': 'linear-gradient(90deg, #D58A9F 0%, #F0932C 163.16%)'
 			}
 		}
 	},
-	plugins: [require('daisyui'), require('tailwindcss-border-gradient-radius')]
+	plugins: [require('daisyui'), require('tailwindcss-border-gradient-radius')],
+	daisyui: {
+		themes: [
+			{
+				mytheme: {
+					primary: '#F0932C',
+					neutral: '#444444',
+					'base-100': '#1110'
+				}
+			}
+		]
+	}
 };

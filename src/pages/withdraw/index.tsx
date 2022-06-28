@@ -1,44 +1,44 @@
-import { ChainId, formatBalance } from '@koyofinance/core-sdk';
-import { AugmentedPool, Pool } from '@koyofinance/swap-sdk';
-import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
-import WithdrawLPBurnCalculation from 'components/UI/Cards/Withdraw/WithdrawLPBurnCalculation';
-import WithdrawTokenCard from 'components/UI/Cards/Withdraw/WithdrawTokenCard';
+import { formatBalance, toBigNumber } from '@koyofinance/core-sdk';
+import WithdrawCardToken from 'components/apps/amm/unified/withdraw/cards/WithdrawCardToken';
+import WithdrawCardTop from 'components/apps/amm/unified/withdraw/cards/WithdrawCardTop';
+import WithdrawCardWithdrawButton from 'components/apps/amm/unified/withdraw/cards/WithdrawCardWithdrawButton';
+import WithdrawKPTCalculation from 'components/apps/amm/unified/withdraw/WithdrawKPTCalculation';
 import GuideLink from 'components/GuideLink';
 import PoolsModal from 'components/UI/Modals/PoolsModal';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
-import { parseUnits } from 'ethers/lib/utils';
+import { EXCHANGE_SUBGRAPH_URL } from 'constants/subgraphs';
 import { Form, Formik } from 'formik';
-import useGetVirtualPrice from 'hooks/contracts/StableSwap/useGetVirtualPrice';
-import useRemoveLiquidityImbalance from 'hooks/contracts/StableSwap/useRemoveLiquidityImbalance';
+import useExitPool from 'hooks/contracts/exchange/useExitPool';
 import useTokenBalance from 'hooks/contracts/useTokenBalance';
 import { SwapLayout, SwapLayoutCard } from 'layouts/SwapLayout';
 import { NextSeo } from 'next-seo';
+import { LitePoolFragment, useGetPoolsQuery } from 'query/generated/graphql-codegen-generated';
 import React, { useEffect, useState } from 'react';
-import { BsFillGearFill } from 'react-icons/bs';
 import { HiSwitchHorizontal } from 'react-icons/hi';
-import { useSelector } from 'react-redux';
-import { selectAllPoolsByChainId } from 'state/reducers/lists';
+import { VscListSelection } from 'react-icons/vsc';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
+import { assetHelperBoba } from 'utils/assets';
+import { exitKPTInForExactTokensOut } from 'utils/exchange/userData/exits';
 import { useAccount, useSigner } from 'wagmi';
 
 const WithdrawPage: ExtendedNextPage = () => {
-	const pools = useSelector(selectAllPoolsByChainId(ChainId.BOBA));
+	const { data: fetchedPools } = useGetPoolsQuery({ endpoint: EXCHANGE_SUBGRAPH_URL });
+	const pools = fetchedPools?.allPools || [];
 
 	const { data: account } = useAccount();
+	const accountAddress = account?.address || '';
 	const { data: signer } = useSigner();
 
-	const [selectedPool, setSelectedPool] = useState<AugmentedPool | undefined>(undefined);
+	const [selectedPool, setSelectedPool] = useState<LitePoolFragment | undefined>(undefined);
 	const [poolsModalIsOpen, setPoolsModalIsOpen] = useState(false);
-	// const [balancedAmounts, setBalancedAounts] = useState<number[]>([]);
 
-	const { data: lpTokenBalance = 0, refetch: refetchLPBalance } = useTokenBalance(account?.address, selectedPool?.addresses.lpToken);
-	const { data: virtualPrice = 0 } = useGetVirtualPrice(selectedPool?.id || '');
-	const { mutate: removeLiquidityImbalance, status: withdrawStatus } = useRemoveLiquidityImbalance(signer || undefined, selectedPool?.id || '');
+	const { data: lpTokenBalance = 0, refetch: refetchLPBalance } = useTokenBalance(account?.address, selectedPool?.address);
+	const { mutate: exitPool, status: exitStatus } = useExitPool(signer || undefined);
 
 	useEffect(() => {
-		if (withdrawStatus === 'success') refetchLPBalance();
+		if (exitStatus === 'success') refetchLPBalance();
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [withdrawStatus]);
+	}, [exitStatus]);
 
 	const openPoolsModalHandler = () => {
 		setPoolsModalIsOpen(true);
@@ -48,9 +48,9 @@ const WithdrawPage: ExtendedNextPage = () => {
 		setPoolsModalIsOpen(false);
 	};
 
-	const setPoolHandler = (poolId: string) => {
-		const [selectedPoolFilter] = pools.filter((pool: Pool) => {
-			return pool.id.toLowerCase().includes(poolId.toLowerCase());
+	const setPoolHandler = (poolAddress: string) => {
+		const [selectedPoolFilter] = pools.filter((pool: LitePoolFragment) => {
+			return pool.address.toLowerCase().includes(poolAddress.toLowerCase());
 		});
 		setSelectedPool(selectedPoolFilter);
 	};
@@ -74,18 +74,16 @@ const WithdrawPage: ExtendedNextPage = () => {
 					>
 						<div className="m-auto rounded-xl">
 							<div className="flex flex-col gap-2">
-								<div className="flex w-full flex-row items-center justify-between text-lg font-semibold text-white">
-									<div>Remove Liquidity</div>
-									<div>
-										<BsFillGearFill />
-									</div>
-								</div>
+								<WithdrawCardTop />
 								{!selectedPool && (
 									<button
 										className="text-md btn mt-2 w-full bg-lights-400 text-black hover:bg-lights-200 lg:text-xl"
 										onClick={openPoolsModalHandler}
 									>
-										Choose liquidity pool&nbsp;<span className=" text-md lg:text-2xl">+</span>
+										Choose liquidity pool&nbsp;
+										<span className=" text-md lg:text-2xl">
+											<VscListSelection />
+										</span>
 									</button>
 								)}
 								{selectedPool && (
@@ -108,16 +106,25 @@ const WithdrawPage: ExtendedNextPage = () => {
 							{selectedPool && (
 								<div className={selectedPool ? 'block' : 'hidden'}>
 									<Formik
-										initialValues={Object.fromEntries(selectedPool.coins.map((coin) => [coin.name, 0]))}
+										// @ts-expect-error Huh
+										initialValues={Object.fromEntries(selectedPool.tokens?.map((token: TokenFragment) => [token.name, 0]))}
 										onSubmit={(values) => {
-											return removeLiquidityImbalance([
-												// @ts-expect-error Huh
-												Object.entries(values)
-													.slice(0, selectedPool.coins.length)
-													.map((coins) => coins[1] || 0)
-													.map((amount, i) => parseUnits(amount.toString(), selectedPool.coins[i].decimals)),
-												lpTokenBalance,
-												{ gasLimit: 1_000_000 }
+											// @ts-expect-error We know what we passed.
+											const [tokens, amounts]: [tokens: string[], amounts: BigNumber[]] = assetHelperBoba.sortTokens(
+												selectedPool.tokens?.map((token) => token.address) || [],
+												selectedPool.tokens?.map((token) => toBigNumber(values[token.name], token.decimals)) || []
+											);
+
+											return exitPool([
+												selectedPool.id,
+												accountAddress,
+												accountAddress,
+												{
+													assets: tokens,
+													minAmountsOut: amounts,
+													userData: exitKPTInForExactTokensOut(amounts, lpTokenBalance),
+													toInternalBalance: false
+												}
 											]);
 										}}
 									>
@@ -125,12 +132,12 @@ const WithdrawPage: ExtendedNextPage = () => {
 											<Form>
 												<div>
 													<div className="mt-4 grid grid-cols-1 gap-8 md:grid-cols-2">
-														{selectedPool.coins.map((coin) => (
+														{selectedPool.tokens?.map((coin) => (
 															<div key={coin.id}>
-																<WithdrawTokenCard
+																<WithdrawCardToken
 																	key={coin.id}
 																	coin={coin}
-																	status={withdrawStatus}
+																	status={exitStatus}
 																	setInputAmount={props.setFieldValue}
 																/>
 															</div>
@@ -139,33 +146,19 @@ const WithdrawPage: ExtendedNextPage = () => {
 													<div className="mt-4 w-full rounded-xl bg-darks-500 p-4">
 														LP Tokens Burned:{' '}
 														<span className="underline">
-															<WithdrawLPBurnCalculation
-																poolId={selectedPool.id}
-																amounts={Object.values(props.values).map((amount) => amount || 0)}
-																decimals={selectedPool.coins.map((coin) => coin.decimals)}
+															<WithdrawKPTCalculation
+																pool={selectedPool}
+																account={accountAddress}
+																values={props.values}
+																status={exitStatus}
 															/>
 														</span>
 													</div>
-													<div className="mt-4">
-														<SingleEntityConnectButton
-															className="btn mt-2 w-full bg-lights-400 bg-opacity-100 font-sora text-black hover:bg-lights-200"
-															invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
-														>
-															<button type="submit" className="h-full w-full">
-																WITHDRAW
-															</button>
-														</SingleEntityConnectButton>
-													</div>
+													<WithdrawCardWithdrawButton />
 												</div>
 											</Form>
 										)}
 									</Formik>
-								</div>
-							)}
-
-							{selectedPool && (
-								<div className="mt-4 w-full rounded-xl bg-gray-500 bg-opacity-50 p-4 text-gray-300">
-									Virtual Price: <span className="underline">{formatBalance(virtualPrice)}</span>
 								</div>
 							)}
 						</div>

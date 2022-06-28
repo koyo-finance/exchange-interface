@@ -1,0 +1,18 @@
+query GetAllGauges {
+	allGauges: gauges {
+		...KoyoGauge
+	}
+}
+
+fragment KoyoGauge on Gauge {
+	id
+	address
+	name
+	symbol
+	killed
+	pool {
+		id
+		address
+		name
+	}
+}

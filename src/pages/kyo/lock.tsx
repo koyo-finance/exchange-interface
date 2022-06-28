@@ -1,9 +1,9 @@
 import { calculatePercentage, formatBalance } from '@koyofinance/core-sdk';
+import ForceWithdrawModal from 'components/apps/dao/locker/modals/LockerForceWithdrawModal';
 import Footer from 'components/Footer';
-import BalanceCard from 'components/UI/Cards/Lock/BalanceCard';
-import LockerForm from 'components/UI/Forms/LockerForm';
 import GuideLink from 'components/GuideLink';
-import ForceWithdrawModal from 'components/UI/Modals/ForceWithdrawModal';
+import TitledDisplayBox from 'components/TitledDisplayBox';
+import LockerForceWithdrawModal from 'components/UI/Forms/LockerForm';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
 import { kyoContract, votingEscrowContract } from 'core/contracts';
 import useTokenBalance from 'hooks/contracts/useTokenBalance';
@@ -52,19 +52,19 @@ const LockIndexPage: ExtendedNextPage = () => {
 						</p>
 					</div>
 					<div className="flex w-full flex-wrap items-center justify-center gap-[5vw]">
-						<BalanceCard text="My KYO Balance" value={formatBalance(kyoBalance)} />
-						<BalanceCard
+						<TitledDisplayBox text="My KYO Balance" value={formatBalance(kyoBalance)} />
+						<TitledDisplayBox
 							text="Share of veKYO power"
 							value={`${calculatePercentage(veKyoTotalSupply, veKyoBalance).toLocaleString('fullwide', {
 								maximumFractionDigits: 4
 							})} %`}
 						/>
-						<BalanceCard text="My veKYO balance" value={formatBalance(veKyoBalance)} />
+						<TitledDisplayBox text="My veKYO balance" value={formatBalance(veKyoBalance)} />
 					</div>
 					<div className="w-full rounded-lg border-2 border-lights-400 bg-black bg-opacity-40 md:mt-6 lg:w-7/12">
 						<div className="flex flex-col gap-4 px-4 py-4 lg:gap-6 lg:py-8 lg:px-12">
 							<h2 className="text-2xl font-bold lg:text-3xl">Lock KYO tokens</h2>
-							<LockerForm openForceWithdrawModal={forceWithdrawModalOpenHandler} />
+							<LockerForceWithdrawModal openForceWithdrawModal={forceWithdrawModalOpenHandler} />
 						</div>
 					</div>
 					<div className="flex flex-col items-center gap-10 text-center">
@@ -72,14 +72,14 @@ const LockIndexPage: ExtendedNextPage = () => {
 						{/* <p className="text-xl">General stats about the veKYO system</p> */}
 						<div className="">
 							<div className="flex w-full flex-row flex-wrap items-center justify-evenly gap-x-[5vw] gap-y-6">
-								<BalanceCard text="Total KYO vote-locked" value={formatBalance(kyoEscrowed)} />
-								<BalanceCard
+								<TitledDisplayBox text="Total KYO vote-locked" value={formatBalance(kyoEscrowed)} />
+								<TitledDisplayBox
 									text="Percentage of KYO locked"
 									value={`${calculatePercentage(kyoTotalSupply, kyoEscrowed).toLocaleString('fullwide', {
 										maximumFractionDigits: 4
 									})} %`}
 								/>
-								<BalanceCard text="Total veKYO" value={formatBalance(veKyoTotalSupply, { maximumFractionDigits: 3 })} />
+								<TitledDisplayBox text="Total veKYO" value={formatBalance(veKyoTotalSupply, { maximumFractionDigits: 3 })} />
 							</div>
 						</div>
 					</div>

@@ -1,0 +1,26 @@
+query GetPools {
+	allPools: pools {
+		...LitePool
+	}
+}
+
+fragment Token on PoolToken {
+	id
+	name
+	address
+	symbol
+	decimals
+	weight
+}
+
+fragment LitePool on Pool {
+	id
+	name
+	symbol
+	address
+	poolType
+	swapFee
+	tokens {
+		...Token
+	}
+}

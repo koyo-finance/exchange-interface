@@ -1,5 +1,5 @@
 import CallToAction from 'components/apps/_/Home/CallToAction';
-import HomeCardsRows from 'components/apps/_/Home/cards/rows';
+import HomeCardsRows from 'components/apps/_/Home/cards/rows/HomeCardsRows';
 import GroundLeafs from 'components/apps/_/Home/GroundLeafs';
 import Header from 'components/apps/_/Home/Header';
 import Footer from 'components/Footer';

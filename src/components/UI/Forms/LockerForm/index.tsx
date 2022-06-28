@@ -1,7 +1,7 @@
 import { formatBalance, fromBigNumber, toBigNumber } from '@koyofinance/core-sdk';
 import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
 import DatePickerFormik from 'components/Field/DatePickerFormik';
-import FormApproveAsset from 'components/UI/Cards/FormApproveAsset';
+import FormApproveAsset from 'components/FormApproveAsset';
 import { kyoContract, votingEscrowContract } from 'core/contracts';
 import { BigNumber } from 'ethers';
 import { Form, Formik } from 'formik';
@@ -28,7 +28,6 @@ const LockerForm: React.FC<{ openForceWithdrawModal: () => void }> = ({ openForc
 	const { data: kyoAllowance = 0 } = useTokenAllowance(accountAddress, votingEscrowContract.address, kyoContract.address);
 	const { data: lockTime } = useGetLockTimeEscrow(accountAddress);
 	const kyoLocked = useGetLockedAmount(accountAddress);
-	const { data: veKyoBalance = 0 } = useTokenBalance(accountAddress, votingEscrowContract.address);
 	const { mutate: kyoLock } = useCreateVotingEscrowLock(signerDefaulted);
 	const { mutate: kyoWithdraw } = useWithdrawLockedEscrow(signerDefaulted);
 
@@ -177,7 +176,7 @@ const LockerForm: React.FC<{ openForceWithdrawModal: () => void }> = ({ openForc
 				</>
 			)}
 
-			{lockTimeConverted <= new Date().getMilliseconds() && fromBigNumber(veKyoBalance) > 0 && (
+			{lockTimeConverted <= new Date().getMilliseconds() && fromBigNumber(kyoLocked) > 0 && (
 				<button onClick={() => kyoWithdraw([{ gasLimit: 700_000 }])}>Withdraw KYO</button>
 			)}
 		</>

@@ -1,0 +1,22 @@
+query TokenLatestPrices(
+	$skip: Int
+	$first: Int
+	$orderBy: LatestPrice_orderBy
+	$orderDirection: OrderDirection
+	$where: LatestPrice_filter
+	$block: Block_height
+) {
+	latestPrices(skip: $skip, first: $first, orderBy: $orderBy, orderDirection: $orderDirection, where: $where, block: $block) {
+		...SubgraphTokenLatestPrice
+	}
+}
+
+fragment SubgraphTokenLatestPrice on LatestPrice {
+	id
+	asset
+	price
+	poolId {
+		id
+	}
+	pricingAsset
+}

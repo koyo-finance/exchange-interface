@@ -73,7 +73,7 @@ const Navbar: React.FC = () => {
 													<div className=" transform-gpu cursor-pointer duration-150 hover:text-darks-200">Lock</div>
 												</Link>
 												<Link href="/kyo/gauges">
-													<div className=" transform-gpu cursor-pointer duration-150 hover:text-darks-200">Gauges</div>
+													<div className=" transform-gpu cursor-pointer duration-150 hover:text-darks-200">Vote</div>
 												</Link>
 												<Link href="/kyo/farms">
 													<div className=" transform-gpu cursor-pointer duration-150 hover:text-darks-200">Farms</div>
@@ -196,7 +196,7 @@ const Navbar: React.FC = () => {
 													<div className="z-20 w-full rounded-2xl py-2">
 														<Link href="/kyo/gauges">
 															<div className=" transform-gpu cursor-pointer px-4 duration-200 hover:text-lights-400">
-																Gauges
+																Vote
 															</div>
 														</Link>
 													</div>

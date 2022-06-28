@@ -1,8 +1,8 @@
-import InfoCard from 'components/UI/Cards/HomePage/InfoCard';
+import InformativeCardBase from 'components/apps/_/Home/InformativeCardBase';
 import React from 'react';
 
 const KoyoPriceCard: React.FC = () => {
-	return <InfoCard data="KŌYŌ PRICE" value="?" />;
+	return <InformativeCardBase data="KŌYŌ PRICE" value="?" />;
 };
 
 export default KoyoPriceCard;
