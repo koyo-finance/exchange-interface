@@ -17,6 +17,7 @@ import { useAccount, useSigner } from 'wagmi';
 import ExtendLockTimeForm from './ExtendLockTimeForm';
 import IncreaseLockedAmountForm from './IncreaseLockedAmountForm';
 import LockTimeSetButton from './LockTimeSetButton';
+import { MaxUint256 } from '@ethersproject/constants';
 
 const LockerForm: React.FC<{ openForceWithdrawModal: () => void }> = ({ openForceWithdrawModal }) => {
 	const { data: account } = useAccount();
@@ -127,8 +128,7 @@ const LockerForm: React.FC<{ openForceWithdrawModal: () => void }> = ({ openForc
 												<FormApproveAsset
 													asset={kyoContract.address}
 													spender={votingEscrowContract.address}
-													amount={10_000_000}
-													decimals={18}
+													amount={MaxUint256}
 													className="h-full w-full"
 												>
 													APPROVE - <span className="italic">KYO</span>

@@ -8,6 +8,7 @@ import { useDistributeGaugeEmissions } from 'hooks/contracts/KYO/gauges/useDistr
 import { useWithdrawFromGauge } from 'hooks/contracts/KYO/gauges/useWithdrawFromGauge';
 import useTokenAllowance from 'hooks/contracts/useTokenAllowance';
 import useTokenBalance from 'hooks/contracts/useTokenBalance';
+import { MaxUint256 } from '@ethersproject/constants';
 import React from 'react';
 import { Case, Default, Switch } from 'react-if';
 import { useAccount, useSigner } from 'wagmi';
@@ -65,13 +66,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ gauge }) => {
 				>
 					<Switch>
 						<Case condition={BigNumber.from(lpTokenAllowance).lt(lpTokenBalance)}>
-							<FormApproveAsset
-								asset={gauge.pool?.address || ''}
-								spender={gauge.address}
-								amount={100_000}
-								decimals={18}
-								className="h-full w-full"
-							>
+							<FormApproveAsset asset={gauge.pool?.address || ''} spender={gauge.address} amount={MaxUint256} className="h-full w-full">
 								APPROVE - <span className="italic">{gauge.pool.name}</span>
 							</FormApproveAsset>
 						</Case>

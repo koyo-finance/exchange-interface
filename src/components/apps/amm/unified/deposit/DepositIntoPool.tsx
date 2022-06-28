@@ -7,6 +7,7 @@ import { vaultContract } from 'core/contracts';
 import { BigNumber } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
 import { Form, Formik } from 'formik';
+import { MaxUint256 } from '@ethersproject/constants';
 import useJoinPool from 'hooks/contracts/exchange/useJoinPool';
 import useMultiTokenAllowance from 'hooks/contracts/useMultiTokenAllowance';
 import useMultiTokenBalances from 'hooks/contracts/useMultiTokenBalances';
@@ -122,8 +123,7 @@ const DepositIntoPool: React.FC<DepositIntoPoolProps> = ({ selectedPool }) => {
 												<FormApproveAsset
 													asset={coin.address}
 													spender={vaultContract.address}
-													amount={100_000}
-													decimals={coin.decimals}
+													amount={MaxUint256}
 													className="h-full w-full"
 												>
 													APPROVE - <span className="italic">{coin.name.toUpperCase()}</span>

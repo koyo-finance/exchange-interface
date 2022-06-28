@@ -8,6 +8,7 @@ import { useIncreaseAmountEscrow } from 'hooks/contracts/KYO/useIncreaseAmountEs
 import React from 'react';
 import { Case, Default, Switch } from 'react-if';
 import { useSigner } from 'wagmi';
+import { MaxUint256 } from '@ethersproject/constants';
 
 export interface IncreaseLockedAmountFormProps {
 	kyoAllowance: BigNumberish;
@@ -70,8 +71,7 @@ const IncreaseLockedAmountForm: React.FC<IncreaseLockedAmountFormProps> = ({ kyo
 											<FormApproveAsset
 												asset={kyoContract.address}
 												spender={votingEscrowContract.address}
-												amount={10_000_000}
-												decimals={18}
+												amount={MaxUint256}
 												className="h-full w-full"
 											>
 												APPROVE - <span className="italic">KYO</span>

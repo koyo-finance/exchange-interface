@@ -6,18 +6,21 @@ import SwapCardTop from 'components/apps/amm/unified/swap/cards/SwapCardTop';
 import SwapCardTradeRoute from 'components/apps/amm/unified/swap/cards/SwapCardTradeRoute';
 import SwapTokenModal from 'components/apps/amm/unified/swap/modals/SwapTokenModal';
 import SwapSwapTokensSlot from 'components/apps/amm/unified/swap/SwapSwapTokensSlot';
-import SwapTokenApprovalCase from 'components/apps/amm/unified/swap/SwapTokenApprovalCase';
 import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
+import FormApproveAsset from 'components/FormApproveAsset';
 import GuideLink from 'components/GuideLink';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
 import { SwapTokenNumber } from 'constants/swaps';
+import { vaultContract } from 'core/contracts';
+import { MaxUint256 } from '@ethersproject/constants';
 import { BigNumber } from 'ethers';
 import { Form, Formik } from 'formik';
+import useTokenAllowance from 'hooks/contracts/useTokenAllowance';
 import { useSwap } from 'hooks/useSwap';
 import { SwapLayout, SwapLayoutCard } from 'layouts/SwapLayout';
 import { NextSeo } from 'next-seo';
 import React, { useState } from 'react';
-import { Default, Else, If, Switch, Then } from 'react-if';
+import { Case, Default, Else, If, Switch, Then } from 'react-if';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from 'state/hooks';
 import { selectTokenOne, selectTokenTwo, setTokenOne, setTokenTwo } from 'state/reducers/selectedTokens';
@@ -45,6 +48,8 @@ const SwapIndexPage: ExtendedNextPage = () => {
 
 	const tokenOne = useSelector(selectTokenOne);
 	const tokenTwo = useSelector(selectTokenTwo);
+
+	const { data: allowance = 0 } = useTokenAllowance(accountAddress, vaultContract.address, tokenOne.address);
 
 	const openTokenModalHandler = (tokenNum: number) => {
 		setActiveToken(tokenNum);
@@ -137,9 +142,25 @@ const SwapIndexPage: ExtendedNextPage = () => {
 														invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
 													>
 														<Switch>
-															<SwapTokenApprovalCase />
+															{/* <SwapTokenApprovalCase token={tokenOne} amount={props.values[SwapTokenNumber.IN]} /> */}
+															<Case
+																condition={BigNumber.from(allowance).lte(
+																	toBigNumber(props.values[SwapTokenNumber.IN] || 0, tokenOne.decimals)
+																)}
+															>
+																<FormApproveAsset
+																	asset={tokenOne.address}
+																	spender={vaultContract.address}
+																	amount={MaxUint256}
+																	className="h-full w-full"
+																>
+																	APPROVE - <span className="italic">{tokenOne.symbol.toUpperCase()}</span>
+																</FormApproveAsset>
+															</Case>
 															<Default>
-																<button className="h-full w-full">SWAP</button>
+																<button type="submit" className="h-full w-full">
+																	SWAP
+																</button>
 															</Default>
 														</Switch>
 													</SingleEntityConnectButton>
