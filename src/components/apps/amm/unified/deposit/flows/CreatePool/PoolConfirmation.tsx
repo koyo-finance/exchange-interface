@@ -2,6 +2,7 @@ import { TokenPriceService } from '@balancer-labs/sor';
 import { fromBigNumber } from '@koyofinance/core-sdk';
 import SymbolCurrencyIcon from 'components/CurrencyIcon/SymbolCurrencyIcon';
 import useJoinPool from 'hooks/contracts/exchange/useJoinPool';
+import usePoolId from 'hooks/contracts/exchange/usePoolId';
 import { useCreatePool } from 'hooks/useCreatePool';
 import jpex from 'jpex';
 import React, { useEffect, useState } from 'react';
@@ -39,6 +40,7 @@ const PoolConfirmation: React.FC<PoolConfirmationProps> = ({ setStep }) => {
 	const { mutate: createPool, status: poolCreationStatus } = useCreatePool(signer || undefined);
 
 	const { mutate: addLiqudity, status: deposited, data: createdPoolData } = useJoinPool(signer || undefined);
+	const { data: poolId = '' } = usePoolId((createdPoolData?.events?.find(event => event.event === 'PoolCreated')?.args || [])[0]);
 
 
 	useEffect(() => {
@@ -165,7 +167,7 @@ const PoolConfirmation: React.FC<PoolConfirmationProps> = ({ setStep }) => {
 					className="btn w-full bg-lights-400 bg-opacity-100 p-0 text-black hover:bg-lights-300"
 					onClick={() =>
 						addLiqudity([
-							(createdPoolData?.events?.find(event => event.event === 'PoolCreated')?.args || [])[0] || '',
+							poolId,
 							accountAddress,
 							accountAddress,
 							{
