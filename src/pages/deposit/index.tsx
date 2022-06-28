@@ -13,6 +13,7 @@ import { BsArrow90DegLeft, BsPlus } from 'react-icons/bs';
 import { HiSwitchHorizontal } from 'react-icons/hi';
 import { VscListSelection } from 'react-icons/vsc';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
+import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
 
 const DepositPage: ExtendedNextPage = () => {
 	const { data: fetchedPools } = useGetPoolsQuery({ endpoint: EXCHANGE_SUBGRAPH_URL });
@@ -87,19 +88,25 @@ const DepositPage: ExtendedNextPage = () => {
 												<VscListSelection />
 											</span>
 										</button>
-										<button
-											className="text-md btn mt-2 w-full bg-lights-400 text-black hover:bg-lights-200 lg:text-lg"
-											onClick={() => {
-												setPoolCreationActive(true);
-												setPoolCreationStep(1);
-											}}
-											disabled={Boolean(process.env.NEXT_PUBLIC_HIDE_POOL_CREATION)}
+										<SingleEntityConnectButton
+											className="btn mt-2 w-full bg-lights-400 bg-opacity-100 p-0 text-black hover:bg-lights-200"
+											invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
+											textClassName="text-md lg:text-lg font-semibold"
+											customText=" - Create liquidity pool"
 										>
-											Create liquidity pool&nbsp;
-											<span className=" text-md lg:text-2xl">
-												<BsPlus />
-											</span>
-										</button>
+											<button
+												className="text-md btn w-full bg-lights-400 text-black hover:bg-lights-200 lg:text-lg"
+												onClick={() => {
+													setPoolCreationActive(true);
+													setPoolCreationStep(1);
+												}}
+											>
+												Create liquidity pool&nbsp;
+												<span className=" text-md lg:text-2xl">
+													<BsPlus />
+												</span>
+											</button>
+										</SingleEntityConnectButton>
 									</>
 								)}
 								{selectedPool && (
