@@ -139,10 +139,10 @@ const PoolConfirmation: React.FC<PoolConfirmationProps> = ({ setStep }) => {
 						poolType,
 						[
 							`Koyo ${tokensSorted
-								.map((st, i) => `${weightsSorted[i].toFixed(2)} ${tokens.find((t) => isSameAddress(st, t.address))?.symbol}`)
+								.map((st, i) => `${weightsSorted[i].toFixed(0)} ${tokens.find((t) => isSameAddress(st, t.address))?.symbol}`)
 								.join(' ')}`, //
 							`K-${tokensSorted
-								.map((st, i) => `${weightsSorted[i].toFixed(2)}${tokens.find((t) => isSameAddress(st, t.address))?.symbol}`)
+								.map((st, i) => `${weightsSorted[i].toFixed(0)}${tokens.find((t) => isSameAddress(st, t.address))?.symbol}`)
 								.join('-')}`,
 							tokensSorted,
 							...switchPoolCreationParameters(poolType, weights, 200, poolFee),
