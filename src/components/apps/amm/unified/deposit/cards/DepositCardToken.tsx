@@ -21,7 +21,7 @@ const DepositCardToken: React.FC<DepositCardTokenProps> = ({ coin, balance, rese
 			setTokenAmount(0);
 			setInputAmount(coin.name, 0);
 		}
-	}, [resetValues]);
+	}, [resetValues, coin.name, setInputAmount]);
 
 	const tokenAmountChangeHandler = () => {
 		const inputAmount = inputAmountRef.current ? Number(inputAmountRef.current?.value) : 0;

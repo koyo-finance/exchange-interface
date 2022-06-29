@@ -103,7 +103,7 @@ const PoolConfirmation: React.FC<PoolConfirmationProps> = ({ setStep, cancelPool
 
 	useEffect(() => {
 		if (deposited === 'success') cancelPoolCreation(false);
-	}, [deposited]);
+	}, [deposited, cancelPoolCreation]);
 
 	useEffect(() => {
 		if (txConfirmationStatus === 'success') {

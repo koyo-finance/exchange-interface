@@ -87,7 +87,7 @@ const ChooseTokens: React.FC<ChooseTokensProps> = ({ setStep, selectedTokens, we
 	};
 
 	const confirmTokensHandler = () => {
-		let weightSum = tokenWeights.reduce((acc, w) => (acc += w));
+		const weightSum = tokenWeights.reduce((acc, w) => (acc += w));
 
 		if (weightSum !== 100) {
 			setError('Weights must sum up to exeactly 100%');
