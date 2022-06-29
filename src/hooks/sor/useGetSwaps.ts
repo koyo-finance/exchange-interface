@@ -1,5 +1,5 @@
 import { SOR, SwapInfo } from '@balancer-labs/sor';
-import type { SwapOptions } from 'hooks/useSwap';
+import type { SwapOptions } from 'hooks/SOR/useRoutedSwap';
 import jpex from 'jpex';
 import { useQuery } from 'react-query';
 

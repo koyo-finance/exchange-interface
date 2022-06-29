@@ -1,7 +1,7 @@
 import { formatAmount, fromBigNumber } from '@koyofinance/core-sdk';
 import InformativeCardBase from 'components/apps/_/Home/InformativeCardBase';
 import { kyoContract, votingEscrowContract } from 'core/contracts';
-import useTokenBalance from 'hooks/contracts/useTokenBalance';
+import useTokenBalance from 'hooks/generic/useTokenBalance';
 import React from 'react';
 
 const KYOLockedCard: React.FC = () => {

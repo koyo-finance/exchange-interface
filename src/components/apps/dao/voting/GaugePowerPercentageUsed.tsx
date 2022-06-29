@@ -1,5 +1,5 @@
 import { BigNumber } from 'ethers';
-import useGetUserVoteGaugeSlope from 'hooks/contracts/KYO/gauges/useGetUserVoteGaugeSlope';
+import useGetUserVoteGaugeSlope from 'hooks/KYO/gauges/useGetUserVoteGaugeSlope';
 import React from 'react';
 
 export interface GaugePowerPercentageUsedProps {

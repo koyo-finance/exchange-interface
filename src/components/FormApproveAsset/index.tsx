@@ -1,5 +1,5 @@
 import { BigNumber } from 'ethers';
-import useSetTokenAllowance from 'hooks/contracts/useSetTokenAllowance';
+import useSetTokenAllowance from 'hooks/generic/useSetTokenAllowance';
 import React from 'react';
 import { useSigner } from 'wagmi';
 

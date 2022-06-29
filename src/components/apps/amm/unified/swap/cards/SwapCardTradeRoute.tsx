@@ -1,8 +1,8 @@
 import { Transition } from '@headlessui/react';
 import SymbolCurrencyIcon from 'components/CurrencyIcon/SymbolCurrencyIcon';
 import { useFormikContext } from 'formik';
-import { useGetRoutes } from 'hooks/sor/useGetRoutes';
-import { useGetSORPools } from 'hooks/sor/useGetSORPools';
+import { useGetRoutes } from 'hooks/SOR/useGetRoutes';
+import { useGetSORPools } from 'hooks/SOR/useGetSORPools';
 import { SwapFormValues } from 'pages/swap';
 import React, { useReducer } from 'react';
 import { useSelector } from 'react-redux';

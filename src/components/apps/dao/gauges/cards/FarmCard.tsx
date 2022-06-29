@@ -3,12 +3,12 @@ import { formatAmount, formatBalance, formatDollarAmount, fromBigNumber } from '
 import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
 import FormApproveAsset from 'components/FormApproveAsset';
 import { BigNumber } from 'ethers';
-import useCheckClaimableTokens from 'hooks/contracts/KYO/gauges/useCheckClaimableTokens';
-import { useDepositIntoGauge } from 'hooks/contracts/KYO/gauges/useDepositIntoGauge';
-import { useDistributeGaugeEmissions } from 'hooks/contracts/KYO/gauges/useDistributeGaugeEmissions';
-import { useWithdrawFromGauge } from 'hooks/contracts/KYO/gauges/useWithdrawFromGauge';
-import useTokenAllowance from 'hooks/contracts/useTokenAllowance';
-import useTokenBalance from 'hooks/contracts/useTokenBalance';
+import useCheckClaimableTokens from 'hooks/KYO/gauges/useCheckClaimableTokens';
+import { useDepositIntoGauge } from 'hooks/KYO/gauges/useDepositIntoGauge';
+import { useDistributeGaugeEmissions } from 'hooks/KYO/gauges/useDistributeGaugeEmissions';
+import { useWithdrawFromGauge } from 'hooks/KYO/gauges/useWithdrawFromGauge';
+import useTokenAllowance from 'hooks/generic/useTokenAllowance';
+import useTokenBalance from 'hooks/generic/useTokenBalance';
 import { useWeb3 } from 'hooks/useWeb3';
 import React from 'react';
 import { Case, Default, Switch } from 'react-if';

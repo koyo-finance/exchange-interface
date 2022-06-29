@@ -1,7 +1,7 @@
 import { formatBalance, toBigNumber } from '@koyofinance/core-sdk';
 import { BigNumber } from 'ethers';
-import useQueryJoinPool from 'hooks/contracts/exchange/useQueryJoinPool';
-import useTokenTotalSupply from 'hooks/contracts/useTokenTotalSupply';
+import useQueryJoinPool from 'hooks/vault/useQueryJoinPool';
+import useTokenTotalSupply from 'hooks/generic/useTokenTotalSupply';
 import { LitePoolFragment } from 'query/generated/graphql-codegen-generated';
 import React, { useEffect } from 'react';
 import { assetHelperBoba } from 'utils/assets';

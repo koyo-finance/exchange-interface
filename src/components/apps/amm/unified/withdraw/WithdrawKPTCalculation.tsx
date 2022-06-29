@@ -1,8 +1,8 @@
 import { formatBalance, toBigNumber } from '@koyofinance/core-sdk';
 import { BigNumber } from 'ethers';
-import useQueryExitPool from 'hooks/contracts/exchange/useQueryExitPool';
-import useTokenBalance from 'hooks/contracts/useTokenBalance';
-import useTokenTotalSupply from 'hooks/contracts/useTokenTotalSupply';
+import useQueryExitPool from 'hooks/vault/useQueryExitPool';
+import useTokenBalance from 'hooks/generic/useTokenBalance';
+import useTokenTotalSupply from 'hooks/generic/useTokenTotalSupply';
 import { LitePoolFragment } from 'query/generated/graphql-codegen-generated';
 import React, { useEffect } from 'react';
 import { assetHelperBoba } from 'utils/assets';

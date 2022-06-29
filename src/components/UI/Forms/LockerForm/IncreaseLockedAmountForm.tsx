@@ -5,7 +5,7 @@ import FormApproveAsset from 'components/FormApproveAsset';
 import { kyoContract, votingEscrowContract } from 'core/contracts';
 import { BigNumber, BigNumberish } from 'ethers';
 import { Form, Formik } from 'formik';
-import { useIncreaseAmountEscrow } from 'hooks/contracts/KYO/useIncreaseAmountEscrow';
+import { useIncreaseAmountEscrow } from 'hooks/KYO/useIncreaseAmountEscrow';
 import { useWeb3 } from 'hooks/useWeb3';
 import React from 'react';
 import { Case, Default, Switch } from 'react-if';

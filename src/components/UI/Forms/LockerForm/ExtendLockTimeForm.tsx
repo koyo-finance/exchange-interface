@@ -1,6 +1,6 @@
 import DatePickerFormik from 'components/Field/DatePickerFormik';
 import { Form, Formik } from 'formik';
-import { useExtendLockTimeEscrow } from 'hooks/contracts/KYO/useExtendLockTimeEscrow';
+import { useExtendLockTimeEscrow } from 'hooks/KYO/useExtendLockTimeEscrow';
 import React from 'react';
 import { useSigner } from 'wagmi';
 import LockTimeSetButton from './LockTimeSetButton';

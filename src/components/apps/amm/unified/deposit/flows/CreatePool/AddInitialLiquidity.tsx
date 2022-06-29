@@ -1,7 +1,7 @@
 import { formatBalance, toBigNumber } from '@koyofinance/core-sdk';
 import SymbolCurrencyIcon from 'components/CurrencyIcon/SymbolCurrencyIcon';
 import { BigNumber } from 'ethers';
-import useMultiTokenBalances from 'hooks/contracts/useMultiTokenBalances';
+import useMultiTokenBalances from 'hooks/generic/useMultiTokenBalances';
 import { useWeb3 } from 'hooks/useWeb3';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';

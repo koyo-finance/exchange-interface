@@ -1,7 +1,7 @@
 import { ChainId, formatBalance } from '@koyofinance/core-sdk';
 import { TokenInfo } from '@uniswap/token-lists';
 import { BigNumber } from 'ethers';
-import useMultiTokenBalances from 'hooks/contracts/useMultiTokenBalances';
+import useMultiTokenBalances from 'hooks/generic/useMultiTokenBalances';
 import { useWeb3 } from 'hooks/useWeb3';
 import React, { useEffect, useState } from 'react';
 import { FaTimes } from 'react-icons/fa';

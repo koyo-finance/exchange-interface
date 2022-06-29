@@ -6,7 +6,7 @@ import jpex from 'jpex';
 import { useMutation } from 'react-query';
 import { IVault } from 'types/contracts/exchange/Vault';
 import { getLimits } from 'utils/exchange/router/limits';
-import useBatchSwap from './contracts/exchange/useBatchSwap';
+import useBatchSwap from './useBatchSwap';
 
 export interface SwapOptions {
 	tokenIn: string;
@@ -34,7 +34,7 @@ export interface SwapVariables {
 	overrides?: PayableOverrides;
 }
 
-export function useSwap(signer: Signer | undefined) {
+export function useRoutedSwap(signer: Signer | undefined) {
 	const { mutate: batchSwap } = useBatchSwap(signer);
 	const sor = jpex.resolve<SOR>();
 

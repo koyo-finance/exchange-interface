@@ -15,8 +15,8 @@ import { SwapTokenNumber } from 'constants/swaps';
 import { vaultContract } from 'core/contracts';
 import { BigNumber } from 'ethers';
 import { Form, Formik } from 'formik';
-import useTokenAllowance from 'hooks/contracts/useTokenAllowance';
-import { useSwap } from 'hooks/useSwap';
+import useTokenAllowance from 'hooks/generic/useTokenAllowance';
+import { useRoutedSwap } from 'hooks/SOR/useRoutedSwap';
 import { useWeb3 } from 'hooks/useWeb3';
 import { SwapLayout, SwapLayoutCard } from 'layouts/SwapLayout';
 import { NextSeo } from 'next-seo';
@@ -60,7 +60,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 		}
 	};
 
-	const { mutate: swap, status: swapStatus } = useSwap(signer);
+	const { mutate: swap, status: swapStatus } = useRoutedSwap(signer);
 
 	return (
 		<>

@@ -1,4 +1,4 @@
-import { useForceWithdrawLockedEscrow } from 'hooks/contracts/KYO/useForceWithdraw';
+import { useForceWithdrawLockedEscrow } from 'hooks/KYO/useForceWithdraw';
 import React, { useEffect } from 'react';
 import { useSigner } from 'wagmi';
 
