@@ -164,21 +164,30 @@ const LockerForm: React.FC<{ openForceWithdrawModal: () => void }> = ({ openForc
 						</div>
 					</div>
 
-					<IncreaseLockedAmountForm kyoAllowance={kyoAllowance} kyoBalance={kyoBalance} />
-					<hr className=" border-1 rounded-xl" />
-					<ExtendLockTimeForm currentLockTime={lockTimeConverted} />
-					<hr className=" border-1 rounded-xl" />
-					<button
-						className="btn w-full border-2  border-red-600 bg-darks-500 bg-opacity-100 text-red-600 hover:bg-red-600 hover:text-white"
-						onClick={() => openForceWithdrawModal()}
-					>
-						FORCE WITHDRAW
-					</button>
+					{lockTimeConverted > Date.now() && fromBigNumber(kyoLocked) > 0 && (
+						<>
+							<IncreaseLockedAmountForm kyoAllowance={kyoAllowance} kyoBalance={kyoBalance} />
+							<hr className=" border-1 rounded-xl" />
+							<ExtendLockTimeForm currentLockTime={lockTimeConverted} />
+							<hr className=" border-1 rounded-xl" />
+							<button
+								className="btn w-full border-2  border-red-600 bg-darks-500 bg-opacity-100 text-red-600 hover:bg-red-600 hover:text-white"
+								onClick={() => openForceWithdrawModal()}
+							>
+								FORCE WITHDRAW
+							</button>
+						</>
+					)}
 				</>
 			)}
 
-			{lockTimeConverted <= new Date().getMilliseconds() && fromBigNumber(kyoLocked) > 0 && (
-				<button onClick={() => kyoWithdraw([{ gasLimit: 700_000 }])}>Withdraw KYO</button>
+			{lockTimeConverted <= Date.now() && fromBigNumber(kyoLocked) > 0 && (
+				<button
+					className="btn w-full bg-lights-400 bg-opacity-100 text-black hover:bg-lights-200"
+					onClick={() => kyoWithdraw([{ gasLimit: 700_000 }])}
+				>
+					Withdraw KYO
+				</button>
 			)}
 		</>
 	);
