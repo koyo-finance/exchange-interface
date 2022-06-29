@@ -19,6 +19,7 @@ const DepositCardToken: React.FC<DepositCardTokenProps> = ({ coin, balance, rese
 	useEffect(() => {
 		if (resetValues) {
 			setTokenAmount(0);
+			setInputAmount(coin.name, 0);
 		}
 	}, [resetValues]);
 
@@ -35,7 +36,7 @@ const DepositCardToken: React.FC<DepositCardTokenProps> = ({ coin, balance, rese
 
 	const setMaxTokenAmount = () => {
 		const maxAmount = Number(fromBigNumber(balance, coin.decimals).toFixed(5));
-		const flooredAmount = Math.floor(maxAmount * 1000000) / 1000000;
+		const flooredAmount = Math.floor(maxAmount * 10000) / 10000;
 		setInputAmount(coin.name, flooredAmount);
 		setTokenAmount(flooredAmount);
 	};
@@ -62,7 +63,7 @@ const DepositCardToken: React.FC<DepositCardTokenProps> = ({ coin, balance, rese
 						onChange={tokenAmountChangeHandler}
 						placeholder={'0,00'}
 						value={tokenAmount}
-						onBlur={() => setTokenAmount(Number(tokenAmount?.toFixed(5)))}
+						onBlur={() => setTokenAmount(Number(tokenAmount?.toFixed(4)))}
 						className="w-4/5 bg-darks-500 font-jtm text-3xl font-extralight text-white outline-none md:text-4xl"
 					/>
 					<button
@@ -74,7 +75,7 @@ const DepositCardToken: React.FC<DepositCardTokenProps> = ({ coin, balance, rese
 					</button>
 				</div>
 				<div className="flex h-auto w-3/12 flex-row flex-wrap items-center justify-center gap-2 text-left md:pl-0">
-					<div>Balance:</div> <div>{formatBalance(balance, undefined, coin.decimals)}</div>
+					<div>Balance:</div> <div>{formatBalance(balance, { minimumFractionDigits: 2, maximumFractionDigits: 4 }, coin.decimals)}</div>
 				</div>
 			</div>
 		</div>

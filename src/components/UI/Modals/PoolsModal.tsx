@@ -38,7 +38,7 @@ const PoolsModal: React.FC<PoolsModalProps> = (props) => {
 	return (
 		<div className=" fixed top-0 left-0 z-40 flex min-h-screen w-full items-center justify-center px-4 ">
 			<div className="fixed top-0 left-0 z-0 min-h-screen w-full cursor-pointer bg-black bg-opacity-50" onClick={props.closeModal}></div>
-			<div className="z-20 flex w-full flex-col gap-4 rounded-xl bg-gray-800 p-4 text-white md:w-[40rem] lg:w-[35vw]">
+			<div className="z-20 flex w-full flex-col gap-4 rounded-xl bg-gray-800 p-4 text-white md:w-[40rem] lg:w-[50vw] 2xl:w-[40vw]">
 				<div className=" flex w-full flex-row items-center justify-between">
 					<div>Select Pool</div>
 					<div className="cursor-pointer text-2xl" onClick={props.closeModal}>
@@ -53,18 +53,20 @@ const PoolsModal: React.FC<PoolsModalProps> = (props) => {
 						className="w-full rounded-xl border-2 border-darks-300 bg-transparent p-2 text-lg outline-none"
 					/>
 				</div>
-				<div className="flex max-h-[50vh] flex-col overflow-y-scroll">
+				<div className="flex max-h-[50vh] flex-col overflow-x-hidden overflow-y-scroll">
 					{filteredPoolList?.map((pool) => (
 						<div
 							key={pool.address}
-							className="flex transform-gpu cursor-pointer flex-row justify-between rounded-lg p-3 text-lg duration-100 hover:bg-gray-700"
+							className="flex w-full transform-gpu cursor-pointer flex-row justify-between rounded-lg p-3 text-lg duration-100 hover:bg-gray-700"
 							onClick={() => {
 								props.setPool(pool.address);
 								props.closeModal();
 							}}
 						>
-							<div>{getShortPoolName(pool)}</div>
-							<div className="max-w-[60%] flex-row gap-1 truncate text-gray-300">{parseFloat(pool.swapFee) * 100}%</div>
+							<div className="w-2/3 truncate text-left text-sm sm:w-3/4 md:text-base">{getShortPoolName(pool)}</div>
+							<div className=" w-1/3 flex-row gap-1 truncate text-right text-sm text-gray-300 sm:w-1/4 md:text-base">
+								{parseFloat(pool.swapFee) * 100}%
+							</div>
 						</div>
 					))}
 				</div>

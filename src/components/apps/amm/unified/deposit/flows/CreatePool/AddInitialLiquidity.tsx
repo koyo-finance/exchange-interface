@@ -40,7 +40,7 @@ const AddInitialLiquidity: React.FC<AddInitialLiquidityProps> = ({ setStep }) =>
 
 	const setMaxTokenAmount = (tokenIndex: number) => {
 		const maxAmount = Number(balances[tokenIndex]);
-		const flooredAmount = Math.floor(maxAmount * 1000000) / 1000000;
+		const flooredAmount = Math.floor(maxAmount * 10000) / 10000;
 
 		const newAmountsArr = [...inputAmounts];
 		newAmountsArr[tokenIndex] = flooredAmount;

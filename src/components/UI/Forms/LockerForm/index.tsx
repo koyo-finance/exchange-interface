@@ -11,7 +11,7 @@ import { useWithdrawLockedEscrow } from 'hooks/contracts/KYO/useWithdrawLockedEs
 import useTokenAllowance from 'hooks/contracts/useTokenAllowance';
 import useTokenBalance from 'hooks/contracts/useTokenBalance';
 import useGetLockedAmount from 'hooks/useGetLockedAmount';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Case, Default, Switch } from 'react-if';
 import { useAccount, useSigner } from 'wagmi';
 import ExtendLockTimeForm from './ExtendLockTimeForm';
@@ -29,10 +29,13 @@ const LockerForm: React.FC<{ openForceWithdrawModal: () => void }> = ({ openForc
 	const { data: kyoAllowance = 0 } = useTokenAllowance(accountAddress, votingEscrowContract.address, kyoContract.address);
 	const { data: lockTime } = useGetLockTimeEscrow(accountAddress);
 	const kyoLocked = useGetLockedAmount(accountAddress);
-	const { mutate: kyoLock } = useCreateVotingEscrowLock(signerDefaulted);
+
+	const { mutate: kyoLock, status: lockStatus } = useCreateVotingEscrowLock(signerDefaulted);
 	const { mutate: kyoWithdraw } = useWithdrawLockedEscrow(signerDefaulted);
 
 	const lockTimeConverted = (lockTime as BigNumber)?.toNumber() * 1000;
+
+	const [resetInputs, setResetInputs] = useState(false);
 
 	const lockIncrements = [
 		{ label: '2 weeks', modifier: 2 },
@@ -42,6 +45,14 @@ const LockerForm: React.FC<{ openForceWithdrawModal: () => void }> = ({ openForc
 		{ label: '9 months', modifier: 4 * 9 },
 		{ label: '1 year', modifier: 4 * 12 }
 	];
+
+	useEffect(() => {
+		if (lockStatus === 'success') {
+			setResetInputs(true);
+			return;
+		}
+		setResetInputs(false);
+	}, [lockStatus]);
 
 	return (
 		<>

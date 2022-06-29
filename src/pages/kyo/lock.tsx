@@ -3,7 +3,7 @@ import ForceWithdrawModal from 'components/apps/dao/locker/modals/LockerForceWit
 import Footer from 'components/Footer';
 import GuideLink from 'components/GuideLink';
 import TitledDisplayBox from 'components/TitledDisplayBox';
-import LockerForceWithdrawModal from 'components/UI/Forms/LockerForm';
+import LockerForm from 'components/UI/Forms/LockerForm';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
 import { kyoContract, votingEscrowContract } from 'core/contracts';
 import useTokenBalance from 'hooks/contracts/useTokenBalance';
@@ -64,7 +64,7 @@ const LockIndexPage: ExtendedNextPage = () => {
 					<div className="w-full rounded-lg border-2 border-lights-400 bg-black bg-opacity-40 md:mt-6 lg:w-7/12">
 						<div className="flex flex-col gap-4 px-4 py-4 lg:gap-6 lg:py-8 lg:px-12">
 							<h2 className="text-2xl font-bold lg:text-3xl">Lock KYO tokens</h2>
-							<LockerForceWithdrawModal openForceWithdrawModal={forceWithdrawModalOpenHandler} />
+							<LockerForm openForceWithdrawModal={forceWithdrawModalOpenHandler} />
 						</div>
 					</div>
 					<div className="flex flex-col items-center gap-10 text-center">

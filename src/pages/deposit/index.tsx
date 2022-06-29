@@ -59,11 +59,11 @@ const DepositPage: ExtendedNextPage = () => {
 					>
 						<div className="mx-auto rounded-xl">
 							<div className="flex flex-col gap-2">
-								<div className="flex w-auto cursor-pointer flex-row items-center justify-between text-lg font-semibold text-white">
+								<div className="flex w-auto flex-row items-center justify-between text-lg font-semibold text-white">
 									<div className="text-sm sm:text-base">{poolCreationActive ? 'Create Liquidity Pool' : 'Add Liquidity'}</div>
 									{(poolCreationActive || selectedPool) && (
 										<div
-											className="flex w-1/2 transform-gpu flex-row items-center justify-end gap-2 text-right text-sm duration-100 hover:text-lights-400 sm:text-base"
+											className="flex w-fit transform-gpu cursor-pointer flex-row items-center justify-end gap-2 text-right text-sm duration-100 hover:text-lights-400 sm:text-base"
 											onClick={() => {
 												setPoolCreationActive(false);
 												setSelectedPool(undefined);
@@ -80,7 +80,7 @@ const DepositPage: ExtendedNextPage = () => {
 								{!selectedPool && !poolCreationActive && (
 									<>
 										<button
-											className="text-md btn mt-2 w-full bg-lights-400 text-black hover:bg-lights-200 lg:text-lg"
+											className="text-md btn mt-2 w-full border-0 bg-lights-400 text-black hover:bg-lights-200 lg:text-lg"
 											onClick={openPoolsModalHandler}
 										>
 											Choose liquidity pool&nbsp;
@@ -89,13 +89,11 @@ const DepositPage: ExtendedNextPage = () => {
 											</span>
 										</button>
 										<SingleEntityConnectButton
-											className="btn mt-2 w-full bg-lights-400 bg-opacity-100 p-0 text-black hover:bg-lights-200"
+											className="btn mt-2 w-full border-0 bg-lights-400 bg-opacity-100 p-0 text-black outline-none hover:bg-lights-200"
 											invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
-											textClassName="text-md lg:text-lg font-semibold"
-											customText=" - Create liquidity pool"
 										>
 											<button
-												className="text-md btn w-full bg-lights-400 text-black hover:bg-lights-200 lg:text-lg"
+												className="text-md btn w-full border-0 bg-lights-400 text-black hover:bg-lights-200 lg:text-lg"
 												onClick={() => {
 													setPoolCreationActive(true);
 													setPoolCreationStep(1);
@@ -128,7 +126,9 @@ const DepositPage: ExtendedNextPage = () => {
 								)}
 							</div>
 							{selectedPool && <DepositIntoPool selectedPool={selectedPool} />}
-							{poolCreationActive && <CreatePool step={poolCreationStep} setStep={setPoolCreationStep} />}
+							{poolCreationActive && (
+								<CreatePool step={poolCreationStep} setStep={setPoolCreationStep} cancelPoolCreation={setPoolCreationActive} />
+							)}
 						</div>
 					</div>
 				</SwapLayoutCard>

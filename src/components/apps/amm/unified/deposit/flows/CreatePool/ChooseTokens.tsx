@@ -37,7 +37,7 @@ const ChooseTokens: React.FC<ChooseTokensProps> = ({ setStep, selectedTokens, we
 
 		if (activeToken === selectedTokens.length) {
 			newTokens.push(token);
-			const newWeights = newTokens.map(() => 100 / newTokens.length);
+			const newWeights = newTokens.map(() => Math.round(100 / newTokens.length));
 			dispatch(setTokens(newTokens));
 			setTokenWeights(newWeights);
 			return;
@@ -88,10 +88,6 @@ const ChooseTokens: React.FC<ChooseTokensProps> = ({ setStep, selectedTokens, we
 
 	const confirmTokensHandler = () => {
 		let weightSum = tokenWeights.reduce((acc, w) => (acc += w));
-
-		if (tokenWeights.length === 6) {
-			weightSum = Math.round(weightSum * 10000000) / 10000000;
-		}
 
 		if (weightSum !== 100) {
 			setError('Weights must sum up to exeactly 100%');
@@ -183,6 +179,15 @@ const ChooseTokens: React.FC<ChooseTokensProps> = ({ setStep, selectedTokens, we
 					>
 						Add token +
 					</button>
+				)}
+				{poolType !== 'stable' && (
+					<div className=" flex flex-row items-start gap-2 rounded-xl bg-gray-600 bg-opacity-50 p-2 text-gray-200">
+						<div className="font-sans text-2xl">&#x24D8;</div>
+						<div className="pt-1">
+							Please set the weights manually, so they add up to a 100% and aren't decimal numbers, otherwise the creation of your pool
+							might fail.
+						</div>
+					</div>
 				)}
 			</div>
 			<button className="btn w-full bg-lights-400 bg-opacity-100 p-0 text-lg text-black hover:bg-lights-300" onClick={confirmTokensHandler}>
