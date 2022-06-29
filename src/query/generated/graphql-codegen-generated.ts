@@ -85,6 +85,7 @@ export interface AccountInternalBalance_Filter {
 	/** Filter for the block changed event. */
 	_change_block?: InputMaybe<BlockChangedFilter>;
 	account?: InputMaybe<Scalars['String']>;
+	account_?: InputMaybe<Account_Filter>;
 	account_contains?: InputMaybe<Scalars['String']>;
 	account_contains_nocase?: InputMaybe<Scalars['String']>;
 	account_ends_with?: InputMaybe<Scalars['String']>;
@@ -147,6 +148,8 @@ export interface Account_Filter {
 	address_not?: InputMaybe<Scalars['Bytes']>;
 	address_not_contains?: InputMaybe<Scalars['Bytes']>;
 	address_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+	gaugeWeightVotes_?: InputMaybe<GaugeWeightVote_Filter>;
+	gauges_?: InputMaybe<GaugeLiquidity_Filter>;
 	id?: InputMaybe<Scalars['ID']>;
 	id_gt?: InputMaybe<Scalars['ID']>;
 	id_gte?: InputMaybe<Scalars['ID']>;
@@ -155,6 +158,7 @@ export interface Account_Filter {
 	id_lte?: InputMaybe<Scalars['ID']>;
 	id_not?: InputMaybe<Scalars['ID']>;
 	id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+	internalBalances_?: InputMaybe<AccountInternalBalance_Filter>;
 }
 
 export type Account_OrderBy = 'address' | 'gaugeWeightVotes' | 'gauges' | 'id' | 'internalBalances';
@@ -198,6 +202,7 @@ export interface AmpUpdate_Filter {
 	id_not?: InputMaybe<Scalars['ID']>;
 	id_not_in?: InputMaybe<Array<Scalars['ID']>>;
 	poolId?: InputMaybe<Scalars['String']>;
+	poolId_?: InputMaybe<Pool_Filter>;
 	poolId_contains?: InputMaybe<Scalars['String']>;
 	poolId_contains_nocase?: InputMaybe<Scalars['String']>;
 	poolId_ends_with?: InputMaybe<Scalars['String']>;
@@ -299,6 +304,7 @@ export interface GaugeDeposit_Filter {
 	/** Filter for the block changed event. */
 	_change_block?: InputMaybe<BlockChangedFilter>;
 	gauge?: InputMaybe<Scalars['String']>;
+	gauge_?: InputMaybe<Gauge_Filter>;
 	gauge_contains?: InputMaybe<Scalars['String']>;
 	gauge_contains_nocase?: InputMaybe<Scalars['String']>;
 	gauge_ends_with?: InputMaybe<Scalars['String']>;
@@ -327,6 +333,7 @@ export interface GaugeDeposit_Filter {
 	id_not?: InputMaybe<Scalars['ID']>;
 	id_not_in?: InputMaybe<Array<Scalars['ID']>>;
 	provider?: InputMaybe<Scalars['String']>;
+	provider_?: InputMaybe<Account_Filter>;
 	provider_contains?: InputMaybe<Scalars['String']>;
 	provider_contains_nocase?: InputMaybe<Scalars['String']>;
 	provider_ends_with?: InputMaybe<Scalars['String']>;
@@ -384,6 +391,7 @@ export interface GaugeLiquidity_Filter {
 	block_not?: InputMaybe<Scalars['BigInt']>;
 	block_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
 	gauge?: InputMaybe<Scalars['String']>;
+	gauge_?: InputMaybe<Gauge_Filter>;
 	gauge_contains?: InputMaybe<Scalars['String']>;
 	gauge_contains_nocase?: InputMaybe<Scalars['String']>;
 	gauge_ends_with?: InputMaybe<Scalars['String']>;
@@ -442,6 +450,7 @@ export interface GaugeLiquidity_Filter {
 	transaction_not_contains?: InputMaybe<Scalars['Bytes']>;
 	transaction_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
 	user?: InputMaybe<Scalars['String']>;
+	user_?: InputMaybe<Account_Filter>;
 	user_contains?: InputMaybe<Scalars['String']>;
 	user_contains_nocase?: InputMaybe<Scalars['String']>;
 	user_ends_with?: InputMaybe<Scalars['String']>;
@@ -582,6 +591,7 @@ export interface GaugeTypeWeight_Filter {
 	time_not?: InputMaybe<Scalars['BigInt']>;
 	time_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
 	type?: InputMaybe<Scalars['String']>;
+	type_?: InputMaybe<GaugeType_Filter>;
 	type_contains?: InputMaybe<Scalars['String']>;
 	type_contains_nocase?: InputMaybe<Scalars['String']>;
 	type_ends_with?: InputMaybe<Scalars['String']>;
@@ -624,6 +634,7 @@ export interface GaugeType_Filter {
 	gaugeCount_lte?: InputMaybe<Scalars['BigInt']>;
 	gaugeCount_not?: InputMaybe<Scalars['BigInt']>;
 	gaugeCount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+	gauges_?: InputMaybe<Gauge_Filter>;
 	id?: InputMaybe<Scalars['ID']>;
 	id_gt?: InputMaybe<Scalars['ID']>;
 	id_gte?: InputMaybe<Scalars['ID']>;
@@ -652,6 +663,7 @@ export interface GaugeType_Filter {
 	name_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
 	name_starts_with?: InputMaybe<Scalars['String']>;
 	name_starts_with_nocase?: InputMaybe<Scalars['String']>;
+	weights_?: InputMaybe<GaugeTypeWeight_Filter>;
 }
 
 export type GaugeType_OrderBy = 'gaugeCount' | 'gauges' | 'id' | 'name' | 'weights';
@@ -677,6 +689,7 @@ export interface GaugeWeightVote_Filter {
 	/** Filter for the block changed event. */
 	_change_block?: InputMaybe<BlockChangedFilter>;
 	gauge?: InputMaybe<Scalars['String']>;
+	gauge_?: InputMaybe<Gauge_Filter>;
 	gauge_contains?: InputMaybe<Scalars['String']>;
 	gauge_contains_nocase?: InputMaybe<Scalars['String']>;
 	gauge_ends_with?: InputMaybe<Scalars['String']>;
@@ -713,6 +726,7 @@ export interface GaugeWeightVote_Filter {
 	time_not?: InputMaybe<Scalars['BigInt']>;
 	time_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
 	user?: InputMaybe<Scalars['String']>;
+	user_?: InputMaybe<Account_Filter>;
 	user_contains?: InputMaybe<Scalars['String']>;
 	user_contains_nocase?: InputMaybe<Scalars['String']>;
 	user_ends_with?: InputMaybe<Scalars['String']>;
@@ -748,6 +762,7 @@ export interface GaugeWeight_Filter {
 	/** Filter for the block changed event. */
 	_change_block?: InputMaybe<BlockChangedFilter>;
 	gauge?: InputMaybe<Scalars['String']>;
+	gauge_?: InputMaybe<Gauge_Filter>;
 	gauge_contains?: InputMaybe<Scalars['String']>;
 	gauge_contains_nocase?: InputMaybe<Scalars['String']>;
 	gauge_ends_with?: InputMaybe<Scalars['String']>;
@@ -807,6 +822,7 @@ export interface GaugeWithdraw_Filter {
 	/** Filter for the block changed event. */
 	_change_block?: InputMaybe<BlockChangedFilter>;
 	gauge?: InputMaybe<Scalars['String']>;
+	gauge_?: InputMaybe<Gauge_Filter>;
 	gauge_contains?: InputMaybe<Scalars['String']>;
 	gauge_contains_nocase?: InputMaybe<Scalars['String']>;
 	gauge_ends_with?: InputMaybe<Scalars['String']>;
@@ -835,6 +851,7 @@ export interface GaugeWithdraw_Filter {
 	id_not?: InputMaybe<Scalars['ID']>;
 	id_not_in?: InputMaybe<Array<Scalars['ID']>>;
 	provider?: InputMaybe<Scalars['String']>;
+	provider_?: InputMaybe<Account_Filter>;
 	provider_contains?: InputMaybe<Scalars['String']>;
 	provider_contains_nocase?: InputMaybe<Scalars['String']>;
 	provider_ends_with?: InputMaybe<Scalars['String']>;
@@ -930,6 +947,7 @@ export interface Gauge_Filter {
 	name_starts_with?: InputMaybe<Scalars['String']>;
 	name_starts_with_nocase?: InputMaybe<Scalars['String']>;
 	pool?: InputMaybe<Scalars['String']>;
+	pool_?: InputMaybe<Pool_Filter>;
 	pool_contains?: InputMaybe<Scalars['String']>;
 	pool_contains_nocase?: InputMaybe<Scalars['String']>;
 	pool_ends_with?: InputMaybe<Scalars['String']>;
@@ -970,6 +988,7 @@ export interface Gauge_Filter {
 	symbol_starts_with?: InputMaybe<Scalars['String']>;
 	symbol_starts_with_nocase?: InputMaybe<Scalars['String']>;
 	type?: InputMaybe<Scalars['String']>;
+	type_?: InputMaybe<GaugeType_Filter>;
 	type_contains?: InputMaybe<Scalars['String']>;
 	type_contains_nocase?: InputMaybe<Scalars['String']>;
 	type_ends_with?: InputMaybe<Scalars['String']>;
@@ -989,6 +1008,8 @@ export interface Gauge_Filter {
 	type_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
 	type_starts_with?: InputMaybe<Scalars['String']>;
 	type_starts_with_nocase?: InputMaybe<Scalars['String']>;
+	weightVotes_?: InputMaybe<GaugeWeightVote_Filter>;
+	weights_?: InputMaybe<GaugeWeight_Filter>;
 }
 
 export type Gauge_OrderBy =
@@ -1023,6 +1044,7 @@ export interface JoinExit_Filter {
 	/** Filter for the block changed event. */
 	_change_block?: InputMaybe<BlockChangedFilter>;
 	account?: InputMaybe<Scalars['String']>;
+	account_?: InputMaybe<Account_Filter>;
 	account_contains?: InputMaybe<Scalars['String']>;
 	account_contains_nocase?: InputMaybe<Scalars['String']>;
 	account_ends_with?: InputMaybe<Scalars['String']>;
@@ -1057,6 +1079,7 @@ export interface JoinExit_Filter {
 	id_not?: InputMaybe<Scalars['ID']>;
 	id_not_in?: InputMaybe<Array<Scalars['ID']>>;
 	pool?: InputMaybe<Scalars['String']>;
+	pool_?: InputMaybe<Pool_Filter>;
 	pool_contains?: InputMaybe<Scalars['String']>;
 	pool_contains_nocase?: InputMaybe<Scalars['String']>;
 	pool_ends_with?: InputMaybe<Scalars['String']>;
@@ -1172,6 +1195,7 @@ export interface Koyo_Filter {
 	poolCount_lte?: InputMaybe<Scalars['Int']>;
 	poolCount_not?: InputMaybe<Scalars['Int']>;
 	poolCount_not_in?: InputMaybe<Array<Scalars['Int']>>;
+	pools_?: InputMaybe<Pool_Filter>;
 	totalLiquidity?: InputMaybe<Scalars['BigDecimal']>;
 	totalLiquidity_gt?: InputMaybe<Scalars['BigDecimal']>;
 	totalLiquidity_gte?: InputMaybe<Scalars['BigDecimal']>;
@@ -1255,6 +1279,7 @@ export interface LatestPrice_Filter {
 	id_not?: InputMaybe<Scalars['ID']>;
 	id_not_in?: InputMaybe<Array<Scalars['ID']>>;
 	poolId?: InputMaybe<Scalars['String']>;
+	poolId_?: InputMaybe<Pool_Filter>;
 	poolId_contains?: InputMaybe<Scalars['String']>;
 	poolId_contains_nocase?: InputMaybe<Scalars['String']>;
 	poolId_ends_with?: InputMaybe<Scalars['String']>;
@@ -1397,6 +1422,7 @@ export interface PoolHistoricalLiquidity_Filter {
 	id_not?: InputMaybe<Scalars['ID']>;
 	id_not_in?: InputMaybe<Array<Scalars['ID']>>;
 	poolId?: InputMaybe<Scalars['String']>;
+	poolId_?: InputMaybe<Pool_Filter>;
 	poolId_contains?: InputMaybe<Scalars['String']>;
 	poolId_contains_nocase?: InputMaybe<Scalars['String']>;
 	poolId_ends_with?: InputMaybe<Scalars['String']>;
@@ -1462,6 +1488,7 @@ export interface PoolShare_Filter {
 	/** Filter for the block changed event. */
 	_change_block?: InputMaybe<BlockChangedFilter>;
 	account?: InputMaybe<Scalars['String']>;
+	account_?: InputMaybe<Account_Filter>;
 	account_contains?: InputMaybe<Scalars['String']>;
 	account_contains_nocase?: InputMaybe<Scalars['String']>;
 	account_ends_with?: InputMaybe<Scalars['String']>;
@@ -1498,6 +1525,7 @@ export interface PoolShare_Filter {
 	id_not?: InputMaybe<Scalars['ID']>;
 	id_not_in?: InputMaybe<Array<Scalars['ID']>>;
 	poolId?: InputMaybe<Scalars['String']>;
+	poolId_?: InputMaybe<Pool_Filter>;
 	poolId_contains?: InputMaybe<Scalars['String']>;
 	poolId_contains_nocase?: InputMaybe<Scalars['String']>;
 	poolId_ends_with?: InputMaybe<Scalars['String']>;
@@ -1563,6 +1591,7 @@ export interface PoolSnapshot_Filter {
 	id_not?: InputMaybe<Scalars['ID']>;
 	id_not_in?: InputMaybe<Array<Scalars['ID']>>;
 	pool?: InputMaybe<Scalars['String']>;
+	pool_?: InputMaybe<Pool_Filter>;
 	pool_contains?: InputMaybe<Scalars['String']>;
 	pool_contains_nocase?: InputMaybe<Scalars['String']>;
 	pool_ends_with?: InputMaybe<Scalars['String']>;
@@ -1762,6 +1791,7 @@ export interface PoolToken_Filter {
 	name_starts_with?: InputMaybe<Scalars['String']>;
 	name_starts_with_nocase?: InputMaybe<Scalars['String']>;
 	poolId?: InputMaybe<Scalars['String']>;
+	poolId_?: InputMaybe<Pool_Filter>;
 	poolId_contains?: InputMaybe<Scalars['String']>;
 	poolId_contains_nocase?: InputMaybe<Scalars['String']>;
 	poolId_ends_with?: InputMaybe<Scalars['String']>;
@@ -1810,6 +1840,7 @@ export interface PoolToken_Filter {
 	symbol_starts_with?: InputMaybe<Scalars['String']>;
 	symbol_starts_with_nocase?: InputMaybe<Scalars['String']>;
 	token?: InputMaybe<Scalars['String']>;
+	token_?: InputMaybe<Token_Filter>;
 	token_contains?: InputMaybe<Scalars['String']>;
 	token_contains_nocase?: InputMaybe<Scalars['String']>;
 	token_ends_with?: InputMaybe<Scalars['String']>;
@@ -1884,6 +1915,7 @@ export interface Pool_Filter {
 	factory_not?: InputMaybe<Scalars['Bytes']>;
 	factory_not_contains?: InputMaybe<Scalars['Bytes']>;
 	factory_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+	historicalValues_?: InputMaybe<PoolHistoricalLiquidity_Filter>;
 	holdersCount?: InputMaybe<Scalars['BigInt']>;
 	holdersCount_gt?: InputMaybe<Scalars['BigInt']>;
 	holdersCount_gte?: InputMaybe<Scalars['BigInt']>;
@@ -1921,6 +1953,7 @@ export interface Pool_Filter {
 	name_starts_with?: InputMaybe<Scalars['String']>;
 	name_starts_with_nocase?: InputMaybe<Scalars['String']>;
 	owner?: InputMaybe<Scalars['String']>;
+	owner_?: InputMaybe<Account_Filter>;
 	owner_contains?: InputMaybe<Scalars['String']>;
 	owner_contains_nocase?: InputMaybe<Scalars['String']>;
 	owner_ends_with?: InputMaybe<Scalars['String']>;
@@ -1960,6 +1993,7 @@ export interface Pool_Filter {
 	poolType_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
 	poolType_starts_with?: InputMaybe<Scalars['String']>;
 	poolType_starts_with_nocase?: InputMaybe<Scalars['String']>;
+	shares_?: InputMaybe<PoolShare_Filter>;
 	strategyType?: InputMaybe<Scalars['Int']>;
 	strategyType_gt?: InputMaybe<Scalars['Int']>;
 	strategyType_gte?: InputMaybe<Scalars['Int']>;
@@ -1988,6 +2022,7 @@ export interface Pool_Filter {
 	swapsCount_lte?: InputMaybe<Scalars['BigInt']>;
 	swapsCount_not?: InputMaybe<Scalars['BigInt']>;
 	swapsCount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+	swaps_?: InputMaybe<Swap_Filter>;
 	symbol?: InputMaybe<Scalars['String']>;
 	symbol_contains?: InputMaybe<Scalars['String']>;
 	symbol_contains_nocase?: InputMaybe<Scalars['String']>;
@@ -2014,6 +2049,7 @@ export interface Pool_Filter {
 	tokensList_not?: InputMaybe<Array<Scalars['Bytes']>>;
 	tokensList_not_contains?: InputMaybe<Array<Scalars['Bytes']>>;
 	tokensList_not_contains_nocase?: InputMaybe<Array<Scalars['Bytes']>>;
+	tokens_?: InputMaybe<PoolToken_Filter>;
 	totalLiquidity?: InputMaybe<Scalars['BigDecimal']>;
 	totalLiquidity_gt?: InputMaybe<Scalars['BigDecimal']>;
 	totalLiquidity_gte?: InputMaybe<Scalars['BigDecimal']>;
@@ -2069,6 +2105,7 @@ export interface Pool_Filter {
 	tx_not_contains?: InputMaybe<Scalars['Bytes']>;
 	tx_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
 	vault?: InputMaybe<Scalars['String']>;
+	vault_?: InputMaybe<Koyo_Filter>;
 	vault_contains?: InputMaybe<Scalars['String']>;
 	vault_contains_nocase?: InputMaybe<Scalars['String']>;
 	vault_ends_with?: InputMaybe<Scalars['String']>;
@@ -3059,6 +3096,7 @@ export interface Swap_Filter {
 	/** Filter for the block changed event. */
 	_change_block?: InputMaybe<BlockChangedFilter>;
 	account?: InputMaybe<Scalars['String']>;
+	account_?: InputMaybe<Account_Filter>;
 	account_contains?: InputMaybe<Scalars['String']>;
 	account_contains_nocase?: InputMaybe<Scalars['String']>;
 	account_ends_with?: InputMaybe<Scalars['String']>;
@@ -3093,6 +3131,7 @@ export interface Swap_Filter {
 	id_not?: InputMaybe<Scalars['ID']>;
 	id_not_in?: InputMaybe<Array<Scalars['ID']>>;
 	poolId?: InputMaybe<Scalars['String']>;
+	poolId_?: InputMaybe<Pool_Filter>;
 	poolId_contains?: InputMaybe<Scalars['String']>;
 	poolId_contains_nocase?: InputMaybe<Scalars['String']>;
 	poolId_ends_with?: InputMaybe<Scalars['String']>;
@@ -3273,6 +3312,7 @@ export interface TokenPrice_Filter {
 	id_not?: InputMaybe<Scalars['ID']>;
 	id_not_in?: InputMaybe<Array<Scalars['ID']>>;
 	poolId?: InputMaybe<Scalars['String']>;
+	poolId_?: InputMaybe<Pool_Filter>;
 	poolId_contains?: InputMaybe<Scalars['String']>;
 	poolId_contains_nocase?: InputMaybe<Scalars['String']>;
 	poolId_ends_with?: InputMaybe<Scalars['String']>;
@@ -3358,6 +3398,7 @@ export interface TokenSnapshot_Filter {
 	timestamp_not?: InputMaybe<Scalars['Int']>;
 	timestamp_not_in?: InputMaybe<Array<Scalars['Int']>>;
 	token?: InputMaybe<Scalars['String']>;
+	token_?: InputMaybe<Token_Filter>;
 	token_contains?: InputMaybe<Scalars['String']>;
 	token_contains_nocase?: InputMaybe<Scalars['String']>;
 	token_ends_with?: InputMaybe<Scalars['String']>;
@@ -3469,6 +3510,7 @@ export interface Token_Filter {
 	id_not?: InputMaybe<Scalars['ID']>;
 	id_not_in?: InputMaybe<Array<Scalars['ID']>>;
 	latestPrice?: InputMaybe<Scalars['String']>;
+	latestPrice_?: InputMaybe<LatestPrice_Filter>;
 	latestPrice_contains?: InputMaybe<Scalars['String']>;
 	latestPrice_contains_nocase?: InputMaybe<Scalars['String']>;
 	latestPrice_ends_with?: InputMaybe<Scalars['String']>;
@@ -3605,6 +3647,7 @@ export interface TradePair_Filter {
 	id_not?: InputMaybe<Scalars['ID']>;
 	id_not_in?: InputMaybe<Array<Scalars['ID']>>;
 	token0?: InputMaybe<Scalars['String']>;
+	token0_?: InputMaybe<Token_Filter>;
 	token0_contains?: InputMaybe<Scalars['String']>;
 	token0_contains_nocase?: InputMaybe<Scalars['String']>;
 	token0_ends_with?: InputMaybe<Scalars['String']>;
@@ -3625,6 +3668,7 @@ export interface TradePair_Filter {
 	token0_starts_with?: InputMaybe<Scalars['String']>;
 	token0_starts_with_nocase?: InputMaybe<Scalars['String']>;
 	token1?: InputMaybe<Scalars['String']>;
+	token1_?: InputMaybe<Token_Filter>;
 	token1_contains?: InputMaybe<Scalars['String']>;
 	token1_contains_nocase?: InputMaybe<Scalars['String']>;
 	token1_ends_with?: InputMaybe<Scalars['String']>;

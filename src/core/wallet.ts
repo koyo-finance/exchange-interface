@@ -1,12 +1,14 @@
-import { apiProvider, configureChains, connectorsForWallets, wallet } from '@rainbow-me/rainbowkit';
+import { connectorsForWallets, wallet } from '@rainbow-me/rainbowkit';
 import { CHAIN_INFO, SupportedChainId } from 'constants/chains';
-import { Chain, createClient } from 'wagmi';
+import { Chain, configureChains, createClient } from 'wagmi';
+import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 import { onto } from './wallets/onto';
 import { ontoWeb } from './wallets/ontoWeb';
 
 const bobaMainnetChain: Chain = {
 	id: SupportedChainId.BOBA,
 	name: CHAIN_INFO[SupportedChainId.BOBA].label,
+	network: 'boba',
 	nativeCurrency: CHAIN_INFO[SupportedChainId.BOBA].addNetworkInfo.nativeCurrency,
 	rpcUrls: {
 		default: CHAIN_INFO[SupportedChainId.BOBA].addNetworkInfo.rpcUrl
@@ -19,7 +21,10 @@ const bobaMainnetChain: Chain = {
 	testnet: false
 };
 
-export const { chains, provider } = configureChains([bobaMainnetChain], [apiProvider.jsonRpc((chain) => ({ rpcUrl: chain.rpcUrls.default }))]);
+export const { chains, provider, webSocketProvider } = configureChains(
+	[bobaMainnetChain], //
+	[jsonRpcProvider({ rpc: (chain) => ({ http: chain.rpcUrls.default }) })]
+);
 
 const connectors = connectorsForWallets([
 	{
@@ -36,5 +41,6 @@ const connectors = connectorsForWallets([
 export const wagmiClient = createClient({
 	autoConnect: true,
 	connectors,
-	provider
+	provider,
+	webSocketProvider
 });

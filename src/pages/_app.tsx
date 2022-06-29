@@ -19,7 +19,7 @@ import { PersistGate } from 'redux-persist/integration/react';
 import { persistor, store } from 'state';
 import { koyoDarkTheme } from 'styles/rainbowkit';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
-import { WagmiProvider } from 'wagmi';
+import { WagmiConfig } from 'wagmi';
 import DefaultSeoProps from '../DefaultSeoProps';
 import { useInstantiateSORConstant } from 'hooks/sor/useInstantiateSORConstant';
 
@@ -38,7 +38,7 @@ const App: NextPage<AppProps> = ({ Component, pageProps }) => {
 	return (
 		<>
 			<React.StrictMode>
-				<WagmiProvider client={wagmiClient}>
+				<WagmiConfig client={wagmiClient}>
 					<RainbowKitProvider chains={chains} showRecentTransactions={true} coolMode={true} theme={koyoDarkTheme()}>
 						<QueryClientProvider client={queryClient}>
 							<PlausibleProvider domain={ROOT}>
@@ -72,7 +72,7 @@ const App: NextPage<AppProps> = ({ Component, pageProps }) => {
 							<ReactQueryDevtools />
 						</QueryClientProvider>
 					</RainbowKitProvider>
-				</WagmiProvider>
+				</WagmiConfig>
 			</React.StrictMode>
 		</>
 	);

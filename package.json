@@ -37,7 +37,7 @@
 		"@koyofinance/core-sdk": "^0.3.0-next.0e1194a.0",
 		"@koyofinance/react-query-typechain": "^0.2.0-next.47b31f1.0",
 		"@koyofinance/swap-sdk": "^0.3.0-next.0e1194a.0",
-		"@rainbow-me/rainbowkit": "^0.1.0",
+		"@rainbow-me/rainbowkit": "^0.4.0",
 		"@reduxjs/toolkit": "^1.8.1",
 		"@sapphire/fetch": "^2.3.1",
 		"@sapphire/utilities": "^3.6.2",
@@ -74,7 +74,7 @@
 		"tailwindcss-border-gradient-radius": "^3.0.1",
 		"ts-node": "^10.7.0",
 		"tw-elements": "^1.0.0-alpha9",
-		"wagmi": "^0.3.4"
+		"wagmi": "^0.5.0"
 	},
 	"devDependencies": {
 		"@graphql-codegen/add": "^3.1.0",
