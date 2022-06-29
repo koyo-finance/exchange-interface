@@ -10,6 +10,7 @@ import { EXCHANGE_SUBGRAPH_URL } from 'constants/subgraphs';
 import { Form, Formik } from 'formik';
 import useExitPool from 'hooks/contracts/exchange/useExitPool';
 import useTokenBalance from 'hooks/contracts/useTokenBalance';
+import { useWeb3 } from 'hooks/useWeb3';
 import { SwapLayout, SwapLayoutCard } from 'layouts/SwapLayout';
 import { NextSeo } from 'next-seo';
 import { LitePoolFragment, useGetPoolsQuery } from 'query/generated/graphql-codegen-generated';
@@ -19,21 +20,18 @@ import { VscListSelection } from 'react-icons/vsc';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
 import { assetHelperBoba } from 'utils/assets';
 import { exitKPTInForExactTokensOut } from 'utils/exchange/userData/exits';
-import { useAccount, useSigner } from 'wagmi';
 
 const WithdrawPage: ExtendedNextPage = () => {
+	const { accountAddress, signer } = useWeb3();
+
 	const { data: fetchedPools } = useGetPoolsQuery({ endpoint: EXCHANGE_SUBGRAPH_URL });
 	const pools = fetchedPools?.allPools || [];
-
-	const { data: account } = useAccount();
-	const accountAddress = account?.address || '';
-	const { data: signer } = useSigner();
 
 	const [selectedPool, setSelectedPool] = useState<LitePoolFragment | undefined>(undefined);
 	const [poolsModalIsOpen, setPoolsModalIsOpen] = useState(false);
 
-	const { data: lpTokenBalance = 0, refetch: refetchLPBalance } = useTokenBalance(account?.address, selectedPool?.address);
-	const { mutate: exitPool, status: exitStatus } = useExitPool(signer || undefined);
+	const { data: lpTokenBalance = 0, refetch: refetchLPBalance } = useTokenBalance(accountAddress, selectedPool?.address);
+	const { mutate: exitPool, status: exitStatus } = useExitPool(signer);
 
 	useEffect(() => {
 		if (exitStatus === 'success') refetchLPBalance();

@@ -8,17 +8,16 @@ import { ROOT_WITH_PROTOCOL } from 'constants/links';
 import { kyoContract, votingEscrowContract } from 'core/contracts';
 import useTokenBalance from 'hooks/contracts/useTokenBalance';
 import useTokenTotalSupply from 'hooks/contracts/useTokenTotalSupply';
+import { useWeb3 } from 'hooks/useWeb3';
 import { SwapLayout } from 'layouts/SwapLayout';
 import { NextSeo } from 'next-seo';
 import React, { useState } from 'react';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
-import { useAccount } from 'wagmi';
 
 const LockIndexPage: ExtendedNextPage = () => {
-	const [withdrawModalIsOpen, setWithdrawModalIsOpen] = useState(false);
+	const { accountAddress } = useWeb3();
 
-	const { data: account } = useAccount();
-	const accountAddress = account?.address;
+	const [withdrawModalIsOpen, setWithdrawModalIsOpen] = useState(false);
 
 	const { data: kyoBalance = 0 } = useTokenBalance(accountAddress, kyoContract.address);
 	const { data: kyoEscrowed = 0 } = useTokenBalance(votingEscrowContract.address, kyoContract.address);

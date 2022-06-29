@@ -1,4 +1,5 @@
 import { SwapInfo, SwapTypes } from '@balancer-labs/sor';
+import { MaxUint256 } from '@ethersproject/constants';
 import { toBigNumber } from '@koyofinance/core-sdk';
 import { TokenInfo } from '@uniswap/token-lists';
 import SwapCardToken from 'components/apps/amm/unified/swap/cards/SwapCardToken';
@@ -12,11 +13,11 @@ import GuideLink from 'components/GuideLink';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
 import { SwapTokenNumber } from 'constants/swaps';
 import { vaultContract } from 'core/contracts';
-import { MaxUint256 } from '@ethersproject/constants';
 import { BigNumber } from 'ethers';
 import { Form, Formik } from 'formik';
 import useTokenAllowance from 'hooks/contracts/useTokenAllowance';
 import { useSwap } from 'hooks/useSwap';
+import { useWeb3 } from 'hooks/useWeb3';
 import { SwapLayout, SwapLayoutCard } from 'layouts/SwapLayout';
 import { NextSeo } from 'next-seo';
 import React, { useState } from 'react';
@@ -25,7 +26,8 @@ import { useSelector } from 'react-redux';
 import { useAppDispatch } from 'state/hooks';
 import { selectTokenOne, selectTokenTwo, setTokenOne, setTokenTwo } from 'state/reducers/selectedTokens';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
-import { useAccount, useSigner } from 'wagmi';
+
+const swapType = SwapTypes.SwapExactIn;
 
 export interface SwapFormValues {
 	1: number;
@@ -35,17 +37,11 @@ export interface SwapFormValues {
 }
 
 const SwapIndexPage: ExtendedNextPage = () => {
-	const swapType = SwapTypes.SwapExactIn;
-
+	const { accountAddress, signer } = useWeb3();
 	const dispatch = useAppDispatch();
-
-	const { data: account } = useAccount();
-	const accountAddress = account?.address || '';
-	const { data: signer } = useSigner();
 
 	const [tokenModalOneIsOpen, setTokenModalIsOpen] = useState(false);
 	const [activeToken, setActiveToken] = useState<SwapTokenNumber>(SwapTokenNumber.IN);
-
 	const tokenOne = useSelector(selectTokenOne);
 	const tokenTwo = useSelector(selectTokenTwo);
 
@@ -64,7 +60,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 		}
 	};
 
-	const { mutate: swap, status: swapStatus } = useSwap(signer || undefined);
+	const { mutate: swap, status: swapStatus } = useSwap(signer);
 
 	return (
 		<>

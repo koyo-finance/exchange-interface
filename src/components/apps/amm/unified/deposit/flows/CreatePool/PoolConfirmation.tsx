@@ -1,6 +1,8 @@
 import { TokenPriceService } from '@balancer-labs/sor';
+import { MaxUint256 } from '@ethersproject/constants';
 import { fromBigNumber } from '@koyofinance/core-sdk';
 import SymbolCurrencyIcon from 'components/CurrencyIcon/SymbolCurrencyIcon';
+import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
 import FormApproveAsset from 'components/FormApproveAsset';
 import { vaultContract } from 'core/contracts';
 import { BigNumber } from 'ethers';
@@ -9,6 +11,7 @@ import useJoinPool from 'hooks/contracts/exchange/useJoinPool';
 import usePoolId from 'hooks/contracts/exchange/usePoolId';
 import useMultiTokenAllowance from 'hooks/contracts/useMultiTokenAllowance';
 import { useCreatePool } from 'hooks/useCreatePool';
+import { useWeb3 } from 'hooks/useWeb3';
 import jpex from 'jpex';
 import React, { useEffect, useState } from 'react';
 import { Case, Default, Switch } from 'react-if';
@@ -18,11 +21,12 @@ import { assetHelperBoba } from 'utils/assets';
 import { switchPoolCreationParameters } from 'utils/exchange/switchPoolCreationParameters';
 import { joinInit } from 'utils/exchange/userData/joins';
 import { isSameAddress } from 'utils/isSameAddress';
-import { useAccount, useSendTransaction, useSigner } from 'wagmi';
+import { useSendTransaction } from 'wagmi';
 import StepBackCard from '../../cards/StepBackCard';
 import TokenUSDPrice from '../../cards/TokenUSDPrice';
-import { MaxUint256 } from '@ethersproject/constants';
-import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
+
+const koyoManageAddress = '0xBA1BA1ba1BA1bA1bA1Ba1BA1ba1BA1bA1ba1ba1B';
+const zeroAddress = '0x0000000000000000000000000000000000000000';
 
 export interface PoolConfirmationProps {
 	setStep: (step: number) => void;
@@ -30,6 +34,9 @@ export interface PoolConfirmationProps {
 }
 
 const PoolConfirmation: React.FC<PoolConfirmationProps> = ({ setStep, cancelPoolCreation }) => {
+	const priceService = jpex.resolve<TokenPriceService>();
+	const { accountAddress, signer } = useWeb3();
+
 	const tokens = useSelector(selectTokens);
 	const weights = useSelector(selectWeights);
 	const initialLiquidity = useSelector(selectInitialLiquidity);
@@ -41,17 +48,9 @@ const PoolConfirmation: React.FC<PoolConfirmationProps> = ({ setStep, cancelPool
 	const [addInititalLiquidityEnabled, setAddInititalLiquidityEnabled] = useState(false);
 	const [forceConfirmTx, setForceConfirmTx] = useState(false);
 
-	const { data: account } = useAccount();
-	const accountAddress = account?.address || '';
-	const { data: signer } = useSigner();
-	const koyoManageAddress = '0xBA1BA1ba1BA1bA1bA1Ba1BA1ba1BA1bA1ba1ba1B';
-	const zeroAddress = '0x0000000000000000000000000000000000000000';
+	const { mutate: createPool, status: poolCreationStatus, data: createdPoolData } = useCreatePool(signer);
 
-	const priceService = jpex.resolve<TokenPriceService>();
-
-	const { mutate: createPool, status: poolCreationStatus, data: createdPoolData } = useCreatePool(signer || undefined);
-
-	const { mutate: addLiqudity, status: deposited } = useJoinPool(signer || undefined);
+	const { mutate: addLiqudity, status: deposited } = useJoinPool(signer);
 	const { data: poolId = '' } = usePoolId((createdPoolData?.events?.find((event) => event.event === 'PoolCreated')?.args || [])[0]);
 
 	console.log(poolCreationStatus, createdPoolData);
@@ -64,7 +63,7 @@ const PoolConfirmation: React.FC<PoolConfirmationProps> = ({ setStep, cancelPool
 	});
 
 	const allowances = useMultiTokenAllowance(
-		account?.address,
+		accountAddress,
 		vaultContract.address,
 		tokens?.map((token) => token.address)
 	);

@@ -1,3 +1,4 @@
+import { MaxUint256 } from '@ethersproject/constants';
 import { formatAmount, formatBalance, formatDollarAmount, fromBigNumber } from '@koyofinance/core-sdk';
 import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
 import FormApproveAsset from 'components/FormApproveAsset';
@@ -8,10 +9,9 @@ import { useDistributeGaugeEmissions } from 'hooks/contracts/KYO/gauges/useDistr
 import { useWithdrawFromGauge } from 'hooks/contracts/KYO/gauges/useWithdrawFromGauge';
 import useTokenAllowance from 'hooks/contracts/useTokenAllowance';
 import useTokenBalance from 'hooks/contracts/useTokenBalance';
-import { MaxUint256 } from '@ethersproject/constants';
+import { useWeb3 } from 'hooks/useWeb3';
 import React from 'react';
 import { Case, Default, Switch } from 'react-if';
-import { useAccount, useSigner } from 'wagmi';
 
 export interface Gauge {
 	address: string;
@@ -28,10 +28,7 @@ export interface FarmCardProps {
 }
 
 const FarmCard: React.FC<FarmCardProps> = ({ gauge }) => {
-	const { data: account } = useAccount();
-	const accountAddress = account?.address;
-	const { data: signer } = useSigner();
-	const defaultedSigner = signer || undefined;
+	const { accountAddress, signer } = useWeb3();
 
 	const { data: lpTokenBalance = BigNumber.from(0) } = useTokenBalance(accountAddress, gauge.pool.address);
 	const { data: gaugeTokenBalance = BigNumber.from(0) } = useTokenBalance(accountAddress, gauge.address);
@@ -39,9 +36,9 @@ const FarmCard: React.FC<FarmCardProps> = ({ gauge }) => {
 	const { data: lpTotal = BigNumber.from(0) } = useTokenBalance(gauge.address, gauge.pool.address);
 	const { data: lpTokenAllowance = BigNumber.from(0) } = useTokenAllowance(accountAddress, gauge.address, gauge.pool.address);
 
-	const { mutate: gaugeDeposit } = useDepositIntoGauge(defaultedSigner, gauge.address);
-	const { mutate: gaugeWithdraw } = useWithdrawFromGauge(defaultedSigner, gauge.address);
-	const { mutate: claimEmissions } = useDistributeGaugeEmissions(defaultedSigner);
+	const { mutate: gaugeDeposit } = useDepositIntoGauge(signer, gauge.address);
+	const { mutate: gaugeWithdraw } = useWithdrawFromGauge(signer, gauge.address);
+	const { mutate: claimEmissions } = useDistributeGaugeEmissions(signer);
 
 	if (!gauge.pool.address) return null;
 

@@ -7,12 +7,12 @@ import useTokenBalance from 'hooks/contracts/useTokenBalance';
 import { useAmountScaled } from 'hooks/sor/useAmountScaled';
 import { useGetSwaps } from 'hooks/sor/useGetSwaps';
 import { DEFAULT_SWAP_OPTIONS, SwapOptions } from 'hooks/useSwap';
+import { useWeb3 } from 'hooks/useWeb3';
 import { SwapFormValues } from 'pages/swap';
 import React, { useEffect, useState } from 'react';
 import { RiArrowDownSLine } from 'react-icons/ri';
 import { useSelector } from 'react-redux';
 import { selectTokenOne, selectTokenTwo } from 'state/reducers/selectedTokens';
-import { useAccount } from 'wagmi';
 import SwapCardTokenInput from './SwapCardTokenInput';
 
 export type TokenNumRelativeCallback = (tokenNum: number) => void;
@@ -28,13 +28,13 @@ export interface SwapCardTokenProps {
 
 const SwapCardToken: React.FC<SwapCardTokenProps> = ({ tokenNum, token, swapStatus, isIn, openTokenModal, setActiveToken }) => {
 	const { setFieldValue, values } = useFormikContext<SwapFormValues>();
+	const { accountAddress } = useWeb3();
+
 	const [error, setError] = useState('');
-
-	const { data: account } = useAccount();
-	const { data: tokenBalance = 0, refetch: refetchBalance } = useTokenBalance(account?.address, token.address);
-
 	const tokenOne = useSelector(selectTokenOne);
 	const tokenTwo = useSelector(selectTokenTwo);
+
+	const { data: tokenBalance = 0, refetch: refetchBalance } = useTokenBalance(accountAddress, token.address);
 
 	const { data: swapInfo } = useGetSwaps({
 		...(DEFAULT_SWAP_OPTIONS as Required<Omit<SwapOptions, 'funds'>>),

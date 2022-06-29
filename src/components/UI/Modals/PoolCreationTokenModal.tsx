@@ -5,7 +5,6 @@ import { FaTimes } from 'react-icons/fa';
 import { FiEdit } from 'react-icons/fi';
 import { useSelector } from 'react-redux';
 import { selectAllTokensByChainId } from 'state/reducers/lists';
-import { useAccount } from 'wagmi';
 
 export interface PoolCreationTokenModalProps {
 	chosenTokens: TokenInfo[];
@@ -15,11 +14,8 @@ export interface PoolCreationTokenModalProps {
 
 const PoolCreationTokenModal: React.FC<PoolCreationTokenModalProps> = ({ chosenTokens, setModalIsOpen, setTokens }) => {
 	const TOKENS = useSelector(selectAllTokensByChainId(ChainId.BOBA));
-
 	const [tokenList, setTokenList] = useState<TokenInfo[]>(TOKENS);
 	const [filteredTokenList, setFilteredTokenList] = useState(tokenList);
-
-	const { data: _account } = useAccount();
 
 	useEffect(() => {
 		const newTokenList = tokenList.filter((token) => chosenTokens.filter((chosenToken) => token.address === chosenToken.address).length === 0);

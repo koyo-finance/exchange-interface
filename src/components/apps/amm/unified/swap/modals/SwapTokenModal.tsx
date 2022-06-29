@@ -2,12 +2,12 @@ import { ChainId, formatBalance } from '@koyofinance/core-sdk';
 import { TokenInfo } from '@uniswap/token-lists';
 import { BigNumber } from 'ethers';
 import useMultiTokenBalances from 'hooks/contracts/useMultiTokenBalances';
+import { useWeb3 } from 'hooks/useWeb3';
 import React, { useEffect, useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { FiEdit } from 'react-icons/fi';
 import { useSelector } from 'react-redux';
 import { selectAllTokensByChainId } from 'state/reducers/lists';
-import { useAccount } from 'wagmi';
 
 export interface SwapTokenModalProps {
 	tokenNum: number;
@@ -17,13 +17,11 @@ export interface SwapTokenModalProps {
 }
 
 const SwapTokenModal: React.FC<SwapTokenModalProps> = (props) => {
-	const TOKENS = useSelector(selectAllTokensByChainId(ChainId.BOBA));
+	const { accountAddress } = useWeb3();
 
+	const TOKENS = useSelector(selectAllTokensByChainId(ChainId.BOBA));
 	const [tokenList, setTokenList] = useState<TokenInfo[]>(TOKENS.filter((token) => token.address !== props.oppositeToken.address));
 	const [filteredTokenList, setFilteredTokenList] = useState<TokenInfo[]>(tokenList);
-
-	const { data: account } = useAccount();
-	const accountAddress = account?.address || '';
 
 	const tokensBalance = useMultiTokenBalances(
 		accountAddress,

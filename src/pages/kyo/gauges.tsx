@@ -1,8 +1,8 @@
 import { formatBalance, fromBigNumber } from '@koyofinance/core-sdk';
 import GaugePowerPercentageUsed from 'components/apps/dao/voting/GaugePowerPercentageUsed';
+import GaugeModal from 'components/apps/dao/voting/modals/GaugeModal';
 import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
 import TitledDisplayBox from 'components/TitledDisplayBox';
-import GaugeModal from 'components/apps/dao/voting/modals/GaugeModal';
 import { ANALYTICS_LINK, ROOT_WITH_PROTOCOL } from 'constants/links';
 import { EXCHANGE_SUBGRAPH_URL } from 'constants/subgraphs';
 import { votingEscrowContract } from 'core/contracts';
@@ -13,6 +13,7 @@ import useGetVoteUserPower from 'hooks/contracts/KYO/gauges/useGetVoteUserPower'
 import useMultiCheckClaimableTokens from 'hooks/contracts/KYO/gauges/useMultiCheckClaimableTokens';
 import { useVoteForGaugeWeights } from 'hooks/contracts/KYO/gauges/useVoteForGaugeWeights';
 import useTokenBalance from 'hooks/contracts/useTokenBalance';
+import { useWeb3 } from 'hooks/useWeb3';
 import { SwapLayout } from 'layouts/SwapLayout';
 import { NextSeo } from 'next-seo';
 import { useGetAllGaugesQuery } from 'query/generated/graphql-codegen-generated';
@@ -20,11 +21,12 @@ import React, { useState } from 'react';
 import { BsInfoCircle } from 'react-icons/bs';
 import { HiSwitchHorizontal } from 'react-icons/hi';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
-import { useAccount, useSigner } from 'wagmi';
 
 const weekSeconds = 604800;
 
 const GaugesPage: ExtendedNextPage = () => {
+	const { accountAddress, signer } = useWeb3();
+
 	const { data: allGaugesQueryData } = useGetAllGaugesQuery({
 		endpoint: EXCHANGE_SUBGRAPH_URL
 	});
@@ -37,10 +39,6 @@ const GaugesPage: ExtendedNextPage = () => {
 	const [calculatedveKYOAmount, setCalculatedveKYOAmount] = useState(0);
 	const [error, setError] = useState('');
 
-	const { data: signer } = useSigner();
-	const { data: account } = useAccount();
-	const accountAddress = account?.address;
-
 	const { data: veKYOBalance = 0 } = useTokenBalance(accountAddress, votingEscrowContract.address);
 	const claimableGauges = useMultiCheckClaimableTokens(
 		accountAddress,
@@ -48,11 +46,12 @@ const GaugesPage: ExtendedNextPage = () => {
 	);
 	const { data: votePower = BigNumber.from(0) } = useGetVoteUserPower(accountAddress);
 	const { data: lastVoteTime = BigNumber.from(0) } = useGetLastUserVoteTime(accountAddress, selectedGauge);
+
 	const transformedLastVoteTime = new Date(lastVoteTime.toNumber() * 1000);
 	const newVoteAvailible = new Date((lastVoteTime.toNumber() + weekSeconds) * 1000);
 
-	const { mutate: submitVote } = useVoteForGaugeWeights(signer || undefined);
-	const { mutate: claimEmissions } = useDistributeGaugeEmissions(signer || undefined);
+	const { mutate: submitVote } = useVoteForGaugeWeights(signer);
+	const { mutate: claimEmissions } = useDistributeGaugeEmissions(signer);
 
 	const changeAmountHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (Number(e.target.value) > 100) {

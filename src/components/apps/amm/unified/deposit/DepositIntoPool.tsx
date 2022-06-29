@@ -1,51 +1,49 @@
+import { MaxUint256 } from '@ethersproject/constants';
 import { formatBalance, toBigNumber } from '@koyofinance/core-sdk';
-import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
 import DepositCardToken from 'components/apps/amm/unified/deposit/cards/DepositCardToken';
 import DepositKPTCalculation from 'components/apps/amm/unified/deposit/DepositKPTCalculation';
+import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
 import FormApproveAsset from 'components/FormApproveAsset';
 import { vaultContract } from 'core/contracts';
 import { BigNumber } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
 import { Form, Formik } from 'formik';
-import { MaxUint256 } from '@ethersproject/constants';
 import useJoinPool from 'hooks/contracts/exchange/useJoinPool';
 import useMultiTokenAllowance from 'hooks/contracts/useMultiTokenAllowance';
 import useMultiTokenBalances from 'hooks/contracts/useMultiTokenBalances';
 import useTokenBalance from 'hooks/contracts/useTokenBalance';
 import useTokenTotalSupply from 'hooks/contracts/useTokenTotalSupply';
+import { useWeb3 } from 'hooks/useWeb3';
 import { LitePoolFragment, TokenFragment } from 'query/generated/graphql-codegen-generated';
 import React, { useEffect, useState } from 'react';
 import { Case, Default, Switch } from 'react-if';
 import { assetHelperBoba } from 'utils/assets';
 import { joinExactTokensInForKPTOut, joinInit } from 'utils/exchange/userData/joins';
-import { useAccount, useSigner } from 'wagmi';
 
 export interface DepositIntoPoolProps {
 	selectedPool: LitePoolFragment;
 }
 
 const DepositIntoPool: React.FC<DepositIntoPoolProps> = ({ selectedPool }) => {
-	const { data: account } = useAccount();
-	const accountAddress = account?.address || '';
-	const { data: signer } = useSigner();
+	const { accountAddress, signer } = useWeb3();
 
 	const [resetInputs, setResetInputs] = useState(false);
 
 	const allowances = useMultiTokenAllowance(
-		account?.address,
+		accountAddress,
 		vaultContract.address,
 		selectedPool?.tokens?.map((coin) => coin.address)
 	);
 
 	const balances = useMultiTokenBalances(
-		account?.address,
+		accountAddress,
 		selectedPool?.tokens?.map((coin) => coin.address)
 	);
 
 	const { data: poolTotalSupply = BigNumber.from(0) } = useTokenTotalSupply(selectedPool?.address);
 
-	const { data: lpTokenBalance = BigNumber.from(0) } = useTokenBalance(account?.address, selectedPool?.address);
-	const { mutate: addLiqudity, status: deposited } = useJoinPool(signer || undefined);
+	const { data: lpTokenBalance = BigNumber.from(0) } = useTokenBalance(accountAddress, selectedPool?.address);
+	const { mutate: addLiqudity, status: deposited } = useJoinPool(signer);
 
 	useEffect(() => {
 		if (deposited === 'success') {

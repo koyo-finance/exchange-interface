@@ -1,10 +1,10 @@
 import DefaultError from 'components/UI/Errors/DefaultError';
 import { isAddress } from 'ethers/lib/utils';
+import { useWeb3 } from 'hooks/useWeb3';
 import React, { useState } from 'react';
 import { BsInfoCircleFill } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectPoolFee, setFeeAddress, setPoolFees } from 'state/reducers/createPool';
-import { useAccount } from 'wagmi';
 import PoolCreationCardFee from '../../cards/PoolCreationCardFee';
 import StepBackCard from '../../cards/StepBackCard';
 
@@ -15,19 +15,18 @@ const feeSets: [fee: number, description: string][] = [
 	[1, 'Best for exotic pairs']
 ];
 
+const koyoManageAddress = '0xBA1BA1ba1BA1bA1bA1Ba1BA1ba1BA1bA1ba1ba1B';
+const zeroAddress = '0x0000000000000000000000000000000000000000';
+
 export interface SetPoolFeesProps {
 	setStep: (step: number) => void;
 }
 
 const SetPoolFees: React.FC<SetPoolFeesProps> = ({ setStep }) => {
 	const dispatch = useDispatch();
+	const { accountAddress } = useWeb3();
+
 	const currentPoolFee = useSelector(selectPoolFee);
-
-	const { data: account } = useAccount();
-	const accountAddress = account?.address;
-	const koyoManageAddress = '0xBA1BA1ba1BA1bA1bA1Ba1BA1ba1BA1bA1ba1ba1B';
-	const zeroAddress = '0x0000000000000000000000000000000000000000';
-
 	const [isFeesFixed, setIsFeesFixed] = useState(true);
 	const [feeManager, setFeeManager] = useState(1);
 	const [feeManagerAddress, setFeeManagerAddress] = useState(zeroAddress);

@@ -2,10 +2,10 @@ import { formatBalance, toBigNumber } from '@koyofinance/core-sdk';
 import SymbolCurrencyIcon from 'components/CurrencyIcon/SymbolCurrencyIcon';
 import { BigNumber } from 'ethers';
 import useMultiTokenBalances from 'hooks/contracts/useMultiTokenBalances';
+import { useWeb3 } from 'hooks/useWeb3';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectTokens, setInitialLiquidity } from 'state/reducers/createPool';
-import { useAccount } from 'wagmi';
 import StepBackCard from '../../cards/StepBackCard';
 
 export interface AddInitialLiquidityProps {
@@ -13,12 +13,10 @@ export interface AddInitialLiquidityProps {
 }
 
 const AddInitialLiquidity: React.FC<AddInitialLiquidityProps> = ({ setStep }) => {
-	const chosenTokens = useSelector(selectTokens);
 	const dispatch = useDispatch();
+	const { accountAddress } = useWeb3();
 
-	const { data: account } = useAccount();
-	const accountAddress = account?.address;
-
+	const chosenTokens = useSelector(selectTokens);
 	const [inputAmounts, setInputAmounts] = useState<number[]>(chosenTokens.map(() => 0));
 
 	const tokensBalance = useMultiTokenBalances(

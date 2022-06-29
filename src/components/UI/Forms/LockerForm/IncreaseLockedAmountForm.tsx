@@ -1,3 +1,4 @@
+import { MaxUint256 } from '@ethersproject/constants';
 import { fromBigNumber, toBigNumber } from '@koyofinance/core-sdk';
 import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
 import FormApproveAsset from 'components/FormApproveAsset';
@@ -5,10 +6,9 @@ import { kyoContract, votingEscrowContract } from 'core/contracts';
 import { BigNumber, BigNumberish } from 'ethers';
 import { Form, Formik } from 'formik';
 import { useIncreaseAmountEscrow } from 'hooks/contracts/KYO/useIncreaseAmountEscrow';
+import { useWeb3 } from 'hooks/useWeb3';
 import React from 'react';
 import { Case, Default, Switch } from 'react-if';
-import { useSigner } from 'wagmi';
-import { MaxUint256 } from '@ethersproject/constants';
 
 export interface IncreaseLockedAmountFormProps {
 	kyoAllowance: BigNumberish;
@@ -16,12 +16,9 @@ export interface IncreaseLockedAmountFormProps {
 }
 
 const IncreaseLockedAmountForm: React.FC<IncreaseLockedAmountFormProps> = ({ kyoAllowance, kyoBalance }) => {
-	// const { data: account } = useAccount();
-	// const accountAddress = account?.address;
-	const { data: signer } = useSigner();
-	const signerDefaulted = signer || undefined;
-	const { mutate: kyoIncreaseAmount } = useIncreaseAmountEscrow(signerDefaulted);
-	// const { mutate: increaseAllowance } = useIncreaseAllowanceEscrow(signerDefaulted);
+	const { signer } = useWeb3();
+
+	const { mutate: kyoIncreaseAmount } = useIncreaseAmountEscrow(signer);
 
 	return (
 		<>

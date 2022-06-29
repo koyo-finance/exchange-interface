@@ -1,3 +1,4 @@
+import { MaxUint256 } from '@ethersproject/constants';
 import { formatBalance, fromBigNumber, toBigNumber } from '@koyofinance/core-sdk';
 import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
 import DatePickerFormik from 'components/Field/DatePickerFormik';
@@ -11,27 +12,23 @@ import { useWithdrawLockedEscrow } from 'hooks/contracts/KYO/useWithdrawLockedEs
 import useTokenAllowance from 'hooks/contracts/useTokenAllowance';
 import useTokenBalance from 'hooks/contracts/useTokenBalance';
 import useGetLockedAmount from 'hooks/useGetLockedAmount';
+import { useWeb3 } from 'hooks/useWeb3';
 import React from 'react';
 import { Case, Default, Switch } from 'react-if';
-import { useAccount, useSigner } from 'wagmi';
 import ExtendLockTimeForm from './ExtendLockTimeForm';
 import IncreaseLockedAmountForm from './IncreaseLockedAmountForm';
 import LockTimeSetButton from './LockTimeSetButton';
-import { MaxUint256 } from '@ethersproject/constants';
 
 const LockerForm: React.FC<{ openForceWithdrawModal: () => void }> = ({ openForceWithdrawModal }) => {
-	const { data: account } = useAccount();
-	const accountAddress = account?.address;
-	const { data: signer } = useSigner();
-	const signerDefaulted = signer || undefined;
+	const { accountAddress, signer } = useWeb3();
 
 	const { data: kyoBalance = 0 } = useTokenBalance(accountAddress, kyoContract.address);
 	const { data: kyoAllowance = 0 } = useTokenAllowance(accountAddress, votingEscrowContract.address, kyoContract.address);
 	const { data: lockTime } = useGetLockTimeEscrow(accountAddress);
 	const kyoLocked = useGetLockedAmount(accountAddress);
 
-	const { mutate: kyoLock } = useCreateVotingEscrowLock(signerDefaulted);
-	const { mutate: kyoWithdraw } = useWithdrawLockedEscrow(signerDefaulted);
+	const { mutate: kyoLock } = useCreateVotingEscrowLock(signer);
+	const { mutate: kyoWithdraw } = useWithdrawLockedEscrow(signer);
 
 	const lockTimeConverted = (lockTime as BigNumber)?.toNumber() * 1000;
 
