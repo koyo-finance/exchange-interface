@@ -9,9 +9,10 @@ import SetPoolFees from './flows/CreatePool/SetPoolFees';
 export interface CreatePoolProps {
 	step: number;
 	setStep: (step: number) => void;
+	cancelPoolCreation: (status: boolean) => void;
 }
 
-const CreatePool: React.FC<CreatePoolProps> = ({ step, setStep }) => {
+const CreatePool: React.FC<CreatePoolProps> = ({ step, setStep, cancelPoolCreation }) => {
 	const selectedTokens = useSelector(selectTokens);
 	const weights = useSelector(selectWeights);
 
@@ -20,7 +21,7 @@ const CreatePool: React.FC<CreatePoolProps> = ({ step, setStep }) => {
 			{step === 1 && <ChooseTokens setStep={setStep} selectedTokens={selectedTokens} weights={weights} />}
 			{step === 2 && <SetPoolFees setStep={setStep} />}
 			{step === 3 && <AddInitialLiquidity setStep={setStep} />}
-			{step === 4 && <PoolConfirmation setStep={setStep} />}
+			{step === 4 && <PoolConfirmation setStep={setStep} cancelPoolCreation={cancelPoolCreation} />}
 		</div>
 	);
 };

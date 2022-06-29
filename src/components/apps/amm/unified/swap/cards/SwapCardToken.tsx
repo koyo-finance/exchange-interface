@@ -110,7 +110,7 @@ const SwapCardToken: React.FC<SwapCardTokenProps> = ({ tokenNum, token, swapStat
 				</div>
 				<div className="flex w-full flex-row flex-wrap justify-center gap-2 text-left sm:w-1/4">
 					<div>Balance:</div>
-					<div>{formatBalance(tokenBalance, undefined, token.decimals)}</div>
+					<div>{formatBalance(tokenBalance, { minimumFractionDigits: 2, maximumFractionDigits: 4 }, token.decimals)}</div>
 				</div>
 			</div>
 		</div>

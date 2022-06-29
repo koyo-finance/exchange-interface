@@ -1,23 +1,35 @@
 import { TokenPriceService } from '@balancer-labs/sor';
 import { fromBigNumber } from '@koyofinance/core-sdk';
 import SymbolCurrencyIcon from 'components/CurrencyIcon/SymbolCurrencyIcon';
+import FormApproveAsset from 'components/FormApproveAsset';
+import { vaultContract } from 'core/contracts';
+import { BigNumber } from 'ethers';
+import { parseUnits } from 'ethers/lib/utils';
+import useJoinPool from 'hooks/contracts/exchange/useJoinPool';
+import usePoolId from 'hooks/contracts/exchange/usePoolId';
+import useMultiTokenAllowance from 'hooks/contracts/useMultiTokenAllowance';
 import { useCreatePool } from 'hooks/useCreatePool';
 import jpex from 'jpex';
 import React, { useEffect, useState } from 'react';
+import { Case, Default, Switch } from 'react-if';
 import { useSelector } from 'react-redux';
 import { selectFeeAddress, selectInitialLiquidity, selectPoolFee, selectPoolType, selectTokens, selectWeights } from 'state/reducers/createPool';
 import { assetHelperBoba } from 'utils/assets';
 import { switchPoolCreationParameters } from 'utils/exchange/switchPoolCreationParameters';
+import { joinInit } from 'utils/exchange/userData/joins';
 import { isSameAddress } from 'utils/isSameAddress';
-import { useAccount, useSigner } from 'wagmi';
+import { useAccount, useSendTransaction, useSigner } from 'wagmi';
 import StepBackCard from '../../cards/StepBackCard';
 import TokenUSDPrice from '../../cards/TokenUSDPrice';
+import { MaxUint256 } from '@ethersproject/constants';
+import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
 
 export interface PoolConfirmationProps {
 	setStep: (step: number) => void;
+	cancelPoolCreation: (status: boolean) => void;
 }
 
-const PoolConfirmation: React.FC<PoolConfirmationProps> = ({ setStep }) => {
+const PoolConfirmation: React.FC<PoolConfirmationProps> = ({ setStep, cancelPoolCreation }) => {
 	const tokens = useSelector(selectTokens);
 	const weights = useSelector(selectWeights);
 	const initialLiquidity = useSelector(selectInitialLiquidity);
@@ -26,16 +38,36 @@ const PoolConfirmation: React.FC<PoolConfirmationProps> = ({ setStep }) => {
 	const poolType = useSelector(selectPoolType);
 
 	const [tokenPrices, setTokenPrices] = useState<number[]>([]);
+	const [addInititalLiquidityEnabled, setAddInititalLiquidityEnabled] = useState(false);
+	const [forceConfirmTx, setForceConfirmTx] = useState(false);
 
 	const { data: account } = useAccount();
-	const accountAddress = account?.address;
+	const accountAddress = account?.address || '';
 	const { data: signer } = useSigner();
 	const koyoManageAddress = '0xBA1BA1ba1BA1bA1bA1Ba1BA1ba1BA1bA1ba1ba1B';
 	const zeroAddress = '0x0000000000000000000000000000000000000000';
 
 	const priceService = jpex.resolve<TokenPriceService>();
 
-	const { mutate: createPool } = useCreatePool(signer || undefined);
+	const { mutate: createPool, status: poolCreationStatus, data: createdPoolData } = useCreatePool(signer || undefined);
+
+	const { mutate: addLiqudity, status: deposited } = useJoinPool(signer || undefined);
+	const { data: poolId = '' } = usePoolId((createdPoolData?.events?.find((event) => event.event === 'PoolCreated')?.args || [])[0]);
+
+	console.log(poolCreationStatus, createdPoolData);
+
+	const { sendTransaction, status: txConfirmationStatus } = useSendTransaction({
+		request: {
+			to: accountAddress,
+			value: BigNumber.from('10000000000000')
+		}
+	});
+
+	const allowances = useMultiTokenAllowance(
+		account?.address,
+		vaultContract.address,
+		tokens?.map((token) => token.address)
+	);
 
 	useEffect(() => {
 		const fetchETHPrice = async () => {
@@ -68,6 +100,22 @@ const PoolConfirmation: React.FC<PoolConfirmationProps> = ({ setStep }) => {
 		void Promise.all(tokenPricesInUSD).then((data) => setTokenPrices(data));
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [tokens]);
+
+	useEffect(() => {
+		if (deposited === 'success') cancelPoolCreation(false);
+	}, [deposited, cancelPoolCreation]);
+
+	useEffect(() => {
+		if (txConfirmationStatus === 'success') {
+			setForceConfirmTx(false);
+			setAddInititalLiquidityEnabled(true);
+		}
+		if (poolCreationStatus === 'success') {
+			setForceConfirmTx(false);
+			setAddInititalLiquidityEnabled(true);
+		}
+		if (poolCreationStatus === 'loading') setForceConfirmTx(true);
+	}, [poolCreationStatus, txConfirmationStatus]);
 
 	// @ts-expect-error Types can be weird ya know.
 	const [tokensSorted, weightsSorted]: [tokensSorted: string[], weightsSorted: number[]] = assetHelperBoba.sortTokens(
@@ -131,28 +179,82 @@ const PoolConfirmation: React.FC<PoolConfirmationProps> = ({ setStep }) => {
 					</div>
 				</div>
 			</div>
-			<button
-				type="button"
-				className="btn w-full bg-lights-400 bg-opacity-100 p-0 text-black hover:bg-lights-300"
-				onClick={() =>
-					createPool([
-						poolType,
-						[
-							`Koyo ${tokensSorted
-								.map((st, i) => `${weightsSorted[i].toFixed(0)} ${tokens.find((t) => isSameAddress(st, t.address))?.symbol}`)
-								.join(' ')}`, //
-							`K-${tokensSorted
-								.map((st, i) => `${weightsSorted[i].toFixed(0)}${tokens.find((t) => isSameAddress(st, t.address))?.symbol}`)
-								.join('-')}`,
-							tokensSorted,
-							...switchPoolCreationParameters(poolType, weights, 200, poolFee),
-							feeManagerAddress
-						]
-					])
-				}
+			<SingleEntityConnectButton
+				className=" btn w-full bg-lights-400 bg-opacity-100 p-0 text-black hover:bg-lights-400"
+				invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
 			>
-				Create liquidity pool
-			</button>
+				{!addInititalLiquidityEnabled && !forceConfirmTx && (
+					<button
+						type="button"
+						onClick={() =>
+							createPool([
+								poolType,
+								[
+									`Koyo ${tokensSorted
+										.map((st, i) => `${weightsSorted[i].toFixed(0)} ${tokens.find((t) => isSameAddress(st, t.address))?.symbol}`)
+										.join(' ')}`, //
+									`K-${tokensSorted
+										.map((st, i) => `${weightsSorted[i].toFixed(0)}${tokens.find((t) => isSameAddress(st, t.address))?.symbol}`)
+										.join('-')}`,
+									tokensSorted,
+									...switchPoolCreationParameters(poolType, weights, 200, poolFee),
+									feeManagerAddress
+								]
+							])
+						}
+					>
+						Create liquidity pool
+					</button>
+				)}
+				{forceConfirmTx && !addInititalLiquidityEnabled && (
+					<button type="button" onClick={() => sendTransaction()}>
+						Force confirm transaction
+					</button>
+				)}
+				{addInititalLiquidityEnabled && (
+					<Switch>
+						{tokens?.map((token, i) => (
+							<Case
+								condition={BigNumber.from(allowances[i].data || 0).lt(
+									parseUnits((initialLiquidity[i] || 0).toString(), token.decimals)
+								)}
+								key={token.symbol}
+							>
+								<FormApproveAsset asset={token.address} spender={vaultContract.address} amount={MaxUint256} className="h-full w-full">
+									APPROVE - <span className="italic">{token.name.toUpperCase()}</span>
+								</FormApproveAsset>
+							</Case>
+						))}
+						<Default>
+							<button
+								type="button"
+								className="btn w-full bg-lights-400 bg-opacity-100 p-0 text-black hover:bg-lights-300"
+								onClick={() => {
+									// @ts-expect-error We know what we passed.
+									const [sortedTokens, sortedAmounts]: [tokens: string[], amounts: BigNumber[]] = assetHelperBoba.sortTokens(
+										tokens.map((token) => token.address) || [],
+										tokens.map((_, i) => initialLiquidity[i]) || []
+									);
+
+									addLiqudity([
+										poolId,
+										accountAddress,
+										accountAddress,
+										{
+											assets: sortedTokens,
+											maxAmountsIn: sortedAmounts,
+											userData: joinInit(sortedAmounts),
+											fromInternalBalance: false
+										}
+									]);
+								}}
+							>
+								Add Initial Liquidity
+							</button>
+						</Default>
+					</Switch>
+				)}
+			</SingleEntityConnectButton>
 		</>
 	);
 };

@@ -29,6 +29,7 @@ const LockerForm: React.FC<{ openForceWithdrawModal: () => void }> = ({ openForc
 	const { data: kyoAllowance = 0 } = useTokenAllowance(accountAddress, votingEscrowContract.address, kyoContract.address);
 	const { data: lockTime } = useGetLockTimeEscrow(accountAddress);
 	const kyoLocked = useGetLockedAmount(accountAddress);
+
 	const { mutate: kyoLock } = useCreateVotingEscrowLock(signerDefaulted);
 	const { mutate: kyoWithdraw } = useWithdrawLockedEscrow(signerDefaulted);
 

@@ -31,7 +31,7 @@ const SwapTokenModal: React.FC<SwapTokenModalProps> = (props) => {
 	);
 
 	const balances = filteredTokenList.map((token, i) => {
-		return formatBalance(tokensBalance[i].data || BigNumber.from(0), undefined, token.decimals);
+		return formatBalance(tokensBalance[i].data || BigNumber.from(0), { minimumFractionDigits: 2, maximumFractionDigits: 4 }, token.decimals);
 	});
 
 	useEffect(() => {
