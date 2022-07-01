@@ -3090,6 +3090,7 @@ export interface Swap {
 	tokenOut: Scalars['Bytes'];
 	tokenOutSym: Scalars['String'];
 	tx: Scalars['Bytes'];
+	valueUSD: Scalars['BigDecimal'];
 }
 
 export interface Swap_Filter {
@@ -3233,6 +3234,14 @@ export interface Swap_Filter {
 	tx_not?: InputMaybe<Scalars['Bytes']>;
 	tx_not_contains?: InputMaybe<Scalars['Bytes']>;
 	tx_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+	valueUSD?: InputMaybe<Scalars['BigDecimal']>;
+	valueUSD_gt?: InputMaybe<Scalars['BigDecimal']>;
+	valueUSD_gte?: InputMaybe<Scalars['BigDecimal']>;
+	valueUSD_in?: InputMaybe<Array<Scalars['BigDecimal']>>;
+	valueUSD_lt?: InputMaybe<Scalars['BigDecimal']>;
+	valueUSD_lte?: InputMaybe<Scalars['BigDecimal']>;
+	valueUSD_not?: InputMaybe<Scalars['BigDecimal']>;
+	valueUSD_not_in?: InputMaybe<Array<Scalars['BigDecimal']>>;
 }
 
 export type Swap_OrderBy =
@@ -3247,7 +3256,8 @@ export type Swap_OrderBy =
 	| 'tokenInSym'
 	| 'tokenOut'
 	| 'tokenOutSym'
-	| 'tx';
+	| 'tx'
+	| 'valueUSD';
 
 export interface Token {
 	__typename: 'Token';
