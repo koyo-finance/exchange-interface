@@ -10,7 +10,7 @@ import { SubgraphPoolDataService } from 'utils/exchange/router/SubgraphPoolDataS
 import { SubgraphTokenPriceService } from 'utils/exchange/router/SubgraphTokenPriceService';
 
 export function useInstantiateSORConstant() {
-	const customNodeProvider = new JsonRpcProvider('https://node.koyo.finance/rpc', ChainId.BOBA);
+	const customNodeProvider = new JsonRpcProvider('https://boba-rpc.koyo.finance/rpc', ChainId.BOBA);
 
 	const poolDataService = new SubgraphPoolDataService({
 		chainId: ChainId.BOBA,
