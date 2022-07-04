@@ -3643,6 +3643,7 @@ type Swap {
 	tokenOut: Bytes!
 	tokenOutSym: String!
 	tx: Bytes!
+	valueUSD: BigDecimal!
 }
 
 input Swap_filter {
@@ -3788,6 +3789,14 @@ input Swap_filter {
 	tx_not: Bytes
 	tx_not_contains: Bytes
 	tx_not_in: [Bytes!]
+	valueUSD: BigDecimal
+	valueUSD_gt: BigDecimal
+	valueUSD_gte: BigDecimal
+	valueUSD_in: [BigDecimal!]
+	valueUSD_lt: BigDecimal
+	valueUSD_lte: BigDecimal
+	valueUSD_not: BigDecimal
+	valueUSD_not_in: [BigDecimal!]
 }
 
 enum Swap_orderBy {
@@ -3803,6 +3812,7 @@ enum Swap_orderBy {
 	tokenOut
 	tokenOutSym
 	tx
+	valueUSD
 }
 
 type Token {

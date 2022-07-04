@@ -7,14 +7,14 @@ import FormApproveAsset from 'components/FormApproveAsset';
 import { vaultContract } from 'core/contracts';
 import { BigNumber } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
-import useJoinPool from 'hooks/vault/useJoinPool';
-import usePoolId from 'hooks/pools/usePoolId';
 import useMultiTokenAllowance from 'hooks/generic/useMultiTokenAllowance';
 import { useCreatePool } from 'hooks/pools/useCreatePool';
+import usePoolId from 'hooks/pools/usePoolId';
 import { useWeb3 } from 'hooks/useWeb3';
-import jpex from 'jpex';
+import useJoinPool from 'hooks/vault/useJoinPool';
 import React, { useEffect, useState } from 'react';
 import { Case, Default, Switch } from 'react-if';
+import { useJpex } from 'react-jpex';
 import { useSelector } from 'react-redux';
 import { selectFeeAddress, selectInitialLiquidity, selectPoolFee, selectPoolType, selectTokens, selectWeights } from 'state/reducers/createPool';
 import { assetHelperBoba } from 'utils/assets';
@@ -34,6 +34,7 @@ export interface PoolConfirmationProps {
 }
 
 const PoolConfirmation: React.FC<PoolConfirmationProps> = ({ setStep, cancelPoolCreation }) => {
+	const jpex = useJpex();
 	const priceService = jpex.resolve<TokenPriceService>();
 	const { accountAddress, signer } = useWeb3();
 

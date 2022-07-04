@@ -5,13 +5,16 @@ import InitialStateWrapper from 'components/wrappers/InitialStateWrapper';
 import { ROOT } from 'constants/links';
 import { queryClient } from 'core/query';
 import { chains, wagmiClient } from 'core/wallet';
+import { useInstantiateSORConstant } from 'hooks/SOR/useInstantiateSORConstant';
+import { useInitializeIntercom } from 'hooks/useInitializeIntercom';
 import DefaultLayout from 'layouts/DefaultLayout';
 import type { NextPage, NextPageContext } from 'next';
+import { updateIntercom } from 'next-intercom';
 import PlausibleProvider from 'next-plausible';
 import { DefaultSeo } from 'next-seo';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { Provider } from 'react-redux';
@@ -21,7 +24,6 @@ import { koyoDarkTheme } from 'styles/rainbowkit';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
 import { WagmiConfig } from 'wagmi';
 import DefaultSeoProps from '../DefaultSeoProps';
-import { useInstantiateSORConstant } from 'hooks/SOR/useInstantiateSORConstant';
 
 import '@rainbow-me/rainbowkit/styles.css';
 import 'styles/_App.css';
@@ -33,6 +35,16 @@ const App: NextPage<AppProps> = ({ Component, pageProps }) => {
 
 	const ExtendedPage = Component as ExtendedNextPage<NextPageContext, any>;
 	const Layout = ExtendedPage.Layout || DefaultLayout;
+	const Intercom = ExtendedPage.intercom === undefined ? true : ExtendedPage.intercom;
+
+	useInitializeIntercom(Intercom);
+
+	useEffect(() => {
+		updateIntercom('update', {
+			hide_default_launcher: Intercom ? false : true
+		});
+		if (Intercom === false) updateIntercom('hide', undefined);
+	}, [Intercom]);
 
 	return (
 		<React.StrictMode>

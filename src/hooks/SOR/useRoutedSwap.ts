@@ -2,7 +2,7 @@ import { PoolFilter, SOR, SwapTypes } from '@balancer-labs/sor';
 import { MaxUint256 } from '@ethersproject/constants';
 import { BigNumber, ContractReceipt, PayableOverrides, Signer } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
-import jpex from 'jpex';
+import { useJpex } from 'react-jpex';
 import { useMutation } from 'react-query';
 import { IVault } from 'types/contracts/exchange/Vault';
 import { getLimits } from 'utils/exchange/router/limits';
@@ -35,6 +35,7 @@ export interface SwapVariables {
 }
 
 export function useRoutedSwap(signer: Signer | undefined) {
+	const jpex = useJpex();
 	const { mutate: batchSwap } = useBatchSwap(signer);
 	const sor = jpex.resolve<SOR>();
 

@@ -4,11 +4,12 @@ import GroundLeafs from 'components/apps/_/Home/GroundLeafs';
 import Header from 'components/apps/_/Home/Header';
 import Footer from 'components/Footer';
 import { generateSitemap } from 'core/sitemap';
-import { GetStaticProps, NextPage } from 'next';
+import { GetStaticProps } from 'next';
 import path from 'path';
 import React from 'react';
+import { ExtendedNextPage } from 'types/ExtendedNextPage';
 
-const IndexPage: NextPage = () => {
+const IndexPage: ExtendedNextPage = () => {
 	const deviceWidth = window.visualViewport.width;
 
 	return (
@@ -32,6 +33,7 @@ const IndexPage: NextPage = () => {
 		</div>
 	);
 };
+IndexPage.intercom = false;
 
 export const getStaticProps: GetStaticProps = async () => {
 	const directory = path.join(process.cwd(), 'src');

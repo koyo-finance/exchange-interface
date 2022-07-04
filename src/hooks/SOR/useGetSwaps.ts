@@ -1,11 +1,12 @@
 import { SOR, SwapInfo } from '@balancer-labs/sor';
 import type { SwapOptions } from 'hooks/SOR/useRoutedSwap';
-import jpex from 'jpex';
+import { useJpex } from 'react-jpex';
 import { useQuery } from 'react-query';
 
 const IDENTITY_FN = (v: unknown) => v;
 
 export function useGetSwaps(options: Required<Omit<SwapOptions, 'funds'>>) {
+	const jpex = useJpex();
 	const sor = jpex.resolve<SOR>();
 
 	return useQuery({
