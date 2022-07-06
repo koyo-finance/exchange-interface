@@ -10,10 +10,10 @@ const HomeCardsRows: React.FC = () => {
 			<div className="mt-12 flex w-full flex-row flex-wrap justify-evenly gap-10 lg:mt-2">
 				<TotalLiquidityCard />
 				<MostActivePoolCard />
-				<KoyoPriceCard />
+				<KYOLockedCard />
 			</div>
 			<div className="mt-10 flex w-full flex-row items-center justify-center">
-				<KYOLockedCard />
+				<KoyoPriceCard />
 			</div>
 		</>
 	);
