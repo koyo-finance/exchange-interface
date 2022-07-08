@@ -8,7 +8,6 @@ import { EXCHANGE_SUBGRAPH_URL } from 'constants/subgraphs';
 import { votingEscrowContract } from 'core/contracts';
 import { BigNumber } from 'ethers';
 import { useDistributeGaugeEmissions } from 'hooks/KYO/gauges/useDistributeGaugeEmissions';
-import useGetLastUserVoteTime from 'hooks/KYO/gauges/useGetLastUserVoteTime';
 import useGetVoteUserPower from 'hooks/KYO/gauges/useGetVoteUserPower';
 import useMultiCheckClaimableTokens from 'hooks/KYO/gauges/useMultiCheckClaimableTokens';
 import { useVoteForGaugeWeights } from 'hooks/KYO/gauges/useVoteForGaugeWeights';
@@ -21,11 +20,13 @@ import React, { useState } from 'react';
 import { BsInfoCircle } from 'react-icons/bs';
 import { HiSwitchHorizontal } from 'react-icons/hi';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
-
-const weekSeconds = 604800;
+import Countdown from 'react-countdown';
 
 const GaugesPage: ExtendedNextPage = () => {
 	const { accountAddress, signer } = useWeb3();
+
+	const week = 604800;
+	const currentTime = Date.now() / 1000;
 
 	const { data: allGaugesQueryData } = useGetAllGaugesQuery({
 		endpoint: EXCHANGE_SUBGRAPH_URL
@@ -45,10 +46,6 @@ const GaugesPage: ExtendedNextPage = () => {
 		gaugeList.map((g) => g.address)
 	);
 	const { data: votePower = BigNumber.from(0) } = useGetVoteUserPower(accountAddress);
-	const { data: lastVoteTime = BigNumber.from(0) } = useGetLastUserVoteTime(accountAddress, selectedGauge);
-
-	const transformedLastVoteTime = new Date(lastVoteTime.toNumber() * 1000);
-	const newVoteAvailible = new Date((lastVoteTime.toNumber() + weekSeconds) * 1000);
 
 	const { mutate: submitVote } = useVoteForGaugeWeights(signer);
 	const { mutate: claimEmissions } = useDistributeGaugeEmissions(signer);
@@ -182,26 +179,9 @@ const GaugesPage: ExtendedNextPage = () => {
 						</>
 					)}
 					{error !== '' && <div className="w-full text-xl text-red-600 ">{error}</div>}
-					{lastVoteTime.gt(0) && (
-						<div className="flex w-full flex-row flex-wrap justify-between font-semibold text-white">
-							<div>
-								Last voted on:{' '}
-								{transformedLastVoteTime.toLocaleDateString(navigator.language, {
-									day: 'numeric',
-									month: 'short',
-									year: 'numeric'
-								})}
-							</div>
-							<div className=" text-lights-400">
-								Next vote date:{' '}
-								{newVoteAvailible.toLocaleDateString(navigator.language, {
-									day: 'numeric',
-									month: 'short',
-									year: 'numeric'
-								})}
-							</div>
-						</div>
-					)}
+					<div className="w-full text-center text-xl">
+						Next vote period in: <Countdown date={Math.floor((currentTime + week) / week) * week * 1000} className=" font-semibold" />
+					</div>
 					<div className="flex w-full flex-row flex-wrap items-center justify-between gap-2 text-xl text-white">
 						<div className="text-lg md:text-xl">
 							<label htmlFor="power">Select voting power (%):</label>

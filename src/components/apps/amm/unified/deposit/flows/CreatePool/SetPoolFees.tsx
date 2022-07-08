@@ -147,7 +147,7 @@ const SetPoolFees: React.FC<SetPoolFeesProps> = ({ setStep }) => {
 										setFeeManagerAddress('');
 									}}
 								/>
-								<label htmlFor="costumAddress">Allow dynamic pool fees from the chosen address</label>
+								<label htmlFor="costumAddress">Custom address</label>
 							</div>
 						</>
 					)}
