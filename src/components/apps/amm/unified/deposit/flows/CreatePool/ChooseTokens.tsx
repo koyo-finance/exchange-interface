@@ -27,6 +27,10 @@ const ChooseTokens: React.FC<ChooseTokensProps> = ({ setStep, selectedTokens, we
 	const [tokenWeights, setTokenWeights] = useState(weights);
 
 	const addNewTokenHandler = () => {
+		if (selectedTokens.length === 8) {
+			setError('Cannot add more tokens');
+			return;
+		}
 		setActiveToken(selectedTokens.length);
 		setModalIsOpen(true);
 	};
