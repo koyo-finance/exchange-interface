@@ -14,9 +14,7 @@ const bobaMainnetChain: Chain = {
 		default: CHAIN_INFO[SupportedChainId.BOBA].addNetworkInfo.rpcUrl
 	},
 	blockExplorers: {
-		default: { name: 'BlockExplorer', url: CHAIN_INFO[SupportedChainId.BOBA].explorer },
-		blockexplorer: { name: 'BlockExplorer', url: CHAIN_INFO[SupportedChainId.BOBA].explorer },
-		etherscan: { name: 'BlockExplorer', url: CHAIN_INFO[SupportedChainId.BOBA].explorer }
+		default: { name: 'Bobascan', url: CHAIN_INFO[SupportedChainId.BOBA].explorer }
 	},
 	testnet: false
 };
