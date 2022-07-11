@@ -37,8 +37,8 @@ const Navbar: React.FC = () => {
 										router.pathname === '/' ? 'opacity-0' : 'opacity-100'
 									}`}
 								>
-									<div className="relative hidden flex-row items-center rounded-2xl bg-black bg-opacity-50 p-0 text-center text-white md:w-1/3 lg:flex xl:w-1/4">
-										<div className="group relative z-10 w-1/2">
+									<div className="relative hidden flex-row items-center rounded-2xl bg-black bg-opacity-50 p-0 text-center text-white md:w-1/2 lg:flex xl:w-1/3 2xl:w-1/4">
+										<div className="group relative z-10 w-1/3">
 											<div
 												className={`z-10 flex w-full cursor-pointer flex-row items-center justify-center gap-1 rounded-2xl py-2`}
 											>
@@ -59,7 +59,7 @@ const Navbar: React.FC = () => {
 												</Link>
 											</div>
 										</div>
-										<div className="group relative z-10 w-1/2">
+										<div className="group relative z-10 w-1/3">
 											<div
 												className={`z-10 flex w-full cursor-pointer flex-row items-center justify-center gap-1 rounded-2xl py-2`}
 											>
@@ -80,6 +80,11 @@ const Navbar: React.FC = () => {
 												</Link>
 											</div>
 										</div>
+										<Link href="/lending">
+											<div className="group relative z-10 w-1/3 transform-gpu cursor-pointer duration-150 hover:text-darks-200">
+												Lending
+											</div>
+										</Link>
 										<PageSelectedOverlay />
 									</div>
 								</div>

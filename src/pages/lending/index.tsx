@@ -64,14 +64,23 @@ const LendingPage: ExtendedNextPage = () => {
 							className="flex w-full flex-col gap-4 rounded-xl border-2 border-lights-400 bg-black bg-opacity-50 p-4 text-base text-white   xl:text-xl"
 						>
 							<div>Lend your assets</div>
+							<div className="flex w-2/3 flex-row justify-between ">
+								<div>Token</div>
+								<div>Your balance</div>
+								<div>Collateral</div>
+							</div>
 							{tokens.map((token, i) =>
 								Number(balances[i]) > 0 ? (
-									<div className="flex w-full flex-row">
-										<div className="flex flex-row items-center gap-2">
-											<SymbolCurrencyIcon symbol={token.symbol} className="h-8 w-8" />
-											<div>{token.name}</div>
+									<div className="flex w-full flex-row items-center justify-between">
+										<div className="flex w-2/3 flex-row items-center justify-between gap-2">
+											<div className="flex w-1/3 flex-row items-center gap-2">
+												<SymbolCurrencyIcon symbol={token.symbol} className="h-8 w-8" />
+												<div>{token.name}</div>
+											</div>
+											<div className="w-1/3">{formatAmount(balances[i], 4)}</div>
+											<div className="w-1/6 pr-8 text-right">5%</div>
 										</div>
-										<div>{formatAmount(balances[i], 4)}</div>
+										<div></div>
 									</div>
 								) : (
 									''
