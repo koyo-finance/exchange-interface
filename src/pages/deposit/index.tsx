@@ -88,23 +88,18 @@ const DepositPage: ExtendedNextPage = () => {
 												<VscListSelection />
 											</span>
 										</button>
-										<SingleEntityConnectButton
-											className="btn mt-2 w-full border-0 bg-lights-400 bg-opacity-100 p-0 text-black outline-none hover:bg-lights-200"
-											invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
+										<button
+											className="text-md btn mt-2 w-full border-0 bg-lights-400 text-black hover:bg-lights-200 lg:text-lg"
+											onClick={() => {
+												setPoolCreationActive(true);
+												setPoolCreationStep(1);
+											}}
 										>
-											<button
-												className="text-md btn w-full border-0 bg-lights-400 text-black hover:bg-lights-200 lg:text-lg"
-												onClick={() => {
-													setPoolCreationActive(true);
-													setPoolCreationStep(1);
-												}}
-											>
-												Create liquidity pool&nbsp;
-												<span className=" text-md lg:text-2xl">
-													<BsPlus />
-												</span>
-											</button>
-										</SingleEntityConnectButton>
+											Create liquidity pool&nbsp;
+											<span className=" text-md lg:text-2xl">
+												<BsPlus />
+											</span>
+										</button>
 									</>
 								)}
 								{selectedPool && (
