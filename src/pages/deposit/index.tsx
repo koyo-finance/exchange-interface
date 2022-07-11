@@ -13,7 +13,6 @@ import { BsArrow90DegLeft, BsPlus } from 'react-icons/bs';
 import { HiSwitchHorizontal } from 'react-icons/hi';
 import { VscListSelection } from 'react-icons/vsc';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
-import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
 
 const DepositPage: ExtendedNextPage = () => {
 	const { data: fetchedPools } = useGetPoolsQuery({ endpoint: EXCHANGE_SUBGRAPH_URL });
