@@ -1,4 +1,5 @@
 import { Provider } from '@ethersproject/providers';
+import { ChainId } from '@koyofinance/core-sdk';
 import { Signer } from 'ethers';
 import { Chain, useAccount, useNetwork, useProvider, useSigner } from 'wagmi';
 
@@ -13,6 +14,7 @@ export interface Web3State {
 
 	chain?: Chain & { unsupported?: boolean };
 	chains: Chain[];
+	chainId: ChainId;
 }
 
 export function useWeb3(): Web3State {
@@ -20,6 +22,8 @@ export function useWeb3(): Web3State {
 	const { data: signer } = useSigner();
 	const provider = useProvider();
 	const { chain, chains } = useNetwork();
+
+	const chainId = (!chain?.unsupported && chain?.id) || ChainId.BOBA;
 
 	return {
 		status,
@@ -30,6 +34,7 @@ export function useWeb3(): Web3State {
 		provider,
 
 		chain,
-		chains
+		chains,
+		chainId
 	};
 }
