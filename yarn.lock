@@ -2793,6 +2793,17 @@
     numbro "^2.3.6"
     tslib "^2.4.0"
 
+"@koyofinance/core-sdk@^0.3.0-next.7048241.0":
+  version "0.3.0-next.7048241.0"
+  resolved "https://registry.yarnpkg.com/@koyofinance/core-sdk/-/core-sdk-0.3.0-next.7048241.0.tgz#4bd572ff8ae1247375860c9feb87e5a83f60a2d1"
+  integrity sha512-zCrSSgLrIjwSDaD46DRtDrGJWr/iXMMiDLV70li8v5xmYsGqq35b7pQFU8ebF8tcGzS+X023dZ5+USa4K/BP3g==
+  dependencies:
+    "@uniswap/token-lists" "^1.0.0-beta.28"
+    dayjs "^1.11.2"
+    ethers "^5.6.6"
+    numbro "^2.3.6"
+    tslib "^2.4.0"
+
 "@koyofinance/react-query-typechain@^0.2.0-next.47b31f1.0":
   version "0.2.0-next.47b31f1.0"
   resolved "https://registry.yarnpkg.com/@koyofinance/react-query-typechain/-/react-query-typechain-0.2.0-next.47b31f1.0.tgz#3d2e406fbc039fbffef0c1f62341472080bdc355"
