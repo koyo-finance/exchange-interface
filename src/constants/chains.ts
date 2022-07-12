@@ -1,6 +1,5 @@
 export enum SupportedChainId {
-	BOBA = 288,
-	BOBA_RINKEBY = 28
+	BOBA = 288
 }
 
 export const ALL_SUPPORTED_CHAIN_IDS: SupportedChainId[] = Object.values(SupportedChainId).filter(
@@ -8,21 +7,15 @@ export const ALL_SUPPORTED_CHAIN_IDS: SupportedChainId[] = Object.values(Support
 ) as SupportedChainId[];
 
 export const HEX_CHAIN_IDS: { [K in SupportedChainId]: string } = {
-	[SupportedChainId.BOBA]: '0x120',
-	[SupportedChainId.BOBA_RINKEBY]: '0x1c'
+	[SupportedChainId.BOBA]: '0x120'
 };
-
-export const L2_CHAIN_IDS = [SupportedChainId.BOBA, SupportedChainId.BOBA_RINKEBY] as const;
-
-export type SupportedL2ChainId = typeof L2_CHAIN_IDS[number];
 
 export const BOBA_MAINNET_RPC_URL = 'https://mainnet.boba.network';
 export const BOBA_MAINNET_READ_RPC_URL = 'https://lightning-replica.boba.network';
 export const BOBA_RINKEBY_RPC_URL = 'https://rinkeby.boba.network/';
 
 export const RPC_URLS: { [K in SupportedChainId]: string } = {
-	[SupportedChainId.BOBA]: BOBA_MAINNET_RPC_URL,
-	[SupportedChainId.BOBA_RINKEBY]: BOBA_RINKEBY_RPC_URL
+	[SupportedChainId.BOBA]: BOBA_MAINNET_RPC_URL
 };
 
 /**
@@ -54,7 +47,7 @@ export interface L2ChainInfo extends BaseChainInfo {
 }
 
 export type ChainInfoMap = { readonly [chainId: number]: L2ChainInfo } & {
-	readonly [chainId in SupportedL2ChainId]: L2ChainInfo;
+	readonly [chainId in SupportedChainId]: L2ChainInfo;
 };
 
 export const CHAIN_INFO: ChainInfoMap = {
@@ -66,16 +59,6 @@ export const CHAIN_INFO: ChainInfoMap = {
 		addNetworkInfo: {
 			nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
 			rpcUrl: 'https://mainnet.boba.network'
-		}
-	},
-	[SupportedChainId.BOBA_RINKEBY]: {
-		networkType: NetworkType.L2,
-		// blockWaitMsBeforeWarning: ms`25m`,
-		explorer: 'https://testnet.bobascan.com/',
-		label: 'Boba L2 Rinkeby',
-		addNetworkInfo: {
-			nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
-			rpcUrl: 'https://rinkeby.boba.network/'
 		}
 	}
 };
