@@ -46,6 +46,7 @@ const WithdrawCardToken: React.FC<WithdrawCardTokenProps> = ({ coin, status, set
 					ref={inputAmountRef}
 					type="number"
 					name={coin.name}
+					step={0.00001}
 					onChange={tokenAmountChangeHandler}
 					placeholder={'0,00'}
 					value={tokenAmount}
