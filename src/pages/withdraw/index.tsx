@@ -6,11 +6,11 @@ import WithdrawKPTCalculation from 'components/apps/amm/unified/withdraw/Withdra
 import GuideLink from 'components/GuideLink';
 import PoolsModal from 'components/UI/Modals/PoolsModal';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
-import { EXCHANGE_SUBGRAPH_URL } from 'constants/subgraphs';
 import { Form, Formik } from 'formik';
-import useExitPool from 'hooks/vault/useExitPool';
 import useTokenBalance from 'hooks/generic/useTokenBalance';
+import useExchangeSubgraphURL from 'hooks/useExchangeSubgraphURL';
 import { useWeb3 } from 'hooks/useWeb3';
+import useExitPool from 'hooks/vault/useExitPool';
 import { SwapLayout, SwapLayoutCard } from 'layouts/SwapLayout';
 import { NextSeo } from 'next-seo';
 import { LitePoolFragment, useGetPoolsQuery } from 'query/generated/graphql-codegen-generated';
@@ -23,8 +23,9 @@ import { exitKPTInForExactTokensOut } from 'utils/exchange/userData/exits';
 
 const WithdrawPage: ExtendedNextPage = () => {
 	const { accountAddress, signer } = useWeb3();
+	const exchangeSubgraphURL = useExchangeSubgraphURL();
 
-	const { data: fetchedPools } = useGetPoolsQuery({ endpoint: EXCHANGE_SUBGRAPH_URL });
+	const { data: fetchedPools } = useGetPoolsQuery({ endpoint: exchangeSubgraphURL });
 	const pools = fetchedPools?.allPools || [];
 
 	const [selectedPool, setSelectedPool] = useState<LitePoolFragment | undefined>(undefined);

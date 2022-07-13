@@ -1,6 +1,6 @@
 import FarmCard, { Gauge } from 'components/apps/dao/gauges/cards/FarmCard';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
-import { EXCHANGE_SUBGRAPH_URL } from 'constants/subgraphs';
+import { GAUGES_SUBGRAPH_URL } from 'constants/subgraphs';
 import { SwapLayout } from 'layouts/SwapLayout';
 import { NextSeo } from 'next-seo';
 import { useGetAllGaugesQuery } from 'query/generated/graphql-codegen-generated';
@@ -9,7 +9,7 @@ import { ExtendedNextPage } from 'types/ExtendedNextPage';
 
 const FarmsPage: ExtendedNextPage = () => {
 	const { data: allGaugesQueryData } = useGetAllGaugesQuery({
-		endpoint: EXCHANGE_SUBGRAPH_URL
+		endpoint: GAUGES_SUBGRAPH_URL
 	});
 	const gaugeList: Gauge[] = (allGaugesQueryData?.allGauges || []) //
 		.map((gauge) => ({

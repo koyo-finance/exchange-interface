@@ -2,7 +2,7 @@ import { PoolDataService, SOR, TokenPriceService } from '@balancer-labs/sor';
 import { ChainId } from '@koyofinance/core-sdk';
 import { DEFAULT_CHAIN } from 'config/chain';
 import { ChainMulticall1, ChainNativeWrappedAsset, ChainVault } from 'constants/contracts';
-import { EXCHANGE_SUBGRAPH_URL } from 'constants/subgraphs';
+import { ChainExchangeSubgraphURL } from 'constants/subgraphs';
 import { bobaReadonlyProvider } from 'hooks/useProviders';
 import { useJpex } from 'react-jpex';
 import { AggregateTokenPriceService } from 'utils/exchange/router/AggregateTokenPriceService';
@@ -22,12 +22,12 @@ export function useInstantiateSORConstant() {
 			multiAddress: ChainMulticall1[chainId] || ChainMulticall1[DEFAULT_CHAIN]!,
 			vaultAddress: ChainVault[chainId] || ChainVault[DEFAULT_CHAIN]!,
 			onchain: true,
-			subgraphUrl: EXCHANGE_SUBGRAPH_URL
+			subgraphUrl: ChainExchangeSubgraphURL[chainId || DEFAULT_CHAIN]!
 		});
 	});
 
 	jpex.factory<TokenPriceService>((chainId: ChainId) => {
-		const sgPriceService = new SubgraphTokenPriceService(ChainNativeWrappedAsset[chainId] || '');
+		const sgPriceService = new SubgraphTokenPriceService(chainId, ChainNativeWrappedAsset[chainId] || ChainNativeWrappedAsset[DEFAULT_CHAIN]!);
 		const cgPriceService = new CoingeckoTokenPriceService(chainId);
 
 		const priceService = new AggregateTokenPriceService([cgPriceService, sgPriceService]);
