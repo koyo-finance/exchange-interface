@@ -1,4 +1,4 @@
-import { EXLUDED_POOL_IDS } from 'config/pool-lists';
+import { EXLUDED_POOL_IDS } from 'config/pools';
 import { EXCHANGE_SUBGRAPH_URL } from 'constants/subgraphs';
 import { LitePoolFragment, useGetPoolsQuery } from 'query/generated/graphql-codegen-generated';
 import React, { useState } from 'react';
