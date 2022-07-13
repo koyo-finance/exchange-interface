@@ -12,9 +12,9 @@ import FormApproveAsset from 'components/FormApproveAsset';
 import GuideLink from 'components/GuideLink';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
 import { SwapTokenNumber } from 'constants/swaps';
-import { vaultContract } from 'core/contracts';
 import { BigNumber } from 'ethers';
 import { Form, Formik } from 'formik';
+import useVaultContract from 'hooks/contracts/useVaultContract';
 import useTokenAllowance from 'hooks/generic/useTokenAllowance';
 import { useRoutedSwap } from 'hooks/SOR/useRoutedSwap';
 import { useWeb3 } from 'hooks/useWeb3';
@@ -39,6 +39,7 @@ export interface SwapFormValues {
 const SwapIndexPage: ExtendedNextPage = () => {
 	const { accountAddress, signer } = useWeb3();
 	const dispatch = useAppDispatch();
+	const vaultContract = useVaultContract();
 
 	const [tokenModalOneIsOpen, setTokenModalIsOpen] = useState(false);
 	const [activeToken, setActiveToken] = useState<SwapTokenNumber>(SwapTokenNumber.IN);

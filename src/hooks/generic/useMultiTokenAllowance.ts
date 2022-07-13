@@ -3,7 +3,6 @@ import { ContractMethodArgs, useSmartContractReadCalls } from '@koyofinance/reac
 import { BigNumberish } from 'ethers';
 import { getAddress } from 'ethers/lib/utils';
 import { useWeb3 } from 'hooks/useWeb3';
-import { useMemo } from 'react';
 import { QueryObserverResult } from 'react-query';
 
 export default function useMultiTokenAllowance(
@@ -11,10 +10,9 @@ export default function useMultiTokenAllowance(
 	spender: string | null | undefined,
 	tokenAddresses: (string | undefined | null)[] = []
 ): QueryObserverResult<BigNumberish>[] {
-	const { defaultedProvider } = useWeb3();
-	const tokenContracts = useMemo(
-		() => tokenAddresses.map((tokenAddress) => (tokenAddress ? ERC20Permit__factory.connect(tokenAddress, defaultedProvider) : undefined)),
-		[tokenAddresses, defaultedProvider]
+	const { defaultedProvider, chainId } = useWeb3();
+	const tokenContracts = tokenAddresses.map((tokenAddress) =>
+		tokenAddress ? ERC20Permit__factory.connect(tokenAddress, defaultedProvider) : undefined
 	);
 
 	return useSmartContractReadCalls(tokenContracts, 'allowance', {
@@ -22,6 +20,7 @@ export default function useMultiTokenAllowance(
 			ERC20Permit,
 			'allowance'
 		>,
+		chainId,
 		enabled: Boolean(account && spender && tokenContracts.length !== 0 && tokenContracts.every(Boolean))
 	});
 }

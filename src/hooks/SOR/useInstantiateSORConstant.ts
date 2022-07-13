@@ -4,7 +4,6 @@ import { DEFAULT_CHAIN } from 'config/chain';
 import { ChainMulticall1, ChainNativeWrappedAsset, ChainVault } from 'constants/contracts';
 import { EXCHANGE_SUBGRAPH_URL } from 'constants/subgraphs';
 import { bobaReadonlyProvider } from 'hooks/useProviders';
-import { useWeb3 } from 'hooks/useWeb3';
 import { useJpex } from 'react-jpex';
 import { AggregateTokenPriceService } from 'utils/exchange/router/AggregateTokenPriceService';
 import { CoingeckoTokenPriceService } from 'utils/exchange/router/CoingeckoTokenPriceService';
@@ -14,13 +13,12 @@ import useSORRPCProviders from './useSORRPCProviders';
 
 export function useInstantiateSORConstant() {
 	const jpex = useJpex();
-	const { defaultedProvider } = useWeb3();
 	const providers = useSORRPCProviders();
 
 	jpex.factory<PoolDataService>((chainId: ChainId) => {
 		return new SubgraphPoolDataService({
 			chainId,
-			provider: providers[chainId] || defaultedProvider,
+			provider: providers[chainId] || providers[DEFAULT_CHAIN]!,
 			multiAddress: ChainMulticall1[chainId] || ChainMulticall1[DEFAULT_CHAIN]!,
 			vaultAddress: ChainVault[chainId] || ChainVault[DEFAULT_CHAIN]!,
 			onchain: true,

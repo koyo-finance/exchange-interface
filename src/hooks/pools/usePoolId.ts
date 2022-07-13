@@ -16,5 +16,8 @@ export default function usePoolId(poolAddress: string | undefined | null, chainI
 		  )
 		: undefined;
 
-	return useSmartContractReadCall(pool, 'getPoolId', { enabled: Boolean(poolAddress && pool) });
+	return useSmartContractReadCall(pool, 'getPoolId', {
+		chainId: activeChainId || chainId, //
+		enabled: Boolean(poolAddress && pool)
+	});
 }
