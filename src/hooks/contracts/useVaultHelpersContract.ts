@@ -1,4 +1,5 @@
 import { ChainId } from '@koyofinance/core-sdk';
+import { DEFAULT_CHAIN } from 'config/chain';
 import { ChainVaultHelpers } from 'constants/contracts';
 import useProviders from 'hooks/useProviders';
 import { useWeb3 } from 'hooks/useWeb3';
@@ -9,7 +10,7 @@ export default function useVaultHelpersContract(chainId?: ChainId) {
 	const providers = useProviders();
 
 	return KoyoHelpers__factory.connect(
-		ChainVaultHelpers[activeChainId || chainId || ChainId.BOBA] as string,
+		ChainVaultHelpers[activeChainId || chainId || DEFAULT_CHAIN] as string,
 		providers[activeChainId || chainId] || defaultedProvider
 	);
 }

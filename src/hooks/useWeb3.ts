@@ -1,8 +1,9 @@
 import { Provider } from '@ethersproject/providers';
 import { ChainId } from '@koyofinance/core-sdk';
+import { DEFAULT_CHAIN } from 'config/chain';
 import { Signer } from 'ethers';
 import { Chain, useAccount, useNetwork, useProvider, useSigner } from 'wagmi';
-import useProviders, { bobaReadonlyProvider } from './useProviders';
+import useProviders from './useProviders';
 
 export type WagmiAccountStatus = 'connected' | 'reconnecting' | 'connecting' | 'disconnected';
 export interface Web3State {
@@ -25,11 +26,11 @@ export function useWeb3(): Web3State {
 	const { data: signer } = useSigner();
 	const { chain, chains } = useNetwork();
 
-	const chainId: ChainId = (!chain?.unsupported && chain?.id) || ChainId.BOBA;
+	const chainId: ChainId = (!chain?.unsupported && chain?.id) || DEFAULT_CHAIN;
 
 	const providers = useProviders();
 	const provider = useProvider();
-	const defaultedProvider = providers[chainId] || bobaReadonlyProvider;
+	const defaultedProvider = providers[chainId] || providers[DEFAULT_CHAIN]!;
 
 	return {
 		status,
