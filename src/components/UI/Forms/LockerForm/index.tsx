@@ -168,24 +168,33 @@ const LockerForm: React.FC<{ openForceWithdrawModal: () => void }> = ({ openForc
 							<hr className=" border-1 rounded-xl" />
 							<ExtendLockTimeForm currentLockTime={lockTimeConverted} />
 							<hr className=" border-1 rounded-xl" />
-							<button
-								className="btn w-full border-2  border-red-600 bg-darks-500 bg-opacity-100 text-red-600 hover:bg-red-600 hover:text-white"
-								onClick={() => openForceWithdrawModal()}
+							<SingleEntityConnectButton
+								className="btn w-full border-2 border-red-600 bg-darks-500 bg-opacity-100 text-red-600 hover:bg-red-600 hover:text-white"
+								invalidNetworkClassName="bg-red-600 text-black group hover:bg-red-400"
+								unsupported={chainId !== ChainId.BOBA}
 							>
-								FORCE WITHDRAW
-							</button>
+								<button className="w-full" onClick={() => openForceWithdrawModal()}>
+									FORCE WITHDRAW
+								</button>
+							</SingleEntityConnectButton>
 						</>
 					)}
 				</>
 			)}
 
 			{lockTimeConverted <= Date.now() && fromBigNumber(kyoLocked) > 0 && (
-				<button
+				<SingleEntityConnectButton
 					className="btn w-full bg-lights-400 bg-opacity-100 text-black hover:bg-lights-200"
-					onClick={() => kyoWithdraw([{ gasLimit: 700_000 }])}
+					invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
+					unsupported={chainId !== ChainId.BOBA}
 				>
-					Withdraw KYO
-				</button>
+					<button
+						className="btn w-full bg-lights-400 bg-opacity-100 text-black hover:bg-lights-200"
+						onClick={() => kyoWithdraw([{ gasLimit: 700_000 }])}
+					>
+						Withdraw KYO
+					</button>
+				</SingleEntityConnectButton>
 			)}
 		</>
 	);

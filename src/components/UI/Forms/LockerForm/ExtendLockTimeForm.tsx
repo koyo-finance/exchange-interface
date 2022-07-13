@@ -87,10 +87,7 @@ const ExtendLockTimeForm: React.FC<ExtendLockTimeProps> = ({ currentLockTime }) 
 									invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
 									unsupported={chainId !== ChainId.BOBA}
 								>
-									<button
-										type="submit"
-										className=" btn w-full bg-lights-400 bg-opacity-100 font-normal text-black hover:bg-lights-200"
-									>
+									<button type="submit" className=" w-full">
 										EXTEND LOCK
 									</button>
 								</SingleEntityConnectButton>
