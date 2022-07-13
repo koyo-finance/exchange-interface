@@ -34,8 +34,22 @@ const auroraMainnetChain: Chain = {
 	testnet: false
 };
 
+const moonriverChain: Chain = {
+	id: ChainId.MOONRIVER,
+	name: CHAIN_INFO[ChainId.MOONRIVER].label,
+	network: 'moonriver',
+	nativeCurrency: CHAIN_INFO[ChainId.MOONRIVER].addNetworkInfo.nativeCurrency,
+	rpcUrls: {
+		default: CHAIN_INFO[ChainId.MOONRIVER].addNetworkInfo.rpcUrl
+	},
+	blockExplorers: {
+		default: { name: 'Moonscan - Moonriver', url: CHAIN_INFO[ChainId.MOONRIVER].explorer }
+	},
+	testnet: false
+};
+
 export const { chains, provider, webSocketProvider } = configureChains(
-	[bobaMainnetChain, auroraMainnetChain], //
+	[bobaMainnetChain, auroraMainnetChain, moonriverChain], //
 	[jsonRpcProvider({ rpc: (chain) => ({ http: chain.rpcUrls.default }) })]
 );
 

@@ -2,7 +2,8 @@ import { ChainId } from '@koyofinance/core-sdk';
 
 export enum SupportedChainId {
 	BOBA = ChainId.BOBA,
-	AURORA = ChainId.AURORA
+	AURORA = ChainId.AURORA,
+	MOONRIVER = ChainId.MOONRIVER
 }
 
 export const ALL_SUPPORTED_CHAIN_IDS: SupportedChainId[] = Object.values(SupportedChainId).filter(
@@ -12,6 +13,7 @@ export const ALL_SUPPORTED_CHAIN_IDS: SupportedChainId[] = Object.values(Support
 export const BOBA_MAINNET_RPC_URL = 'https://mainnet.boba.network';
 export const BOBA_MAINNET_READ_RPC_URL = 'https://lightning-replica.boba.network';
 export const AURORA_RPC_URL = 'https://mainnet.aurora.dev';
+export const MOONRIVER_RPC_URL = 'https://moonriver.public.blastapi.io';
 
 export const RPC_URLS: { [K in SupportedChainId]: string } = {
 	[SupportedChainId.BOBA]: BOBA_MAINNET_RPC_URL
@@ -55,6 +57,14 @@ export const CHAIN_INFO: ChainInfoMap = {
 		addNetworkInfo: {
 			nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
 			rpcUrl: 'https://mainnet.aurora.dev'
+		}
+	},
+	[SupportedChainId.MOONRIVER]: {
+		explorer: 'https://moonriver.moonscan.io',
+		label: 'Moonriver',
+		addNetworkInfo: {
+			nativeCurrency: { name: 'Moonriver', symbol: 'MOVR', decimals: 18 },
+			rpcUrl: 'https://moonriver.public.blastapi.io'
 		}
 	}
 };

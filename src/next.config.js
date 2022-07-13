@@ -23,7 +23,7 @@ const config = {
 
 			{
 				source: '/tokens',
-				destination: 'https://tassets.koyo.finance/koyo-default.tokenlist.json'
+				destination: 'https://tokens.koyo.finance/all.json'
 			}
 		];
 	},
