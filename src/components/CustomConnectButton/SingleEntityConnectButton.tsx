@@ -6,6 +6,7 @@ export interface SingleEntityConnectButtonProps {
 	invalidNetworkClassName?: string;
 	textClassName?: string;
 	customText?: string;
+	unsupported?: boolean;
 }
 
 const SingleEntityConnectButton: React.FC<SingleEntityConnectButtonProps> = ({
@@ -13,7 +14,8 @@ const SingleEntityConnectButton: React.FC<SingleEntityConnectButtonProps> = ({
 	className,
 	invalidNetworkClassName,
 	textClassName,
-	customText
+	customText,
+	unsupported
 }) => {
 	return (
 		<ConnectButton.Custom>
@@ -28,7 +30,7 @@ const SingleEntityConnectButton: React.FC<SingleEntityConnectButtonProps> = ({
 								userSelect: 'none'
 							}
 						})}
-						className={chain?.unsupported ? `${className} ${invalidNetworkClassName}` : className}
+						className={chain?.unsupported || unsupported ? `${className} ${invalidNetworkClassName}` : className}
 					>
 						{(() => {
 							if (!mounted || !account || !chain) {
@@ -39,7 +41,7 @@ const SingleEntityConnectButton: React.FC<SingleEntityConnectButtonProps> = ({
 								);
 							}
 
-							if (chain.unsupported) {
+							if (chain.unsupported || unsupported) {
 								return (
 									<button onClick={openChainModal} type="button" className={`h-full w-full ${textClassName || ''}`}>
 										Wrong network{customText || ''}

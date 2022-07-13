@@ -1,5 +1,5 @@
 import { MaxUint256 } from '@ethersproject/constants';
-import { formatAmount, formatBalance, formatDollarAmount, fromBigNumber } from '@koyofinance/core-sdk';
+import { ChainId, formatAmount, formatBalance, formatDollarAmount, fromBigNumber } from '@koyofinance/core-sdk';
 import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
 import FormApproveAsset from 'components/FormApproveAsset';
 import { BigNumber } from 'ethers';
@@ -28,7 +28,7 @@ export interface FarmCardProps {
 }
 
 const FarmCard: React.FC<FarmCardProps> = ({ gauge }) => {
-	const { accountAddress, signer } = useWeb3();
+	const { accountAddress, signer, chainId } = useWeb3();
 
 	const { data: lpTokenBalance = BigNumber.from(0) } = useTokenBalance(accountAddress, gauge.pool.address);
 	const { data: gaugeTokenBalance = BigNumber.from(0) } = useTokenBalance(accountAddress, gauge.address);
@@ -60,6 +60,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ gauge }) => {
 				<SingleEntityConnectButton
 					className="btn w-full bg-lights-400 bg-opacity-100 p-0 text-black hover:bg-lights-200"
 					invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
+					unsupported={chainId !== ChainId.BOBA}
 				>
 					<Switch>
 						<Case condition={BigNumber.from(lpTokenAllowance).lt(lpTokenBalance)}>

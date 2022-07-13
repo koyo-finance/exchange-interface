@@ -1,4 +1,4 @@
-import { formatBalance, fromBigNumber } from '@koyofinance/core-sdk';
+import { ChainId, formatBalance, fromBigNumber } from '@koyofinance/core-sdk';
 import GaugePowerPercentageUsed from 'components/apps/dao/voting/GaugePowerPercentageUsed';
 import GaugeModal from 'components/apps/dao/voting/modals/GaugeModal';
 import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
@@ -23,7 +23,7 @@ import { HiSwitchHorizontal } from 'react-icons/hi';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
 
 const GaugesPage: ExtendedNextPage = () => {
-	const { accountAddress, signer } = useWeb3();
+	const { accountAddress, signer, chainId } = useWeb3();
 
 	const week = 604800;
 	const currentTime = Date.now() / 1000;
@@ -223,6 +223,7 @@ const GaugesPage: ExtendedNextPage = () => {
 						<SingleEntityConnectButton
 							className="btn bg-lights-400 px-0 text-black hover:bg-lights-200"
 							invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
+							unsupported={chainId !== ChainId.BOBA}
 						>
 							<button className="z-20 h-full w-full" onClick={submitVoteHandler}>
 								SUBMIT VOTE - {gaugeList[gaugeList.findIndex((gauge) => gauge.address === selectedGauge)].name}
@@ -234,6 +235,7 @@ const GaugesPage: ExtendedNextPage = () => {
 						<SingleEntityConnectButton
 							className="btn bg-gray-600 px-0 text-black hover:bg-gray-600"
 							invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
+							unsupported={chainId !== ChainId.BOBA}
 						>
 							<button className="z-20 h-full w-full">GAUGE NOT SELECTED</button>
 						</SingleEntityConnectButton>

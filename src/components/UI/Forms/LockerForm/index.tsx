@@ -1,5 +1,5 @@
 import { MaxUint256 } from '@ethersproject/constants';
-import { formatBalance, fromBigNumber, toBigNumber } from '@koyofinance/core-sdk';
+import { ChainId, formatBalance, fromBigNumber, toBigNumber } from '@koyofinance/core-sdk';
 import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
 import DatePickerFormik from 'components/Field/DatePickerFormik';
 import FormApproveAsset from 'components/FormApproveAsset';
@@ -20,7 +20,7 @@ import IncreaseLockedAmountForm from './IncreaseLockedAmountForm';
 import LockTimeSetButton from './LockTimeSetButton';
 
 const LockerForm: React.FC<{ openForceWithdrawModal: () => void }> = ({ openForceWithdrawModal }) => {
-	const { accountAddress, signer } = useWeb3();
+	const { accountAddress, signer, chainId } = useWeb3();
 
 	const { data: kyoBalance = 0 } = useTokenBalance(accountAddress, kyoContract.address);
 	const { data: kyoAllowance = 0 } = useTokenAllowance(accountAddress, votingEscrowContract.address, kyoContract.address);
@@ -120,6 +120,7 @@ const LockerForm: React.FC<{ openForceWithdrawModal: () => void }> = ({ openForc
 									<SingleEntityConnectButton
 										className="btn w-full bg-lights-400 bg-opacity-100 text-black hover:bg-lights-200"
 										invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
+										unsupported={chainId !== ChainId.BOBA}
 									>
 										<Switch>
 											<Case condition={BigNumber.from(kyoAllowance).lte(toBigNumber(props.values.amount || 0))}>

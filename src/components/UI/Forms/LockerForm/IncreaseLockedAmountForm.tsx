@@ -1,5 +1,5 @@
 import { MaxUint256 } from '@ethersproject/constants';
-import { fromBigNumber, toBigNumber } from '@koyofinance/core-sdk';
+import { ChainId, fromBigNumber, toBigNumber } from '@koyofinance/core-sdk';
 import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
 import FormApproveAsset from 'components/FormApproveAsset';
 import { kyoContract, votingEscrowContract } from 'core/contracts';
@@ -16,7 +16,7 @@ export interface IncreaseLockedAmountFormProps {
 }
 
 const IncreaseLockedAmountForm: React.FC<IncreaseLockedAmountFormProps> = ({ kyoAllowance, kyoBalance }) => {
-	const { signer } = useWeb3();
+	const { signer, chainId } = useWeb3();
 
 	const { mutate: kyoIncreaseAmount } = useIncreaseAmountEscrow(signer);
 
@@ -62,6 +62,7 @@ const IncreaseLockedAmountForm: React.FC<IncreaseLockedAmountFormProps> = ({ kyo
 								<SingleEntityConnectButton
 									className="btn w-full bg-lights-400 bg-opacity-100 text-black hover:bg-lights-200"
 									invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
+									unsupported={chainId !== ChainId.BOBA}
 								>
 									<Switch>
 										<Case condition={BigNumber.from(kyoAllowance).lte(toBigNumber(props.values.amount || 0))}>
