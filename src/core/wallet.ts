@@ -6,7 +6,11 @@ import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 import { onto } from './wallets/onto';
 import { ontoWeb } from './wallets/ontoWeb';
 
-const bobaMainnetChain: Chain = {
+export interface RainbowKitChain extends Chain {
+	iconUrl?: string;
+}
+
+const bobaMainnetChain: RainbowKitChain = {
 	id: ChainId.BOBA,
 	name: CHAIN_INFO[ChainId.BOBA].label,
 	network: 'boba',
@@ -17,10 +21,11 @@ const bobaMainnetChain: Chain = {
 	blockExplorers: {
 		default: { name: 'Bobascan', url: CHAIN_INFO[ChainId.BOBA].explorer }
 	},
-	testnet: false
+	testnet: false,
+	iconUrl: 'https://tassets.koyo.finance/logos/BOBA/512x512.png'
 };
 
-const auroraMainnetChain: Chain = {
+const auroraMainnetChain: RainbowKitChain = {
 	id: ChainId.AURORA,
 	name: CHAIN_INFO[ChainId.AURORA].label,
 	network: 'aurora',
@@ -31,10 +36,11 @@ const auroraMainnetChain: Chain = {
 	blockExplorers: {
 		default: { name: 'Aurorascan', url: CHAIN_INFO[ChainId.AURORA].explorer }
 	},
-	testnet: false
+	testnet: false,
+	iconUrl: 'https://tassets.koyo.finance/logos/AURORA/512x512.png'
 };
 
-const moonriverChain: Chain = {
+const moonriverChain: RainbowKitChain = {
 	id: ChainId.MOONRIVER,
 	name: CHAIN_INFO[ChainId.MOONRIVER].label,
 	network: 'moonriver',
@@ -45,7 +51,8 @@ const moonriverChain: Chain = {
 	blockExplorers: {
 		default: { name: 'Moonscan - Moonriver', url: CHAIN_INFO[ChainId.MOONRIVER].explorer }
 	},
-	testnet: false
+	testnet: false,
+	iconUrl: 'https://tassets.koyo.finance/logos/MOVR/512x512.png'
 };
 
 export const { chains, provider, webSocketProvider } = configureChains(
