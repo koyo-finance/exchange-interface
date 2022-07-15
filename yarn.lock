@@ -2793,10 +2793,10 @@
     numbro "^2.3.6"
     tslib "^2.4.0"
 
-"@koyofinance/core-sdk@^0.3.0-next.977a88d.0":
-  version "0.3.0-next.977a88d.0"
-  resolved "https://registry.yarnpkg.com/@koyofinance/core-sdk/-/core-sdk-0.3.0-next.977a88d.0.tgz#ec4ac9c43c771896e72b961a7d9393353db79ae4"
-  integrity sha512-roNXRT0uZqA/v5vLChIqO/rtkI02ZxiIOq4/Ujc/QWHG4Xf4T8MrBumZIBOzxaMB7zSXqsO847OC/EtLd8RL7A==
+"@koyofinance/core-sdk@^0.3.0-next.b29539a.0":
+  version "0.3.0-next.b29539a.0"
+  resolved "https://registry.yarnpkg.com/@koyofinance/core-sdk/-/core-sdk-0.3.0-next.b29539a.0.tgz#41c482ee7aff104e512271a46d8f9222ec1d0c80"
+  integrity sha512-mSKf+jXo7yAZbZjO99CZcxr0D1O3a8fi2p72Iox864oQjDM1l7/eoxtlYr1RbPOFpoROm9dI431ok3ZiGxm1IA==
   dependencies:
     "@uniswap/token-lists" "^1.0.0-beta.28"
     dayjs "^1.11.2"

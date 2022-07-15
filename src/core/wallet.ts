@@ -55,8 +55,23 @@ const moonriverChain: RainbowKitChain = {
 	iconUrl: 'https://tassets.koyo.finance/logos/MOVR/512x512.png'
 };
 
+const polygonChain: RainbowKitChain = {
+	id: ChainId.POLYGON,
+	name: CHAIN_INFO[ChainId.POLYGON].label,
+	network: 'polygon',
+	nativeCurrency: CHAIN_INFO[ChainId.POLYGON].addNetworkInfo.nativeCurrency,
+	rpcUrls: {
+		default: CHAIN_INFO[ChainId.POLYGON].addNetworkInfo.rpcUrl
+	},
+	blockExplorers: {
+		default: { name: 'Polygonscan', url: CHAIN_INFO[ChainId.POLYGON].explorer }
+	},
+	testnet: false,
+	iconUrl: 'https://tassets.koyo.finance/chains/polygon.png'
+};
+
 export const { chains, provider, webSocketProvider } = configureChains(
-	[bobaMainnetChain, auroraMainnetChain, moonriverChain], //
+	[bobaMainnetChain, auroraMainnetChain, moonriverChain, polygonChain], //
 	[jsonRpcProvider({ rpc: (chain) => ({ http: chain.rpcUrls.default }) })]
 );
 
