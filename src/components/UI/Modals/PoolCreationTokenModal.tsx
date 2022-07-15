@@ -1,5 +1,5 @@
-import { ChainId } from '@koyofinance/core-sdk';
 import { TokenInfo } from '@uniswap/token-lists';
+import { useWeb3 } from 'hooks/useWeb3';
 import React, { useEffect, useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import { FiEdit } from 'react-icons/fi';
@@ -13,7 +13,9 @@ export interface PoolCreationTokenModalProps {
 }
 
 const PoolCreationTokenModal: React.FC<PoolCreationTokenModalProps> = ({ chosenTokens, setModalIsOpen, setTokens }) => {
-	const TOKENS = useSelector(selectAllTokensByChainId(ChainId.BOBA));
+	const { chainId } = useWeb3();
+
+	const TOKENS = useSelector(selectAllTokensByChainId(chainId));
 	const [tokenList, setTokenList] = useState<TokenInfo[]>(TOKENS);
 	const [filteredTokenList, setFilteredTokenList] = useState(tokenList);
 

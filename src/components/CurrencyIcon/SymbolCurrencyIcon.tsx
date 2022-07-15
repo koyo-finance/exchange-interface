@@ -10,7 +10,7 @@ export interface SymbolCurrencyIconProps {
 const SymbolCurrencyIcon: React.FC<SymbolCurrencyIconProps> = ({ symbol, style, className }) => {
 	const overrideSources: { [symbol: string]: string } = useMemo(() => {
 		return {
-			[`${symbol}`]: `https://tassets.koyo.finance/logos/${symbol?.toUpperCase()}/512x512.png`
+			[`${symbol}`]: `https://tassets.koyo.finance/logos/${symbol}/512x512.png`
 		};
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [symbol]);

@@ -1,7 +1,10 @@
 import { PoolFilter, SOR, SwapTypes } from '@balancer-labs/sor';
 import { MaxUint256 } from '@ethersproject/constants';
+import { ChainId } from '@koyofinance/core-sdk';
+import { DEFAULT_CHAIN } from 'config/chain';
 import { BigNumber, ContractReceipt, PayableOverrides, Signer } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
+import { useWeb3 } from 'hooks/useWeb3';
 import { useJpex } from 'react-jpex';
 import { useMutation } from 'react-query';
 import { IVault } from 'types/contracts/exchange/Vault';
@@ -34,10 +37,11 @@ export interface SwapVariables {
 	overrides?: PayableOverrides;
 }
 
-export function useRoutedSwap(signer: Signer | undefined) {
+export function useRoutedSwap(signer: Signer | undefined, chainId?: ChainId) {
 	const jpex = useJpex();
+	const { chainId: activeChainId } = useWeb3();
 	const { mutate: batchSwap } = useBatchSwap(signer);
-	const sor = jpex.resolve<SOR>();
+	const sor = jpex.resolveWith<SOR, ChainId>([activeChainId || chainId || DEFAULT_CHAIN]);
 
 	return useMutation({
 		mutationFn: async (variables: SwapVariables): Promise<ContractReceipt> => {

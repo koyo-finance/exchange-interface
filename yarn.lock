@@ -2793,10 +2793,21 @@
     numbro "^2.3.6"
     tslib "^2.4.0"
 
-"@koyofinance/react-query-typechain@^0.2.0-next.47b31f1.0":
-  version "0.2.0-next.47b31f1.0"
-  resolved "https://registry.yarnpkg.com/@koyofinance/react-query-typechain/-/react-query-typechain-0.2.0-next.47b31f1.0.tgz#3d2e406fbc039fbffef0c1f62341472080bdc355"
-  integrity sha512-gzMpWypcm1rKMMGnoUHxBtqFR11SgRM8BmnbGzZJDjb8B3NJrVMqf1clWxbt1ge3jKxir/8BGFc2+KpzXuJWTQ==
+"@koyofinance/core-sdk@^0.3.0-next.b29539a.0":
+  version "0.3.0-next.b29539a.0"
+  resolved "https://registry.yarnpkg.com/@koyofinance/core-sdk/-/core-sdk-0.3.0-next.b29539a.0.tgz#41c482ee7aff104e512271a46d8f9222ec1d0c80"
+  integrity sha512-mSKf+jXo7yAZbZjO99CZcxr0D1O3a8fi2p72Iox864oQjDM1l7/eoxtlYr1RbPOFpoROm9dI431ok3ZiGxm1IA==
+  dependencies:
+    "@uniswap/token-lists" "^1.0.0-beta.28"
+    dayjs "^1.11.2"
+    ethers "^5.6.6"
+    numbro "^2.3.6"
+    tslib "^2.4.0"
+
+"@koyofinance/react-query-typechain@^1.1.0-next.f2f8f0d.0":
+  version "1.1.0-next.f2f8f0d.0"
+  resolved "https://registry.yarnpkg.com/@koyofinance/react-query-typechain/-/react-query-typechain-1.1.0-next.f2f8f0d.0.tgz#b2e4aeaa26fd9fa20a7935f43bd5754c220dc37f"
+  integrity sha512-MEQvV+5lSmN8YjxB/DeMIb/ZSVxN/C1hdS3cBdPQZwdzu50rfqcM4JeuPPmk4/lg6GOfIcgA+v4YHO1e0UetEg==
   dependencies:
     "@zerollup/ts-transform-paths" "^1.7.18"
     ethers "^5.6.8"
@@ -2804,8 +2815,8 @@
     lodash.isplainobject "^4.0.6"
     lodash.zip "^4.2.0"
     react "^17.0.2"
-    react-dom "^17.0.2"
-    react-query "3.39.0"
+    react-dom "17.0.2"
+    react-query "^3.38.1"
     ts-node "^10.4.0"
     ttypescript "^1.5.13"
 
@@ -13632,7 +13643,7 @@ react-docgen@^5.0.0:
     node-dir "^0.1.10"
     strip-indent "^3.0.0"
 
-react-dom@17.0.2, react-dom@^17.0.2:
+react-dom@17.0.2:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-17.0.2.tgz#ecffb6845e3ad8dbfcdc498f0d0a939736502c23"
   integrity sha512-s4h96KtLDUQlsENhMn1ar8t2bEa+q/YAtj8pPPdIjPDGBDIVNsrD9aXNWqspUe6AzKCIG0C1HZZLqLV7qpOBGA==
@@ -13726,7 +13737,7 @@ react-popper@^2.2.5:
     react-fast-compare "^3.0.1"
     warning "^4.0.2"
 
-react-query@3.39.0, react-query@^3.38.1:
+react-query@^3.38.1:
   version "3.39.0"
   resolved "https://registry.yarnpkg.com/react-query/-/react-query-3.39.0.tgz#0caca7b0da98e65008bbcd4df0d25618c2100050"
   integrity sha512-Od0IkSuS79WJOhzWBx/ys0x13+7wFqgnn64vBqqAAnZ9whocVhl/y1padD5uuZ6EIkXbFbInax0qvY7zGM0thA==

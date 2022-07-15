@@ -4,7 +4,6 @@ import DepositCardToken from 'components/apps/amm/unified/deposit/cards/DepositC
 import DepositKPTCalculation from 'components/apps/amm/unified/deposit/DepositKPTCalculation';
 import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
 import FormApproveAsset from 'components/FormApproveAsset';
-import { vaultContract } from 'core/contracts';
 import { BigNumber } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
 import { Form, Formik } from 'formik';
@@ -19,6 +18,7 @@ import React, { useEffect, useState } from 'react';
 import { Case, Default, Switch } from 'react-if';
 import { assetHelperBoba } from 'utils/assets';
 import { joinExactTokensInForKPTOut, joinInit } from 'utils/exchange/userData/joins';
+import useVaultContract from 'hooks/contracts/useVaultContract';
 
 export interface DepositIntoPoolProps {
 	selectedPool: LitePoolFragment;
@@ -26,6 +26,7 @@ export interface DepositIntoPoolProps {
 
 const DepositIntoPool: React.FC<DepositIntoPoolProps> = ({ selectedPool }) => {
 	const { accountAddress, signer } = useWeb3();
+	const vaultContract = useVaultContract();
 
 	const [resetInputs, setResetInputs] = useState(false);
 

@@ -1,12 +1,13 @@
 import { TokenPriceService } from '@balancer-labs/sor';
 import { MaxUint256 } from '@ethersproject/constants';
-import { fromBigNumber } from '@koyofinance/core-sdk';
+import { ChainId, fromBigNumber } from '@koyofinance/core-sdk';
 import SymbolCurrencyIcon from 'components/CurrencyIcon/SymbolCurrencyIcon';
 import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
 import FormApproveAsset from 'components/FormApproveAsset';
-import { vaultContract } from 'core/contracts';
+import { DEFAULT_CHAIN } from 'config/chain';
 import { BigNumber } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
+import useVaultContract from 'hooks/contracts/useVaultContract';
 import useMultiTokenAllowance from 'hooks/generic/useMultiTokenAllowance';
 import { useCreatePool } from 'hooks/pools/useCreatePool';
 import usePoolId from 'hooks/pools/usePoolId';
@@ -35,8 +36,9 @@ export interface PoolConfirmationProps {
 
 const PoolConfirmation: React.FC<PoolConfirmationProps> = ({ setStep, cancelPoolCreation }) => {
 	const jpex = useJpex();
-	const priceService = jpex.resolve<TokenPriceService>();
-	const { accountAddress, signer } = useWeb3();
+	const { accountAddress, signer, chainId: activeChainId } = useWeb3();
+	const priceService = jpex.resolveWith<TokenPriceService, ChainId>([activeChainId || DEFAULT_CHAIN]);
+	const vaultContract = useVaultContract();
 
 	const tokens = useSelector(selectTokens);
 	const weights = useSelector(selectWeights);

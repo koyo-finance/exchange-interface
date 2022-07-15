@@ -1,35 +1,35 @@
-import { formatBalance, fromBigNumber } from '@koyofinance/core-sdk';
+import { ChainId, formatBalance, fromBigNumber } from '@koyofinance/core-sdk';
 import GaugePowerPercentageUsed from 'components/apps/dao/voting/GaugePowerPercentageUsed';
 import GaugeModal from 'components/apps/dao/voting/modals/GaugeModal';
 import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
 import TitledDisplayBox from 'components/TitledDisplayBox';
 import { ANALYTICS_LINK, ROOT_WITH_PROTOCOL } from 'constants/links';
-import { EXCHANGE_SUBGRAPH_URL } from 'constants/subgraphs';
+import { GAUGES_SUBGRAPH_URL } from 'constants/subgraphs';
 import { votingEscrowContract } from 'core/contracts';
 import { BigNumber } from 'ethers';
+import useTokenBalance from 'hooks/generic/useTokenBalance';
 import { useDistributeGaugeEmissions } from 'hooks/KYO/gauges/useDistributeGaugeEmissions';
 import useGetVoteUserPower from 'hooks/KYO/gauges/useGetVoteUserPower';
 import useMultiCheckClaimableTokens from 'hooks/KYO/gauges/useMultiCheckClaimableTokens';
 import { useVoteForGaugeWeights } from 'hooks/KYO/gauges/useVoteForGaugeWeights';
-import useTokenBalance from 'hooks/generic/useTokenBalance';
 import { useWeb3 } from 'hooks/useWeb3';
 import { SwapLayout } from 'layouts/SwapLayout';
 import { NextSeo } from 'next-seo';
 import { useGetAllGaugesQuery } from 'query/generated/graphql-codegen-generated';
 import React, { useState } from 'react';
+import Countdown from 'react-countdown';
 import { BsInfoCircle } from 'react-icons/bs';
 import { HiSwitchHorizontal } from 'react-icons/hi';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
-import Countdown from 'react-countdown';
 
 const GaugesPage: ExtendedNextPage = () => {
-	const { accountAddress, signer } = useWeb3();
+	const { accountAddress, signer, chainId } = useWeb3();
 
 	const week = 604800;
 	const currentTime = Date.now() / 1000;
 
 	const { data: allGaugesQueryData } = useGetAllGaugesQuery({
-		endpoint: EXCHANGE_SUBGRAPH_URL
+		endpoint: GAUGES_SUBGRAPH_URL
 	});
 	const gaugeList = (allGaugesQueryData?.allGauges || []) //
 		.map((gauge) => ({ address: gauge.address, name: gauge.symbol.replace('-gauge', '') }));
@@ -223,6 +223,7 @@ const GaugesPage: ExtendedNextPage = () => {
 						<SingleEntityConnectButton
 							className="btn bg-lights-400 px-0 text-black hover:bg-lights-200"
 							invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
+							unsupported={chainId !== ChainId.BOBA}
 						>
 							<button className="z-20 h-full w-full" onClick={submitVoteHandler}>
 								SUBMIT VOTE - {gaugeList[gaugeList.findIndex((gauge) => gauge.address === selectedGauge)].name}
@@ -234,6 +235,7 @@ const GaugesPage: ExtendedNextPage = () => {
 						<SingleEntityConnectButton
 							className="btn bg-gray-600 px-0 text-black hover:bg-gray-600"
 							invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
+							unsupported={chainId !== ChainId.BOBA}
 						>
 							<button className="z-20 h-full w-full">GAUGE NOT SELECTED</button>
 						</SingleEntityConnectButton>

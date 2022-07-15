@@ -1,5 +1,5 @@
-import { EXLUDED_POOL_IDS } from 'config/pool-lists';
-import { EXCHANGE_SUBGRAPH_URL } from 'constants/subgraphs';
+import { EXLUDED_POOL_IDS } from 'config/pools';
+import useExchangeSubgraphURL from 'hooks/useExchangeSubgraphURL';
 import { LitePoolFragment, useGetPoolsQuery } from 'query/generated/graphql-codegen-generated';
 import React, { useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
@@ -11,7 +11,8 @@ export interface PoolsModalProps {
 }
 
 const PoolsModal: React.FC<PoolsModalProps> = (props) => {
-	const { data: poolsQuery } = useGetPoolsQuery({ endpoint: EXCHANGE_SUBGRAPH_URL });
+	const exchangeSubgraphURL = useExchangeSubgraphURL();
+	const { data: poolsQuery } = useGetPoolsQuery({ endpoint: exchangeSubgraphURL });
 	const pools = poolsQuery?.allPools;
 
 	const [filteredPoolList, setFilteredPoolList] = useState(pools?.filter((pool) => !EXLUDED_POOL_IDS.includes(pool.id)));

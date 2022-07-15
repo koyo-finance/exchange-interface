@@ -1,4 +1,4 @@
-import { EXCHANGE_SUBGRAPH_URL } from 'constants/subgraphs';
+import { GAUGES_SUBGRAPH_URL } from 'constants/subgraphs';
 import { useGetAllGaugesQuery } from 'query/generated/graphql-codegen-generated';
 import React, { useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
@@ -10,7 +10,7 @@ export interface PoolsModalProps {
 
 const GaugeModal: React.FC<PoolsModalProps> = ({ setGauge, closeModal }) => {
 	const { data: allGaugesQueryData } = useGetAllGaugesQuery({
-		endpoint: EXCHANGE_SUBGRAPH_URL
+		endpoint: GAUGES_SUBGRAPH_URL
 	});
 	const gaugeList = (allGaugesQueryData?.allGauges || []) //
 		.map((gauge) => ({ address: gauge.address, name: gauge.symbol.replace('-gauge', '') }));

@@ -1,6 +1,9 @@
+import { ChainId } from '@koyofinance/core-sdk';
+import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
 import DatePickerFormik from 'components/Field/DatePickerFormik';
 import { Form, Formik } from 'formik';
 import { useExtendLockTimeEscrow } from 'hooks/KYO/useExtendLockTimeEscrow';
+import { useWeb3 } from 'hooks/useWeb3';
 import React from 'react';
 import { useSigner } from 'wagmi';
 import LockTimeSetButton from './LockTimeSetButton';
@@ -12,6 +15,8 @@ export interface ExtendLockTimeProps {
 const ExtendLockTimeForm: React.FC<ExtendLockTimeProps> = ({ currentLockTime }) => {
 	const { data: signer } = useSigner();
 	const signerDefaulted = signer || undefined;
+
+	const { chainId } = useWeb3();
 
 	const { mutate: kyoExtendLockTime } = useExtendLockTimeEscrow(signerDefaulted);
 
@@ -77,9 +82,15 @@ const ExtendLockTimeForm: React.FC<ExtendLockTimeProps> = ({ currentLockTime }) 
 								</div>
 							</div>
 							<div className="">
-								<button type="submit" className=" btn w-full bg-lights-400 bg-opacity-100 font-normal text-black hover:bg-lights-200">
-									EXTEND LOCK
-								</button>
+								<SingleEntityConnectButton
+									className="btn w-full bg-lights-400 bg-opacity-100 text-black hover:bg-lights-200"
+									invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
+									unsupported={chainId !== ChainId.BOBA}
+								>
+									<button type="submit" className=" w-full">
+										EXTEND LOCK
+									</button>
+								</SingleEntityConnectButton>
 							</div>
 						</div>
 					</Form>

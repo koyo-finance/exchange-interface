@@ -3,11 +3,13 @@ import { TokenInfo } from '@uniswap/token-lists';
 import SymbolCurrencyIcon from 'components/CurrencyIcon/SymbolCurrencyIcon';
 import DefaultError from 'components/UI/Errors/DefaultError';
 import PoolCreationTokenModal from 'components/UI/Modals/PoolCreationTokenModal';
-import React, { Fragment, useState } from 'react';
+import { useWeb3 } from 'hooks/useWeb3';
+import React, { Fragment, useEffect, useState } from 'react';
 import { BsTrash, BsTrashFill } from 'react-icons/bs';
 import { RiArrowDownSLine } from 'react-icons/ri';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { PoolType, setPoolType, setTokens, setWeights } from 'state/reducers/createPool';
+import { selectAllTokensByChainId } from 'state/reducers/lists';
 
 export interface ChooseTokensProps {
 	setStep: (step: number) => void;
@@ -25,6 +27,9 @@ const ChooseTokens: React.FC<ChooseTokensProps> = ({ setStep, selectedTokens, we
 	const [activeToken, setActiveToken] = useState(0);
 	const [error, setError] = useState('');
 	const [tokenWeights, setTokenWeights] = useState(weights);
+
+	const { chainId } = useWeb3();
+	const TOKENS = useSelector(selectAllTokensByChainId(chainId));
 
 	const addNewTokenHandler = () => {
 		if (selectedTokens.length === 8) {
@@ -51,6 +56,17 @@ const ChooseTokens: React.FC<ChooseTokensProps> = ({ setStep, selectedTokens, we
 		dispatch(setTokens(newTokens));
 		setError('');
 	};
+
+	useEffect(() => {
+		if (selectedTokens.length >= TOKENS.length) {
+			const newWeights = TOKENS.map(() => Math.round(100 / TOKENS.length));
+			dispatch(setTokens(TOKENS));
+			setTokenWeights(newWeights);
+		} else {
+			const newTokens = selectedTokens.map((_, i) => TOKENS[i]);
+			dispatch(setTokens(newTokens));
+		}
+	}, [chainId]);
 
 	const removeTokenHandler = (tokenIndex: number) => {
 		if (selectedTokens.length === 2) {

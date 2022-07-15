@@ -25,7 +25,8 @@ export default function useSetTokenAllowance(
 			await queryClient.invalidateQueries(
 				makeSmartContractReadCallQueryKey<ERC20Permit, 'allowance'>(tx.to, 'allowance', [tx.from, getAddress(spender)])
 			);
-		}
+		},
+		blockConfirmations: 2
 	});
 
 	return approve;

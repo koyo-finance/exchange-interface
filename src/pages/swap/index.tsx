@@ -12,18 +12,19 @@ import FormApproveAsset from 'components/FormApproveAsset';
 import GuideLink from 'components/GuideLink';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
 import { SwapTokenNumber } from 'constants/swaps';
-import { vaultContract } from 'core/contracts';
 import { BigNumber } from 'ethers';
 import { Form, Formik } from 'formik';
+import useVaultContract from 'hooks/contracts/useVaultContract';
 import useTokenAllowance from 'hooks/generic/useTokenAllowance';
 import { useRoutedSwap } from 'hooks/SOR/useRoutedSwap';
 import { useWeb3 } from 'hooks/useWeb3';
 import { SwapLayout, SwapLayoutCard } from 'layouts/SwapLayout';
 import { NextSeo } from 'next-seo';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Case, Default, Else, If, Switch, Then } from 'react-if';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from 'state/hooks';
+import { selectAllTokensByChainId } from 'state/reducers/lists';
 import { selectTokenOne, selectTokenTwo, setTokenOne, setTokenTwo } from 'state/reducers/selectedTokens';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
 
@@ -37,13 +38,20 @@ export interface SwapFormValues {
 }
 
 const SwapIndexPage: ExtendedNextPage = () => {
-	const { accountAddress, signer } = useWeb3();
+	const { accountAddress, signer, chainId } = useWeb3();
 	const dispatch = useAppDispatch();
+	const vaultContract = useVaultContract();
 
+	const TOKENS = useSelector(selectAllTokensByChainId(chainId));
 	const [tokenModalOneIsOpen, setTokenModalIsOpen] = useState(false);
 	const [activeToken, setActiveToken] = useState<SwapTokenNumber>(SwapTokenNumber.IN);
 	const tokenOne = useSelector(selectTokenOne);
 	const tokenTwo = useSelector(selectTokenTwo);
+
+	useEffect(() => {
+		setTokenHandler(TOKENS[0], 1);
+		setTokenHandler(TOKENS[1], 2);
+	}, [chainId]);
 
 	const { data: allowance = 0 } = useTokenAllowance(accountAddress, vaultContract.address, tokenOne.address);
 

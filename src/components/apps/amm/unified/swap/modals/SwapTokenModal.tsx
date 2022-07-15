@@ -1,5 +1,6 @@
-import { ChainId, formatBalance } from '@koyofinance/core-sdk';
+import { formatBalance } from '@koyofinance/core-sdk';
 import { TokenInfo } from '@uniswap/token-lists';
+import SymbolCurrencyIcon from 'components/CurrencyIcon/SymbolCurrencyIcon';
 import { BigNumber } from 'ethers';
 import useMultiTokenBalances from 'hooks/generic/useMultiTokenBalances';
 import { useWeb3 } from 'hooks/useWeb3';
@@ -17,9 +18,9 @@ export interface SwapTokenModalProps {
 }
 
 const SwapTokenModal: React.FC<SwapTokenModalProps> = (props) => {
-	const { accountAddress } = useWeb3();
+	const { accountAddress, chainId } = useWeb3();
 
-	const TOKENS = useSelector(selectAllTokensByChainId(ChainId.BOBA));
+	const TOKENS = useSelector(selectAllTokensByChainId(chainId));
 	const [tokenList, setTokenList] = useState<TokenInfo[]>(TOKENS.filter((token) => token.address !== props.oppositeToken.address));
 	const [filteredTokenList, setFilteredTokenList] = useState<TokenInfo[]>(tokenList);
 
@@ -90,10 +91,7 @@ const SwapTokenModal: React.FC<SwapTokenModalProps> = (props) => {
 							onClick={() => setTokenHandler(token.address)}
 						>
 							<div className="flex w-full flex-row items-center justify-start  gap-3">
-								<div>
-									{/* eslint-disable-next-line @next/next/no-img-element */}
-									<img src={token.logoURI} className="w-10" alt={token.name} />
-								</div>
+								<SymbolCurrencyIcon symbol={token.symbol} className="h-10 w-10" />
 								<div className=" w-1/2">
 									<div>{token.symbol}</div>
 									<div>{token.name}</div>

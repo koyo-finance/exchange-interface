@@ -29,6 +29,8 @@ export class CoingeckoTokenPriceService implements TokenPriceService {
 		switch (this.chainId) {
 			case ChainId.BOBA:
 				return 'boba';
+			case ChainId.AURORA:
+				return 'aurora';
 			default:
 				return '2';
 		}
@@ -38,6 +40,8 @@ export class CoingeckoTokenPriceService implements TokenPriceService {
 		switch (this.chainId) {
 			case ChainId.BOBA:
 				return 'boba';
+			case ChainId.AURORA:
+				return 'aurora';
 			default:
 				return '';
 		}
