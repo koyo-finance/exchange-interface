@@ -1,5 +1,6 @@
-import { SOR, SwapInfo } from '@balancer-labs/sor';
+import { SwapInfo } from '@balancer-labs/sor';
 import { ChainId } from '@koyofinance/core-sdk';
+import { KoyoSOR } from '@koyofinance/sor';
 import { DEFAULT_CHAIN } from 'config/chain';
 import type { SwapOptions } from 'hooks/SOR/useRoutedSwap';
 import { useWeb3 } from 'hooks/useWeb3';
@@ -11,7 +12,7 @@ const IDENTITY_FN = (v: unknown) => v;
 export function useGetSwaps(options: Required<Omit<SwapOptions, 'funds'>>, chainId?: ChainId) {
 	const jpex = useJpex();
 	const { chainId: activeChainId } = useWeb3();
-	const sor = jpex.resolveWith<SOR, ChainId>([activeChainId || chainId || DEFAULT_CHAIN]);
+	const sor = jpex.resolveWith<KoyoSOR, ChainId>([activeChainId || chainId || DEFAULT_CHAIN]);
 
 	return useQuery({
 		queryKey: ['swapRouting', options.tokenIn, options.tokenOut, options.swapType, options.amount],

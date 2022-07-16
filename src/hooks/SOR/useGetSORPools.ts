@@ -1,5 +1,6 @@
-import { SOR, SubgraphPoolBase } from '@balancer-labs/sor';
+import { SubgraphPoolBase } from '@balancer-labs/sor';
 import { ChainId } from '@koyofinance/core-sdk';
+import { KoyoSOR } from '@koyofinance/sor';
 import { DEFAULT_CHAIN } from 'config/chain';
 import { useWeb3 } from 'hooks/useWeb3';
 import { useJpex } from 'react-jpex';
@@ -10,7 +11,7 @@ const IDENTITY_FN = (v: unknown) => v;
 export function useGetSORPools(chainId?: ChainId) {
 	const jpex = useJpex();
 	const { chainId: activeChainId } = useWeb3();
-	const sor = jpex.resolveWith<SOR, ChainId>([activeChainId || chainId || DEFAULT_CHAIN]);
+	const sor = jpex.resolveWith<KoyoSOR, ChainId>([activeChainId || chainId || DEFAULT_CHAIN]);
 
 	return useQuery({
 		queryKey: ['sor', 'pools'],

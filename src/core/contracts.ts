@@ -4,7 +4,7 @@ import {
 	BOBA_KYO_ADDRESS,
 	BOBA_KYO_MINTER_ADDRESS,
 	BOBA_veKYO_ADDRESS
-} from 'constants/contracts';
+} from '@koyofinance/exchange-sdk';
 import { bobaReadonlyProvider } from 'hooks/useProviders';
 import { GaugeController__factory, GaugeDistributor__factory, Koyo__factory, Minter__factory, VotingEscrow__factory } from 'types/contracts/koyo';
 

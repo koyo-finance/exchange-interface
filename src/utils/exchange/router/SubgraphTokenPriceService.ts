@@ -1,7 +1,7 @@
 import { TokenPriceService } from '@balancer-labs/sor';
 import { ChainId } from '@koyofinance/core-sdk';
+import { CHAIN_EXCHANGE_SUBGRAPH } from '@koyofinance/exchange-sdk';
 import { fetch as sapphireFetch, FetchMethods, FetchResultTypes } from '@sapphire/fetch';
-import { ChainExchangeSubgraphURL } from 'constants/subgraphs';
 import { keyBy } from 'lodash';
 import { TokenLatestPricesDocument, TokenLatestPricesQuery } from 'query/generated/graphql-codegen-generated';
 
@@ -30,7 +30,7 @@ export class SubgraphTokenPriceService implements TokenPriceService {
 		tokenAddress = tokenAddress.toLowerCase();
 
 		const { data: tokenLatestPricesData } = await sapphireFetch<{ data: TokenLatestPricesQuery }>(
-			ChainExchangeSubgraphURL[this.chainId] || '',
+			CHAIN_EXCHANGE_SUBGRAPH[this.chainId] || '',
 			{
 				method: 'POST' as FetchMethods,
 				headers: {

@@ -1297,9 +1297,16 @@
     "@ethersproject/contracts" "^5.4.0"
 
 "@balancer-labs/sor@^4.0.0-beta.8":
-  version "4.0.0-beta.8"
-  resolved "https://registry.yarnpkg.com/@balancer-labs/sor/-/sor-4.0.0-beta.8.tgz#536be66909a34b540516a59c192e0344278b509a"
-  integrity sha512-QKF7pqi0uziZ1ghfissHycDTQLGkWd2BPizWv1GgqKIhsYRy4fpPolBE/U++sBvYprFmCkabgoe9C+juyNJe3g==
+  version "4.0.0-beta.9"
+  resolved "https://registry.yarnpkg.com/@balancer-labs/sor/-/sor-4.0.0-beta.9.tgz#466ac65eb92e667330fcf91b1905e69f4feef6a0"
+  integrity sha512-73bh889BiIQ6vqDP0ynx5MS2pkV9zF3CNXqdmWYXVZN+4Lx0bKdZxwokFJ4u66RtphUsf+qJN/xRtGkT4occAQ==
+  dependencies:
+    isomorphic-fetch "^2.2.1"
+
+"@balancer-labs/sor@^4.0.1-beta.1":
+  version "4.0.1-beta.1"
+  resolved "https://registry.yarnpkg.com/@balancer-labs/sor/-/sor-4.0.1-beta.1.tgz#03456aca4606cf36e692d30d693ee5e246d79e1d"
+  integrity sha512-LY+qHLJxqn1cOWfKOo+mjX/85BQLQhCBP9GCsks/kXV2vLnG9HefoxcwkqP1b5bB6uFzsT67lYl9CkSFvYM/UQ==
   dependencies:
     isomorphic-fetch "^2.2.1"
 
@@ -2782,15 +2789,23 @@
     methods "^1.1.2"
     path-to-regexp "^6.1.0"
 
-"@koyofinance/core-sdk@^0.3.0-next.674de38.0":
-  version "0.3.0-next.674de38.0"
-  resolved "https://registry.yarnpkg.com/@koyofinance/core-sdk/-/core-sdk-0.3.0-next.674de38.0.tgz#264149312e1ed17517aaf7ee9c84b6a2bab9cfdd"
-  integrity sha512-lK1IklZ6Nmm5mhLZDeTZXcxR63za7hshee5VeK15QEXxp/JNktE0VpW7UZ+50XYKtjgclyQCwbGCrfRGz2khjw==
+"@koyofinance/core-sdk@^0.3.0-next.c0ebd86.0":
+  version "0.3.0-next.c0ebd86.0"
+  resolved "https://registry.yarnpkg.com/@koyofinance/core-sdk/-/core-sdk-0.3.0-next.c0ebd86.0.tgz#8ade65d26a1e3148b1d13e4cb5d086d9a5e70007"
+  integrity sha512-VwNG9USB+S3KV/iVwKYIlk+N2Ir5VVi6601XOc6a+Ne3rSI8XHvTqYgoyW0MyoCONsifnl/aPTEK8szdGcLeLQ==
   dependencies:
     "@uniswap/token-lists" "^1.0.0-beta.28"
     dayjs "^1.11.2"
     ethers "^5.6.6"
     numbro "^2.3.6"
+    tslib "^2.4.0"
+
+"@koyofinance/exchange-sdk@^0.2.0-next.c0ebd86.0":
+  version "0.2.0-next.c0ebd86.0"
+  resolved "https://registry.yarnpkg.com/@koyofinance/exchange-sdk/-/exchange-sdk-0.2.0-next.c0ebd86.0.tgz#1c6ef29cf66ee8d7132a921572b2a55df4ac3942"
+  integrity sha512-Y7RFQyHLmkyB/ineHPaBsPGCue4UFdiuLgV9akfj7CITw5/fvhHmYKdtGXHz+Rf2uQYvPgiFlHnjTgptGwIVUQ==
+  dependencies:
+    "@koyofinance/core-sdk" "^0.3.0-next.c0ebd86.0"
     tslib "^2.4.0"
 
 "@koyofinance/react-query-typechain@^1.1.0-next.f2f8f0d.0":
@@ -2808,6 +2823,16 @@
     react-query "^3.38.1"
     ts-node "^10.4.0"
     ttypescript "^1.5.13"
+
+"@koyofinance/sor@^1.1.0-next.c0ebd86.0":
+  version "1.1.0-next.c0ebd86.0"
+  resolved "https://registry.yarnpkg.com/@koyofinance/sor/-/sor-1.1.0-next.c0ebd86.0.tgz#668828143aa03142cc0173a0dc8c3c4664510a83"
+  integrity sha512-m/KK+qNeSKk6n97ihHcruBMmPFW17lDLNSvJY5qGKLNlDSH6k4f3mCwYqJYoFWi32Sdwkw74UOsnKsKdXkCbxw==
+  dependencies:
+    "@balancer-labs/sor" "^4.0.1-beta.1"
+    "@ethersproject/abstract-provider" "^5.6.1"
+    "@ethersproject/constants" "^5.6.1"
+    tslib "^2.4.0"
 
 "@mdx-js/mdx@^1.6.22":
   version "1.6.22"

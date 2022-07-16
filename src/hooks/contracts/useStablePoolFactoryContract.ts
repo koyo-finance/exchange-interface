@@ -1,6 +1,6 @@
 import { ChainId } from '@koyofinance/core-sdk';
+import { CHAIN_STABLE_POOL_FACTORY } from '@koyofinance/exchange-sdk';
 import { DEFAULT_CHAIN } from 'config/chain';
-import { ChainStablePoolFactory } from 'constants/contracts';
 import useProviders from 'hooks/useProviders';
 import { useWeb3 } from 'hooks/useWeb3';
 import { StablePoolFactory__factory } from 'types/contracts/exchange';
@@ -10,7 +10,7 @@ export default function useStablePoolFactoryContract(chainId?: ChainId) {
 	const providers = useProviders();
 
 	return StablePoolFactory__factory.connect(
-		ChainStablePoolFactory[activeChainId || chainId || DEFAULT_CHAIN] as string,
+		CHAIN_STABLE_POOL_FACTORY[activeChainId || chainId || DEFAULT_CHAIN] as string,
 		providers[activeChainId || chainId] || defaultedProvider
 	);
 }
