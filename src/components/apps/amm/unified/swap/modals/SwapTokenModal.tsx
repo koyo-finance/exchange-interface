@@ -9,6 +9,7 @@ import { FaTimes } from 'react-icons/fa';
 import { FiEdit } from 'react-icons/fi';
 import { useSelector } from 'react-redux';
 import { selectAllTokensByChainId } from 'state/reducers/lists';
+import ChooseTokenListsModal from './ChooseTokenListsModal';
 
 export interface SwapTokenModalProps {
 	tokenNum: number;
@@ -23,6 +24,7 @@ const SwapTokenModal: React.FC<SwapTokenModalProps> = (props) => {
 	const TOKENS = useSelector(selectAllTokensByChainId(chainId));
 	const [tokenList, setTokenList] = useState<TokenInfo[]>(TOKENS.filter((token) => token.address !== props.oppositeToken.address));
 	const [filteredTokenList, setFilteredTokenList] = useState<TokenInfo[]>(tokenList);
+	const [tokenListSelection, setTokenListSelection] = useState(false);
 
 	const tokensBalance = useMultiTokenBalances(
 		accountAddress,
@@ -74,39 +76,47 @@ const SwapTokenModal: React.FC<SwapTokenModalProps> = (props) => {
 						<FaTimes />
 					</div>
 				</div>
-				<div>
-					<input
-						type="text"
-						placeholder="Select Token by Name or Address"
-						onChange={filterTokensHandler}
-						className="w-full rounded-xl border-2 border-darks-300 bg-transparent p-2 text-lg outline-none"
-					/>
-				</div>
-				<div className="flex max-h-[35rem] w-full flex-col overflow-y-scroll">
-					{filteredTokenList.map((token, i) => (
-						<div
-							key={i}
-							id={token.symbol}
-							className=" flex w-full transform-gpu cursor-pointer flex-row items-center justify-between p-2 duration-150 hover:bg-gray-900"
-							onClick={() => setTokenHandler(token.address)}
-						>
-							<div className="flex w-full flex-row items-center justify-start  gap-3">
-								<SymbolCurrencyIcon symbol={token.symbol} className="h-10 w-10" />
-								<div className=" w-1/2">
-									<div>{token.symbol}</div>
-									<div>{token.name}</div>
-								</div>
-							</div>
-							<div className=" text-right text-gray-400">{balances[i]}</div>
+				{tokenListSelection && <ChooseTokenListsModal setTokenListsModal={setTokenListSelection} />}
+				{!tokenListSelection && (
+					<>
+						<div>
+							<input
+								type="text"
+								placeholder="Select Token by Name or Address"
+								onChange={filterTokensHandler}
+								className="w-full rounded-xl border-2 border-darks-300 bg-transparent p-2 text-lg outline-none"
+							/>
 						</div>
-					))}
-				</div>
-				<div className=" flex w-full flex-row items-center justify-center gap-2 text-lights-400">
-					<div>Manage token lists</div>
-					<div>
-						<FiEdit />
-					</div>
-				</div>
+						<div className="flex max-h-[35rem] w-full flex-col overflow-y-scroll">
+							{filteredTokenList.map((token, i) => (
+								<div
+									key={i}
+									id={token.symbol}
+									className=" flex w-full transform-gpu cursor-pointer flex-row items-center justify-between p-2 duration-150 hover:bg-gray-900"
+									onClick={() => setTokenHandler(token.address)}
+								>
+									<div className="flex w-full flex-row items-center justify-start  gap-3">
+										<SymbolCurrencyIcon symbol={token.symbol} className="h-10 w-10" />
+										<div className=" w-1/2">
+											<div>{token.symbol}</div>
+											<div>{token.name}</div>
+										</div>
+									</div>
+									<div className=" text-right text-gray-400">{balances[i]}</div>
+								</div>
+							))}
+						</div>
+						<div
+							className=" flex w-full cursor-pointer flex-row items-center justify-center gap-2 text-lights-400"
+							onClick={() => setTokenListSelection(true)}
+						>
+							<div>Manage token lists</div>
+							<div>
+								<FiEdit />
+							</div>
+						</div>
+					</>
+				)}
 			</div>
 		</div>
 	);
