@@ -18,7 +18,7 @@ const IndexPage: ExtendedNextPage = () => {
 				deviceWidth > 1024 ? 'leaves-animation-desktop' : 'leaves-animation-mobile'
 			} min-h-screen w-full bg-darks-500 bg-leaves bg-contain bg-repeat`}
 		>
-			<div className=" mt-6 flex min-h-screen w-full flex-col items-center bg-contain bg-no-repeat px-[7.5vw] pt-[10vh] lg:bg-trees xl:px-20 2xl:mt-2 2xl:gap-1 3xl:bg-cover">
+			<div className=" mt-6 flex min-h-screen w-full flex-col items-center bg-contain bg-no-repeat px-[7.5vw] pt-[10vh] lg:bg-trees xl:px-20 2xl:mt-2 2xl:gap-1 2xl:bg-cover">
 				<div className="flex w-full flex-col  items-center justify-center gap-4 rounded-[50%] bg-title-gradient text-white lg:w-3/5 lg:gap-10 lg:px-36 xl:py-20 2xl:w-1/2">
 					<Header />
 					<div className="w-full text-center text-xl">

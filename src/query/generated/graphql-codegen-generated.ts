@@ -1154,6 +1154,138 @@ export interface KoyoPoolsArgs {
 	where?: InputMaybe<Pool_Filter>;
 }
 
+export interface KoyoSnapshot {
+	__typename: 'KoyoSnapshot';
+	address: Scalars['Bytes'];
+	gaugeCount: Scalars['BigInt'];
+	gaugeTypeCount: Scalars['BigInt'];
+	id: Scalars['ID'];
+	poolCount: Scalars['Int'];
+	timestamp: Scalars['Int'];
+	totalLiquidity: Scalars['BigDecimal'];
+	totalSwapCount: Scalars['BigInt'];
+	totalSwapFee: Scalars['BigDecimal'];
+	totalSwapVolume: Scalars['BigDecimal'];
+	vault: Koyo;
+}
+
+export interface KoyoSnapshot_Filter {
+	/** Filter for the block changed event. */
+	_change_block?: InputMaybe<BlockChangedFilter>;
+	address?: InputMaybe<Scalars['Bytes']>;
+	address_contains?: InputMaybe<Scalars['Bytes']>;
+	address_in?: InputMaybe<Array<Scalars['Bytes']>>;
+	address_not?: InputMaybe<Scalars['Bytes']>;
+	address_not_contains?: InputMaybe<Scalars['Bytes']>;
+	address_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+	gaugeCount?: InputMaybe<Scalars['BigInt']>;
+	gaugeCount_gt?: InputMaybe<Scalars['BigInt']>;
+	gaugeCount_gte?: InputMaybe<Scalars['BigInt']>;
+	gaugeCount_in?: InputMaybe<Array<Scalars['BigInt']>>;
+	gaugeCount_lt?: InputMaybe<Scalars['BigInt']>;
+	gaugeCount_lte?: InputMaybe<Scalars['BigInt']>;
+	gaugeCount_not?: InputMaybe<Scalars['BigInt']>;
+	gaugeCount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+	gaugeTypeCount?: InputMaybe<Scalars['BigInt']>;
+	gaugeTypeCount_gt?: InputMaybe<Scalars['BigInt']>;
+	gaugeTypeCount_gte?: InputMaybe<Scalars['BigInt']>;
+	gaugeTypeCount_in?: InputMaybe<Array<Scalars['BigInt']>>;
+	gaugeTypeCount_lt?: InputMaybe<Scalars['BigInt']>;
+	gaugeTypeCount_lte?: InputMaybe<Scalars['BigInt']>;
+	gaugeTypeCount_not?: InputMaybe<Scalars['BigInt']>;
+	gaugeTypeCount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+	id?: InputMaybe<Scalars['ID']>;
+	id_gt?: InputMaybe<Scalars['ID']>;
+	id_gte?: InputMaybe<Scalars['ID']>;
+	id_in?: InputMaybe<Array<Scalars['ID']>>;
+	id_lt?: InputMaybe<Scalars['ID']>;
+	id_lte?: InputMaybe<Scalars['ID']>;
+	id_not?: InputMaybe<Scalars['ID']>;
+	id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+	poolCount?: InputMaybe<Scalars['Int']>;
+	poolCount_gt?: InputMaybe<Scalars['Int']>;
+	poolCount_gte?: InputMaybe<Scalars['Int']>;
+	poolCount_in?: InputMaybe<Array<Scalars['Int']>>;
+	poolCount_lt?: InputMaybe<Scalars['Int']>;
+	poolCount_lte?: InputMaybe<Scalars['Int']>;
+	poolCount_not?: InputMaybe<Scalars['Int']>;
+	poolCount_not_in?: InputMaybe<Array<Scalars['Int']>>;
+	timestamp?: InputMaybe<Scalars['Int']>;
+	timestamp_gt?: InputMaybe<Scalars['Int']>;
+	timestamp_gte?: InputMaybe<Scalars['Int']>;
+	timestamp_in?: InputMaybe<Array<Scalars['Int']>>;
+	timestamp_lt?: InputMaybe<Scalars['Int']>;
+	timestamp_lte?: InputMaybe<Scalars['Int']>;
+	timestamp_not?: InputMaybe<Scalars['Int']>;
+	timestamp_not_in?: InputMaybe<Array<Scalars['Int']>>;
+	totalLiquidity?: InputMaybe<Scalars['BigDecimal']>;
+	totalLiquidity_gt?: InputMaybe<Scalars['BigDecimal']>;
+	totalLiquidity_gte?: InputMaybe<Scalars['BigDecimal']>;
+	totalLiquidity_in?: InputMaybe<Array<Scalars['BigDecimal']>>;
+	totalLiquidity_lt?: InputMaybe<Scalars['BigDecimal']>;
+	totalLiquidity_lte?: InputMaybe<Scalars['BigDecimal']>;
+	totalLiquidity_not?: InputMaybe<Scalars['BigDecimal']>;
+	totalLiquidity_not_in?: InputMaybe<Array<Scalars['BigDecimal']>>;
+	totalSwapCount?: InputMaybe<Scalars['BigInt']>;
+	totalSwapCount_gt?: InputMaybe<Scalars['BigInt']>;
+	totalSwapCount_gte?: InputMaybe<Scalars['BigInt']>;
+	totalSwapCount_in?: InputMaybe<Array<Scalars['BigInt']>>;
+	totalSwapCount_lt?: InputMaybe<Scalars['BigInt']>;
+	totalSwapCount_lte?: InputMaybe<Scalars['BigInt']>;
+	totalSwapCount_not?: InputMaybe<Scalars['BigInt']>;
+	totalSwapCount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+	totalSwapFee?: InputMaybe<Scalars['BigDecimal']>;
+	totalSwapFee_gt?: InputMaybe<Scalars['BigDecimal']>;
+	totalSwapFee_gte?: InputMaybe<Scalars['BigDecimal']>;
+	totalSwapFee_in?: InputMaybe<Array<Scalars['BigDecimal']>>;
+	totalSwapFee_lt?: InputMaybe<Scalars['BigDecimal']>;
+	totalSwapFee_lte?: InputMaybe<Scalars['BigDecimal']>;
+	totalSwapFee_not?: InputMaybe<Scalars['BigDecimal']>;
+	totalSwapFee_not_in?: InputMaybe<Array<Scalars['BigDecimal']>>;
+	totalSwapVolume?: InputMaybe<Scalars['BigDecimal']>;
+	totalSwapVolume_gt?: InputMaybe<Scalars['BigDecimal']>;
+	totalSwapVolume_gte?: InputMaybe<Scalars['BigDecimal']>;
+	totalSwapVolume_in?: InputMaybe<Array<Scalars['BigDecimal']>>;
+	totalSwapVolume_lt?: InputMaybe<Scalars['BigDecimal']>;
+	totalSwapVolume_lte?: InputMaybe<Scalars['BigDecimal']>;
+	totalSwapVolume_not?: InputMaybe<Scalars['BigDecimal']>;
+	totalSwapVolume_not_in?: InputMaybe<Array<Scalars['BigDecimal']>>;
+	vault?: InputMaybe<Scalars['String']>;
+	vault_?: InputMaybe<Koyo_Filter>;
+	vault_contains?: InputMaybe<Scalars['String']>;
+	vault_contains_nocase?: InputMaybe<Scalars['String']>;
+	vault_ends_with?: InputMaybe<Scalars['String']>;
+	vault_ends_with_nocase?: InputMaybe<Scalars['String']>;
+	vault_gt?: InputMaybe<Scalars['String']>;
+	vault_gte?: InputMaybe<Scalars['String']>;
+	vault_in?: InputMaybe<Array<Scalars['String']>>;
+	vault_lt?: InputMaybe<Scalars['String']>;
+	vault_lte?: InputMaybe<Scalars['String']>;
+	vault_not?: InputMaybe<Scalars['String']>;
+	vault_not_contains?: InputMaybe<Scalars['String']>;
+	vault_not_contains_nocase?: InputMaybe<Scalars['String']>;
+	vault_not_ends_with?: InputMaybe<Scalars['String']>;
+	vault_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+	vault_not_in?: InputMaybe<Array<Scalars['String']>>;
+	vault_not_starts_with?: InputMaybe<Scalars['String']>;
+	vault_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+	vault_starts_with?: InputMaybe<Scalars['String']>;
+	vault_starts_with_nocase?: InputMaybe<Scalars['String']>;
+}
+
+export type KoyoSnapshot_OrderBy =
+	| 'address'
+	| 'gaugeCount'
+	| 'gaugeTypeCount'
+	| 'id'
+	| 'poolCount'
+	| 'timestamp'
+	| 'totalLiquidity'
+	| 'totalSwapCount'
+	| 'totalSwapFee'
+	| 'totalSwapVolume'
+	| 'vault';
+
 export interface Koyo_Filter {
 	/** Filter for the block changed event. */
 	_change_block?: InputMaybe<BlockChangedFilter>;
@@ -2187,6 +2319,8 @@ export interface Query {
 	joinExit?: Maybe<JoinExit>;
 	joinExits: Array<JoinExit>;
 	koyo?: Maybe<Koyo>;
+	koyoSnapshot?: Maybe<KoyoSnapshot>;
+	koyoSnapshots: Array<KoyoSnapshot>;
 	koyos: Array<Koyo>;
 	latestPrice?: Maybe<LatestPrice>;
 	latestPrices: Array<LatestPrice>;
@@ -2430,6 +2564,22 @@ export interface QueryKoyoArgs {
 	subgraphError?: _SubgraphErrorPolicy_;
 }
 
+export interface QueryKoyoSnapshotArgs {
+	block?: InputMaybe<Block_Height>;
+	id: Scalars['ID'];
+	subgraphError?: _SubgraphErrorPolicy_;
+}
+
+export interface QueryKoyoSnapshotsArgs {
+	block?: InputMaybe<Block_Height>;
+	first?: InputMaybe<Scalars['Int']>;
+	orderBy?: InputMaybe<KoyoSnapshot_OrderBy>;
+	orderDirection?: InputMaybe<OrderDirection>;
+	skip?: InputMaybe<Scalars['Int']>;
+	subgraphError?: _SubgraphErrorPolicy_;
+	where?: InputMaybe<KoyoSnapshot_Filter>;
+}
+
 export interface QueryKoyosArgs {
 	block?: InputMaybe<Block_Height>;
 	first?: InputMaybe<Scalars['Int']>;
@@ -2647,6 +2797,8 @@ export interface Subscription {
 	joinExit?: Maybe<JoinExit>;
 	joinExits: Array<JoinExit>;
 	koyo?: Maybe<Koyo>;
+	koyoSnapshot?: Maybe<KoyoSnapshot>;
+	koyoSnapshots: Array<KoyoSnapshot>;
 	koyos: Array<Koyo>;
 	latestPrice?: Maybe<LatestPrice>;
 	latestPrices: Array<LatestPrice>;
@@ -2888,6 +3040,22 @@ export interface SubscriptionKoyoArgs {
 	block?: InputMaybe<Block_Height>;
 	id: Scalars['ID'];
 	subgraphError?: _SubgraphErrorPolicy_;
+}
+
+export interface SubscriptionKoyoSnapshotArgs {
+	block?: InputMaybe<Block_Height>;
+	id: Scalars['ID'];
+	subgraphError?: _SubgraphErrorPolicy_;
+}
+
+export interface SubscriptionKoyoSnapshotsArgs {
+	block?: InputMaybe<Block_Height>;
+	first?: InputMaybe<Scalars['Int']>;
+	orderBy?: InputMaybe<KoyoSnapshot_OrderBy>;
+	orderDirection?: InputMaybe<OrderDirection>;
+	skip?: InputMaybe<Scalars['Int']>;
+	subgraphError?: _SubgraphErrorPolicy_;
+	where?: InputMaybe<KoyoSnapshot_Filter>;
 }
 
 export interface SubscriptionKoyosArgs {
