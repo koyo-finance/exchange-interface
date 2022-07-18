@@ -2,23 +2,23 @@ import { ChainId } from '@koyofinance/core-sdk';
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { fetch as sFetch, FetchResultTypes } from '@sapphire/fetch';
 import { TokenInfo, TokenList } from '@uniswap/token-lists';
-import { DEFAULT_ACTIVE_LIST_URLS } from 'config/token-lists';
+import { DEFAULT_ACTIVE_LIST_URLS, DEFAULT_TOKEN_LISTS } from 'config/token-lists';
 import { RootState } from 'state';
 import { Gauge } from 'types/contracts/koyo';
 
 export interface ListsState {
 	lists: string[];
+	selectedLists: string[];
 	fetchedLists: TokenList[];
 	tokens: TokenInfo[];
-	// pools: AugmentedPool[];
 	gaugeList: Gauge[];
 }
 
 const initialState: ListsState = {
-	lists: DEFAULT_ACTIVE_LIST_URLS,
+	lists: DEFAULT_TOKEN_LISTS,
+	selectedLists: [...DEFAULT_ACTIVE_LIST_URLS],
 	fetchedLists: [],
 	tokens: [],
-	// pools: [],
 	gaugeList: []
 };
 
