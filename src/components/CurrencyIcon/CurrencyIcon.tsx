@@ -5,9 +5,10 @@ export interface SymbolCurrencyIconProps {
 	symbol?: string;
 	style?: React.CSSProperties;
 	className?: string;
+	overrides?: string[];
 }
 
-const SymbolCurrencyIcon: React.FC<SymbolCurrencyIconProps> = ({ symbol, style, className }) => {
+const CurrencyIcon: React.FC<SymbolCurrencyIconProps> = ({ symbol, style, className, overrides }) => {
 	const overrideSources: { [symbol: string]: string } = useMemo(() => {
 		return {
 			[`${symbol}`]: `https://tassets.koyo.finance/logos/${symbol}/512x512.png`
@@ -18,11 +19,11 @@ const SymbolCurrencyIcon: React.FC<SymbolCurrencyIconProps> = ({ symbol, style, 
 	const srcs: string[] = useMemo(() => {
 		if (symbol) {
 			const override = overrideSources[symbol];
-			return [override];
+			return [override].concat(overrides || []);
 		}
-		return [];
+		return overrides || [];
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [symbol, overrideSources]);
+	}, [symbol, overrideSources, overrides]);
 
 	return (
 		<FallbackCurrencyIcon
@@ -34,4 +35,4 @@ const SymbolCurrencyIcon: React.FC<SymbolCurrencyIconProps> = ({ symbol, style, 
 	);
 };
 
-export default SymbolCurrencyIcon;
+export default CurrencyIcon;

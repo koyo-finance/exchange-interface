@@ -1,4 +1,4 @@
-import SymbolCurrencyIcon from 'components/CurrencyIcon/SymbolCurrencyIcon';
+import SymbolCurrencyIcon from 'components/CurrencyIcon/CurrencyIcon';
 import { TokenFragment } from 'query/generated/graphql-codegen-generated';
 import React, { useEffect, useRef, useState } from 'react';
 

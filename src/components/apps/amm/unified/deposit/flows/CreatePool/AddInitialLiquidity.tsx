@@ -1,5 +1,5 @@
 import { formatBalance, toBigNumber } from '@koyofinance/core-sdk';
-import SymbolCurrencyIcon from 'components/CurrencyIcon/SymbolCurrencyIcon';
+import SymbolCurrencyIcon from 'components/CurrencyIcon/CurrencyIcon';
 import { BigNumber } from 'ethers';
 import useMultiTokenBalances from 'hooks/generic/useMultiTokenBalances';
 import { useWeb3 } from 'hooks/useWeb3';

@@ -1,6 +1,6 @@
 import { formatBalance } from '@koyofinance/core-sdk';
 import { TokenInfo } from '@uniswap/token-lists';
-import SymbolCurrencyIcon from 'components/CurrencyIcon/SymbolCurrencyIcon';
+import CurrencyIcon from 'components/CurrencyIcon/CurrencyIcon';
 import { BigNumber } from 'ethers';
 import useMultiTokenBalances from 'hooks/generic/useMultiTokenBalances';
 import { useWeb3 } from 'hooks/useWeb3';
@@ -96,7 +96,7 @@ const SwapTokenModal: React.FC<SwapTokenModalProps> = (props) => {
 									onClick={() => setTokenHandler(token.address)}
 								>
 									<div className="flex w-full flex-row items-center justify-start  gap-3">
-										<SymbolCurrencyIcon symbol={token.symbol} className="h-10 w-10" />
+										<CurrencyIcon symbol={token.symbol} overrides={[token.logoURI || '']} className="h-10 w-10" />
 										<div className=" w-1/2">
 											<div>{token.symbol}</div>
 											<div>{token.name}</div>

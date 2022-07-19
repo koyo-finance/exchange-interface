@@ -1,5 +1,5 @@
 import { formatBalance, fromBigNumber } from '@koyofinance/core-sdk';
-import SymbolCurrencyIcon from 'components/CurrencyIcon/SymbolCurrencyIcon';
+import SymbolCurrencyIcon from 'components/CurrencyIcon/CurrencyIcon';
 import { BigNumberish } from 'ethers';
 import { TokenFragment } from 'query/generated/graphql-codegen-generated';
 import React, { useEffect, useRef, useState } from 'react';

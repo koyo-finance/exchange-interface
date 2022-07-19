@@ -1,6 +1,6 @@
 import { formatBalance, fromBigNumber, toBigNumber } from '@koyofinance/core-sdk';
 import { TokenInfo } from '@uniswap/token-lists';
-import SymbolCurrencyIcon from 'components/CurrencyIcon/SymbolCurrencyIcon';
+import CurrencyIcon from 'components/CurrencyIcon/CurrencyIcon';
 import { SwapTokenNumber } from 'constants/swaps';
 import { Field, useFormikContext } from 'formik';
 import useTokenBalance from 'hooks/generic/useTokenBalance';
@@ -89,7 +89,7 @@ const SwapCardToken: React.FC<SwapCardTokenProps> = ({ tokenNum, token, swapStat
 					onClick={openModalHandler}
 				>
 					<div>
-						<SymbolCurrencyIcon symbol={token.symbol} className="h-8 w-8" />
+						<CurrencyIcon symbol={token.symbol} overrides={[token.logoURI || '']} className="h-8 w-8" />
 					</div>
 					<div>{token.symbol}</div>
 					<div>

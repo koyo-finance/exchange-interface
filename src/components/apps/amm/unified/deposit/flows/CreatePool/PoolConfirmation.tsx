@@ -1,7 +1,7 @@
 import { TokenPriceService } from '@balancer-labs/sor';
 import { MaxUint256 } from '@ethersproject/constants';
 import { ChainId, fromBigNumber } from '@koyofinance/core-sdk';
-import SymbolCurrencyIcon from 'components/CurrencyIcon/SymbolCurrencyIcon';
+import SymbolCurrencyIcon from 'components/CurrencyIcon/CurrencyIcon';
 import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
 import FormApproveAsset from 'components/FormApproveAsset';
 import { DEFAULT_CHAIN } from 'config/chain';

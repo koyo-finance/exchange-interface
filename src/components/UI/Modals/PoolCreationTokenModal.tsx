@@ -1,4 +1,5 @@
 import { TokenInfo } from '@uniswap/token-lists';
+import CurrencyIcon from 'components/CurrencyIcon/CurrencyIcon';
 import { useWeb3 } from 'hooks/useWeb3';
 import React, { useEffect, useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
@@ -84,7 +85,7 @@ const PoolCreationTokenModal: React.FC<PoolCreationTokenModalProps> = ({ chosenT
 							<div className="flex w-full flex-row items-center justify-start  gap-3">
 								<div>
 									{/* eslint-disable-next-line @next/next/no-img-element */}
-									<img src={token.logoURI} className="w-10" alt={token.name} />
+									<CurrencyIcon symbol={token.symbol} overrides={[token.logoURI || '']} className="h-10 w-10" />
 								</div>
 								<div className=" w-1/2">
 									<div>{token.symbol}</div>

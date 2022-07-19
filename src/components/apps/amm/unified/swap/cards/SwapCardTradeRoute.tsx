@@ -1,5 +1,5 @@
 import { Transition } from '@headlessui/react';
-import SymbolCurrencyIcon from 'components/CurrencyIcon/SymbolCurrencyIcon';
+import CurrencyIcon from 'components/CurrencyIcon/CurrencyIcon';
 import { useFormikContext } from 'formik';
 import { useGetRoutes } from 'hooks/SOR/useGetRoutes';
 import { useGetSORPools } from 'hooks/SOR/useGetSORPools';
@@ -59,12 +59,14 @@ const SwapCardTradeRoute: React.FC = () => {
 						<div className="relative">
 							<div className="pair-line absolute mx-9 h-1/2 border-b border-dashed border-gray-500" />
 							<div className="relative z-10 flex justify-between">
-								<SymbolCurrencyIcon
+								<CurrencyIcon
 									symbol={TOKENS.find((t) => isSameAddress(t.address, addressIn))?.symbol}
+									overrides={[TOKENS.find((t) => isSameAddress(t.address, addressIn))?.logoURI || '']}
 									className="inline-block h-9 w-9 leading-none"
 								/>
-								<SymbolCurrencyIcon
+								<CurrencyIcon
 									symbol={TOKENS.find((t) => isSameAddress(t.address, addressOut))?.symbol}
+									overrides={[TOKENS.find((t) => isSameAddress(t.address, addressOut))?.logoURI || '']}
 									className="inline-block h-9 w-9 leading-none"
 								/>
 							</div>
@@ -94,8 +96,9 @@ const SwapCardTradeRoute: React.FC = () => {
 										>
 											<a href="/" target="_blank" className="flex p-1.5">
 												{hop.pool.tokens.map((token) => (
-													<SymbolCurrencyIcon
+													<CurrencyIcon
 														symbol={TOKENS.find((t) => isSameAddress(t.address, token.address))?.symbol}
+														overrides={[TOKENS.find((t) => isSameAddress(t.address, token.address))?.logoURI || '']}
 														className="inline-block h-5 w-5 leading-none"
 														key={token.address}
 													/>

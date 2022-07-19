@@ -53,7 +53,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 		setTokenHandler(TOKENS[1], 2);
 	}, [chainId]);
 
-	const { data: allowance = 0 } = useTokenAllowance(accountAddress, vaultContract.address, tokenOne.address);
+	const { data: allowance = 0 } = useTokenAllowance(accountAddress, vaultContract.address, tokenOne?.address || '');
 
 	const openTokenModalHandler = (tokenNum: number) => {
 		setActiveToken(tokenNum);

@@ -1,6 +1,6 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { TokenInfo } from '@uniswap/token-lists';
-import SymbolCurrencyIcon from 'components/CurrencyIcon/SymbolCurrencyIcon';
+import CurrencyIcon from 'components/CurrencyIcon/CurrencyIcon';
 import DefaultError from 'components/UI/Errors/DefaultError';
 import PoolCreationTokenModal from 'components/UI/Modals/PoolCreationTokenModal';
 import { useWeb3 } from 'hooks/useWeb3';
@@ -160,7 +160,7 @@ const ChooseTokens: React.FC<ChooseTokensProps> = ({ setStep, selectedTokens, we
 						>
 							<div className="sm:text-md flex flex-row items-center gap-1 text-sm sm:gap-2">
 								<div>
-									<SymbolCurrencyIcon symbol={token.symbol} className="h-8 w-8" />
+									<CurrencyIcon symbol={token.symbol} overrides={[token.logoURI || '']} className="h-8 w-8" />
 								</div>
 								<div>{token.symbol}</div>
 							</div>
