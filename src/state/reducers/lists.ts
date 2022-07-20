@@ -29,7 +29,6 @@ export const fetchTokenLists = createAsyncThunk('tokens/fetchTokenList', async (
 		state.lists.selectedLists.map((list) => sFetch<TokenList>(list, 'json' as FetchResultTypes.JSON))
 	);
 	const tokenLists = tokenListPromises.filter((promise) => promise.status === 'fulfilled').flat() as PromiseFulfilledResult<TokenList>[];
-	console.log(tokenLists);
 
 	return tokenLists.map((promiseResult) => promiseResult.value);
 });

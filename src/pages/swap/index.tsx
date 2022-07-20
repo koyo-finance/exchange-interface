@@ -149,7 +149,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 															{/* <SwapTokenApprovalCase token={tokenOne} amount={props.values[SwapTokenNumber.IN]} /> */}
 															<Case
 																condition={BigNumber.from(allowance).lte(
-																	toBigNumber(props.values[SwapTokenNumber.IN] || 0, tokenOne.decimals)
+																	toBigNumber(props.values[SwapTokenNumber.IN] || 0, tokenOne.decimals || 18)
 																)}
 															>
 																<FormApproveAsset

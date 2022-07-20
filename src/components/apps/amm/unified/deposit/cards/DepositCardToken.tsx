@@ -1,8 +1,11 @@
 import { formatBalance, fromBigNumber } from '@koyofinance/core-sdk';
 import SymbolCurrencyIcon from 'components/CurrencyIcon/CurrencyIcon';
 import { BigNumberish } from 'ethers';
+import { useWeb3 } from 'hooks/useWeb3';
 import { TokenFragment } from 'query/generated/graphql-codegen-generated';
 import React, { useEffect, useRef, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { selectAllTokensByChainId } from 'state/reducers/lists';
 
 export interface DepositCardTokenProps {
 	coin: TokenFragment;
@@ -15,6 +18,12 @@ const DepositCardToken: React.FC<DepositCardTokenProps> = ({ coin, balance, rese
 	const [tokenAmount, setTokenAmount] = useState<number | undefined>(undefined);
 
 	const inputAmountRef = useRef<HTMLInputElement>(null);
+
+	const { chainId: activeChainId } = useWeb3();
+
+	const Tokens = useSelector(selectAllTokensByChainId(activeChainId));
+
+	const tokenIconURL = Tokens.filter((token) => token.address.toLowerCase() === coin.address.toLowerCase())[0].logoURI;
 
 	useEffect(() => {
 		if (resetValues) {
@@ -47,7 +56,7 @@ const DepositCardToken: React.FC<DepositCardTokenProps> = ({ coin, balance, rese
 				<div className=" text-2xl text-darks-200">{coin.name}</div>
 				<div className="flex transform-gpu cursor-pointer flex-row items-center gap-2 rounded-xl bg-darks-400 py-2 px-2 duration-100 hover:bg-darks-300">
 					<div>
-						<SymbolCurrencyIcon symbol={coin.symbol} className="h-8 w-8" />
+						<SymbolCurrencyIcon symbol={coin.symbol} overrides={[tokenIconURL || '']} className="h-8 w-8" />
 					</div>
 					<div>{coin.symbol.toUpperCase()}</div>
 				</div>
