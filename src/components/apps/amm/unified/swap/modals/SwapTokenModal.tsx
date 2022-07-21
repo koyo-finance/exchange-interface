@@ -37,9 +37,7 @@ const SwapTokenModal: React.FC<SwapTokenModalProps> = (props) => {
 
 	useEffect(() => {
 		const seen: string[] = [];
-		const filterTokens = TOKENS.filter((token) =>
-			seen.indexOf(token.address.toLowerCase()) > -1 ? false : seen.push(token.address.toLowerCase())
-		);
+		const filterTokens = TOKENS.filter((token) => (seen.includes(token.address.toLowerCase()) ? false : seen.push(token.address.toLowerCase())));
 
 		const newTokenList = filterTokens.filter((token) => token.address !== props.oppositeToken.address);
 

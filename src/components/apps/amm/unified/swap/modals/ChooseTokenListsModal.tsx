@@ -19,7 +19,7 @@ const ChooseTokenListsModal: React.FC<ChooseTokenListsModalProps> = ({ setTokenL
 	useEffect(() => {
 		const seen: string[] = [];
 		const filteredTokenLists = fetchedTokenLists.filter((list) => {
-			return seen.indexOf(list.name) > -1 ? false : seen.push(list.name);
+			return seen.includes(list.name) ? false : seen.push(list.name);
 		});
 		console.log(filteredTokenLists);
 		setTokenLists(filteredTokenLists);
