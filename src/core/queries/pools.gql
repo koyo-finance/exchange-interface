@@ -21,6 +21,9 @@ fragment LitePool on Pool {
 	poolType
 	swapFee
 	totalLiquidity
+	owner {
+		address
+	}
 	tokens {
 		...Token
 	}

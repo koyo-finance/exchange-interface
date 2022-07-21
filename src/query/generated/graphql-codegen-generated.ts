@@ -3955,6 +3955,7 @@ export type GetPoolsQuery = {
 		poolType?: string | null;
 		swapFee: string;
 		totalLiquidity: string;
+		owner?: { __typename: 'Account'; address: string } | null;
 		tokens?: Array<{
 			__typename: 'PoolToken';
 			id: string;
@@ -3986,6 +3987,7 @@ export type LitePoolFragment = {
 	poolType?: string | null;
 	swapFee: string;
 	totalLiquidity: string;
+	owner?: { __typename: 'Account'; address: string } | null;
 	tokens?: Array<{
 		__typename: 'PoolToken';
 		id: string;
@@ -4060,6 +4062,9 @@ export const LitePoolFragmentDoc = `
   poolType
   swapFee
   totalLiquidity
+  owner {
+    address
+  }
   tokens {
     ...Token
   }

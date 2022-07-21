@@ -68,7 +68,9 @@ const PoolsModal: React.FC<PoolsModalProps> = (props) => {
 					{filteredPoolList?.map((pool) => (
 						<div
 							key={pool.address}
-							className="w-full transform-gpu cursor-pointer justify-between rounded-lg p-3 text-lg duration-100 hover:bg-gray-700"
+							className={`w-full transform-gpu cursor-pointer justify-between rounded-lg p-3 text-lg duration-100 hover:bg-gray-700 ${
+								pool.owner?.address === '0xba1ba1ba1ba1ba1ba1ba1ba1ba1ba1ba1ba1ba1b' ? 'text-darks-100' : ''
+							}`}
 							onClick={() => {
 								props.setPool(pool.address);
 								props.closeModal();
@@ -79,7 +81,11 @@ const PoolsModal: React.FC<PoolsModalProps> = (props) => {
 								<div className="hidden w-1/6 truncate text-left text-sm md:block md:text-base">
 									{formatDollarAmount(parseFloat(pool.totalLiquidity))}
 								</div>
-								<div className="w-2/6 flex-row gap-1 truncate text-right text-sm text-gray-300 md:w-1/6 md:text-base">
+								<div
+									className={`w-2/6 flex-row gap-1 truncate text-right text-sm md:w-1/6 md:text-base ${
+										pool.owner?.address === '0xba1ba1ba1ba1ba1ba1ba1ba1ba1ba1ba1ba1ba1b' ? 'text-darks-300' : 'text-gray-300'
+									}`}
+								>
 									{parseFloat(pool.swapFee) * 100}%
 								</div>
 							</div>
