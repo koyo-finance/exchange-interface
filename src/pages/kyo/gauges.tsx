@@ -32,7 +32,7 @@ const GaugesPage: ExtendedNextPage = () => {
 		endpoint: GAUGES_SUBGRAPH_URL
 	});
 	const gaugeList = (allGaugesQueryData?.allGauges || []) //
-		.map((gauge) => ({ address: gauge.address, name: gauge.symbol.replace('-gauge', '') }));
+		.map((gauge) => ({ address: gauge.address, killed: gauge.killed, name: gauge.symbol.replace('-gauge', '') }));
 
 	const [selectedGauge, setSelectedGauge] = useState('');
 	const [gaugeListModalIsOpen, setGaugeListModalIsOpen] = useState(false);
@@ -119,7 +119,9 @@ const GaugesPage: ExtendedNextPage = () => {
 								{gaugeList.map((gauge, i) => (
 									<div
 										key={i}
-										className="flex w-full flex-col items-center justify-between gap-2  border-darks-200 p-2 text-center text-white sm:flex-row sm:gap-0 sm:border-t-2"
+										className={`flex w-full flex-col items-center justify-between gap-2 ${
+											gauge.killed ? 'font-bold text-red-600' : 'text-white'
+										} border-darks-200 p-2 text-center  sm:flex-row sm:gap-0 sm:border-t-2`}
 									>
 										<div className="w-full truncate text-center sm:w-1/4 sm:text-left">{gauge.name}</div>
 										<div className="w-full text-xl sm:w-1/4">
