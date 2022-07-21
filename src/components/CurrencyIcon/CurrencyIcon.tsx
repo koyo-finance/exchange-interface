@@ -29,7 +29,7 @@ const CurrencyIcon: React.FC<SymbolCurrencyIconProps> = ({ symbol, style, classN
 		<FallbackCurrencyIcon
 			srcs={srcs}
 			alt={'token logo'}
-			className={`h-6 w-6 rounded-3xl bg-transparent text-gray-500 ${className}`}
+			className={`h-6 w-6 rounded-3xl bg-transparent text-gray-500 ${className || ''}`}
 			style={style}
 		/>
 	);

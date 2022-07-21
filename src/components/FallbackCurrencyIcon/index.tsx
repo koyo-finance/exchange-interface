@@ -17,13 +17,13 @@ const FallbackCurrencyIcon: React.FC<FallbackCurrencyIconProps> = ({ srcs, alt, 
 		return (
 			// eslint-disable-next-line @next/next/no-img-element
 			<img
-				{...rest}
 				alt={alt}
 				src={src}
 				onError={() => {
 					if (src) BAD_SRCS[src] = true;
 					refresh((i) => i + 1);
 				}}
+				{...rest}
 			/>
 		);
 

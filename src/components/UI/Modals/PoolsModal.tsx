@@ -1,9 +1,13 @@
-import { formatBalance, formatDollarAmount } from '@koyofinance/core-sdk';
+import { formatDollarAmount } from '@koyofinance/core-sdk';
+import PoolCurrencyLogo from 'components/PoolCurrencyLogo';
 import { EXLUDED_POOL_IDS } from 'config/pools';
 import useExchangeSubgraphURL from 'hooks/useExchangeSubgraphURL';
+import { useWeb3 } from 'hooks/useWeb3';
 import { LitePoolFragment, useGetPoolsQuery } from 'query/generated/graphql-codegen-generated';
 import React, { useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
+import { useSelector } from 'react-redux';
+import { selectAllTokensByChainId } from 'state/reducers/lists';
 import { getShortPoolName } from 'utils/exchange/getShortPoolName';
 
 export interface PoolsModalProps {
@@ -13,8 +17,11 @@ export interface PoolsModalProps {
 
 const PoolsModal: React.FC<PoolsModalProps> = (props) => {
 	const exchangeSubgraphURL = useExchangeSubgraphURL();
+	const { chainId } = useWeb3();
 	const { data: poolsQuery } = useGetPoolsQuery({ endpoint: exchangeSubgraphURL });
 	const pools = poolsQuery?.allPools;
+
+	const TOKENS = useSelector(selectAllTokensByChainId(chainId));
 
 	const [filteredPoolList, setFilteredPoolList] = useState(
 		pools
@@ -61,16 +68,37 @@ const PoolsModal: React.FC<PoolsModalProps> = (props) => {
 					{filteredPoolList?.map((pool) => (
 						<div
 							key={pool.address}
-							className="flex w-full transform-gpu cursor-pointer flex-row justify-between rounded-lg p-3 text-lg duration-100 hover:bg-gray-700"
+							className="w-full transform-gpu cursor-pointer justify-between rounded-lg p-3 text-lg duration-100 hover:bg-gray-700"
 							onClick={() => {
 								props.setPool(pool.address);
 								props.closeModal();
 							}}
 						>
-							<div className="w-4/6 truncate text-left text-sm md:text-base">{getShortPoolName(pool)}</div>
-							<div className="w-1/6 truncate text-left text-sm md:text-base">{formatDollarAmount(parseFloat(pool.totalLiquidity))}</div>
-							<div className=" w-1/6 flex-row gap-1 truncate text-right text-sm text-gray-300 md:text-base">
-								{parseFloat(pool.swapFee) * 100}%
+							<div className="flex flex-row">
+								<div className="w-4/6 truncate text-left text-sm md:text-base">{getShortPoolName(pool)}</div>
+								<div className="hidden w-1/6 truncate text-left text-sm md:block md:text-base">
+									{formatDollarAmount(parseFloat(pool.totalLiquidity))}
+								</div>
+								<div className="w-2/6 flex-row gap-1 truncate text-right text-sm text-gray-300 md:w-1/6 md:text-base">
+									{parseFloat(pool.swapFee) * 100}%
+								</div>
+							</div>
+							<div className="flex flex-row">
+								<div className="mb-5 w-4/6 text-left text-sm md:text-base">
+									<PoolCurrencyLogo
+										tokens={
+											pool.tokens?.map((token) => ({
+												symbol: token.symbol,
+												overrides: [
+													TOKENS.find((t) => t.address.toLowerCase() === token.address.toLowerCase())?.logoURI || ''
+												]
+											})) || []
+										}
+									/>
+								</div>
+								<div className="block w-2/6 flex-row gap-1 truncate text-right text-sm text-gray-300 md:hidden md:text-base">
+									{formatDollarAmount(parseFloat(pool.totalLiquidity))}
+								</div>
 							</div>
 						</div>
 					))}
