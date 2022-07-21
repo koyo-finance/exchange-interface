@@ -1,5 +1,5 @@
 import FallbackCurrencyIcon from 'components/FallbackCurrencyIcon';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { BsArrowLeft } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAppDispatch } from 'state/hooks';
@@ -12,7 +12,19 @@ export interface ChooseTokenListsModalProps {
 const ChooseTokenListsModal: React.FC<ChooseTokenListsModalProps> = ({ setTokenListsModal }) => {
 	const dispatch = useDispatch();
 	const appDispatch = useAppDispatch();
+
 	const fetchedTokenLists = useSelector(selectFetchedLists());
+	const [tokenLists, setTokenLists] = useState(fetchedTokenLists);
+
+	useEffect(() => {
+		const seen: string[] = [];
+		const filteredTokenLists = fetchedTokenLists.filter((list) => {
+			return seen.indexOf(list.name) > -1 ? false : seen.push(list.name);
+		});
+		console.log(filteredTokenLists);
+		setTokenLists(filteredTokenLists);
+	}, [fetchedTokenLists]);
+
 	const tokenListInput = useRef<HTMLInputElement>(null);
 
 	const addTokenListHander = () => {
@@ -33,12 +45,8 @@ const ChooseTokenListsModal: React.FC<ChooseTokenListsModalProps> = ({ setTokenL
 				<div>Back to token selection</div>
 			</div>
 			<div className="flex max-h-[35rem] w-full flex-col overflow-y-scroll">
-				{fetchedTokenLists.map((list, i) => (
-					<div
-						key={i}
-						id={list.name}
-						className="flex w-full transform-gpu cursor-pointer flex-row items-center justify-between gap-2 p-2 duration-150 hover:bg-gray-900"
-					>
+				{tokenLists.map((list, i) => (
+					<div key={i} id={list.name} className="flex w-full  cursor-pointer flex-row items-center justify-between gap-2 p-2">
 						<FallbackCurrencyIcon srcs={[list.logoURI || '']} className="h-10 w-10 rounded-[50%]" />
 						<div className="flex w-full flex-row items-center justify-start  gap-3">{list.name}</div>
 					</div>

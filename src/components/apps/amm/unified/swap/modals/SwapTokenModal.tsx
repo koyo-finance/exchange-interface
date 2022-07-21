@@ -36,16 +36,22 @@ const SwapTokenModal: React.FC<SwapTokenModalProps> = (props) => {
 	});
 
 	useEffect(() => {
-		const newTokenList = TOKENS.filter((token) => token.address !== props.oppositeToken.address);
+		const seen: string[] = [];
+		const filterTokens = TOKENS.filter((token) =>
+			seen.indexOf(token.address.toLowerCase()) > -1 ? false : seen.push(token.address.toLowerCase())
+		);
+
+		const newTokenList = filterTokens.filter((token) => token.address !== props.oppositeToken.address);
 
 		setTokenList(newTokenList);
+		setFilteredTokenList(newTokenList);
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [props.oppositeToken.address]);
 
 	const setTokenHandler = (address: string) => {
-		const chosenTokens = tokenList.filter((token) => token.address === address);
+		const [chosenTokens] = tokenList.filter((token) => token.address === address);
 
-		props.setToken(chosenTokens[0], props.tokenNum);
+		props.setToken(chosenTokens, props.tokenNum);
 		props.closeModal();
 	};
 
