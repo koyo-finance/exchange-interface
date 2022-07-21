@@ -1,3 +1,4 @@
+import { formatBalance, formatDollarAmount } from '@koyofinance/core-sdk';
 import { EXLUDED_POOL_IDS } from 'config/pools';
 import useExchangeSubgraphURL from 'hooks/useExchangeSubgraphURL';
 import { LitePoolFragment, useGetPoolsQuery } from 'query/generated/graphql-codegen-generated';
@@ -15,7 +16,11 @@ const PoolsModal: React.FC<PoolsModalProps> = (props) => {
 	const { data: poolsQuery } = useGetPoolsQuery({ endpoint: exchangeSubgraphURL });
 	const pools = poolsQuery?.allPools;
 
-	const [filteredPoolList, setFilteredPoolList] = useState(pools?.filter((pool) => !EXLUDED_POOL_IDS.includes(pool.id)));
+	const [filteredPoolList, setFilteredPoolList] = useState(
+		pools
+			?.filter((pool) => !EXLUDED_POOL_IDS.includes(pool.id))
+			.sort((a, b) => parseFloat(b.totalLiquidity || '0') - parseFloat(a.totalLiquidity || '0'))
+	);
 
 	const filterPoolsHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
 		if (e.target.value === '') {
@@ -26,12 +31,10 @@ const PoolsModal: React.FC<PoolsModalProps> = (props) => {
 			?.filter((pool) => !EXLUDED_POOL_IDS.includes(pool.id))
 			.filter(
 				(pool: LitePoolFragment) =>
-					getShortPoolName(pool).includes(e.target.value) ||
-					getShortPoolName(pool).toLowerCase().includes(e.target.value) ||
-					getShortPoolName(pool).includes(e.target.value) ||
-					getShortPoolName(pool).toLowerCase().includes(e.target.value) ||
-					pool.address.includes(e.target.value)
-			);
+					getShortPoolName(pool).toLowerCase().includes(e.target.value.toLowerCase()) ||
+					pool.address.toLowerCase().includes(e.target.value.toLowerCase())
+			)
+			.sort((a, b) => parseFloat(b.totalLiquidity || '0') - parseFloat(a.totalLiquidity || '0'));
 
 		setFilteredPoolList(filteredList);
 	};
@@ -64,8 +67,9 @@ const PoolsModal: React.FC<PoolsModalProps> = (props) => {
 								props.closeModal();
 							}}
 						>
-							<div className="w-2/3 truncate text-left text-sm sm:w-3/4 md:text-base">{getShortPoolName(pool)}</div>
-							<div className=" w-1/3 flex-row gap-1 truncate text-right text-sm text-gray-300 sm:w-1/4 md:text-base">
+							<div className="w-4/6 truncate text-left text-sm md:text-base">{getShortPoolName(pool)}</div>
+							<div className="w-1/6 truncate text-left text-sm md:text-base">{formatDollarAmount(parseFloat(pool.totalLiquidity))}</div>
+							<div className=" w-1/6 flex-row gap-1 truncate text-right text-sm text-gray-300 md:text-base">
 								{parseFloat(pool.swapFee) * 100}%
 							</div>
 						</div>

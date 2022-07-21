@@ -31,6 +31,7 @@ export const LitePool = gql`
 		address
 		poolType
 		swapFee
+		totalLiquidity
 		tokens {
 			...Token
 		}
