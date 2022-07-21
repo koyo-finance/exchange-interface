@@ -84,7 +84,6 @@ const PoolCreationTokenModal: React.FC<PoolCreationTokenModalProps> = ({ chosenT
 						>
 							<div className="flex w-full flex-row items-center justify-start  gap-3">
 								<div>
-									{/* eslint-disable-next-line @next/next/no-img-element */}
 									<CurrencyIcon symbol={token.symbol} overrides={[token.logoURI || '']} className="h-10 w-10" />
 								</div>
 								<div className=" w-1/2">

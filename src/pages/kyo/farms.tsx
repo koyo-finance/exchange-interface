@@ -15,6 +15,7 @@ const FarmsPage: ExtendedNextPage = () => {
 		.map((gauge) => ({
 			address: gauge.address,
 			name: gauge.symbol.replace('-gauge', ''),
+			killed: gauge.killed,
 			pool: { id: gauge.pool?.id || '', address: gauge.pool?.address || '', name: gauge.pool?.name || '' }
 		}));
 
