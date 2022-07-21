@@ -1,5 +1,5 @@
 import FallbackCurrencyIcon from 'components/FallbackCurrencyIcon';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BsArrowLeft } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import { useAppDispatch } from 'state/hooks';
@@ -15,24 +15,25 @@ const ChooseTokenListsModal: React.FC<ChooseTokenListsModalProps> = ({ setTokenL
 
 	const fetchedTokenLists = useSelector(selectFetchedLists());
 	const [tokenLists, setTokenLists] = useState(fetchedTokenLists);
+	const [tokenListInput, setTokenListInput] = useState<string>('');
 
 	useEffect(() => {
 		const seen: string[] = [];
 		const filteredTokenLists = fetchedTokenLists.filter((list) => {
 			return seen.includes(list.name) ? false : seen.push(list.name);
 		});
-		console.log(filteredTokenLists);
 		setTokenLists(filteredTokenLists);
 	}, [fetchedTokenLists]);
 
-	const tokenListInput = useRef<HTMLInputElement>(null);
+	const tokenListInputChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setTokenListInput(e.target.value);
+	};
 
 	const addTokenListHander = () => {
-		const inputText = tokenListInput.current?.value;
-		if (inputText === '') return;
-		dispatch(setSelectedLists(inputText || ''));
+		if (tokenListInput === '') return;
+		dispatch(setSelectedLists(tokenListInput || ''));
 		appDispatch(fetchTokenLists());
-		if (tokenListInput.current) tokenListInput.current.value = '';
+		if (tokenListInput) setTokenListInput('');
 	};
 
 	return (
@@ -55,9 +56,10 @@ const ChooseTokenListsModal: React.FC<ChooseTokenListsModalProps> = ({ setTokenL
 			<div className="flex w-full flex-row gap-2 px-2">
 				<input
 					className="w-2/3 border-b-2 border-darks-200 bg-transparent text-base font-extralight text-white outline-none md:text-lg"
-					ref={tokenListInput}
 					type="text"
 					placeholder="https://koyo.finance/tokens"
+					value={tokenListInput}
+					onChange={tokenListInputChangeHandler}
 				/>
 				<button
 					type="button"
