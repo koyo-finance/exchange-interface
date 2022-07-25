@@ -2,6 +2,7 @@ import { ChainId, formatBalance, fromBigNumber } from '@koyofinance/core-sdk';
 import GaugePowerPercentageUsed from 'components/apps/dao/voting/GaugePowerPercentageUsed';
 import GaugeModal from 'components/apps/dao/voting/modals/GaugeModal';
 import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
+import GuideLink from 'components/GuideLink';
 import TitledDisplayBox from 'components/TitledDisplayBox';
 import { ANALYTICS_LINK, ROOT_WITH_PROTOCOL } from 'constants/links';
 import { GAUGES_SUBGRAPH_URL } from 'constants/subgraphs';
@@ -254,6 +255,7 @@ const GaugesPage: ExtendedNextPage = () => {
 					</a>
 				</div>
 			</div>
+			<GuideLink type="Vote" text="Trouble voting?" link="https://docs.koyo.finance/protocol/guide/KYO/vote" />
 		</>
 	);
 };

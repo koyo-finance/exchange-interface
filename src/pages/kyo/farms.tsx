@@ -1,4 +1,5 @@
 import FarmCard, { Gauge } from 'components/apps/dao/gauges/cards/FarmCard';
+import GuideLink from 'components/GuideLink';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
 import { GAUGES_SUBGRAPH_URL } from 'constants/subgraphs';
 import { SwapLayout } from 'layouts/SwapLayout';
@@ -39,6 +40,7 @@ const FarmsPage: ExtendedNextPage = () => {
 					))}
 				</div>
 			</div>
+			<GuideLink type="Gauges" text="Trouble depositing into gauges?" link="https://docs.koyo.finance/protocol/guide/KYO/farms" />
 		</>
 	);
 };
