@@ -127,7 +127,16 @@ const DepositPage: ExtendedNextPage = () => {
 						</div>
 					</div>
 				</SwapLayoutCard>
-				<GuideLink type="Deposit" text="Trouble depositing?" link="https://docs.koyo.finance/protocol/guide/exchange/deposit" />
+				{selectedPool && (
+					<GuideLink type="Deposit" text="Trouble depositing?" link="https://docs.koyo.finance/protocol/guide/exchange/deposit" />
+				)}
+				{poolCreationActive && (
+					<GuideLink
+						type="Pool Creation"
+						text="Trouble creating a pool?"
+						link="https://docs.koyo.finance/protocol/guide/exchange/poolCreation"
+					/>
+				)}
 			</div>
 		</>
 	);
