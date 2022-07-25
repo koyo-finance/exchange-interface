@@ -1,4 +1,4 @@
-import { formatBalance, toBigNumber } from '@koyofinance/core-sdk';
+import { formatBalance, fromBigNumber, toBigNumber } from '@koyofinance/core-sdk';
 import SymbolCurrencyIcon from 'components/CurrencyIcon/CurrencyIcon';
 import { BigNumber } from 'ethers';
 import useMultiTokenBalances from 'hooks/generic/useMultiTokenBalances';
@@ -27,6 +27,9 @@ const AddInitialLiquidity: React.FC<AddInitialLiquidityProps> = ({ setStep }) =>
 	const balances = chosenTokens.map((token, i) => {
 		return formatBalance(tokensBalance[i].data || BigNumber.from(0), undefined, token.decimals);
 	});
+
+	const balancesNum = chosenTokens.map((token, i) => fromBigNumber(tokensBalance[i].data || 0, token.decimals));
+	const balancesSum = balancesNum.reduce((balance, acc) => balance + acc);
 
 	const tokenAmountChangeHandler = (tokenIndex: number, input: string) => {
 		const inputAmount = Number(input);
@@ -89,6 +92,21 @@ const AddInitialLiquidity: React.FC<AddInitialLiquidityProps> = ({ setStep }) =>
 						</div>
 					</div>
 				))}
+				<div className=" flex flex-row items-start gap-2 rounded-xl bg-gray-600 bg-opacity-50 p-2 text-gray-200">
+					<div className="font-sans text-2xl">&#x24D8;</div>
+					<div className="pt-1">
+						Please set the weights manually, so they add up to a 100% and aren't decimal numbers, otherwise the creation of your pool
+						might fail.
+						<br />
+						Maximum amount you can fund this pool with:{' '}
+						<b className="underline">
+							{balancesSum.toLocaleString('default', {
+								minimumFractionDigits: 2,
+								maximumFractionDigits: 5
+							})}
+						</b>
+					</div>
+				</div>
 			</div>
 			<button className="btn mt-2 w-full bg-lights-400 bg-opacity-100 p-0 text-black hover:bg-lights-300" onClick={confirmLiquidity}>
 				Add Initial liquidity
