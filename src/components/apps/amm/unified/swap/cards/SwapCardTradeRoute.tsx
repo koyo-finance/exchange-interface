@@ -79,7 +79,7 @@ const SwapCardTradeRoute: React.FC = () => {
 								key={index}
 								className="absolute rounded-b-md border-l border-r border-b border-gray-500"
 								style={{
-									height: `${18 + 70 * index}px`,
+									height: `${18 + 42 * index}px`,
 									width: `calc(100% - ${4 * (routes.length - index - 1)}px + 1px)`,
 									margin: `0 ${2 * (routes.length - index - 1) - 1}px`
 								}}
@@ -94,7 +94,7 @@ const SwapCardTradeRoute: React.FC = () => {
 											key={hop?.pool?.id}
 											className="z-[1] ml-4 flex rounded-xl border border-gray-600 bg-gray-900 shadow transition-colors first:ml-0 hover:border-gray-400 hover:bg-gray-800"
 										>
-											<a href="/" target="_blank" className="flex p-1.5">
+											<a href={`https://info.koyo.finance/#/pools/${hop.pool.id}`} target="_blank" className="flex p-1.5">
 												{hop.pool.tokens.map((token) => (
 													<CurrencyIcon
 														symbol={TOKENS.find((t) => isSameAddress(t.address, token.address))?.symbol}
