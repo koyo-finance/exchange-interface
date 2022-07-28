@@ -29,19 +29,27 @@ export interface FarmCardProps {
 }
 
 const FarmCard: React.FC<FarmCardProps> = ({ gauge }) => {
+	let pool = gauge.pool;
+	if (gauge.address === '0xacc2554136f94259862513eed69d4d5402721814')
+		pool = {
+			id: '0x0AdF26900b6088C2a5b3677F40ED9fc6913a9631',
+			address: '0x0AdF26900b6088C2a5b3677F40ED9fc6913a9631',
+			name: '50KYO-50ETH'
+		};
+
 	const { accountAddress, signer, chainId } = useWeb3();
 
-	const { data: lpTokenBalance = BigNumber.from(0) } = useTokenBalance(accountAddress, gauge.pool.address);
+	const { data: lpTokenBalance = BigNumber.from(0) } = useTokenBalance(accountAddress, pool.address);
 	const { data: gaugeTokenBalance = BigNumber.from(0) } = useTokenBalance(accountAddress, gauge.address);
 	const { data: gaugeClaimAmount = BigNumber.from(0) } = useCheckClaimableTokens(accountAddress, gauge.address);
-	const { data: lpTotal = BigNumber.from(0) } = useTokenBalance(gauge.address, gauge.pool.address);
-	const { data: lpTokenAllowance = BigNumber.from(0) } = useTokenAllowance(accountAddress, gauge.address, gauge.pool.address);
+	const { data: lpTotal = BigNumber.from(0) } = useTokenBalance(gauge.address, pool.address);
+	const { data: lpTokenAllowance = BigNumber.from(0) } = useTokenAllowance(accountAddress, gauge.address, pool.address);
 
 	const { mutate: gaugeDeposit } = useDepositIntoGauge(signer, gauge.address);
 	const { mutate: gaugeWithdraw } = useWithdrawFromGauge(signer, gauge.address);
 	const { mutate: claimEmissions } = useDistributeGaugeEmissions(signer);
 
-	if (!gauge.pool.address) return null;
+	if (!pool.address) return null;
 
 	return (
 		<div
@@ -72,12 +80,12 @@ const FarmCard: React.FC<FarmCardProps> = ({ gauge }) => {
 							<Switch>
 								<Case condition={BigNumber.from(lpTokenAllowance).lt(lpTokenBalance)}>
 									<FormApproveAsset
-										asset={gauge.pool?.address || ''}
+										asset={pool?.address || ''}
 										spender={gauge.address}
 										amount={MaxUint256}
 										className="h-full w-full"
 									>
-										APPROVE - <span className="italic">{gauge.pool.name}</span>
+										APPROVE - <span className="italic">{pool.name}</span>
 									</FormApproveAsset>
 								</Case>
 								<Default>

@@ -12,6 +12,7 @@ const FarmsPage: ExtendedNextPage = () => {
 	const { data: allGaugesQueryData } = useGetAllGaugesQuery({
 		endpoint: GAUGES_SUBGRAPH_URL
 	});
+
 	const gaugeList: Gauge[] = (allGaugesQueryData?.allGauges || []) //
 		.map((gauge) => ({
 			address: gauge.address,
@@ -34,7 +35,7 @@ const FarmsPage: ExtendedNextPage = () => {
 						Stake your LP tokens into desired gauges to earn and claim emissions.
 					</div>
 				</div>
-				<div className="flex w-full flex-row flex-wrap items-start justify-center gap-5">
+				<div className="flex w-full flex-row flex-wrap items-start justify-center gap-4">
 					{gaugeList.map((gauge) => (
 						<FarmCard gauge={gauge} key={gauge.address} />
 					))}
