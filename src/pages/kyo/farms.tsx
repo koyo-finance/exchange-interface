@@ -31,8 +31,19 @@ const FarmsPage: ExtendedNextPage = () => {
 			<div className=" flex min-h-screen w-full flex-col items-center gap-[5vh] bg-darks-500 px-4 pb-8 pt-24 md:px-0 lg:pt-20 ">
 				<div className="mt-8 flex w-full flex-col items-center justify-center gap-8 text-center text-white">
 					<h1 className=" text-4xl font-bold md:text-5xl">Kōyō Farms</h1>
-					<div className="w-full font-normal md:w-3/4 md:text-xl md:font-semibold lg:w-1/2">
-						Stake your LP tokens into desired gauges to earn and claim emissions.
+					<div className="w-full md:w-3/4 lg:w-1/2">
+						<div className="w-full font-normal md:text-xl md:font-semibold">
+							Stake your LP tokens into desired gauges to earn and claim emissions.
+						</div>
+						<div className="mt-5 w-full text-lg font-normal duration-100 md:text-2xl md:font-semibold ">
+							<a
+								href="https://info.koyo.finance/#/gauges"
+								target="_blank"
+								className="transform-gpu text-lights-400 underline hover:text-lights-300"
+							>
+								More info about the gauges on Kōyō Finance
+							</a>
+						</div>
 					</div>
 				</div>
 				<div className="flex w-full flex-row flex-wrap items-start justify-center gap-4">

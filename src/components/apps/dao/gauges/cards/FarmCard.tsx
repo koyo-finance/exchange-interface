@@ -62,7 +62,21 @@ const FarmCard: React.FC<FarmCardProps> = ({ gauge }) => {
 				gauge.killed ? 'border-red-600' : 'border-lights-400'
 			} bg-black bg-opacity-50 p-4 text-base text-white sm:w-3/4 md:w-1/2 lg:w-2/5 lg:text-lg xl:w-1/3 xl:text-xl`}
 		>
-			<div className="w-full text-center">{gauge.name}</div>
+			<div className="flex w-full flex-row items-center justify-center gap-2 text-center">
+				<div className="">{gauge.name}</div>
+				<div>-</div>
+				<div>
+					<a
+						href={`https://info.koyo.finance/#/pools/${gauge.pool.address}`}
+						target="_blank"
+						className={`transform-gpu text-xl font-bold duration-100 ${
+							gauge.killed ? 'text-red-600' : 'text-lights-400'
+						} underline hover:${gauge.killed ? 'text-red-500' : 'text-lights-300'}`}
+					>
+						Pool info
+					</a>
+				</div>
+			</div>
 			<div className=" flex w-full flex-row justify-between ">
 				<div>TVL </div>
 				<div className=" font-bold">{formatDollarAmount(fromBigNumber(lpTotal))}</div>
@@ -102,7 +116,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ gauge }) => {
 						</SingleEntityConnectButton>
 					</Then>
 					<Else>
-						<div className="btn w-full animate-none cursor-default select-text border-red-600 bg-transparent bg-opacity-100 p-0 text-red-600 hover:border-red-600 hover:bg-transparent hover:text-red-600">
+						<div className="btn w-full animate-none cursor-pointer select-text border-red-600 bg-transparent bg-opacity-100 p-0 text-red-600 hover:border-red-600 hover:bg-transparent hover:text-red-600">
 							<span className="cursor-text">GAUGE DEPRECATED</span>
 						</div>
 					</Else>

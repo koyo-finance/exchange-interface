@@ -105,10 +105,10 @@ const GaugesPage: ExtendedNextPage = () => {
 					<TitledDisplayBox text="VOTING POWER USED" value={`${votePower.div(100).toString()}%`} />
 				</div>
 				<div className="mx-auto flex w-full flex-col gap-3 rounded-xl border-2 border-lights-400 bg-black bg-opacity-50 p-3 md:w-3/4 md:gap-4 md:p-4 lg:w-2/3 xl:w-1/2">
-					{claimableGauges.some((cG) => fromBigNumber(cG?.data || 0) > 0) && (
+					{votePower.toNumber() > 0 && (
 						<div>
 							{/* Table */}
-							<div className=" flex w-full flex-col rounded-xl border-2 border-darks-200">
+							<div className=" flex w-full flex-col rounded-lg border-2 border-darks-200">
 								{/* Header */}
 								<div className=" hidden w-full flex-col justify-between p-2 text-center font-semibold text-white sm:flex sm:flex-row">
 									<div className="w-full text-center sm:w-1/4 sm:text-left">Your gauge</div>
@@ -183,7 +183,7 @@ const GaugesPage: ExtendedNextPage = () => {
 					)}
 					{error !== '' && <div className="w-full text-xl text-red-600 ">{error}</div>}
 					<div className="w-full text-center text-xl">
-						Next vote period in: <Countdown date={Math.floor((currentTime + week) / week) * week * 1000} className=" font-semibold" />
+						Voting period ends in <Countdown date={Math.floor((currentTime + week) / week) * week * 1000} className=" font-semibold" />
 					</div>
 					<div className="flex w-full flex-row flex-wrap items-center justify-between gap-2 text-xl text-white">
 						<div className="text-lg md:text-xl">
