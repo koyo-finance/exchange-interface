@@ -29,7 +29,12 @@ export interface FarmCardProps {
 }
 
 const FarmCard: React.FC<FarmCardProps> = ({ gauge }) => {
-	let pool = gauge.pool;
+	let pool = {
+		id: gauge.pool.id,
+		address: gauge.pool.address,
+		name: gauge.pool.name
+	};
+
 	if (gauge.address === '0xacc2554136f94259862513eed69d4d5402721814')
 		pool = {
 			id: '0x0AdF26900b6088C2a5b3677F40ED9fc6913a9631',
