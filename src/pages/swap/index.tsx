@@ -48,9 +48,18 @@ const SwapIndexPage: ExtendedNextPage = () => {
 	const tokenOne = useSelector(selectTokenOne);
 	const tokenTwo = useSelector(selectTokenTwo);
 
+	const setTokenHandler = (token: TokenInfo, tokenNum: number) => {
+		if (tokenNum === SwapTokenNumber.IN) {
+			dispatch(setTokenOne(token));
+		} else if (tokenNum === SwapTokenNumber.OUT) {
+			dispatch(setTokenTwo(token));
+		}
+	};
+
 	useEffect(() => {
 		setTokenHandler(TOKENS[0], 1);
 		setTokenHandler(TOKENS[1], 2);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [chainId]);
 
 	const { data: allowance = 0 } = useTokenAllowance(accountAddress, vaultContract.address, tokenOne?.address || '');
@@ -58,14 +67,6 @@ const SwapIndexPage: ExtendedNextPage = () => {
 	const openTokenModalHandler = (tokenNum: number) => {
 		setActiveToken(tokenNum);
 		setTokenModalIsOpen(true);
-	};
-
-	const setTokenHandler = (token: TokenInfo, tokenNum: number) => {
-		if (tokenNum === SwapTokenNumber.IN) {
-			dispatch(setTokenOne(token));
-		} else if (tokenNum === SwapTokenNumber.OUT) {
-			dispatch(setTokenTwo(token));
-		}
 	};
 
 	const { mutate: swap, status: swapStatus } = useRoutedSwap(signer);

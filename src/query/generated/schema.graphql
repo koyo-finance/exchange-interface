@@ -1070,6 +1070,7 @@ type JoinExit {
 	timestamp: Int!
 	tx: Bytes!
 	type: InvestType!
+	valueUSD: BigDecimal!
 }
 
 input JoinExit_filter {
@@ -1157,6 +1158,14 @@ input JoinExit_filter {
 	type_in: [InvestType!]
 	type_not: InvestType
 	type_not_in: [InvestType!]
+	valueUSD: BigDecimal
+	valueUSD_gt: BigDecimal
+	valueUSD_gte: BigDecimal
+	valueUSD_in: [BigDecimal!]
+	valueUSD_lt: BigDecimal
+	valueUSD_lte: BigDecimal
+	valueUSD_not: BigDecimal
+	valueUSD_not_in: [BigDecimal!]
 }
 
 enum JoinExit_orderBy {
@@ -1168,6 +1177,7 @@ enum JoinExit_orderBy {
 	timestamp
 	tx
 	type
+	valueUSD
 }
 
 type Koyo {

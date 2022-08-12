@@ -1038,6 +1038,7 @@ export interface JoinExit {
 	timestamp: Scalars['Int'];
 	tx: Scalars['Bytes'];
 	type: InvestType;
+	valueUSD: Scalars['BigDecimal'];
 }
 
 export interface JoinExit_Filter {
@@ -1123,9 +1124,17 @@ export interface JoinExit_Filter {
 	type_in?: InputMaybe<Array<InvestType>>;
 	type_not?: InputMaybe<InvestType>;
 	type_not_in?: InputMaybe<Array<InvestType>>;
+	valueUSD?: InputMaybe<Scalars['BigDecimal']>;
+	valueUSD_gt?: InputMaybe<Scalars['BigDecimal']>;
+	valueUSD_gte?: InputMaybe<Scalars['BigDecimal']>;
+	valueUSD_in?: InputMaybe<Array<Scalars['BigDecimal']>>;
+	valueUSD_lt?: InputMaybe<Scalars['BigDecimal']>;
+	valueUSD_lte?: InputMaybe<Scalars['BigDecimal']>;
+	valueUSD_not?: InputMaybe<Scalars['BigDecimal']>;
+	valueUSD_not_in?: InputMaybe<Array<Scalars['BigDecimal']>>;
 }
 
-export type JoinExit_OrderBy = 'account' | 'amounts' | 'id' | 'pool' | 'sender' | 'timestamp' | 'tx' | 'type';
+export type JoinExit_OrderBy = 'account' | 'amounts' | 'id' | 'pool' | 'sender' | 'timestamp' | 'tx' | 'type' | 'valueUSD';
 
 export interface Koyo {
 	__typename: 'Koyo';

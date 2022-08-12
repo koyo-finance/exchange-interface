@@ -4,6 +4,7 @@ import reducer from './reducer';
 import { createPoolSlice } from './reducers/createPool';
 import { listsSlice } from './reducers/lists';
 import { selectedTokensSlice } from './reducers/selectedTokens';
+import { swapSlice } from './reducers/swap';
 import storage from './storage';
 
 const PERSISTED_KEYS: string[] = ['lists'];
@@ -23,7 +24,8 @@ export const store = configureStore({
 		actionCreators: {
 			...listsSlice.actions,
 			...selectedTokensSlice.actions,
-			...createPoolSlice.actions
+			...createPoolSlice.actions,
+			...swapSlice.actions
 		}
 	},
 	middleware: (getDefaultMiddleware) =>
