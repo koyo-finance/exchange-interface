@@ -26,7 +26,7 @@ type Account {
 	): [GaugeWeightVote!]
 
 	"""
-	 Liquidity gauges this account contributed to
+	Liquidity gauges this account contributed to
 	"""
 	gauges(
 		first: Int = 100
@@ -1182,28 +1182,28 @@ enum JoinExit_orderBy {
 
 type Koyo {
 	"""
-	 Address of the Kōyō vault
+	Address of the Kōyō vault
 	"""
 	address: Bytes!
 
 	"""
-	 Number of gauges registered
+	Number of gauges registered
 	"""
 	gaugeCount: BigInt!
 
 	"""
-	 Number of gauge types registered
+	Number of gauge types registered
 	"""
 	gaugeTypeCount: BigInt!
 	id: ID!
 
 	"""
-	 Number of pools registered
+	Number of pools registered
 	"""
 	poolCount: Int!
 
 	"""
-	 List of registered pools
+	List of registered pools
 	"""
 	pools(first: Int = 100, orderBy: Pool_orderBy, orderDirection: OrderDirection, skip: Int = 0, where: Pool_filter): [Pool!]
 	totalLiquidity: BigDecimal!
@@ -4039,7 +4039,7 @@ type TokenPrice {
 	priceUSD: BigDecimal!
 
 	"""
-	 Address of stable asset
+	Address of stable asset
 	"""
 	pricingAsset: Bytes!
 	timestamp: Int!
@@ -4411,7 +4411,7 @@ enum Token_orderBy {
 
 type TradePair {
 	"""
-	 Token Address - Token Address
+	Token Address - Token Address
 	"""
 	id: ID!
 	token0: Token!
