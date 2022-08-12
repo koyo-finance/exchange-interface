@@ -1,34 +1,25 @@
 import { SwapInfo, SwapTypes } from '@balancer-labs/sor';
-import { MaxUint256 } from '@ethersproject/constants';
 import { toBigNumber } from '@koyofinance/core-sdk';
 import { TokenInfo } from '@uniswap/token-lists';
 import SwapCardToken from 'components/apps/amm/unified/swap/cards/SwapCardToken';
 import SwapCardTop from 'components/apps/amm/unified/swap/cards/SwapCardTop';
-import SwapCardTradeRoute from 'components/apps/amm/unified/swap/cards/SwapCardTradeRoute';
 import SwapTokenModal from 'components/apps/amm/unified/swap/modals/SwapTokenModal';
+import ToggleSwapMode from 'components/apps/amm/unified/swap/momiji/ToggleSwapMode';
 import SwapSwapTokensSlot from 'components/apps/amm/unified/swap/SwapSwapTokensSlot';
-import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
-import FormApproveAsset from 'components/FormApproveAsset';
+import SwapWrapper from 'components/apps/amm/unified/swap/SwapWrapper';
 import GuideLink from 'components/GuideLink';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
 import { SwapTokenNumber } from 'constants/swaps';
-import { BigNumber } from 'ethers';
 import { Form, Formik } from 'formik';
-import useVaultContract from 'hooks/contracts/useVaultContract';
-import useTokenAllowance from 'hooks/generic/useTokenAllowance';
-import { useRoutedSwap } from 'hooks/SOR/useRoutedSwap';
 import { useWeb3 } from 'hooks/useWeb3';
 import { SwapLayout, SwapLayoutCard } from 'layouts/SwapLayout';
 import { NextSeo } from 'next-seo';
 import React, { useEffect, useState } from 'react';
-import { Case, Default, Else, If, Switch, Then } from 'react-if';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from 'state/hooks';
 import { selectAllTokensByChainId } from 'state/reducers/lists';
 import { selectTokenOne, selectTokenTwo, setTokenOne, setTokenTwo } from 'state/reducers/selectedTokens';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
-import { Switch as HeadlessSwitch } from '@headlessui/react';
-import { selectMomijiUsage, setMomijiUsage } from 'state/reducers/swap';
 
 const swapType = SwapTypes.SwapExactIn;
 
@@ -40,17 +31,14 @@ export interface SwapFormValues {
 }
 
 const SwapIndexPage: ExtendedNextPage = () => {
-	const { accountAddress, signer, chainId } = useWeb3();
+	const { chainId } = useWeb3();
 	const dispatch = useAppDispatch();
-	const vaultContract = useVaultContract();
 
 	const TOKENS = useSelector(selectAllTokensByChainId(chainId));
 	const [tokenModalOneIsOpen, setTokenModalIsOpen] = useState(false);
 	const [activeToken, setActiveToken] = useState<SwapTokenNumber>(SwapTokenNumber.IN);
 	const tokenOne = useSelector(selectTokenOne);
 	const tokenTwo = useSelector(selectTokenTwo);
-
-	const momijiEnabled = useSelector(selectMomijiUsage);
 
 	const setTokenHandler = (token: TokenInfo, tokenNum: number) => {
 		if (tokenNum === SwapTokenNumber.IN) {
@@ -66,14 +54,10 @@ const SwapIndexPage: ExtendedNextPage = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [chainId]);
 
-	const { data: allowance = 0 } = useTokenAllowance(accountAddress, vaultContract.address, tokenOne?.address || '');
-
 	const openTokenModalHandler = (tokenNum: number) => {
 		setActiveToken(tokenNum);
 		setTokenModalIsOpen(true);
 	};
-
-	const { mutate: swap, status: swapStatus } = useRoutedSwap(signer);
 
 	return (
 		<>
@@ -92,127 +76,47 @@ const SwapIndexPage: ExtendedNextPage = () => {
 					/>
 				)}
 				<SwapLayoutCard className="w-[95vw] sm:w-[75vw] md:w-[55vw] lg:w-[45vw] xl:w-[40vw] 2xl:w-[30vw]">
-					<Formik<SwapFormValues>
-						initialValues={{
-							[SwapTokenNumber.IN]: undefined as unknown as number,
-							[SwapTokenNumber.OUT]: undefined as unknown as number,
-							swapType
-						}}
-						onSubmit={(values) => {
-							swap({
-								options: {
-									tokenIn: tokenOne.address,
-									tokenOut: tokenTwo.address,
-									amount: toBigNumber(values[SwapTokenNumber.IN], tokenOne.decimals),
-									swapType,
-									funds: {
-										sender: accountAddress,
-										fromInternalBalance: false,
-										recipient: accountAddress,
-										toInternalBalance: false
-									}
-								}
-							});
-						}}
-					>
-						{(props) => (
-							<Form>
-								<div className="flex w-full flex-col gap-1">
-									<SwapCardTop />
-									<SwapCardToken
-										tokenNum={SwapTokenNumber.IN}
-										token={tokenOne}
-										swapStatus={swapStatus}
-										isIn={true}
-										openTokenModal={openTokenModalHandler}
-										setActiveToken={(tokenNum: number) => setActiveToken(tokenNum)}
-									/>
-									<SwapSwapTokensSlot />
-									<SwapCardToken
-										tokenNum={SwapTokenNumber.OUT}
-										token={tokenTwo}
-										swapStatus={swapStatus}
-										isIn={false}
-										openTokenModal={openTokenModalHandler}
-										setActiveToken={(tokenNum: number) => setActiveToken(tokenNum)}
-									/>
-
-									{props.values.info && (
-										<>
-											{momijiEnabled ? null : <SwapCardTradeRoute />}
-											<If
-												condition={
-													!(props.values.info.swapAmount.lte(BigNumber.from(0)) || props.values.info.swaps.length === 0)
-												}
-											>
-												<Then>
-													<SingleEntityConnectButton
-														className="btn mt-2 w-full bg-lights-400 bg-opacity-100 text-black hover:bg-lights-200"
-														invalidNetworkClassName="bg-red-600 text-white hover:bg-red-400"
-													>
-														<Switch>
-															{/* <SwapTokenApprovalCase token={tokenOne} amount={props.values[SwapTokenNumber.IN]} /> */}
-															<Case
-																condition={BigNumber.from(allowance).lte(
-																	toBigNumber(props.values[SwapTokenNumber.IN] || 0, tokenOne.decimals || 18)
-																)}
-															>
-																<FormApproveAsset
-																	asset={tokenOne.address}
-																	spender={vaultContract.address}
-																	amount={MaxUint256}
-																	className="h-full w-full"
-																>
-																	APPROVE - <span className="italic">{tokenOne.symbol.toUpperCase()}</span>
-																</FormApproveAsset>
-															</Case>
-															<Default>
-																<button type="submit" className="h-full w-full">
-																	SWAP
-																</button>
-															</Default>
-														</Switch>
-													</SingleEntityConnectButton>
-												</Then>
-												<Else>
-													<button
-														type="button"
-														className="mt-2 w-full rounded-lg bg-gray-600 bg-opacity-100 p-3 text-center text-black"
-													>
-														Cannot swap -{' '}
-														{props.values.info.swapAmount.lte(BigNumber.from(0))
-															? 'No amount or insufficient liquidity'
-															: 'Invalid path'}
-													</button>
-												</Else>
-											</If>
-										</>
-									)}
-
-									<div className="flex items-center gap-2 pt-2">
-										<HeadlessSwitch
-											checked={momijiEnabled}
-											onChange={(e) => dispatch(setMomijiUsage(e))}
-											className={`${
-												momijiEnabled ? 'bg-lights-400' : 'bg-darks-200'
-											} relative inline-flex h-[2.4rem] w-[4.6rem] shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2  focus-visible:ring-white focus-visible:ring-opacity-75`}
-										>
-											<span className="sr-only">Use Momiji</span>
-											<span
-												aria-hidden="true"
-												className={`${
-													momijiEnabled ? 'translate-x-9' : 'translate-x-0'
-												} pointer-events-none inline-block h-[2.125rem] w-[2.125rem] transform rounded-full bg-white shadow-lg ring-0 transition duration-200 ease-in-out`}
+					<SwapWrapper>
+						{(sw) => (
+							<Formik<SwapFormValues>
+								initialValues={{
+									[SwapTokenNumber.IN]: undefined as unknown as number,
+									[SwapTokenNumber.OUT]: undefined as unknown as number,
+									swapType
+								}}
+								onSubmit={(values) => {
+									sw.swapFunction(toBigNumber(values[SwapTokenNumber.IN], tokenOne.decimals));
+								}}
+							>
+								{() => (
+									<Form>
+										<div className="flex w-full flex-col gap-1">
+											<SwapCardTop />
+											<SwapCardToken
+												tokenNum={SwapTokenNumber.IN}
+												token={tokenOne}
+												swapStatus={sw.status}
+												isIn={true}
+												openTokenModal={openTokenModalHandler}
+												setActiveToken={(tokenNum: number) => setActiveToken(tokenNum)}
 											/>
-										</HeadlessSwitch>
-										<span className={`${momijiEnabled ? 'text-lights-400' : 'text-darks-200'} inline-block align-middle text-sm`}>
-											{momijiEnabled ? 'Trade gasless by signature' : 'Trade with a gas fee'}
-										</span>
-									</div>
-								</div>
-							</Form>
+											<SwapSwapTokensSlot />
+											<SwapCardToken
+												tokenNum={SwapTokenNumber.OUT}
+												token={tokenTwo}
+												swapStatus={sw.status}
+												isIn={false}
+												openTokenModal={openTokenModalHandler}
+												setActiveToken={(tokenNum: number) => setActiveToken(tokenNum)}
+											/>
+											<sw.content />
+											<ToggleSwapMode className="pt-2" />
+										</div>
+									</Form>
+								)}
+							</Formik>
 						)}
-					</Formik>
+					</SwapWrapper>
 				</SwapLayoutCard>
 				<GuideLink type="Swap" text="Trouble swapping?" link="https://docs.koyo.finance/protocol/guide/exchange/swap" />
 			</div>
