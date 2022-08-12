@@ -36,8 +36,8 @@
 		"@heroicons/react": "^1.0.6",
 		"@koyofinance/core-sdk": "^0.6.0-next.24946d2.0",
 		"@koyofinance/exchange-sdk": "^0.2.0-next.c0ebd86.0",
-		"@koyofinance/momiji-hooks": "^0.2.0-next.b4b6109.0",
-		"@koyofinance/momiji-sdk": "^0.3.0-next.b4b6109.0",
+		"@koyofinance/momiji-hooks": "^0.2.0-next.103954c.0",
+		"@koyofinance/momiji-sdk": "^0.3.0-next.103954c.0",
 		"@koyofinance/react-query-typechain": "^1.1.0-next.f2f8f0d.0",
 		"@koyofinance/sor": "^1.1.0-next.c0ebd86.0",
 		"@rainbow-me/rainbowkit": "^0.4.0",
@@ -134,7 +134,7 @@
 	"resolutions": {
 		"@types/react": "17.0.39",
 		"@types/react-dom": "17.0.11",
-		"@koyofinance/momiji-sdk": "0.3.0-next.b4b6109.0"
+		"@koyofinance/momiji-sdk": "^0.3.0-next.103954c.0"
 	},
 	"volta": {
 		"node": "16.10.0",

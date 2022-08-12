@@ -20,6 +20,7 @@ import { useAppDispatch } from 'state/hooks';
 import { selectAllTokensByChainId } from 'state/reducers/lists';
 import { selectTokenOne, selectTokenTwo, setTokenOne, setTokenTwo } from 'state/reducers/selectedTokens';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
+import type { useGetQoute } from '@koyofinance/momiji-hooks';
 
 const swapType = SwapTypes.SwapExactIn;
 
@@ -28,6 +29,7 @@ export interface SwapFormValues {
 	2: number;
 	swapType: SwapTypes;
 	info?: SwapInfo;
+	quote?: ReturnType<typeof useGetQoute>['data'];
 }
 
 const SwapIndexPage: ExtendedNextPage = () => {
@@ -85,7 +87,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 									swapType
 								}}
 								onSubmit={(values) => {
-									sw.swapFunction(toBigNumber(values[SwapTokenNumber.IN], tokenOne.decimals));
+									sw.swapFunction(toBigNumber(values[SwapTokenNumber.IN], tokenOne.decimals), values.quote);
 								}}
 							>
 								{() => (

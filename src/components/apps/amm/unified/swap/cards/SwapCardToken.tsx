@@ -90,6 +90,7 @@ const SwapCardToken: React.FC<SwapCardTokenProps> = ({ tokenNum, token, swapStat
 	}, [setFieldValue, isIn, tokenNum, values, swapAmounts.in, swapAmounts.out, momijiEnabled, momijiOrderInfo]);
 
 	useEffect(() => setFieldValue('info', swapInfo), [setFieldValue, swapInfo]);
+	useEffect(() => setFieldValue('quote', momijiOrderInfo), [setFieldValue, momijiOrderInfo]);
 
 	useEffect(() => {
 		if (swapStatus === 'success') {

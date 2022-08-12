@@ -27,7 +27,7 @@ const SwapCardKoyoSORContent: React.FC = () => {
 	return values.info ? (
 		<>
 			<SwapCardKoyoSORTradeRoute />
-			<If condition={!(values.info.swapAmount.lte(BigNumber.from(0)) || values.info.swaps.length === 0)}>
+			<If condition={values.info.swapAmount.gt(BigNumber.from(0)) && values.info.swaps.length > 0}>
 				<Then>
 					<SingleEntityConnectButton
 						className="btn mt-2 w-full bg-lights-400 bg-opacity-100 text-black hover:bg-lights-200"
