@@ -80,7 +80,12 @@ const SwapWrapper: React.FC<SwapWrapperProps> = ({ children }) => {
 		if (orderIdMomiji)
 			toast(() => (
 				<span>
-					<a className="text-lights-400 underline" href={`https://explorer.momiji.exchange/tx/${orderIdMomiji}`}>
+					<a
+						className="text-lights-400 underline"
+						target="_blank"
+						href={`https://explorer.momiji.exchange/tx/${orderIdMomiji}`}
+						rel="noreferrer"
+					>
 						Explorer
 					</a>
 				</span>
