@@ -1,4 +1,5 @@
 import { Transition } from '@headlessui/react';
+import { isSameAddress } from '@koyofinance/core-sdk';
 import CurrencyIcon from 'components/CurrencyIcon/CurrencyIcon';
 import { useFormikContext } from 'formik';
 import { useGetRoutes } from 'hooks/SOR/useGetRoutes';
@@ -8,7 +9,6 @@ import React, { useReducer } from 'react';
 import { useSelector } from 'react-redux';
 import { selectAllTokens } from 'state/reducers/lists';
 import { selectTokenOne, selectTokenTwo } from 'state/reducers/selectedTokens';
-import { isSameAddress } from 'utils/isSameAddress';
 import SwapCardRouterIcon from '../cards/SwapCardRouterIcon';
 
 const SwapCardKoyoSORTradeRoute: React.FC = () => {

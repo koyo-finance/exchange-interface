@@ -1,7 +1,7 @@
 import { SubgraphPoolBase, SwapV2 } from '@balancer-labs/sor';
+import { isSameAddress } from '@koyofinance/core-sdk';
 import { BigNumber } from 'ethers';
 import { getAddress } from 'ethers/lib/utils';
-import { isSameAddress } from 'utils/isSameAddress';
 
 export interface Route {
 	share: number;

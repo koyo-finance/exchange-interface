@@ -1,6 +1,6 @@
 import { TokenPriceService } from '@balancer-labs/sor';
 import { MaxUint256 } from '@ethersproject/constants';
-import { ChainId, fromBigNumber } from '@koyofinance/core-sdk';
+import { ChainId, fromBigNumber, isSameAddress } from '@koyofinance/core-sdk';
 import SymbolCurrencyIcon from 'components/CurrencyIcon/CurrencyIcon';
 import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
 import FormApproveAsset from 'components/FormApproveAsset';
@@ -21,7 +21,6 @@ import { selectFeeAddress, selectInitialLiquidity, selectPoolFee, selectPoolType
 import { assetHelperBoba } from 'utils/assets';
 import { switchPoolCreationParameters } from 'utils/exchange/switchPoolCreationParameters';
 import { joinInit } from 'utils/exchange/userData/joins';
-import { isSameAddress } from 'utils/isSameAddress';
 import { useSendTransaction } from 'wagmi';
 import StepBackCard from '../../cards/StepBackCard';
 import TokenUSDPrice from '../../cards/TokenUSDPrice';

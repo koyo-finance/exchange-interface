@@ -1,9 +1,9 @@
 import { PoolFilter, SubgraphPoolBase } from '@balancer-labs/sor';
 import { formatFixed } from '@ethersproject/bignumber';
 import { Provider } from '@ethersproject/providers';
+import { isSameAddress } from '@koyofinance/core-sdk';
 import { OracleWeightedPool__factory, Vault__factory, WeightedPool__factory } from 'types/contracts/exchange';
 import { StablePool__factory } from 'types/contracts/exchange/factories/StablePool__factory';
-import { isSameAddress } from 'utils/isSameAddress';
 import { Multicaller } from '../Multicaller';
 
 export async function getOnChainBalances(
