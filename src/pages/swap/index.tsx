@@ -112,7 +112,6 @@ const SwapIndexPage: ExtendedNextPage = () => {
 												setActiveToken={(tokenNum: number) => setActiveToken(tokenNum)}
 											/>
 											<sw.content />
-											<ToggleSwapMode className="pt-2" />
 										</div>
 									</Form>
 								)}
