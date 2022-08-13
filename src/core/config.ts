@@ -2,7 +2,7 @@ import * as z from 'zod';
 
 export const configSchema = z.object({
 	intercomId: z.string().optional(),
-	momijiEnable: z.boolean().optional()
+	momijiEnable: z.boolean()
 });
 
 export const config = configSchema.parse({

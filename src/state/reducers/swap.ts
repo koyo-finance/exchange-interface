@@ -6,7 +6,7 @@ export interface SwapState {
 }
 
 const initialState: SwapState = {
-	momiji: true
+	momiji: false
 };
 
 export const swapSlice = createSlice({
