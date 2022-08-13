@@ -3,7 +3,6 @@ import { toBigNumber } from '@koyofinance/core-sdk';
 import { TokenInfo } from '@uniswap/token-lists';
 import SwapCardToken from 'components/apps/amm/unified/swap/cards/SwapCardToken';
 import SwapCardTop from 'components/apps/amm/unified/swap/cards/SwapCardTop';
-import SwapTokenModal from 'components/apps/amm/unified/swap/modals/SwapTokenModal';
 import SwapSwapTokensSlot from 'components/apps/amm/unified/swap/SwapSwapTokensSlot';
 import SwapWrapper from 'components/apps/amm/unified/swap/SwapWrapper';
 import GuideLink from 'components/GuideLink';
@@ -20,6 +19,9 @@ import { selectAllTokensByChainId } from 'state/reducers/lists';
 import { selectTokenOne, selectTokenTwo, setTokenOne, setTokenTwo } from 'state/reducers/selectedTokens';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
 import type { useGetQoute } from '@koyofinance/momiji-hooks';
+import dynamic from 'next/dynamic';
+
+const SwapTokenModal = dynamic(() => import('../../components/apps/amm/unified/swap/modals/SwapTokenModal'));
 
 const swapType = SwapTypes.SwapExactIn;
 

@@ -1,4 +1,7 @@
+// @ts-ignore
+const withPlugins = require('next-compose-plugins');
 const { withPlausibleProxy } = require('next-plausible');
+const withBundleAnalyzer = require('@next/bundle-analyzer');
 
 const config = {
 	async rewrites() {
@@ -42,6 +45,7 @@ const config = {
 	}
 };
 
-const configWithPlausible = withPlausibleProxy()(config);
+const plausiblePlugin = withPlausibleProxy;
+const bundleAnalyzerPlugin = withBundleAnalyzer({ enabled: process.env.ANALYZE === 'true' });
 
-module.exports = configWithPlausible;
+module.exports = withPlugins([plausiblePlugin, bundleAnalyzerPlugin], config);

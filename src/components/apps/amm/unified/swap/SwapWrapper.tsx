@@ -3,12 +3,14 @@ import { BigNumber } from 'ethers';
 import { useRoutedSwap } from 'hooks/SOR/useRoutedSwap';
 import { useSwapMomiji } from 'hooks/swap/useSwapMomiji';
 import { useSwapSOR } from 'hooks/swap/useSwapSOR';
+import dynamic from 'next/dynamic';
 import { SwapFormValues } from 'pages/swap';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { selectMomijiUsage } from 'state/reducers/swap';
-import SwapCardKoyoSORContent from './koyo/SwapCardKoyoSORContent';
-import SwapCardMomijiContent from './momiji/SwapCardMomijiContent';
+
+const SwapCardKoyoSORContent = dynamic(() => import('./koyo/SwapCardKoyoSORContent'));
+const SwapCardMomijiContent = dynamic(() => import('./momiji/SwapCardMomijiContent'));
 
 export type SORSwapMutation = ReturnType<typeof useRoutedSwap>['mutate'];
 export type SORSwapStatus = ReturnType<typeof useRoutedSwap>['status'];
@@ -19,7 +21,7 @@ export type MomijiSwapStatus = ReturnType<typeof useCreateOrder>['status'];
 export interface SwapWrapped {
 	swapFunction: (amount: BigNumber, quote?: SwapFormValues['quote']) => ReturnType<SORSwapMutation | MomijiSwapMutation>;
 	status: SORSwapStatus | MomijiSwapStatus;
-	content: React.FC;
+	content: React.ComponentType;
 }
 
 export interface SwapWrapperProps {
