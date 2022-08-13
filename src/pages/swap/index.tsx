@@ -4,7 +4,6 @@ import { TokenInfo } from '@uniswap/token-lists';
 import SwapCardToken from 'components/apps/amm/unified/swap/cards/SwapCardToken';
 import SwapCardTop from 'components/apps/amm/unified/swap/cards/SwapCardTop';
 import SwapTokenModal from 'components/apps/amm/unified/swap/modals/SwapTokenModal';
-import ToggleSwapMode from 'components/apps/amm/unified/swap/momiji/ToggleSwapMode';
 import SwapSwapTokensSlot from 'components/apps/amm/unified/swap/SwapSwapTokensSlot';
 import SwapWrapper from 'components/apps/amm/unified/swap/SwapWrapper';
 import GuideLink from 'components/GuideLink';
