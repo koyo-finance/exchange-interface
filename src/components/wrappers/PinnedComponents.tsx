@@ -4,7 +4,7 @@ import { Toaster } from 'react-hot-toast';
 const PinnedComponents: React.FC = () => {
 	return (
 		<>
-			<Toaster position="top-right" />
+			<Toaster position="bottom-right" />
 		</>
 	);
 };

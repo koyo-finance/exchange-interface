@@ -72,6 +72,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ gauge }) => {
 						className={`transform-gpu text-xl font-bold duration-100 ${
 							gauge.killed ? 'text-red-600' : 'text-lights-400'
 						} underline hover:${gauge.killed ? 'text-red-500' : 'text-lights-300'}`}
+						rel="noreferrer"
 					>
 						Pool info
 					</a>

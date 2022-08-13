@@ -66,6 +66,7 @@ const ChooseTokens: React.FC<ChooseTokensProps> = ({ setStep, selectedTokens, we
 			const newTokens = selectedTokens.map((_, i) => TOKENS[i]);
 			dispatch(setTokens(newTokens));
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [chainId]);
 
 	const removeTokenHandler = (tokenIndex: number) => {

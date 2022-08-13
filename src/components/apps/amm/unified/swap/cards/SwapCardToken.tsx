@@ -1,7 +1,11 @@
-import { formatBalance, fromBigNumber, toBigNumber } from '@koyofinance/core-sdk';
+import { formatBalance, fromBigNumber, toBigNumber, ZERO_ADDRESS } from '@koyofinance/core-sdk';
+import { useGetQoute } from '@koyofinance/momiji-hooks';
+import { SupportedChainsList, OrderKind } from '@koyofinance/momiji-sdk';
 import { TokenInfo } from '@uniswap/token-lists';
 import CurrencyIcon from 'components/CurrencyIcon/CurrencyIcon';
 import { SwapTokenNumber } from 'constants/swaps';
+import { providers } from 'ethers';
+import { getAddress } from 'ethers/lib/utils';
 import { Field, useFormikContext } from 'formik';
 import useTokenBalance from 'hooks/generic/useTokenBalance';
 import { useAmountScaled } from 'hooks/SOR/useAmountScaled';
@@ -13,6 +17,7 @@ import React, { useEffect, useState } from 'react';
 import { RiArrowDownSLine } from 'react-icons/ri';
 import { useSelector } from 'react-redux';
 import { selectTokenOne, selectTokenTwo } from 'state/reducers/selectedTokens';
+import { selectMomijiUsage } from 'state/reducers/swap';
 import SwapCardTokenInput from './SwapCardTokenInput';
 
 export type TokenNumRelativeCallback = (tokenNum: number) => void;
@@ -28,11 +33,14 @@ export interface SwapCardTokenProps {
 
 const SwapCardToken: React.FC<SwapCardTokenProps> = ({ tokenNum, token, swapStatus, isIn, openTokenModal, setActiveToken }) => {
 	const { setFieldValue, values } = useFormikContext<SwapFormValues>();
-	const { accountAddress } = useWeb3();
+	const { accountAddress, defaultedProvider, chainId } = useWeb3();
 
 	const [error, setError] = useState('');
 	const tokenOne = useSelector(selectTokenOne);
 	const tokenTwo = useSelector(selectTokenTwo);
+
+	const momijiEnabled = useSelector(selectMomijiUsage);
+	const [validTo, setValidTo] = useState(Math.floor(Date.now() / 1000) + 180);
 
 	const { data: tokenBalance = 0, refetch: refetchBalance } = useTokenBalance(accountAddress, token.address);
 
@@ -44,17 +52,45 @@ const SwapCardToken: React.FC<SwapCardTokenProps> = ({ tokenNum, token, swapStat
 		swapType: values.swapType,
 		forceRefresh: false
 	});
+	const { data: momijiOrderInfo } = useGetQoute(
+		{
+			appData: '0x487B02C558D729ABAF3ECF17881A4181E5BC2446429A0995142297E897B6EB37',
+			kind: OrderKind.SELL,
+			from: ZERO_ADDRESS,
+			receiver: ZERO_ADDRESS,
+			sellToken: getAddress(tokenOne.address),
+			buyToken: getAddress(tokenTwo.address),
+			sellAmountBeforeFee: toBigNumber(values[SwapTokenNumber.IN] || 0, tokenOne.decimals).toString(),
+			partiallyFillable: false,
+			validTo
+		},
+		{
+			chainId: chainId as SupportedChainsList,
+			provider: defaultedProvider as providers.JsonRpcProvider,
+			enabled:
+				momijiEnabled &&
+				tokenOne.address.toLowerCase() !== ZERO_ADDRESS &&
+				tokenTwo.address.toLowerCase() !== ZERO_ADDRESS &&
+				Boolean(values[SwapTokenNumber.IN])
+		}
+	);
 	const swapAmounts = useAmountScaled(swapInfo, tokenOne, tokenTwo, values.swapType);
 
 	useEffect(() => {
 		const flooredConvertedAmount = Math.floor(parseFloat(isIn ? swapAmounts.in : swapAmounts.out) * 10000) / 10000;
 
-		if (!isIn && flooredConvertedAmount !== values[tokenNum]) {
+		if (!isIn && !momijiEnabled && flooredConvertedAmount !== values[tokenNum]) {
 			setFieldValue(tokenNum as unknown as string, flooredConvertedAmount);
 		}
-	}, [setFieldValue, isIn, tokenNum, values, swapAmounts.in, swapAmounts.out]);
+		if (!isIn && momijiEnabled && momijiOrderInfo) {
+			setFieldValue(tokenNum as unknown as string, fromBigNumber(momijiOrderInfo.quote.buyAmount, tokenTwo.decimals));
+			setValidTo(Math.floor(Date.now() / 1000) + 180);
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [setFieldValue, isIn, tokenNum, values, swapAmounts.in, swapAmounts.out, momijiEnabled, momijiOrderInfo]);
 
 	useEffect(() => setFieldValue('info', swapInfo), [setFieldValue, swapInfo]);
+	useEffect(() => setFieldValue('quote', momijiOrderInfo), [setFieldValue, momijiOrderInfo]);
 
 	useEffect(() => {
 		if (swapStatus === 'success') {

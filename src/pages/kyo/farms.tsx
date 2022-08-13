@@ -40,6 +40,7 @@ const FarmsPage: ExtendedNextPage = () => {
 								href="https://info.koyo.finance/#/gauges"
 								target="_blank"
 								className="transform-gpu text-lights-400 underline hover:text-lights-300"
+								rel="noreferrer"
 							>
 								More info about the gauges on Kōyō Finance
 							</a>

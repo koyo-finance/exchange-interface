@@ -97,6 +97,3 @@ src/types/contracts/**/*.ts
 !src/types/contracts/**/*.d.ts
 
 tailwind-static/
-
-# Sentry
-.sentryclirc
