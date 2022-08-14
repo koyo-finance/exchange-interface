@@ -1,13 +1,15 @@
 import CallToAction from 'components/apps/_/Home/CallToAction';
 import HomeCardsRows from 'components/apps/_/Home/cards/rows/HomeCardsRows';
-import GroundLeafs from 'components/apps/_/Home/GroundLeafs';
 import Header from 'components/apps/_/Home/Header';
-import Footer from 'components/Footer';
 import { generateSitemap } from 'core/sitemap';
 import { GetStaticProps } from 'next';
+import dynamic from 'next/dynamic';
 import path from 'path';
 import React from 'react';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
+
+const GroundLeafs = dynamic(() => import('components/apps/_/Home/GroundLeafs'));
+const Footer = dynamic(() => import('components/Footer'));
 
 const IndexPage: ExtendedNextPage = () => {
 	const deviceWidth = window.visualViewport.width;

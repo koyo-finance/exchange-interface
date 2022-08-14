@@ -1,6 +1,5 @@
-import { config } from '@fortawesome/fontawesome-svg-core';
+import { config as faConfig } from '@fortawesome/fontawesome-svg-core';
 import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
-import Navbar from 'components/Navbar';
 import InitialStateWrapper from 'components/wrappers/InitialStateWrapper';
 import { ROOT } from 'constants/links';
 import { queryClient } from 'core/query';
@@ -23,12 +22,16 @@ import { persistor, store } from 'state';
 import { koyoDarkTheme } from 'styles/rainbowkit';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
 import { WagmiConfig } from 'wagmi';
-import DefaultSeoProps from '../DefaultSeoProps';
+import DefaultSeoProps from 'DefaultSeoProps';
+import dynamic from 'next/dynamic';
+import { config } from 'core/config';
 
 import '@rainbow-me/rainbowkit/styles.css';
 import 'styles/_App.css';
 
-config.autoAddCss = false;
+const Navbar = dynamic(() => import('components/Navbar'));
+
+faConfig.autoAddCss = false;
 
 const App: NextPage<AppProps> = ({ Component, pageProps }) => {
 	useInstantiateSORConstant();
@@ -40,6 +43,8 @@ const App: NextPage<AppProps> = ({ Component, pageProps }) => {
 	useInitializeIntercom(Intercom);
 
 	useEffect(() => {
+		if (!config.intercomId) return;
+
 		updateIntercom('update', {
 			hide_default_launcher: Intercom ? false : true
 		});

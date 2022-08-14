@@ -21,7 +21,7 @@ import { ExtendedNextPage } from 'types/ExtendedNextPage';
 import type { useGetQoute } from '@koyofinance/momiji-hooks';
 import dynamic from 'next/dynamic';
 
-const SwapTokenModal = dynamic(() => import('../../components/apps/amm/unified/swap/modals/SwapTokenModal'));
+const SwapTokenModal = dynamic(() => import('components/apps/amm/unified/swap/modals/SwapTokenModal'));
 
 const swapType = SwapTypes.SwapExactIn;
 

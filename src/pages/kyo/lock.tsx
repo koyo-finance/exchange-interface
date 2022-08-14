@@ -1,6 +1,5 @@
 import { calculatePercentage, formatBalance } from '@koyofinance/core-sdk';
 import ForceWithdrawModal from 'components/apps/dao/locker/modals/LockerForceWithdrawModal';
-import Footer from 'components/Footer';
 import GuideLink from 'components/GuideLink';
 import TitledDisplayBox from 'components/TitledDisplayBox';
 import LockerForm from 'components/UI/Forms/LockerForm';
@@ -85,7 +84,6 @@ const LockIndexPage: ExtendedNextPage = () => {
 				</div>
 				<GuideLink type="Lock" text="Trouble locking?" link="https://docs.koyo.finance/protocol/guide/Locker/Lock" />
 			</div>
-			<Footer />
 		</>
 	);
 };
