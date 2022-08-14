@@ -1,3 +1,3 @@
-import { ChainId } from '@koyofinance/core-sdk';
+import { config } from 'core/config';
 
-export const DEFAULT_CHAIN = ChainId.BOBA;
+export const DEFAULT_CHAIN = config.defaultChainId;
