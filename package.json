@@ -5,7 +5,7 @@
 	"scripts": {
 		"dev": "next dev src --port 3069",
 		"build": "next build src",
-		"export": "IPFS_EXPORT=true yarn build && IPFS_EXPORT=true next export src",
+		"export": "NEXT_PUBLIC_IPFS_EXPORT=true yarn build && NEXT_PUBLIC_IPFS_EXPORT=true next export src",
 		"analyze": "ANALYZE=true yarn build",
 		"analyze:explore": "source-map-explorer src/.next/static/**/*.js",
 		"start": "next start src",
