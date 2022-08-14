@@ -9,7 +9,7 @@ const Footer: React.FC = () => {
 					<div className="footer p-10">
 						<div>
 							{/* eslint-disable-next-line @next/next/no-img-element */}
-							<img src="/wide-dark.svg" alt="Koyo wide logo" className="max-h-12" />
+							<img src="wide-dark.svg" alt="Koyo wide logo" className="max-h-12" />
 						</div>
 						<div className=" text-lg font-semibold text-white">
 							<span className=" text-gray-500">Developers</span>
