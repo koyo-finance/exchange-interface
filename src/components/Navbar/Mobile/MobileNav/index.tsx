@@ -1,6 +1,6 @@
 import { Disclosure } from '@headlessui/react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import Link from 'next/link';
+import BaseLink from 'components/Links/BaseLink';
 import React from 'react';
 import { RiArrowDownSLine } from 'react-icons/ri';
 
@@ -32,19 +32,19 @@ const MobileNav: React.FC<MobileNavProps> = ({ exchangeOpen, setExchangeOpen, ky
 								} absolute top-8 left-0 flex w-full transform-gpu flex-col gap-y-4 duration-150`}
 							>
 								<div className="z-20 w-full rounded-2xl py-2">
-									<Link href="/swap">
+									<BaseLink href="/swap">
 										<span className="transform-gpu cursor-pointer px-4 duration-200 hover:text-lights-400">Swap</span>
-									</Link>
+									</BaseLink>
 								</div>
 								<div className="z-20 w-full rounded-2xl py-2">
-									<Link href="/deposit">
+									<BaseLink href="/deposit">
 										<span className="cursor-pointer px-4 duration-200 hover:text-lights-400">Deposit</span>
-									</Link>
+									</BaseLink>
 								</div>
 								<div className="z-20 w-full rounded-2xl py-2">
-									<Link href="/withdraw">
+									<BaseLink href="/withdraw">
 										<span className="cursor-pointer px-4 duration-200 hover:text-lights-400">Withdraw</span>
-									</Link>
+									</BaseLink>
 								</div>
 								<hr className=" w-full bg-white" />
 							</div>
@@ -62,19 +62,19 @@ const MobileNav: React.FC<MobileNavProps> = ({ exchangeOpen, setExchangeOpen, ky
 								} absolute top-10 left-0 flex w-full transform-gpu flex-col gap-y-4 duration-150`}
 							>
 								<div className="z-20 w-full rounded-2xl py-2">
-									<Link href="/kyo/lock">
+									<BaseLink href="/kyo/lock">
 										<div className=" transform-gpu cursor-pointer px-4 duration-200 hover:text-lights-400">Lock</div>
-									</Link>
+									</BaseLink>
 								</div>
 								<div className="z-20 w-full rounded-2xl py-2">
-									<Link href="/kyo/gauges">
+									<BaseLink href="/kyo/gauges">
 										<div className=" transform-gpu cursor-pointer px-4 duration-200 hover:text-lights-400">Vote</div>
-									</Link>
+									</BaseLink>
 								</div>
 								<div className="z-20 w-full rounded-2xl py-2">
-									<Link href="/kyo/farms">
+									<BaseLink href="/kyo/farms">
 										<div className=" transform-gpu cursor-pointer px-4 duration-200 hover:text-lights-400">Farms</div>
-									</Link>
+									</BaseLink>
 								</div>
 							</div>
 						</div>

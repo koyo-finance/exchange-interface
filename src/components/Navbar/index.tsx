@@ -2,8 +2,8 @@ import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Disclosure } from '@headlessui/react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
+import BaseLink from 'components/Links/BaseLink';
 import dynamic from 'next/dynamic';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { RiArrowDownSLine } from 'react-icons/ri';
@@ -27,10 +27,10 @@ const Navbar: React.FC = () => {
 								{/* Left */}
 								<div className="z-40 flex items-stretch justify-start pl-0">
 									<div className="flex items-center">
-										<Link href="/">
+										<BaseLink href="/">
 											{/* eslint-disable-next-line @next/next/no-img-element */}
 											<img src="/wide-dark.svg" alt="Koyo logo" className="max-h-12 cursor-pointer " />
-										</Link>
+										</BaseLink>
 									</div>
 								</div>
 
@@ -51,15 +51,15 @@ const Navbar: React.FC = () => {
 												</div>
 											</div>
 											<div className=" absolute top-10 hidden w-full flex-col items-center justify-center gap-3 rounded-xl bg-black bg-opacity-90 py-2 text-xl hover:flex group-hover:flex">
-												<Link href="/swap">
+												<BaseLink href="/swap">
 													<div className=" transform-gpu cursor-pointer duration-150 hover:text-darks-200">Swap</div>
-												</Link>
-												<Link href="/deposit">
+												</BaseLink>
+												<BaseLink href="/deposit">
 													<div className=" transform-gpu cursor-pointer duration-150 hover:text-darks-200">Deposit</div>
-												</Link>
-												<Link href="/withdraw">
+												</BaseLink>
+												<BaseLink href="/withdraw">
 													<div className=" transform-gpu cursor-pointer duration-150 hover:text-darks-200">Withdraw</div>
-												</Link>
+												</BaseLink>
 											</div>
 										</div>
 										<div className="group relative z-10 w-1/2">
@@ -72,15 +72,15 @@ const Navbar: React.FC = () => {
 												</div>
 											</div>
 											<div className=" absolute top-10 hidden w-full flex-col items-center justify-center gap-3 rounded-xl bg-black bg-opacity-90 py-2 text-xl hover:flex group-hover:flex">
-												<Link href="/kyo/lock">
+												<BaseLink href="/kyo/lock">
 													<div className=" transform-gpu cursor-pointer duration-150 hover:text-darks-200">Lock</div>
-												</Link>
-												<Link href="/kyo/gauges">
+												</BaseLink>
+												<BaseLink href="/kyo/gauges">
 													<div className=" transform-gpu cursor-pointer duration-150 hover:text-darks-200">Vote</div>
-												</Link>
-												<Link href="/kyo/farms">
+												</BaseLink>
+												<BaseLink href="/kyo/farms">
 													<div className=" transform-gpu cursor-pointer duration-150 hover:text-darks-200">Farms</div>
-												</Link>
+												</BaseLink>
 											</div>
 										</div>
 										<PageSelectedOverlay />
@@ -122,11 +122,11 @@ const Navbar: React.FC = () => {
 									</div>
 								</div>
 								{router.pathname === '/' && (
-									<Link href="/swap">
+									<BaseLink href="/swap">
 										<button className=" btn m-0 transform-gpu bg-lights-400 px-2 text-black duration-100 hover:bg-lights-300 active:bg-lights-200 lg:btn-md">
 											Launch App
 										</button>
-									</Link>
+									</BaseLink>
 								)}
 							</div>
 						</div>
