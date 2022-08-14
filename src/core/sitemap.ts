@@ -1,12 +1,8 @@
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
 import sitemapGenerator from 'nextjs-sitemap-generator';
-import ora from 'ora';
 import path from 'path';
 
 export async function generateSitemap(srcPath: string) {
-	console.log('');
-	const spinner = ora('Generating sitemap').start();
-
 	const baseUrl = ROOT_WITH_PROTOCOL;
 
 	await sitemapGenerator({
@@ -16,6 +12,4 @@ export async function generateSitemap(srcPath: string) {
 		nextConfigPath: path.join(srcPath, 'next.config.js'),
 		ignoredPaths: []
 	});
-
-	spinner.succeed();
 }
