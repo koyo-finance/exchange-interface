@@ -1,10 +1,8 @@
 import { ChainId } from '@koyofinance/core-sdk';
-import { connectorsForWallets, wallet } from '@rainbow-me/rainbowkit';
+import { getDefaultWallets } from '@rainbow-me/rainbowkit';
 import { CHAIN_INFO } from 'constants/chains';
 import { Chain, configureChains, createClient } from 'wagmi';
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
-import { onto } from './wallets/onto';
-import { ontoWeb } from './wallets/ontoWeb';
 
 export interface RainbowKitChain extends Chain {
 	iconUrl?: string;
@@ -75,17 +73,10 @@ export const { chains, provider, webSocketProvider } = configureChains(
 	[jsonRpcProvider({ rpc: (chain) => ({ http: chain.rpcUrls.default }) })]
 );
 
-const connectors = connectorsForWallets([
-	{
-		groupName: 'Recommended',
-		wallets: [
-			wallet.metaMask({ chains, shimDisconnect: true }),
-			ontoWeb({ chains, shimDisconnect: true }),
-			onto({ chains, shimDisconnect: true }),
-			wallet.walletConnect({ chains })
-		]
-	}
-]);
+const { connectors } = getDefaultWallets({
+	appName: 'Kōyō Finance',
+	chains
+});
 
 export const wagmiClient = createClient({
 	autoConnect: true,

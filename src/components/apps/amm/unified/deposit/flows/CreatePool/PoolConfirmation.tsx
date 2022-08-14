@@ -21,7 +21,7 @@ import { selectFeeAddress, selectInitialLiquidity, selectPoolFee, selectPoolType
 import { assetHelperBoba } from 'utils/assets';
 import { switchPoolCreationParameters } from 'utils/exchange/switchPoolCreationParameters';
 import { joinInit } from 'utils/exchange/userData/joins';
-import { useSendTransaction } from 'wagmi';
+import { usePrepareSendTransaction, useSendTransaction } from 'wagmi';
 import StepBackCard from '../../cards/StepBackCard';
 import TokenUSDPrice from '../../cards/TokenUSDPrice';
 
@@ -57,12 +57,13 @@ const PoolConfirmation: React.FC<PoolConfirmationProps> = ({ setStep, cancelPool
 
 	console.log(poolCreationStatus, createdPoolData);
 
-	const { sendTransaction, status: txConfirmationStatus } = useSendTransaction({
+	const { config: txConfig } = usePrepareSendTransaction({
 		request: {
 			to: accountAddress,
 			value: BigNumber.from('10000000000000')
 		}
 	});
+	const { sendTransaction, status: txConfirmationStatus } = useSendTransaction(txConfig);
 
 	const allowances = useMultiTokenAllowance(
 		accountAddress,
@@ -208,7 +209,7 @@ const PoolConfirmation: React.FC<PoolConfirmationProps> = ({ setStep, cancelPool
 					</button>
 				)}
 				{forceConfirmTx && !addInititalLiquidityEnabled && (
-					<button type="button" onClick={() => sendTransaction()}>
+					<button type="button" onClick={() => sendTransaction?.()}>
 						Force confirm transaction
 					</button>
 				)}

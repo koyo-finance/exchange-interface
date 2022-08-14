@@ -54,7 +54,16 @@ const App: NextPage<AppProps> = ({ Component, pageProps }) => {
 	return (
 		<React.StrictMode>
 			<WagmiConfig client={wagmiClient}>
-				<RainbowKitProvider chains={chains} showRecentTransactions={true} coolMode={true} theme={koyoDarkTheme()}>
+				<RainbowKitProvider
+					chains={chains}
+					appInfo={{
+						appName: 'Kōyō Finance',
+						learnMoreUrl: 'https://docs.koyo.finance'
+					}}
+					showRecentTransactions={true}
+					coolMode={true}
+					theme={koyoDarkTheme()}
+				>
 					<QueryClientProvider client={queryClient}>
 						<PlausibleProvider domain={ROOT}>
 							<Provider store={store}>
