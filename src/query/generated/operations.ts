@@ -41,15 +41,15 @@ export const LitePool = gql`
 	}
 	${Token}
 `;
-export const SubgraphTokenLatestPrice = gql`
-	fragment SubgraphTokenLatestPrice on LatestPrice {
-		id
+export const LatestPrice = gql`
+	fragment LatestPrice on LatestPrice {
 		asset
+		pricingAsset
 		price
+		priceUSD
 		poolId {
 			id
 		}
-		pricingAsset
 	}
 `;
 export const GetAllGauges = gql`
@@ -68,18 +68,11 @@ export const GetPools = gql`
 	}
 	${LitePool}
 `;
-export const TokenLatestPrices = gql`
-	query TokenLatestPrices(
-		$skip: Int
-		$first: Int
-		$orderBy: LatestPrice_orderBy
-		$orderDirection: OrderDirection
-		$where: LatestPrice_filter
-		$block: Block_height
-	) {
-		latestPrices(skip: $skip, first: $first, orderBy: $orderBy, orderDirection: $orderDirection, where: $where, block: $block) {
-			...SubgraphTokenLatestPrice
+export const GetLatestPrices = gql`
+	query GetLatestPrices {
+		prices: latestPrices(first: 1000) {
+			...LatestPrice
 		}
 	}
-	${SubgraphTokenLatestPrice}
+	${LatestPrice}
 `;

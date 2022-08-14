@@ -1,21 +1,19 @@
-import { TokenPriceService } from '@balancer-labs/sor';
 import { MaxUint256 } from '@ethersproject/constants';
-import { ChainId, fromBigNumber, isSameAddress } from '@koyofinance/core-sdk';
+import { fromBigNumber, isSameAddress } from '@koyofinance/core-sdk';
 import SymbolCurrencyIcon from 'components/CurrencyIcon/CurrencyIcon';
 import SingleEntityConnectButton from 'components/CustomConnectButton/SingleEntityConnectButton';
 import FormApproveAsset from 'components/FormApproveAsset';
-import { DEFAULT_CHAIN } from 'config/chain';
 import { BigNumber } from 'ethers';
 import { parseUnits } from 'ethers/lib/utils';
 import useVaultContract from 'hooks/contracts/useVaultContract';
 import useMultiTokenAllowance from 'hooks/generic/useMultiTokenAllowance';
 import { useCreatePool } from 'hooks/pools/useCreatePool';
 import usePoolId from 'hooks/pools/usePoolId';
+import { useGetTokensPrice } from 'hooks/pricing/useGetTokensPrice';
 import { useWeb3 } from 'hooks/useWeb3';
 import useJoinPool from 'hooks/vault/useJoinPool';
 import React, { useEffect, useState } from 'react';
 import { Case, Default, Switch } from 'react-if';
-import { useJpex } from 'react-jpex';
 import { useSelector } from 'react-redux';
 import { selectFeeAddress, selectInitialLiquidity, selectPoolFee, selectPoolType, selectTokens, selectWeights } from 'state/reducers/createPool';
 import { assetHelperBoba } from 'utils/assets';
@@ -34,9 +32,7 @@ export interface PoolConfirmationProps {
 }
 
 const PoolConfirmation: React.FC<PoolConfirmationProps> = ({ setStep, cancelPoolCreation }) => {
-	const jpex = useJpex();
-	const { accountAddress, signer, chainId: activeChainId } = useWeb3();
-	const priceService = jpex.resolveWith<TokenPriceService, ChainId>([activeChainId || DEFAULT_CHAIN]);
+	const { accountAddress, signer } = useWeb3();
 	const vaultContract = useVaultContract();
 
 	const tokens = useSelector(selectTokens);
@@ -46,16 +42,15 @@ const PoolConfirmation: React.FC<PoolConfirmationProps> = ({ setStep, cancelPool
 	const feeManagerAddress = useSelector(selectFeeAddress);
 	const poolType = useSelector(selectPoolType);
 
-	const [tokenPrices, setTokenPrices] = useState<number[]>([]);
 	const [addInititalLiquidityEnabled, setAddInititalLiquidityEnabled] = useState(false);
 	const [forceConfirmTx, setForceConfirmTx] = useState(false);
+
+	const tokenPrices = useGetTokensPrice(tokens.map((t) => t.address));
 
 	const { mutate: createPool, status: poolCreationStatus, data: createdPoolData } = useCreatePool(signer);
 
 	const { mutate: addLiqudity, status: deposited } = useJoinPool(signer);
 	const { data: poolId = '' } = usePoolId((createdPoolData?.events?.find((event) => event.event === 'PoolCreated')?.args || [])[0]);
-
-	console.log(poolCreationStatus, createdPoolData);
 
 	const { config: txConfig } = usePrepareSendTransaction({
 		request: {
@@ -70,38 +65,6 @@ const PoolConfirmation: React.FC<PoolConfirmationProps> = ({ setStep, cancelPool
 		vaultContract.address,
 		tokens?.map((token) => token.address)
 	);
-
-	useEffect(() => {
-		const fetchETHPrice = async () => {
-			const req = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd', {
-				method: 'GET',
-				headers: {
-					'Content-type': 'application/json'
-				}
-			});
-
-			const data = await req.json();
-			const usdPrice = data.ethereum.usd;
-
-			return usdPrice;
-		};
-
-		const fetched = fetchETHPrice();
-
-		const tokenPricesInUSD = tokens.map(async (token, i) => {
-			const usdPrice = await fetched.then((data) => Number(data));
-			const priceInETH = await priceService.getNativeAssetPriceInToken(token.address.toLowerCase());
-			const tokenPriceInETH = Number(priceInETH);
-
-			const tokenAmount = fromBigNumber(initialLiquidity[i], token.decimals);
-			const tokenPriceInUSD = Math.floor((tokenPriceInETH / usdPrice) * tokenAmount * 100000) / 100000;
-
-			return tokenPriceInUSD;
-		});
-
-		void Promise.all(tokenPricesInUSD).then((data) => setTokenPrices(data));
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [tokens]);
 
 	useEffect(() => {
 		if (deposited === 'success') cancelPoolCreation(false);
@@ -139,7 +102,7 @@ const PoolConfirmation: React.FC<PoolConfirmationProps> = ({ setStep, cancelPool
 						</div>
 						<div>
 							<div>{fromBigNumber(initialLiquidity[i], token.decimals)}</div>
-							<TokenUSDPrice amount={tokenPrices[i]} />
+							<TokenUSDPrice amount={fromBigNumber(initialLiquidity[i], token.decimals)} price={tokenPrices[i]} />
 						</div>
 					</div>
 				))}

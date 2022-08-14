@@ -1,0 +1,15 @@
+query GetLatestPrices {
+	prices: latestPrices(first: 1000) {
+		...LatestPrice
+	}
+}
+
+fragment LatestPrice on LatestPrice {
+	asset
+	pricingAsset
+	price
+	priceUSD
+	poolId {
+		id
+	}
+}

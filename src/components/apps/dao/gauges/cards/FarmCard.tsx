@@ -67,7 +67,7 @@ const FarmCard: React.FC<FarmCardProps> = ({ gauge }) => {
 				<div>-</div>
 				<div>
 					<a
-						href={`https://info.koyo.finance/#/pools/${gauge.pool.address}`}
+						href={`https://info.koyo.finance/#/pools/${gauge.pool.id}`}
 						target="_blank"
 						className={`transform-gpu text-xl font-bold duration-100 ${
 							gauge.killed ? 'text-red-600' : 'text-lights-400'

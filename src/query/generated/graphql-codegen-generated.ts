@@ -4008,33 +4008,26 @@ export type LitePoolFragment = {
 	}> | null;
 };
 
-export type TokenLatestPricesQueryVariables = Exact<{
-	skip?: InputMaybe<Scalars['Int']>;
-	first?: InputMaybe<Scalars['Int']>;
-	orderBy?: InputMaybe<LatestPrice_OrderBy>;
-	orderDirection?: InputMaybe<OrderDirection>;
-	where?: InputMaybe<LatestPrice_Filter>;
-	block?: InputMaybe<Block_Height>;
-}>;
+export type GetLatestPricesQueryVariables = Exact<{ [key: string]: never }>;
 
-export type TokenLatestPricesQuery = {
+export type GetLatestPricesQuery = {
 	__typename: 'Query';
-	latestPrices: Array<{
+	prices: Array<{
 		__typename: 'LatestPrice';
-		id: string;
 		asset: string;
-		price: string;
 		pricingAsset: string;
+		price: string;
+		priceUSD: string;
 		poolId: { __typename: 'Pool'; id: string };
 	}>;
 };
 
-export type SubgraphTokenLatestPriceFragment = {
+export type LatestPriceFragment = {
 	__typename: 'LatestPrice';
-	id: string;
 	asset: string;
-	price: string;
 	pricingAsset: string;
+	price: string;
+	priceUSD: string;
 	poolId: { __typename: 'Pool'; id: string };
 };
 
@@ -4079,15 +4072,15 @@ export const LitePoolFragmentDoc = `
   }
 }
     ${TokenFragmentDoc}`;
-export const SubgraphTokenLatestPriceFragmentDoc = `
-    fragment SubgraphTokenLatestPrice on LatestPrice {
-  id
+export const LatestPriceFragmentDoc = `
+    fragment LatestPrice on LatestPrice {
   asset
+  pricingAsset
   price
+  priceUSD
   poolId {
     id
   }
-  pricingAsset
 }
     `;
 export const GetAllGaugesDocument = `
@@ -4124,31 +4117,24 @@ export const useGetPoolsQuery = <TData = GetPoolsQuery, TError = unknown>(
 		fetcher<GetPoolsQuery, GetPoolsQueryVariables>(dataSource.endpoint, dataSource.fetchParams || {}, GetPoolsDocument, variables),
 		options
 	);
-export const TokenLatestPricesDocument = `
-    query TokenLatestPrices($skip: Int, $first: Int, $orderBy: LatestPrice_orderBy, $orderDirection: OrderDirection, $where: LatestPrice_filter, $block: Block_height) {
-  latestPrices(
-    skip: $skip
-    first: $first
-    orderBy: $orderBy
-    orderDirection: $orderDirection
-    where: $where
-    block: $block
-  ) {
-    ...SubgraphTokenLatestPrice
+export const GetLatestPricesDocument = `
+    query GetLatestPrices {
+  prices: latestPrices(first: 1000) {
+    ...LatestPrice
   }
 }
-    ${SubgraphTokenLatestPriceFragmentDoc}`;
-export const useTokenLatestPricesQuery = <TData = TokenLatestPricesQuery, TError = unknown>(
+    ${LatestPriceFragmentDoc}`;
+export const useGetLatestPricesQuery = <TData = GetLatestPricesQuery, TError = unknown>(
 	dataSource: { endpoint: string; fetchParams?: RequestInit },
-	variables?: TokenLatestPricesQueryVariables,
-	options?: UseQueryOptions<TokenLatestPricesQuery, TError, TData>
+	variables?: GetLatestPricesQueryVariables,
+	options?: UseQueryOptions<GetLatestPricesQuery, TError, TData>
 ) =>
-	useQuery<TokenLatestPricesQuery, TError, TData>(
-		variables === undefined ? ['TokenLatestPrices'] : ['TokenLatestPrices', variables],
-		fetcher<TokenLatestPricesQuery, TokenLatestPricesQueryVariables>(
+	useQuery<GetLatestPricesQuery, TError, TData>(
+		variables === undefined ? ['GetLatestPrices'] : ['GetLatestPrices', variables],
+		fetcher<GetLatestPricesQuery, GetLatestPricesQueryVariables>(
 			dataSource.endpoint,
 			dataSource.fetchParams || {},
-			TokenLatestPricesDocument,
+			GetLatestPricesDocument,
 			variables
 		),
 		options
