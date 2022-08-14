@@ -5,7 +5,8 @@
 	"scripts": {
 		"dev": "next dev src --port 3069",
 		"build": "next build src",
-		"analyze": "ANALYZE=true next build src",
+		"export": "IPFS_EXPORT=true yarn build && IPFS_EXPORT=true next export src",
+		"analyze": "ANALYZE=true yarn build",
 		"analyze:explore": "source-map-explorer src/.next/static/**/*.js",
 		"start": "next start src",
 		"lint": "eslint --fix --ext .js,.jsx,.ts,.tsx src",

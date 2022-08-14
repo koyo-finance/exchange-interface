@@ -3,7 +3,10 @@ const withPlugins = require('next-compose-plugins');
 const { withPlausibleProxy } = require('next-plausible');
 const withBundleAnalyzer = require('@next/bundle-analyzer');
 
+const IPFS = process.env.IPFS_EXPORT === 'true';
+
 const config = {
+	exportTrailingSlash: IPFS ? true : undefined,
 	async rewrites() {
 		return [
 			{
