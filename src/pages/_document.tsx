@@ -1,4 +1,3 @@
-import { dom } from '@fortawesome/fontawesome-svg-core';
 import { config } from 'core/config';
 import Document, { DocumentContext, Head, Html, Main, NextScript } from 'next/document';
 import React from 'react';
@@ -19,9 +18,6 @@ class MyDocument extends Document {
 		return (
 			<Html lang="en" prefix="og: https://ogp.me/ns#">
 				<Head>
-					{/* This fixes big icons with next-seo since CSS is somehow overwritten*/}
-					<style>{dom.css()}</style>
-
 					<link rel="preconnect" href="https://fonts.googleapis.com" />
 					<link rel="preconnect" href="https://fonts.gstatic.com" />
 

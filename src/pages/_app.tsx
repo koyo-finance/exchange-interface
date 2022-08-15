@@ -1,4 +1,3 @@
-import { config as faConfig } from '@fortawesome/fontawesome-svg-core';
 import { RainbowKitProvider } from '@rainbow-me/rainbowkit';
 import InitialStateWrapper from 'components/wrappers/InitialStateWrapper';
 import { ROOT } from 'constants/links';
@@ -30,8 +29,6 @@ import '@rainbow-me/rainbowkit/styles.css';
 import 'styles/_App.css';
 
 const Navbar = dynamic(() => import('components/Navbar'));
-
-faConfig.autoAddCss = false;
 
 const App: NextPage<AppProps> = ({ Component, pageProps }) => {
 	useInstantiateSORConstant();

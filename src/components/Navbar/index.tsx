@@ -1,11 +1,10 @@
-import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Disclosure } from '@headlessui/react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import BaseLink from 'components/Links/BaseLink';
 import dynamic from 'next/dynamic';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
+import { FaBars, FaTimes } from 'react-icons/fa';
 import { RiArrowDownSLine } from 'react-icons/ri';
 import PageSelectedOverlay from './Desktop/PageSelectedOverlay';
 
@@ -104,19 +103,15 @@ const Navbar: React.FC = () => {
 										<Disclosure.Button className="inline-flex items-center justify-center rounded-md p-2 text-white focus:outline-none ">
 											<span className="sr-only">Open main menu</span>
 											{open ? (
-												<FontAwesomeIcon
-													/* @ts-expect-error This is quite odd */
-													icon={faTimes}
+												<FaTimes
 													className="block h-6 w-6"
-													aria-hidden="true"
 													onClick={() => {
 														setExchangeOpen(false);
 														setKyoOpen(false);
 													}}
 												/>
 											) : (
-												/* @ts-expect-error This is quite odd */
-												<FontAwesomeIcon icon={faBars} className="block h-6 w-6" aria-hidden="true" />
+												<FaBars className="block h-6 w-6" aria-hidden="true" />
 											)}
 										</Disclosure.Button>
 									</div>
