@@ -1,5 +1,6 @@
 import { SwapInfo, SwapTypes } from '@balancer-labs/sor';
 import { toBigNumber } from '@koyofinance/core-sdk';
+import type { useGetQoute } from '@koyofinance/momiji-hooks';
 import { TokenInfo } from '@uniswap/token-lists';
 import SwapCardToken from 'components/apps/amm/unified/swap/cards/SwapCardToken';
 import SwapCardTop from 'components/apps/amm/unified/swap/cards/SwapCardTop';
@@ -12,14 +13,13 @@ import { Form, Formik } from 'formik';
 import { useWeb3 } from 'hooks/useWeb3';
 import { SwapLayout, SwapLayoutCard } from 'layouts/SwapLayout';
 import { NextSeo } from 'next-seo';
+import dynamic from 'next/dynamic';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from 'state/hooks';
 import { selectAllTokensByChainId } from 'state/reducers/lists';
 import { selectTokenOne, selectTokenTwo, setTokenOne, setTokenTwo } from 'state/reducers/selectedTokens';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
-import type { useGetQoute } from '@koyofinance/momiji-hooks';
-import dynamic from 'next/dynamic';
 
 const SwapTokenModal = dynamic(() => import('components/apps/amm/unified/swap/modals/SwapTokenModal'));
 

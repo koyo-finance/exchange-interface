@@ -4,17 +4,19 @@ import { selectMomijiUsage, setMomijiUsage } from 'state/reducers/swap';
 import { useSelector } from 'react-redux';
 import { useAppDispatch } from 'state/hooks';
 import { config } from 'core/config';
+import { useFlags } from 'flagsmith/react';
 
 export interface ToggleSwapModeProps {
 	className?: string;
 }
 
 const ToggleSwapMode: React.FC<ToggleSwapModeProps> = ({ className }) => {
+	const flags = useFlags(['momiji']);
 	const dispatch = useAppDispatch();
 
 	const momijiEnabled = useSelector(selectMomijiUsage);
 
-	if (!config.momijiEnable) return null;
+	if (!config.momijiEnable || !flags.momiji.enabled) return null;
 
 	return (
 		<div className={`flex items-center gap-2 ${className || ''}`}>

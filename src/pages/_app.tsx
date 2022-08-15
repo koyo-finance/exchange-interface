@@ -24,13 +24,14 @@ import { WagmiConfig } from 'wagmi';
 import DefaultSeoProps from 'DefaultSeoProps';
 import dynamic from 'next/dynamic';
 import { config } from 'core/config';
+import FlagsmithWrapper from 'components/wrappers/FlagsmithWrapper';
 
 import '@rainbow-me/rainbowkit/styles.css';
 import 'styles/_App.css';
 
 const Navbar = dynamic(() => import('components/Navbar'));
 
-const App: NextPage<AppProps> = ({ Component, pageProps }) => {
+const MyApp: NextPage<AppProps> = ({ Component, pageProps }) => {
 	useInstantiateSORConstant();
 
 	const ExtendedPage = Component as ExtendedNextPage<NextPageContext, any>;
@@ -66,25 +67,27 @@ const App: NextPage<AppProps> = ({ Component, pageProps }) => {
 							<Provider store={store}>
 								<PersistGate persistor={persistor}>
 									<InitialStateWrapper>
-										<>
-											<Head>
-												<meta httpEquiv="Content-Type" content="text/html; charset=UTF-8" />
-												<meta httpEquiv="X-UA-Compatible" content="ie=edge" />
-												<meta httpEquiv="Expires" content="1y" />
-												<meta httpEquiv="Pragma" content="1y" />
-												<meta httpEquiv="Cache-Control" content="1y" />
+										<FlagsmithWrapper>
+											<>
+												<Head>
+													<meta httpEquiv="Content-Type" content="text/html; charset=UTF-8" />
+													<meta httpEquiv="X-UA-Compatible" content="ie=edge" />
+													<meta httpEquiv="Expires" content="1y" />
+													<meta httpEquiv="Pragma" content="1y" />
+													<meta httpEquiv="Cache-Control" content="1y" />
 
-												<link rel="shortcut icon" href="/favicon.ico" />
-											</Head>
-											<DefaultSeo {...DefaultSeoProps} />
-										</>
+													<link rel="shortcut icon" href="/favicon.ico" />
+												</Head>
+												<DefaultSeo {...DefaultSeoProps} />
+											</>
 
-										<>
-											<Navbar />
-											<Layout>
-												<ExtendedPage {...pageProps} />
-											</Layout>
-										</>
+											<>
+												<Navbar />
+												<Layout>
+													<ExtendedPage {...pageProps} />
+												</Layout>
+											</>
+										</FlagsmithWrapper>
 									</InitialStateWrapper>
 								</PersistGate>
 							</Provider>
@@ -98,4 +101,4 @@ const App: NextPage<AppProps> = ({ Component, pageProps }) => {
 	);
 };
 
-export default App;
+export default MyApp;

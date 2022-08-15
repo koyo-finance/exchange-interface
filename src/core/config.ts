@@ -5,6 +5,7 @@ export const configSchema = z.object({
 	defaultChainId: z.number().optional().default(ChainId.BOBA),
 	intercomId: z.string().optional(),
 	momijiEnable: z.boolean(),
+	flagsmithEnvironmentId: z.string().optional(),
 	ipfs: z.boolean()
 });
 
@@ -12,6 +13,7 @@ export const config = configSchema.parse({
 	defaultChainId: process.env.NEXT_PUBLIC_DEFAULT_CHAIN_ID ? parseInt(process.env.NEXT_PUBLIC_DEFAULT_CHAIN_ID, 10) : undefined,
 	intercomId: process.env.NEXT_PUBLIC_INTERCOM_APP_ID,
 	momijiEnable: JSON.parse(process.env.NEXT_PUBLIC_MOMIJI_ENABLE || 'false') as boolean,
+	flagsmithEnvironmentId: process.env.NEXT_PUBLIC_FLAGSMITH_ENVIRONMENT_ID,
 	ipfs: JSON.parse(process.env.NEXT_PUBLIC_IPFS_EXPORT || 'false') as boolean
 });
 
