@@ -19,5 +19,5 @@
 		"importsNotUsedAsValues": "remove",
 	},
 	"include": ["."],
-	"exclude": ["public/sw.js", "public/workbox*.js", ".next", "out"]
+	"exclude": ["public/sw.js", "public/workbox*.js", "public/static/charting", ".next", "out"]
 }
