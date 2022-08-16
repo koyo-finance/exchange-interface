@@ -98,3 +98,7 @@ src/types/contracts/**/*.ts
 !src/types/contracts/**/*.d.ts
 
 tailwind-static/
+
+src/public/static/charting/**/*
+!src/public/static/charting/.gitkeep
+src/public/c/**/*

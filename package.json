@@ -19,7 +19,10 @@
 		"generate:typechain:exchange": "typechain --target ethers-v5 --always-generate-overloads --discriminate-types --out-dir ./src/types/contracts/exchange './src/constants/abis/exchange/*.json'",
 		"generate:typechain:koyo": "typechain --target ethers-v5 --always-generate-overloads --out-dir ./src/types/contracts/koyo './src/constants/abis/koyo/*.json'",
 		"generate:graphql": "graphql-codegen --config codegen.yml -r dotenv/config",
-		"postinstall": "yarn generate:typechain:exchange && yarn generate:typechain:koyo && yarn generate:graphql"
+		"generate": "yarn generate:typechain:exchange && yarn generate:typechain:koyo && yarn generate:graphql",
+		"fetch:trading_view": "node ./scripts/tradingView.js",
+		"fetch": "yarn fetch:trading_view",
+		"postinstall": "yarn generate && yarn fetch"
 	},
 	"dependencies": {
 		"@balancer-labs/balancer-js": "^1.0.1",
