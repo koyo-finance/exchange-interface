@@ -15,13 +15,14 @@ const Navbar: React.FC = () => {
 
 	const [exchangeOpen, setExchangeOpen] = useState(false);
 	const [kyoOpen, setKyoOpen] = useState(false);
+	const [tradeOpen, setTradeOpen] = useState(false);
 
 	return (
 		<header className="fixed left-0 top-0 z-20 w-full transform-gpu bg-darks-500 py-1">
 			<Disclosure as="nav" className="border-b-2 border-darks-500 bg-transparent font-semibold text-black">
 				{({ open }) => (
 					<>
-						<div className=" mx-auto px-4 py-2 md:px-6 xl:px-32">
+						<div className=" mx-auto px-4 py-2 md:px-2 xl:px-20">
 							<div className="relative flex h-12 items-center justify-between">
 								{/* Left */}
 								<div className="z-40 flex items-stretch justify-start pl-0">
@@ -39,8 +40,8 @@ const Navbar: React.FC = () => {
 										router.pathname === '/' ? 'opacity-0' : 'opacity-100'
 									}`}
 								>
-									<div className="relative hidden flex-row items-center rounded-2xl bg-black bg-opacity-50 p-0 text-center text-white md:w-1/3 lg:flex xl:w-1/4">
-										<div className="group relative z-10 w-1/2">
+									<div className="relative hidden flex-row items-center rounded-2xl bg-black bg-opacity-50 p-0 text-center text-white md:w-1/3 lg:flex xl:w-1/3">
+										<div className="group relative z-10 w-1/3">
 											<div
 												className={`z-10 flex w-full cursor-pointer flex-row items-center justify-center gap-1 rounded-2xl py-2`}
 											>
@@ -61,7 +62,7 @@ const Navbar: React.FC = () => {
 												</BaseLink>
 											</div>
 										</div>
-										<div className="group relative z-10 w-1/2">
+										<div className="group relative z-10 w-1/3">
 											<div
 												className={`z-10 flex w-full cursor-pointer flex-row items-center justify-center gap-1 rounded-2xl py-2`}
 											>
@@ -79,6 +80,21 @@ const Navbar: React.FC = () => {
 												</BaseLink>
 												<BaseLink href="/kyo/farms">
 													<div className=" transform-gpu cursor-pointer duration-150 hover:text-darks-200">Farms</div>
+												</BaseLink>
+											</div>
+										</div>
+										<div className="group relative z-10 w-1/3">
+											<div
+												className={`z-10 flex w-full cursor-pointer flex-row items-center justify-center gap-1 rounded-2xl py-2`}
+											>
+												<div>Trade</div>
+												<div>
+													<RiArrowDownSLine className=" text-xl " />
+												</div>
+											</div>
+											<div className=" absolute top-10 hidden w-full flex-col items-center justify-center gap-3 rounded-xl bg-black bg-opacity-90 py-2 text-xl hover:flex group-hover:flex">
+												<BaseLink href="/trade/perpetuals">
+													<div className=" transform-gpu cursor-pointer duration-150 hover:text-darks-200">Perpetuals</div>
 												</BaseLink>
 											</div>
 										</div>
@@ -127,7 +143,14 @@ const Navbar: React.FC = () => {
 						</div>
 
 						{router.pathname !== '/' && (
-							<MobileNav exchangeOpen={exchangeOpen} setExchangeOpen={setExchangeOpen} kyoOpen={kyoOpen} setKyoOpen={setKyoOpen} />
+							<MobileNav
+								exchangeOpen={exchangeOpen}
+								setExchangeOpen={setExchangeOpen}
+								kyoOpen={kyoOpen}
+								setKyoOpen={setKyoOpen}
+								tradeOpen={tradeOpen}
+								setTradeOpen={setTradeOpen}
+							/>
 						)}
 					</>
 				)}
