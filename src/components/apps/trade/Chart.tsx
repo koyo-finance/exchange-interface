@@ -7,7 +7,7 @@ const TradingViewChartContainer = dynamic(() => import('components/TradingView/T
 
 const Chart: React.FC = () => {
 	return (
-		<div className="mx-0 h-[60vh] w-full rounded-xl lg:mx-2 lg:h-[93.25vh] lg:w-1/2 lg:pb-2 2xl:w-3/5">
+		<div className="mx-0 h-[50vh] w-full rounded-xl ">
 			<TradingViewChartContainer
 				tvOptions={{
 					symbol: 'AAPL',
@@ -24,7 +24,7 @@ const Chart: React.FC = () => {
 					theme: 'Dark'
 				}}
 				style={{
-					height: '60%'
+					height: '100%'
 				}}
 			/>
 		</div>

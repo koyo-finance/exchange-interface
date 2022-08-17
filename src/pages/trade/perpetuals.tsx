@@ -70,7 +70,7 @@ const PerpetualsPage: ExtendedNextPage = () => {
 				canonical={`${ROOT_WITH_PROTOCOL}/trade/perpetuals`}
 				description="Trade your assets in our perpetual pools."
 			/>
-			<div className="relative flex min-h-screen w-full justify-center bg-darks-500 pt-24 pb-6 md:pb-0 lg:pt-20">
+			<div className="relative flex min-h-screen w-full justify-center gap-4 bg-darks-500 pt-24 pb-6 md:pb-0 lg:pt-20">
 				{tokenModalOneIsOpen && (
 					<SwapTokenModal
 						tokenNum={activeToken}
@@ -79,8 +79,26 @@ const PerpetualsPage: ExtendedNextPage = () => {
 						setToken={setTokenHandler}
 					/>
 				)}
-				<Chart />
+				<div className="flex w-full flex-col gap-4 xl:w-3/5">
+					<Chart />
+					<div className="flex h-[38.25vh] w-full flex-col rounded-xl bg-black bg-opacity-50">
+						<div className="flex w-full flex-row items-center justify-between border-b-2 border-gray-500 p-3 pr-24 text-gray-300">
+							<div>Position</div>
+							<div>Net value</div>
+							<div>Size</div>
+							<div>Entry price</div>
+							<div>Market price</div>
+							<div>Liq. price</div>
+						</div>
+						<div className="h-auto w-full p-3">No positions open.</div>
+					</div>
+				</div>
 				<div className="flex h-[90vh] transform-gpu animate-fade-in flex-col gap-2 rounded-xl bg-black bg-opacity-50 p-4 sm:w-[75vw] sm:p-6 md:w-[55vw] lg:w-[45vw] xl:w-[40vw] 2xl:w-[30vw]">
+					<div className="w-full ">
+						<div className="w-1/2">Long</div>
+						<div className="w-1/2">Short</div>
+					</div>
+					<div></div>
 					<Formik<SwapFormValues>
 						initialValues={{
 							[SwapTokenNumber.IN]: undefined as unknown as number,
