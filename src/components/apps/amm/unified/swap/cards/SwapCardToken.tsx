@@ -39,10 +39,17 @@ const SwapCardToken: React.FC<SwapCardTokenProps> = ({ tokenNum, token, swapStat
 	const tokenOne = useSelector(selectTokenOne);
 	const tokenTwo = useSelector(selectTokenTwo);
 
-	const momijiEnabled = useSelector(selectMomijiUsage);
-	const [validTo, setValidTo] = useState(Math.floor(Date.now() / 1000) + 180);
-
 	const { data: tokenBalance = 0, refetch: refetchBalance } = useTokenBalance(accountAddress, token.address);
+
+	const momijiEnabled = useSelector(selectMomijiUsage);
+	const [validTo, setValidTo] = useState(Math.floor(Date.now() / 1000) + 300);
+
+	useEffect(() => {
+		const interval = setInterval(() => setValidTo(Math.floor(Date.now() / 1000) + 300), 1000);
+		return () => {
+			clearInterval(interval);
+		};
+	}, []);
 
 	const { data: swapInfo } = useGetSwaps({
 		...(DEFAULT_SWAP_OPTIONS as Required<Omit<SwapOptions, 'funds'>>),
@@ -84,7 +91,6 @@ const SwapCardToken: React.FC<SwapCardTokenProps> = ({ tokenNum, token, swapStat
 		}
 		if (!isIn && momijiEnabled && momijiOrderInfo) {
 			setFieldValue(tokenNum as unknown as string, fromBigNumber(momijiOrderInfo.quote.buyAmount, tokenTwo.decimals));
-			setValidTo(Math.floor(Date.now() / 1000) + 180);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [setFieldValue, isIn, tokenNum, values, swapAmounts.in, swapAmounts.out, momijiEnabled, momijiOrderInfo]);
