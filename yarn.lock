@@ -1607,6 +1607,19 @@
     numbro "2.3.6"
     tslib "^2.4.0"
 
+"@koyofinance/core-sdk@^0.9.0-next.7154996.0":
+  version "0.9.0-next.d960dad.0"
+  resolved "https://registry.yarnpkg.com/@koyofinance/core-sdk/-/core-sdk-0.9.0-next.d960dad.0.tgz#9861c0dcf223d95a6e45603e3c6df13ecab56a02"
+  integrity sha512-waeREA65Fcdu9W36GNA4pVHZolpezdaB2tu+IKmboLWcOouKinhxvsWql/JW4fwN/ycKjD4Gn5rpDPoj0v9jkw==
+  dependencies:
+    "@ethersproject/address" "^5.6.1"
+    "@ethersproject/bignumber" "^5.6.2"
+    "@ethersproject/units" "^5.6.1"
+    "@uniswap/token-lists" "^1.0.0-beta.28"
+    dayjs "1.11.2"
+    numbro "2.3.6"
+    tslib "^2.4.0"
+
 "@koyofinance/core-sdk@^0.9.0-next.d653821.0":
   version "0.9.0-next.d653821.0"
   resolved "https://registry.yarnpkg.com/@koyofinance/core-sdk/-/core-sdk-0.9.0-next.d653821.0.tgz#81f3ab6b3d0c45926b4a3829a6cec9f9e56122d0"
@@ -1620,10 +1633,10 @@
     numbro "2.3.6"
     tslib "^2.4.0"
 
-"@koyofinance/core-sdk@^0.9.0-next.d960dad.0":
-  version "0.9.0-next.d960dad.0"
-  resolved "https://registry.yarnpkg.com/@koyofinance/core-sdk/-/core-sdk-0.9.0-next.d960dad.0.tgz#9861c0dcf223d95a6e45603e3c6df13ecab56a02"
-  integrity sha512-waeREA65Fcdu9W36GNA4pVHZolpezdaB2tu+IKmboLWcOouKinhxvsWql/JW4fwN/ycKjD4Gn5rpDPoj0v9jkw==
+"@koyofinance/core-sdk@^0.9.0-next.ff26267.0":
+  version "0.9.0-next.ff26267.0"
+  resolved "https://registry.yarnpkg.com/@koyofinance/core-sdk/-/core-sdk-0.9.0-next.ff26267.0.tgz#0dd356b6985c66aa52f803afaed910c6331e77b7"
+  integrity sha512-ravqe/TPkALysbPPC5nyjsLz5smZ1JeX2zKuYH1ZtCWyJnJ2d1b76GrFpcePtVyuGaYdmkOijz9FOWy4vzUk+Q==
   dependencies:
     "@ethersproject/address" "^5.6.1"
     "@ethersproject/bignumber" "^5.6.2"
@@ -1631,6 +1644,20 @@
     "@uniswap/token-lists" "^1.0.0-beta.28"
     dayjs "1.11.2"
     numbro "2.3.6"
+    tslib "^2.4.0"
+
+"@koyofinance/exchange-sdk@^1.5.0-next.7154996.0":
+  version "1.5.0-next.e435928.0"
+  resolved "https://registry.yarnpkg.com/@koyofinance/exchange-sdk/-/exchange-sdk-1.5.0-next.e435928.0.tgz#48a59a683bfbd10d8b9b9e0728f712951f1ebc75"
+  integrity sha512-TEhD9v/5VxP6rEdkGq1khm5eHxGGSSdmpsBwsj/QvBkLVtlpvtgxI8fHnsFtRBADZpDb7zfHmNdpWXzkfCbtIg==
+  dependencies:
+    "@balancer-labs/sor" "^4.0.1-beta.1"
+    "@ethersproject/providers" "^5.6.8"
+    "@koyofinance/core-sdk" "^0.6.0-next.e435928.0"
+    "@koyofinance/sor" "^1.1.0-next.e435928.0"
+    "@sapphire/fetch" "^2.4.1"
+    graphql-tag "^2.12.6"
+    lodash.set "^4.3.2"
     tslib "^2.4.0"
 
 "@koyofinance/exchange-sdk@^1.5.0-next.d653821.0":
@@ -1647,45 +1674,31 @@
     lodash.set "^4.3.2"
     tslib "^2.4.0"
 
-"@koyofinance/exchange-sdk@^1.5.0-next.d960dad.0":
-  version "1.5.0-next.e435928.0"
-  resolved "https://registry.yarnpkg.com/@koyofinance/exchange-sdk/-/exchange-sdk-1.5.0-next.e435928.0.tgz#48a59a683bfbd10d8b9b9e0728f712951f1ebc75"
-  integrity sha512-TEhD9v/5VxP6rEdkGq1khm5eHxGGSSdmpsBwsj/QvBkLVtlpvtgxI8fHnsFtRBADZpDb7zfHmNdpWXzkfCbtIg==
-  dependencies:
-    "@balancer-labs/sor" "^4.0.1-beta.1"
-    "@ethersproject/providers" "^5.6.8"
-    "@koyofinance/core-sdk" "^0.6.0-next.e435928.0"
-    "@koyofinance/sor" "^1.1.0-next.e435928.0"
-    "@sapphire/fetch" "^2.4.1"
-    graphql-tag "^2.12.6"
-    lodash.set "^4.3.2"
-    tslib "^2.4.0"
-
-"@koyofinance/momiji-hooks@^0.4.0-next.d653821.0":
-  version "0.4.0-next.d653821.0"
-  resolved "https://registry.yarnpkg.com/@koyofinance/momiji-hooks/-/momiji-hooks-0.4.0-next.d653821.0.tgz#f3d01285cf1841f7952cacfd1290d6289ad58110"
-  integrity sha512-RNfEgjkniZ/Xk1VQv7dhuyFcqqjMKzbOr8OfIk6ylzucon9/NSnwoFjB+5FwWhaqWcB+4hBKX1LeXqonZqn0bQ==
+"@koyofinance/momiji-hooks@^0.8.0-next.ff26267.0":
+  version "0.8.0-next.ff26267.0"
+  resolved "https://registry.yarnpkg.com/@koyofinance/momiji-hooks/-/momiji-hooks-0.8.0-next.ff26267.0.tgz#04a618979bab5a51f6c0619e72534d61b7ffa866"
+  integrity sha512-LLdbSVWzIKSjPPw1ipRlxuqA3GW0mHhjuhY369feedL+GzpepkKKuhBKIUc/7gG/iDXCMDqBpG6diGJy8Ox9hw==
   dependencies:
     "@cowprotocol/contracts" "^1.3.1"
     "@ethersproject/providers" "^5.6.8"
-    "@koyofinance/core-sdk" "^0.9.0-next.d653821.0"
-    "@koyofinance/momiji-sdk" "^0.5.0-next.d653821.0"
+    "@koyofinance/core-sdk" "^0.9.0-next.ff26267.0"
+    "@koyofinance/momiji-sdk" "^0.6.0-next.ff26267.0"
     "@sapphire/utilities" "^3.9.0"
     react "^17.0.2"
     react-dom "17.0.2"
     react-query "^3.38.1"
     tslib "^2.4.0"
 
-"@koyofinance/momiji-sdk@^0.5.0-next.d653821.0", "@koyofinance/momiji-sdk@^0.5.0-next.d960dad.0":
-  version "0.5.0-next.d960dad.0"
-  resolved "https://registry.yarnpkg.com/@koyofinance/momiji-sdk/-/momiji-sdk-0.5.0-next.d960dad.0.tgz#9ef4d5f41c2215cd3394e89284830d85b3bb0f85"
-  integrity sha512-VtdkmnPfBiYITE32MqCQUE4ivlPgUYn6Emy7ewHThC8KtXjiFbpmMqY9lARQJ+kSA90Ch1TURYgljC9AypmiTw==
+"@koyofinance/momiji-sdk@^0.6.0-next.7154996.0", "@koyofinance/momiji-sdk@^0.6.0-next.ff26267.0":
+  version "0.6.0-next.7154996.0"
+  resolved "https://registry.yarnpkg.com/@koyofinance/momiji-sdk/-/momiji-sdk-0.6.0-next.7154996.0.tgz#66283699fd698dbc56bfe06ff2b4e9a937833f51"
+  integrity sha512-uSBW3kcCJwVl/mecznBgG8w0MLv4CMBR6wdUC/w+88lsPjK1Cf00W1qQi/LBKJ+IvZPvT4GonfR/2VfA2W/rZQ==
   dependencies:
     "@cowprotocol/contracts" "^1.3.1"
     "@cowprotocol/cow-sdk" "^1.0.0-RC.2"
     "@ethersproject/constants" "^5.6.1"
-    "@koyofinance/core-sdk" "^0.9.0-next.d960dad.0"
-    "@koyofinance/exchange-sdk" "^1.5.0-next.d960dad.0"
+    "@koyofinance/core-sdk" "^0.9.0-next.7154996.0"
+    "@koyofinance/exchange-sdk" "^1.5.0-next.7154996.0"
     "@sapphire/utilities" "^3.9.0"
     cross-fetch "^3.1.5"
     ethers "^5.6.9"

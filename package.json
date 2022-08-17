@@ -31,8 +31,8 @@
 		"@heroicons/react": "^1.0.6",
 		"@koyofinance/core-sdk": "^0.9.0-next.d653821.0",
 		"@koyofinance/exchange-sdk": "^1.5.0-next.d653821.0",
-		"@koyofinance/momiji-hooks": "^0.4.0-next.d653821.0",
-		"@koyofinance/momiji-sdk": "^0.5.0-next.d960dad.0",
+		"@koyofinance/momiji-hooks": "^0.8.0-next.ff26267.0",
+		"@koyofinance/momiji-sdk": "^0.6.0-next.7154996.0",
 		"@koyofinance/react-query-typechain": "^1.1.0-next.f2f8f0d.0",
 		"@koyofinance/sor": "^1.1.0-next.d653821.0",
 		"@next/bundle-analyzer": "^12.2.5",
@@ -126,7 +126,7 @@
 	"resolutions": {
 		"@types/react": "17.0.39",
 		"@types/react-dom": "17.0.11",
-		"@koyofinance/momiji-sdk": "^0.5.0-next.d960dad.0",
+		"@koyofinance/momiji-sdk": "^0.6.0-next.7154996.0",
 		"web3-eth-accounts": "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.2.0.tgz"
 	},
 	"volta": {

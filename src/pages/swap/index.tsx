@@ -30,6 +30,7 @@ export interface SwapFormValues {
 	1: number;
 	2: number;
 	swapType: SwapTypes;
+	error?: string;
 	info?: SwapInfo;
 	quote?: ReturnType<typeof useGetQoute>['data'];
 }

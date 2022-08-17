@@ -45,21 +45,28 @@ const SwapCardToken: React.FC<SwapCardTokenProps> = ({ tokenNum, token, swapStat
 	const [validTo, setValidTo] = useState(Math.floor(Date.now() / 1000) + 300);
 
 	useEffect(() => {
-		const interval = setInterval(() => setValidTo(Math.floor(Date.now() / 1000) + 300), 1000);
+		const interval = setInterval(() => setValidTo(Math.floor(Date.now() / 1000) + 300), 30000);
 		return () => {
 			clearInterval(interval);
 		};
 	}, []);
 
-	const { data: swapInfo } = useGetSwaps({
-		...(DEFAULT_SWAP_OPTIONS as Required<Omit<SwapOptions, 'funds'>>),
-		tokenIn: tokenOne.address,
-		tokenOut: tokenTwo.address,
-		amount: toBigNumber(values[SwapTokenNumber.IN] || 0, tokenOne.decimals),
-		swapType: values.swapType,
-		forceRefresh: false
-	});
-	const { data: momijiOrderInfo } = useGetQoute(
+	const { data: swapInfo } = useGetSwaps(
+		{
+			...(DEFAULT_SWAP_OPTIONS as Required<Omit<SwapOptions, 'funds'>>),
+			tokenIn: tokenOne.address,
+			tokenOut: tokenTwo.address,
+			amount: toBigNumber(values[SwapTokenNumber.IN] || 0, tokenOne.decimals),
+			swapType: values.swapType,
+			forceRefresh: false
+		},
+		!momijiEnabled
+	);
+	const {
+		data: momijiOrderInfo,
+		error: momijiOrderError,
+		refetch: momijiRefetch
+	} = useGetQoute(
 		{
 			appData: '0x487B02C558D729ABAF3ECF17881A4181E5BC2446429A0995142297E897B6EB37',
 			kind: OrderKind.SELL,
@@ -78,10 +85,16 @@ const SwapCardToken: React.FC<SwapCardTokenProps> = ({ tokenNum, token, swapStat
 				momijiEnabled &&
 				tokenOne.address.toLowerCase() !== ZERO_ADDRESS &&
 				tokenTwo.address.toLowerCase() !== ZERO_ADDRESS &&
-				Boolean(values[SwapTokenNumber.IN])
+				Boolean(values[SwapTokenNumber.IN]),
+			refetchInterval: 15 * 1e3,
+			retry: false
 		}
 	);
 	const swapAmounts = useAmountScaled(swapInfo, tokenOne, tokenTwo, values.swapType);
+
+	useEffect(() => {
+		if (momijiEnabled) void momijiRefetch();
+	}, [momijiEnabled, momijiRefetch, values]);
 
 	useEffect(() => {
 		const flooredConvertedAmount = Math.floor(parseFloat(isIn ? swapAmounts.in : swapAmounts.out) * 10000) / 10000;
@@ -89,11 +102,18 @@ const SwapCardToken: React.FC<SwapCardTokenProps> = ({ tokenNum, token, swapStat
 		if (!isIn && !momijiEnabled && flooredConvertedAmount !== values[tokenNum]) {
 			setFieldValue(tokenNum as unknown as string, flooredConvertedAmount);
 		}
-		if (!isIn && momijiEnabled && momijiOrderInfo) {
-			setFieldValue(tokenNum as unknown as string, fromBigNumber(momijiOrderInfo.quote.buyAmount, tokenTwo.decimals));
+		if (!isIn && momijiEnabled && momijiOrderInfo && !momijiOrderError) {
+			const flooredQuote = Math.floor(fromBigNumber(momijiOrderInfo.quote.buyAmount, tokenTwo.decimals) * 10000) / 10000;
+
+			setFieldValue(tokenNum as unknown as string, flooredQuote);
+			setFieldValue('error', '');
+		}
+		if (!isIn && momijiEnabled && momijiOrderError) {
+			setFieldValue(tokenNum as unknown as string, 0);
+			setFieldValue('error', momijiOrderError.message);
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [setFieldValue, isIn, tokenNum, values, swapAmounts.in, swapAmounts.out, momijiEnabled, momijiOrderInfo]);
+	}, [setFieldValue, isIn, tokenNum, values, swapAmounts.in, swapAmounts.out, momijiEnabled, momijiOrderInfo, momijiOrderError]);
 
 	useEffect(() => setFieldValue('info', swapInfo), [setFieldValue, swapInfo]);
 	useEffect(() => setFieldValue('quote', momijiOrderInfo), [setFieldValue, momijiOrderInfo]);

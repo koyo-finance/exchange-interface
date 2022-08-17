@@ -9,7 +9,7 @@ import { useQuery } from 'react-query';
 
 const IDENTITY_FN = (v: unknown) => v;
 
-export function useGetSwaps(options: Required<Omit<SwapOptions, 'funds'>>, chainId?: ChainId) {
+export function useGetSwaps(options: Required<Omit<SwapOptions, 'funds'>>, enabled?: boolean, chainId?: ChainId) {
 	const jpex = useJpex();
 	const { chainId: activeChainId } = useWeb3();
 	const sor = jpex.resolveWith<KoyoSOR, ChainId>([activeChainId || chainId || DEFAULT_CHAIN]);
@@ -28,7 +28,7 @@ export function useGetSwaps(options: Required<Omit<SwapOptions, 'funds'>>, chain
 
 			return swapInfo;
 		},
-		enabled: Boolean(options.tokenIn && options.tokenOut && options.amount),
+		enabled: Boolean(options.tokenIn && options.tokenOut && options.amount) && enabled,
 		select: IDENTITY_FN as (v: SwapInfo) => SwapInfo
 	});
 }
