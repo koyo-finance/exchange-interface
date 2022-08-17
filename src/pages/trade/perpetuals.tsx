@@ -3,15 +3,12 @@ import { toBigNumber } from '@koyofinance/core-sdk';
 import type { useGetQoute } from '@koyofinance/momiji-hooks';
 import { TokenInfo } from '@uniswap/token-lists';
 import SwapCardToken from 'components/apps/amm/unified/swap/cards/SwapCardToken';
-import SwapCardTop from 'components/apps/amm/unified/swap/cards/SwapCardTop';
 import SwapSwapTokensSlot from 'components/apps/amm/unified/swap/SwapSwapTokensSlot';
-import SwapWrapper from 'components/apps/amm/unified/swap/SwapWrapper';
 import GuideLink from 'components/GuideLink';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
 import { SwapTokenNumber } from 'constants/swaps';
 import { Form, Formik } from 'formik';
 import { useWeb3 } from 'hooks/useWeb3';
-import { SwapLayout, SwapLayoutCard } from 'layouts/SwapLayout';
 import { NextSeo } from 'next-seo';
 import dynamic from 'next/dynamic';
 import React, { useEffect, useState } from 'react';
@@ -20,6 +17,9 @@ import { useAppDispatch } from 'state/hooks';
 import { selectAllTokensByChainId } from 'state/reducers/lists';
 import { selectTokenOne, selectTokenTwo, setTokenOne, setTokenTwo } from 'state/reducers/selectedTokens';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
+import { useSwapSOR } from 'hooks/swap/useSwapSOR';
+import PerpetualsDepositBtn from 'components/apps/trade/PerpetualsDepositBtn';
+import Chart from 'components/apps/trade/Chart';
 
 const SwapTokenModal = dynamic(() => import('components/apps/amm/unified/swap/modals/SwapTokenModal'));
 
@@ -33,9 +33,10 @@ export interface SwapFormValues {
 	quote?: ReturnType<typeof useGetQoute>['data'];
 }
 
-const SwapIndexPage: ExtendedNextPage = () => {
+const PerpetualsPage: ExtendedNextPage = () => {
 	const { chainId } = useWeb3();
 	const dispatch = useAppDispatch();
+	const { swapSOR, swapStatusSOR } = useSwapSOR();
 
 	const TOKENS = useSelector(selectAllTokensByChainId(chainId));
 	const [tokenModalOneIsOpen, setTokenModalIsOpen] = useState(false);
@@ -67,9 +68,9 @@ const SwapIndexPage: ExtendedNextPage = () => {
 			<NextSeo
 				title="Perpetuals"
 				canonical={`${ROOT_WITH_PROTOCOL}/trade/perpetuals`}
-				description="Swap your tokens between different pools. Kōyō Finance makes swapping tokens easier than ever before."
+				description="Trade your assets in our perpetual pools."
 			/>
-			<div className="relative flex min-h-screen w-full items-center justify-center bg-darks-500 pt-24 pb-6 md:pb-0 lg:pt-20">
+			<div className="relative flex min-h-screen w-full justify-center bg-darks-500 pt-24 pb-6 md:pb-0 lg:pt-20">
 				{tokenModalOneIsOpen && (
 					<SwapTokenModal
 						tokenNum={activeToken}
@@ -78,53 +79,48 @@ const SwapIndexPage: ExtendedNextPage = () => {
 						setToken={setTokenHandler}
 					/>
 				)}
-				<SwapLayoutCard className="w-[95vw] sm:w-[75vw] md:w-[55vw] lg:w-[45vw] xl:w-[40vw] 2xl:w-[30vw]">
-					<SwapWrapper>
-						{(sw) => (
-							<Formik<SwapFormValues>
-								initialValues={{
-									[SwapTokenNumber.IN]: undefined as unknown as number,
-									[SwapTokenNumber.OUT]: undefined as unknown as number,
-									swapType
-								}}
-								onSubmit={(values) => {
-									sw.swapFunction(toBigNumber(values[SwapTokenNumber.IN], tokenOne.decimals), values.quote);
-								}}
-							>
-								{() => (
-									<Form>
-										<div className="flex w-full flex-col gap-1">
-											<SwapCardTop />
-											<SwapCardToken
-												tokenNum={SwapTokenNumber.IN}
-												token={tokenOne}
-												swapStatus={sw.status}
-												isIn={true}
-												openTokenModal={openTokenModalHandler}
-												setActiveToken={(tokenNum: number) => setActiveToken(tokenNum)}
-											/>
-											<SwapSwapTokensSlot />
-											<SwapCardToken
-												tokenNum={SwapTokenNumber.OUT}
-												token={tokenTwo}
-												swapStatus={sw.status}
-												isIn={false}
-												openTokenModal={openTokenModalHandler}
-												setActiveToken={(tokenNum: number) => setActiveToken(tokenNum)}
-											/>
-											<sw.content />
-										</div>
-									</Form>
-								)}
-							</Formik>
+				<Chart />
+				<div className="flex h-[90vh] transform-gpu animate-fade-in flex-col gap-2 rounded-xl bg-black bg-opacity-50 p-4 sm:w-[75vw] sm:p-6 md:w-[55vw] lg:w-[45vw] xl:w-[40vw] 2xl:w-[30vw]">
+					<Formik<SwapFormValues>
+						initialValues={{
+							[SwapTokenNumber.IN]: undefined as unknown as number,
+							[SwapTokenNumber.OUT]: undefined as unknown as number,
+							swapType
+						}}
+						onSubmit={(values) => {
+							swapSOR(toBigNumber(values[SwapTokenNumber.IN], tokenOne.decimals));
+						}}
+					>
+						{() => (
+							<Form>
+								<div className="flex w-full flex-col gap-1">
+									<SwapCardToken
+										tokenNum={SwapTokenNumber.IN}
+										token={tokenOne}
+										swapStatus={swapStatusSOR}
+										isIn={true}
+										openTokenModal={openTokenModalHandler}
+										setActiveToken={(tokenNum: number) => setActiveToken(tokenNum)}
+									/>
+									<SwapSwapTokensSlot />
+									<SwapCardToken
+										tokenNum={SwapTokenNumber.OUT}
+										token={tokenTwo}
+										swapStatus={swapStatusSOR}
+										isIn={false}
+										openTokenModal={openTokenModalHandler}
+										setActiveToken={(tokenNum: number) => setActiveToken(tokenNum)}
+									/>
+									<PerpetualsDepositBtn />
+								</div>
+							</Form>
 						)}
-					</SwapWrapper>
-				</SwapLayoutCard>
+					</Formik>
+				</div>
 				<GuideLink type="Swap" text="Trouble swapping?" link="https://docs.koyo.finance/protocol/guide/exchange/swap" />
 			</div>
 		</>
 	);
 };
 
-SwapIndexPage.Layout = SwapLayout('swap');
-export default SwapIndexPage;
+export default PerpetualsPage;

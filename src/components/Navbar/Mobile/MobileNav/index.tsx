@@ -94,7 +94,7 @@ const MobileNav: React.FC<MobileNavProps> = ({ exchangeOpen, setExchangeOpen, ky
 								} absolute top-10 left-0 flex w-full transform-gpu flex-col gap-y-4 duration-150`}
 							>
 								<div className="z-20 w-full rounded-2xl py-2">
-									<BaseLink href="/kyo/lock">
+									<BaseLink href="/trade/perpetuals">
 										<div className=" transform-gpu cursor-pointer px-4 duration-200 hover:text-lights-400">Perepetuals</div>
 									</BaseLink>
 								</div>
