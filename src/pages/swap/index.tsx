@@ -19,6 +19,7 @@ import { useSelector } from 'react-redux';
 import { useAppDispatch } from 'state/hooks';
 import { selectAllTokensByChainId } from 'state/reducers/lists';
 import { selectTokenOne, selectTokenTwo, setTokenOne, setTokenTwo } from 'state/reducers/selectedTokens';
+import { selectMomijiUsage } from 'state/reducers/swap';
 import { ExtendedNextPage } from 'types/ExtendedNextPage';
 
 const SwapTokenModal = dynamic(() => import('components/apps/amm/unified/swap/modals/SwapTokenModal'));
@@ -42,6 +43,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 	const [activeToken, setActiveToken] = useState<SwapTokenNumber>(SwapTokenNumber.IN);
 	const tokenOne = useSelector(selectTokenOne);
 	const tokenTwo = useSelector(selectTokenTwo);
+	const momijiIsEnabled = useSelector(selectMomijiUsage);
 
 	const setTokenHandler = (token: TokenInfo, tokenNum: number) => {
 		if (tokenNum === SwapTokenNumber.IN) {
@@ -119,6 +121,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 							</Formik>
 						)}
 					</SwapWrapper>
+					{momijiIsEnabled && <div className="w-full text-right text-sm text-lights-400">Powered by Momiji</div>}
 				</SwapLayoutCard>
 				<GuideLink type="Swap" text="Trouble swapping?" link="https://docs.koyo.finance/protocol/guide/exchange/swap" />
 			</div>
