@@ -10,7 +10,7 @@ const Chart: React.FC = () => {
 		<div className="mx-0 h-[50vh] w-full rounded-xl ">
 			<TradingViewChartContainer
 				tvOptions={{
-					symbol: 'AAPL',
+					symbol: 'TSLA',
 					library_path: '/static/charting/charting_library/',
 					charts_storage_url: 'https://saveload.tradingview.com',
 					charts_storage_api_version: '1.1',

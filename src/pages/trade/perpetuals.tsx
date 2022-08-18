@@ -23,6 +23,7 @@ import Chart from 'components/apps/trade/Chart';
 import Positions from 'components/apps/trade/Positions';
 import DepositType from 'components/apps/trade/DepositType';
 import LeverageSlider from 'components/apps/trade/LeverageSlider';
+import InfoSummary from 'components/apps/trade/InfoSummary';
 
 const SwapTokenModal = dynamic(() => import('components/apps/amm/unified/swap/modals/SwapTokenModal'));
 
@@ -89,7 +90,7 @@ const PerpetualsPage: ExtendedNextPage = () => {
 					<Chart />
 					<Positions />
 				</div>
-				<div className="flex h-[90vh] transform-gpu animate-fade-in flex-col gap-4 rounded-xl bg-black bg-opacity-50 p-4 sm:w-[75vw] sm:p-6 md:w-[55vw] lg:w-[45vw] xl:w-[40vw] 2xl:w-[30vw]">
+				<div className=" flex h-[90vh] transform-gpu animate-fade-in flex-col gap-4 rounded-xl bg-black bg-opacity-50 p-4 sm:w-[75vw] sm:p-6 md:w-[55vw] lg:w-[45vw] xl:w-[40vw] 2xl:w-[30vw]">
 					<DepositType typeIsLong={depositTypeIsLong} setDepositType={setDepositTypeIsLong} />
 					<Formik<SwapFormValues>
 						initialValues={{
@@ -101,9 +102,9 @@ const PerpetualsPage: ExtendedNextPage = () => {
 							swapSOR(toBigNumber(values[SwapTokenNumber.IN], tokenOne.decimals));
 						}}
 					>
-						{() => (
+						{(props) => (
 							<Form>
-								<div className="flex w-full flex-col gap-1">
+								<div className="flex w-full flex-col gap-2">
 									<SwapCardToken
 										tokenNum={SwapTokenNumber.IN}
 										token={tokenOne}
@@ -122,7 +123,13 @@ const PerpetualsPage: ExtendedNextPage = () => {
 										setActiveToken={(tokenNum: number) => setActiveToken(tokenNum)}
 									/>
 									<LeverageSlider leverage={leverage} setLeverage={setLeverage} />
-									<div>Info</div>
+									<InfoSummary
+										earningsAssets={tokenTwo.symbol}
+										entryPrice={props.values[SwapTokenNumber.IN]}
+										liquidationPrice={0}
+										fees={0}
+										leverage={leverage}
+									/>
 									<PerpetualsDepositBtn />
 								</div>
 							</Form>
