@@ -10,6 +10,10 @@
 	animation: animateLeaves 300s linear infinite;
 }
 
+.flip-horizontal {
+	--transform-scale-x: -1;
+}
+
 @keyframes animateLeaves {
 	0% {
 		background-position: 0% 0%;
@@ -20,7 +24,7 @@
 }
 
 ::-webkit-scrollbar {
-	@apply bg-darks-400 w-2 h-[0.625rem];
+	@apply h-[0.625rem] w-2 bg-darks-400;
 }
 ::-webkit-scrollbar-thumb {
 	border-radius: 8px;

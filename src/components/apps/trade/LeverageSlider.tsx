@@ -7,7 +7,7 @@ export interface LeverageSliderProps {
 
 const LeverageSlider: React.FC<LeverageSliderProps> = ({ leverage, setLeverage }) => {
 	return (
-		<div className="mt-4 flex w-full flex-col gap-1">
+		<div className="mt-1 flex w-full flex-col gap-1">
 			<div className="w-full text-right text-lg font-semibold text-white">
 				{leverage.toLocaleString(navigator.language, {
 					minimumFractionDigits: 2,

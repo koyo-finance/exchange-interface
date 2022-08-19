@@ -4,7 +4,6 @@ import type { useGetQoute } from '@koyofinance/momiji-hooks';
 import { TokenInfo } from '@uniswap/token-lists';
 import SwapCardToken from 'components/apps/amm/unified/swap/cards/SwapCardToken';
 import SwapSwapTokensSlot from 'components/apps/amm/unified/swap/SwapSwapTokensSlot';
-import GuideLink from 'components/GuideLink';
 import { ROOT_WITH_PROTOCOL } from 'constants/links';
 import { SwapTokenNumber } from 'constants/swaps';
 import { Form, Formik } from 'formik';
@@ -24,6 +23,7 @@ import Positions from 'components/apps/trade/Positions';
 import DepositType from 'components/apps/trade/DepositType';
 import LeverageSlider from 'components/apps/trade/LeverageSlider';
 import InfoSummary from 'components/apps/trade/InfoSummary';
+import { collateralAssets } from 'constants/perpetualCollateral';
 
 const SwapTokenModal = dynamic(() => import('components/apps/amm/unified/swap/modals/SwapTokenModal'));
 
@@ -48,8 +48,10 @@ const PerpetualsPage: ExtendedNextPage = () => {
 	const tokenOne = useSelector(selectTokenOne);
 	const tokenTwo = useSelector(selectTokenTwo);
 
-	const [depositTypeIsLong, setDepositTypeIsLong] = useState(true);
+	const [depositType, setDepositType] = useState('long');
 	const [leverage, setLeverage] = useState(5);
+	const [orderIsLimit, setOrderIsLimit] = useState(false);
+	const [collateralAsset, setCollateralAsset] = useState(collateralAssets[0]);
 
 	const setTokenHandler = (token: TokenInfo, tokenNum: number) => {
 		if (tokenNum === SwapTokenNumber.IN) {
@@ -90,8 +92,26 @@ const PerpetualsPage: ExtendedNextPage = () => {
 					<Chart />
 					<Positions />
 				</div>
-				<div className=" flex h-[90vh] transform-gpu animate-fade-in flex-col gap-4 rounded-xl bg-black bg-opacity-50 p-4 sm:w-[75vw] sm:p-6 md:w-[55vw] lg:w-[45vw] xl:w-[40vw] 2xl:w-[30vw]">
-					<DepositType typeIsLong={depositTypeIsLong} setDepositType={setDepositTypeIsLong} />
+				<div className=" mb-2 flex h-fit transform-gpu animate-fade-in flex-col gap-4 rounded-xl bg-black bg-opacity-50 p-4 sm:w-[75vw] sm:p-6 md:w-[55vw] lg:w-[45vw] xl:w-[40vw] 2xl:w-[30vw]">
+					<DepositType depositType={depositType} setDepositType={setDepositType} />
+					<div className="flex w-full flex-row items-center justify-start gap-4">
+						<div
+							className={`cursor-pointer text-base text-white ${
+								orderIsLimit ? 'opacity-50 hover:opacity-75' : 'opacity-100'
+							} transform-gpu duration-100 `}
+							onClick={() => setOrderIsLimit(false)}
+						>
+							Market
+						</div>
+						<div
+							className={`cursor-pointer text-base text-white ${
+								orderIsLimit ? 'opacity-100' : 'opacity-50 hover:opacity-75'
+							} transform-gpu duration-100 `}
+							onClick={() => setOrderIsLimit(true)}
+						>
+							Limit
+						</div>
+					</div>
 					<Formik<SwapFormValues>
 						initialValues={{
 							[SwapTokenNumber.IN]: undefined as unknown as number,
@@ -122,9 +142,30 @@ const PerpetualsPage: ExtendedNextPage = () => {
 										openTokenModal={openTokenModalHandler}
 										setActiveToken={(tokenNum: number) => setActiveToken(tokenNum)}
 									/>
+									{orderIsLimit && (
+										<div className="mt-2 flex w-full flex-col gap-4 rounded-xl bg-darks-500 px-4 py-3">
+											<div className="flex w-full flex-row items-center justify-between">
+												<div className=" text-lg text-darks-200 md:text-xl lg:text-2xl">Price</div>
+												<div className="pr-2 text-lg">Market: 1923</div>
+											</div>
+											<div className="flex w-full flex-col items-center justify-between gap-2 sm:flex-row sm:gap-0">
+												<div className=" flex w-full flex-row items-center gap-2 border-0 border-b-2 border-darks-200 md:w-3/4">
+													<input
+														type="number"
+														min={0}
+														step={0.01}
+														placeholder={'0.00'}
+														className="w-full bg-transparent font-jtm text-4xl font-thin text-white outline-none"
+													/>
+												</div>
+												<div className="w-full gap-2 text-center text-3xl sm:w-1/4">USD</div>
+											</div>
+										</div>
+									)}
 									<LeverageSlider leverage={leverage} setLeverage={setLeverage} />
 									<InfoSummary
-										earningsAssets={tokenTwo.symbol}
+										collateralAsset={collateralAsset}
+										setCollateralAsset={setCollateralAsset}
 										entryPrice={props.values[SwapTokenNumber.IN]}
 										liquidationPrice={0}
 										fees={0}
@@ -136,7 +177,6 @@ const PerpetualsPage: ExtendedNextPage = () => {
 						)}
 					</Formik>
 				</div>
-				<GuideLink type="Swap" text="Trouble swapping?" link="https://docs.koyo.finance/protocol/guide/exchange/swap" />
 			</div>
 		</>
 	);
