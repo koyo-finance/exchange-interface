@@ -270,6 +270,7 @@ type Gauge {
 	createdAtTransaction: Bytes!
 	id: ID!
 	killed: Boolean!
+	koyo: Koyo!
 	name: String!
 	pool: Pool
 	symbol: String!
@@ -955,6 +956,27 @@ input Gauge_filter {
 	killed_in: [Boolean!]
 	killed_not: Boolean
 	killed_not_in: [Boolean!]
+	koyo: String
+	koyo_: Koyo_filter
+	koyo_contains: String
+	koyo_contains_nocase: String
+	koyo_ends_with: String
+	koyo_ends_with_nocase: String
+	koyo_gt: String
+	koyo_gte: String
+	koyo_in: [String!]
+	koyo_lt: String
+	koyo_lte: String
+	koyo_not: String
+	koyo_not_contains: String
+	koyo_not_contains_nocase: String
+	koyo_not_ends_with: String
+	koyo_not_ends_with_nocase: String
+	koyo_not_in: [String!]
+	koyo_not_starts_with: String
+	koyo_not_starts_with_nocase: String
+	koyo_starts_with: String
+	koyo_starts_with_nocase: String
 	name: String
 	name_contains: String
 	name_contains_nocase: String
@@ -1048,6 +1070,7 @@ enum Gauge_orderBy {
 	createdAtTransaction
 	id
 	killed
+	koyo
 	name
 	pool
 	symbol
@@ -1195,6 +1218,7 @@ type Koyo {
 	Number of gauge types registered
 	"""
 	gaugeTypeCount: BigInt!
+	gauges(first: Int = 100, orderBy: Gauge_orderBy, orderDirection: OrderDirection, skip: Int = 0, where: Gauge_filter): [Gauge!]
 	id: ID!
 
 	"""
@@ -1217,6 +1241,7 @@ type KoyoSnapshot {
 	gaugeCount: BigInt!
 	gaugeTypeCount: BigInt!
 	id: ID!
+	koyo: Koyo!
 	poolCount: Int!
 	timestamp: Int!
 	totalLiquidity: BigDecimal!
@@ -1261,6 +1286,27 @@ input KoyoSnapshot_filter {
 	id_lte: ID
 	id_not: ID
 	id_not_in: [ID!]
+	koyo: String
+	koyo_: Koyo_filter
+	koyo_contains: String
+	koyo_contains_nocase: String
+	koyo_ends_with: String
+	koyo_ends_with_nocase: String
+	koyo_gt: String
+	koyo_gte: String
+	koyo_in: [String!]
+	koyo_lt: String
+	koyo_lte: String
+	koyo_not: String
+	koyo_not_contains: String
+	koyo_not_contains_nocase: String
+	koyo_not_ends_with: String
+	koyo_not_ends_with_nocase: String
+	koyo_not_in: [String!]
+	koyo_not_starts_with: String
+	koyo_not_starts_with_nocase: String
+	koyo_starts_with: String
+	koyo_starts_with_nocase: String
 	poolCount: Int
 	poolCount_gt: Int
 	poolCount_gte: Int
@@ -1337,6 +1383,7 @@ enum KoyoSnapshot_orderBy {
 	gaugeCount
 	gaugeTypeCount
 	id
+	koyo
 	poolCount
 	timestamp
 	totalLiquidity
@@ -1373,6 +1420,7 @@ input Koyo_filter {
 	gaugeTypeCount_lte: BigInt
 	gaugeTypeCount_not: BigInt
 	gaugeTypeCount_not_in: [BigInt!]
+	gauges_: Gauge_filter
 	id: ID
 	id_gt: ID
 	id_gte: ID
@@ -1428,6 +1476,7 @@ enum Koyo_orderBy {
 	address
 	gaugeCount
 	gaugeTypeCount
+	gauges
 	id
 	poolCount
 	pools

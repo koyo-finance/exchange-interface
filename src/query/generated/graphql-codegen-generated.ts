@@ -268,6 +268,7 @@ export interface Gauge {
 	createdAtTransaction: Scalars['Bytes'];
 	id: Scalars['ID'];
 	killed: Scalars['Boolean'];
+	koyo: Koyo;
 	name: Scalars['String'];
 	pool?: Maybe<Pool>;
 	symbol: Scalars['String'];
@@ -926,6 +927,27 @@ export interface Gauge_Filter {
 	killed_in?: InputMaybe<Array<Scalars['Boolean']>>;
 	killed_not?: InputMaybe<Scalars['Boolean']>;
 	killed_not_in?: InputMaybe<Array<Scalars['Boolean']>>;
+	koyo?: InputMaybe<Scalars['String']>;
+	koyo_?: InputMaybe<Koyo_Filter>;
+	koyo_contains?: InputMaybe<Scalars['String']>;
+	koyo_contains_nocase?: InputMaybe<Scalars['String']>;
+	koyo_ends_with?: InputMaybe<Scalars['String']>;
+	koyo_ends_with_nocase?: InputMaybe<Scalars['String']>;
+	koyo_gt?: InputMaybe<Scalars['String']>;
+	koyo_gte?: InputMaybe<Scalars['String']>;
+	koyo_in?: InputMaybe<Array<Scalars['String']>>;
+	koyo_lt?: InputMaybe<Scalars['String']>;
+	koyo_lte?: InputMaybe<Scalars['String']>;
+	koyo_not?: InputMaybe<Scalars['String']>;
+	koyo_not_contains?: InputMaybe<Scalars['String']>;
+	koyo_not_contains_nocase?: InputMaybe<Scalars['String']>;
+	koyo_not_ends_with?: InputMaybe<Scalars['String']>;
+	koyo_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+	koyo_not_in?: InputMaybe<Array<Scalars['String']>>;
+	koyo_not_starts_with?: InputMaybe<Scalars['String']>;
+	koyo_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+	koyo_starts_with?: InputMaybe<Scalars['String']>;
+	koyo_starts_with_nocase?: InputMaybe<Scalars['String']>;
 	name?: InputMaybe<Scalars['String']>;
 	name_contains?: InputMaybe<Scalars['String']>;
 	name_contains_nocase?: InputMaybe<Scalars['String']>;
@@ -1019,6 +1041,7 @@ export type Gauge_OrderBy =
 	| 'createdAtTransaction'
 	| 'id'
 	| 'killed'
+	| 'koyo'
 	| 'name'
 	| 'pool'
 	| 'symbol'
@@ -1144,6 +1167,7 @@ export interface Koyo {
 	gaugeCount: Scalars['BigInt'];
 	/**  Number of gauge types registered  */
 	gaugeTypeCount: Scalars['BigInt'];
+	gauges?: Maybe<Array<Gauge>>;
 	id: Scalars['ID'];
 	/**  Number of pools registered  */
 	poolCount: Scalars['Int'];
@@ -1153,6 +1177,14 @@ export interface Koyo {
 	totalSwapCount: Scalars['BigInt'];
 	totalSwapFee: Scalars['BigDecimal'];
 	totalSwapVolume: Scalars['BigDecimal'];
+}
+
+export interface KoyoGaugesArgs {
+	first?: InputMaybe<Scalars['Int']>;
+	orderBy?: InputMaybe<Gauge_OrderBy>;
+	orderDirection?: InputMaybe<OrderDirection>;
+	skip?: InputMaybe<Scalars['Int']>;
+	where?: InputMaybe<Gauge_Filter>;
 }
 
 export interface KoyoPoolsArgs {
@@ -1169,6 +1201,7 @@ export interface KoyoSnapshot {
 	gaugeCount: Scalars['BigInt'];
 	gaugeTypeCount: Scalars['BigInt'];
 	id: Scalars['ID'];
+	koyo: Koyo;
 	poolCount: Scalars['Int'];
 	timestamp: Scalars['Int'];
 	totalLiquidity: Scalars['BigDecimal'];
@@ -1211,6 +1244,27 @@ export interface KoyoSnapshot_Filter {
 	id_lte?: InputMaybe<Scalars['ID']>;
 	id_not?: InputMaybe<Scalars['ID']>;
 	id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+	koyo?: InputMaybe<Scalars['String']>;
+	koyo_?: InputMaybe<Koyo_Filter>;
+	koyo_contains?: InputMaybe<Scalars['String']>;
+	koyo_contains_nocase?: InputMaybe<Scalars['String']>;
+	koyo_ends_with?: InputMaybe<Scalars['String']>;
+	koyo_ends_with_nocase?: InputMaybe<Scalars['String']>;
+	koyo_gt?: InputMaybe<Scalars['String']>;
+	koyo_gte?: InputMaybe<Scalars['String']>;
+	koyo_in?: InputMaybe<Array<Scalars['String']>>;
+	koyo_lt?: InputMaybe<Scalars['String']>;
+	koyo_lte?: InputMaybe<Scalars['String']>;
+	koyo_not?: InputMaybe<Scalars['String']>;
+	koyo_not_contains?: InputMaybe<Scalars['String']>;
+	koyo_not_contains_nocase?: InputMaybe<Scalars['String']>;
+	koyo_not_ends_with?: InputMaybe<Scalars['String']>;
+	koyo_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+	koyo_not_in?: InputMaybe<Array<Scalars['String']>>;
+	koyo_not_starts_with?: InputMaybe<Scalars['String']>;
+	koyo_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+	koyo_starts_with?: InputMaybe<Scalars['String']>;
+	koyo_starts_with_nocase?: InputMaybe<Scalars['String']>;
 	poolCount?: InputMaybe<Scalars['Int']>;
 	poolCount_gt?: InputMaybe<Scalars['Int']>;
 	poolCount_gte?: InputMaybe<Scalars['Int']>;
@@ -1287,6 +1341,7 @@ export type KoyoSnapshot_OrderBy =
 	| 'gaugeCount'
 	| 'gaugeTypeCount'
 	| 'id'
+	| 'koyo'
 	| 'poolCount'
 	| 'timestamp'
 	| 'totalLiquidity'
@@ -1320,6 +1375,7 @@ export interface Koyo_Filter {
 	gaugeTypeCount_lte?: InputMaybe<Scalars['BigInt']>;
 	gaugeTypeCount_not?: InputMaybe<Scalars['BigInt']>;
 	gaugeTypeCount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+	gauges_?: InputMaybe<Gauge_Filter>;
 	id?: InputMaybe<Scalars['ID']>;
 	id_gt?: InputMaybe<Scalars['ID']>;
 	id_gte?: InputMaybe<Scalars['ID']>;
@@ -1375,6 +1431,7 @@ export type Koyo_OrderBy =
 	| 'address'
 	| 'gaugeCount'
 	| 'gaugeTypeCount'
+	| 'gauges'
 	| 'id'
 	| 'poolCount'
 	| 'pools'
