@@ -28,7 +28,7 @@ const Navbar: React.FC = () => {
 									<div className="flex items-center">
 										<BaseLink href="/">
 											{/* eslint-disable-next-line @next/next/no-img-element */}
-											<img src="wide-dark.svg" alt="Koyo logo" className="max-h-12 cursor-pointer " />
+											<img src="/wide-dark.svg" alt="Koyo logo" className="max-h-12 cursor-pointer " />
 										</BaseLink>
 									</div>
 								</div>
