@@ -1494,6 +1494,7 @@ type LatestPrice {
 	price: BigDecimal!
 	priceUSD: BigDecimal!
 	pricingAsset: Bytes!
+	timestamp: Int!
 }
 
 input LatestPrice_filter {
@@ -1566,6 +1567,14 @@ input LatestPrice_filter {
 	pricingAsset_not: Bytes
 	pricingAsset_not_contains: Bytes
 	pricingAsset_not_in: [Bytes!]
+	timestamp: Int
+	timestamp_gt: Int
+	timestamp_gte: Int
+	timestamp_in: [Int!]
+	timestamp_lt: Int
+	timestamp_lte: Int
+	timestamp_not: Int
+	timestamp_not_in: [Int!]
 }
 
 enum LatestPrice_orderBy {
@@ -1576,6 +1585,7 @@ enum LatestPrice_orderBy {
 	price
 	priceUSD
 	pricingAsset
+	timestamp
 }
 
 """

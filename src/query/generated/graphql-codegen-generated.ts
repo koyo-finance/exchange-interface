@@ -1449,6 +1449,7 @@ export interface LatestPrice {
 	price: Scalars['BigDecimal'];
 	priceUSD: Scalars['BigDecimal'];
 	pricingAsset: Scalars['Bytes'];
+	timestamp: Scalars['Int'];
 }
 
 export interface LatestPrice_Filter {
@@ -1519,9 +1520,17 @@ export interface LatestPrice_Filter {
 	pricingAsset_not?: InputMaybe<Scalars['Bytes']>;
 	pricingAsset_not_contains?: InputMaybe<Scalars['Bytes']>;
 	pricingAsset_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+	timestamp?: InputMaybe<Scalars['Int']>;
+	timestamp_gt?: InputMaybe<Scalars['Int']>;
+	timestamp_gte?: InputMaybe<Scalars['Int']>;
+	timestamp_in?: InputMaybe<Array<Scalars['Int']>>;
+	timestamp_lt?: InputMaybe<Scalars['Int']>;
+	timestamp_lte?: InputMaybe<Scalars['Int']>;
+	timestamp_not?: InputMaybe<Scalars['Int']>;
+	timestamp_not_in?: InputMaybe<Array<Scalars['Int']>>;
 }
 
-export type LatestPrice_OrderBy = 'asset' | 'block' | 'id' | 'poolId' | 'price' | 'priceUSD' | 'pricingAsset';
+export type LatestPrice_OrderBy = 'asset' | 'block' | 'id' | 'poolId' | 'price' | 'priceUSD' | 'pricingAsset' | 'timestamp';
 
 /** Defines the order direction, either ascending or descending */
 export type OrderDirection = 'asc' | 'desc';

@@ -24,6 +24,7 @@ import DepositType from 'components/apps/trade/DepositType';
 import LeverageSlider from 'components/apps/trade/LeverageSlider';
 import InfoSummary from 'components/apps/trade/InfoSummary';
 import { collateralAssets } from 'constants/perpetualCollateral';
+import CollateralAssetModal from 'components/apps/trade/CollateralAssetModal';
 
 const SwapTokenModal = dynamic(() => import('components/apps/amm/unified/swap/modals/SwapTokenModal'));
 
@@ -45,6 +46,9 @@ const PerpetualsPage: ExtendedNextPage = () => {
 	const TOKENS = useSelector(selectAllTokensByChainId(chainId));
 	const [tokenModalOneIsOpen, setTokenModalIsOpen] = useState(false);
 	const [activeToken, setActiveToken] = useState<SwapTokenNumber>(SwapTokenNumber.IN);
+	const [collateralAssetDropdownOpen, setCollateralAssetDropdownOpen] = useState(false);
+
+	const tokensCanBeCollateral = TOKENS.filter((token) => token.tags?.includes('stablecoin'));
 	const tokenOne = useSelector(selectTokenOne);
 	const tokenTwo = useSelector(selectTokenTwo);
 
@@ -79,7 +83,7 @@ const PerpetualsPage: ExtendedNextPage = () => {
 				canonical={`${ROOT_WITH_PROTOCOL}/trade/perpetuals`}
 				description="Trade your assets in our perpetual pools."
 			/>
-			<div className="relative flex min-h-screen w-full justify-center gap-4 bg-darks-500 pt-24 pb-6 md:pb-0 lg:pt-20">
+			<div className="relative flex min-h-screen w-full flex-col justify-center gap-4 bg-darks-500 pt-24 pb-6 md:pb-0 lg:flex-row lg:pt-20">
 				{tokenModalOneIsOpen && (
 					<SwapTokenModal
 						tokenNum={activeToken}
@@ -88,11 +92,20 @@ const PerpetualsPage: ExtendedNextPage = () => {
 						setToken={setTokenHandler}
 					/>
 				)}
-				<div className="flex w-full flex-col gap-4 xl:w-3/5">
+				{collateralAssetDropdownOpen && (
+					<CollateralAssetModal
+						collateralTokens={tokensCanBeCollateral}
+						setCollateralAsset={setCollateralAsset}
+						setCollateralDropdownOpen={setCollateralAssetDropdownOpen}
+					/>
+				)}
+				<div className="flex w-full flex-col gap-4 lg:w-1/2 xl:w-3/5">
 					<Chart />
-					<Positions />
+					<div className="hidden lg:block">
+						<Positions />
+					</div>
 				</div>
-				<div className=" mb-2 flex h-fit transform-gpu animate-fade-in flex-col gap-4 rounded-xl bg-black bg-opacity-50 p-4 sm:w-[75vw] sm:p-6 md:w-[55vw] lg:w-[45vw] xl:w-[40vw] 2xl:w-[30vw]">
+				<div className=" mb-2 flex h-fit w-full transform-gpu animate-fade-in flex-col gap-4 rounded-xl bg-black bg-opacity-50 p-4 lg:w-[45vw] xl:w-[40vw] 2xl:w-[30vw]">
 					<DepositType depositType={depositType} setDepositType={setDepositType} />
 					<div className="flex w-full flex-row items-center justify-start gap-4">
 						<div
@@ -164,8 +177,8 @@ const PerpetualsPage: ExtendedNextPage = () => {
 									)}
 									<LeverageSlider leverage={leverage} setLeverage={setLeverage} />
 									<InfoSummary
+										setCollateralDropdownOpen={setCollateralAssetDropdownOpen}
 										collateralAsset={collateralAsset}
-										setCollateralAsset={setCollateralAsset}
 										entryPrice={props.values[SwapTokenNumber.IN]}
 										liquidationPrice={0}
 										fees={0}
@@ -176,6 +189,9 @@ const PerpetualsPage: ExtendedNextPage = () => {
 							</Form>
 						)}
 					</Formik>
+				</div>
+				<div className="mb-4 block lg:hidden">
+					<Positions />
 				</div>
 			</div>
 		</>
