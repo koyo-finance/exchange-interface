@@ -2,7 +2,6 @@ import { formatBalance, fromBigNumber, toBigNumber, ZERO_ADDRESS } from '@koyofi
 import { useGetQoute } from '@koyofinance/momiji-hooks';
 import { SupportedChainsList, OrderKind } from '@koyofinance/momiji-sdk';
 import { TokenInfo } from '@uniswap/token-lists';
-import CurrencyIcon from 'components/CurrencyIcon/CurrencyIcon';
 import { SwapTokenNumber } from 'constants/swaps';
 import { providers } from 'ethers';
 import { getAddress } from 'ethers/lib/utils';
@@ -14,11 +13,11 @@ import { DEFAULT_SWAP_OPTIONS, SwapOptions } from 'hooks/SOR/useRoutedSwap';
 import { useWeb3 } from 'hooks/useWeb3';
 import { SwapFormValues } from 'pages/swap';
 import React, { useEffect, useState } from 'react';
-import { RiArrowDownSLine } from 'react-icons/ri';
 import { useSelector } from 'react-redux';
 import { selectTokenOne, selectTokenTwo } from 'state/reducers/selectedTokens';
 import { selectMomijiUsage } from 'state/reducers/swap';
 import SwapCardTokenInput from './SwapCardTokenInput';
+import { Card, TokenCard } from '@koyofinance/koyo-ui';
 
 export type TokenNumRelativeCallback = (tokenNum: number) => void;
 
@@ -116,22 +115,11 @@ const SwapCardToken: React.FC<SwapCardTokenProps> = ({ tokenNum, token, swapStat
 	};
 
 	return (
-		<div className="flex w-full flex-col gap-2 rounded-xl bg-darks-500 px-4 py-3">
+		<Card variant="actions" className="flex w-full flex-col gap-2 rounded-xl bg-darks-500 px-4 py-3">
 			{error !== '' && <div className=" w-full text-red-600">{error}</div>}
 			<div className="flex w-full flex-row justify-between ">
 				<div className=" text-lg text-darks-200 md:text-xl lg:text-2xl">{tokenNum === SwapTokenNumber.IN ? 'You pay' : 'You receive'}</div>
-				<div
-					className="flex transform-gpu cursor-pointer flex-row items-center gap-2 rounded-xl bg-darks-400 py-2 px-2 duration-100 hover:bg-darks-300"
-					onClick={openModalHandler}
-				>
-					<div>
-						<CurrencyIcon symbol={token.symbol} overrides={[token.logoURI || '']} className="h-8 w-8" />
-					</div>
-					<div>{token.symbol}</div>
-					<div>
-						<RiArrowDownSLine />
-					</div>
-				</div>
+				<TokenCard symbol={token.symbol} logoURI={[token.logoURI || '']} width="auto" onClick={openModalHandler} />
 			</div>
 			<div className="flex w-full flex-col items-end justify-between gap-2 sm:flex-row sm:gap-0">
 				<div className=" flex w-full flex-row items-center gap-2 border-0 border-b-2 border-darks-200 md:w-3/4">
@@ -149,7 +137,7 @@ const SwapCardToken: React.FC<SwapCardTokenProps> = ({ tokenNum, token, swapStat
 					<div>{formatBalance(tokenBalance, { minimumFractionDigits: 2, maximumFractionDigits: 4 }, token.decimals)}</div>
 				</div>
 			</div>
-		</div>
+		</Card>
 	);
 };
 

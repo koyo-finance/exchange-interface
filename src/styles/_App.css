@@ -1,13 +1,17 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@100;200;300;400;500;600;700;800&display=swap');
 
 .leaves-animation-desktop {
+	background: url('/assets/wallpappers/leaves.svg');
 	animation: animateLeaves 65s linear infinite;
 }
 
 .leaves-animation-mobile {
+	background: url('/assets/wallpappers/leaves.svg');
 	animation: animateLeaves 300s linear infinite;
+}
+
+.title-gradient {
+	background: radial-gradient(#300729, transparent);
 }
 
 .flip-horizontal {
@@ -24,19 +28,31 @@
 }
 
 ::-webkit-scrollbar {
-	@apply h-[0.625rem] w-2 bg-darks-400;
+	height: 0.625rem;
+	background: rgb(83, 42, 76);
 }
 ::-webkit-scrollbar-thumb {
 	border-radius: 8px;
-	@apply bg-lights-400;
+	background-color: rgb(240, 147, 44);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-	@apply bg-lights-300;
+	background-color: rgb(255, 183, 80);
 }
 
 ::-webkit-scrollbar-thumb:active {
-	@apply bg-lights-200;
+	background-color: rgb(255, 210, 107);
+}
+
+html {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	background-color: rgb(48, 7, 41);
+	font-family: 'Sora', sans-serif;
 }
 
 @layer base {

@@ -25,6 +25,7 @@ import DefaultSeoProps from 'DefaultSeoProps';
 import dynamic from 'next/dynamic';
 import { config } from 'core/config';
 import FlagsmithWrapper from 'components/wrappers/FlagsmithWrapper';
+import { ThemeProvider } from '@koyofinance/koyo-ui';
 
 import '@rainbow-me/rainbowkit/styles.css';
 import 'styles/_App.css';
@@ -68,25 +69,27 @@ const MyApp: NextPage<AppProps> = ({ Component, pageProps }) => {
 								<PersistGate persistor={persistor}>
 									<InitialStateWrapper>
 										<FlagsmithWrapper>
-											<>
-												<Head>
-													<meta httpEquiv="Content-Type" content="text/html; charset=UTF-8" />
-													<meta httpEquiv="X-UA-Compatible" content="ie=edge" />
-													<meta httpEquiv="Expires" content="1y" />
-													<meta httpEquiv="Pragma" content="1y" />
-													<meta httpEquiv="Cache-Control" content="1y" />
+											<ThemeProvider>
+												<>
+													<Head>
+														<meta httpEquiv="Content-Type" content="text/html; charset=UTF-8" />
+														<meta httpEquiv="X-UA-Compatible" content="ie=edge" />
+														<meta httpEquiv="Expires" content="1y" />
+														<meta httpEquiv="Pragma" content="1y" />
+														<meta httpEquiv="Cache-Control" content="1y" />
 
-													<link rel="shortcut icon" href="/favicon.ico" />
-												</Head>
-												<DefaultSeo {...DefaultSeoProps} />
-											</>
+														<link rel="shortcut icon" href="/favicon.ico" />
+													</Head>
+													<DefaultSeo {...DefaultSeoProps} />
+												</>
 
-											<>
-												<Navbar />
-												<Layout>
-													<ExtendedPage {...pageProps} />
-												</Layout>
-											</>
+												<>
+													<Navbar />
+													<Layout>
+														<ExtendedPage {...pageProps} />
+													</Layout>
+												</>
+											</ThemeProvider>
 										</FlagsmithWrapper>
 									</InitialStateWrapper>
 								</PersistGate>

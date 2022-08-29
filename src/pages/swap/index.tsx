@@ -1,5 +1,6 @@
 import { SwapInfo, SwapTypes } from '@balancer-labs/sor';
 import { toBigNumber } from '@koyofinance/core-sdk';
+import { Card } from '@koyofinance/koyo-ui';
 import type { useGetQoute } from '@koyofinance/momiji-hooks';
 import { TokenInfo } from '@uniswap/token-lists';
 import SwapCardToken from 'components/apps/amm/unified/swap/cards/SwapCardToken';
@@ -78,7 +79,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 						setToken={setTokenHandler}
 					/>
 				)}
-				<SwapLayoutCard className="w-[95vw] sm:w-[75vw] md:w-[55vw] lg:w-[45vw] xl:w-[40vw] 2xl:w-[30vw]">
+				<Card maxWidth="50vw" className="w-[95vw] sm:w-[75vw] md:w-[55vw] lg:w-[45vw] xl:w-[40vw] 2xl:w-[30vw]">
 					<SwapWrapper>
 						{(sw) => (
 							<Formik<SwapFormValues>
@@ -119,7 +120,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 							</Formik>
 						)}
 					</SwapWrapper>
-				</SwapLayoutCard>
+				</Card>
 				<GuideLink type="Swap" text="Trouble swapping?" link="https://docs.koyo.finance/protocol/guide/exchange/swap" />
 			</div>
 		</>
