@@ -4570,6 +4570,11 @@ type _Block_ {
 	The block number
 	"""
 	number: Int!
+
+	"""
+	Timestamp of the block if available, format depends on the chain
+	"""
+	timestamp: String
 }
 
 """
