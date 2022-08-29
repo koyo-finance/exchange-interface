@@ -12,7 +12,7 @@ import { ROOT_WITH_PROTOCOL } from 'constants/links';
 import { SwapTokenNumber } from 'constants/swaps';
 import { Form, Formik } from 'formik';
 import { useWeb3 } from 'hooks/useWeb3';
-import { SwapLayout, SwapLayoutCard } from 'layouts/SwapLayout';
+import { SwapLayout } from 'layouts/SwapLayout';
 import { NextSeo } from 'next-seo';
 import dynamic from 'next/dynamic';
 import React, { useEffect, useState } from 'react';
@@ -79,7 +79,7 @@ const SwapIndexPage: ExtendedNextPage = () => {
 						setToken={setTokenHandler}
 					/>
 				)}
-				<Card maxWidth="50vw" className="w-[95vw] sm:w-[75vw] md:w-[55vw] lg:w-[45vw] xl:w-[40vw] 2xl:w-[30vw]">
+				<Card maxWidth="60vw" padding="lg" className="w-[95vw] sm:w-[75vw] md:w-[55vw] lg:w-[45vw] xl:w-[40vw] 2xl:w-[30vw]">
 					<SwapWrapper>
 						{(sw) => (
 							<Formik<SwapFormValues>

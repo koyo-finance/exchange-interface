@@ -30,6 +30,7 @@
 ::-webkit-scrollbar {
 	height: 0.625rem;
 	background: rgb(83, 42, 76);
+	width: 10px;
 }
 ::-webkit-scrollbar-thumb {
 	border-radius: 8px;
@@ -53,6 +54,7 @@ html {
 body {
 	background-color: rgb(48, 7, 41);
 	font-family: 'Sora', sans-serif;
+	color: #fff;
 }
 
 @layer base {
