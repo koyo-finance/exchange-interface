@@ -12,7 +12,7 @@ const GroundLeafs = dynamic(() => import('components/apps/_/Home/GroundLeafs'));
 const Footer = dynamic(() => import('components/Footer'));
 
 const IndexPage: ExtendedNextPage = () => {
-	const deviceWidth = window.visualViewport.width;
+	const deviceWidth = window.visualViewport?.width || 1920;
 
 	return (
 		<div
