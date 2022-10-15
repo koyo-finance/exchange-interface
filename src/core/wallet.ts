@@ -23,36 +23,6 @@ const bobaMainnetChain: RainbowKitChain = {
 	iconUrl: 'https://tassets.koyo.finance/logos/BOBA/512x512.png'
 };
 
-const auroraMainnetChain: RainbowKitChain = {
-	id: ChainId.AURORA,
-	name: CHAIN_INFO[ChainId.AURORA].label,
-	network: 'aurora',
-	nativeCurrency: CHAIN_INFO[ChainId.AURORA].addNetworkInfo.nativeCurrency,
-	rpcUrls: {
-		default: CHAIN_INFO[ChainId.AURORA].addNetworkInfo.rpcUrl
-	},
-	blockExplorers: {
-		default: { name: 'Aurorascan', url: CHAIN_INFO[ChainId.AURORA].explorer }
-	},
-	testnet: false,
-	iconUrl: 'https://tassets.koyo.finance/logos/AURORA/512x512.png'
-};
-
-const moonriverChain: RainbowKitChain = {
-	id: ChainId.MOONRIVER,
-	name: CHAIN_INFO[ChainId.MOONRIVER].label,
-	network: 'moonriver',
-	nativeCurrency: CHAIN_INFO[ChainId.MOONRIVER].addNetworkInfo.nativeCurrency,
-	rpcUrls: {
-		default: CHAIN_INFO[ChainId.MOONRIVER].addNetworkInfo.rpcUrl
-	},
-	blockExplorers: {
-		default: { name: 'Moonscan - Moonriver', url: CHAIN_INFO[ChainId.MOONRIVER].explorer }
-	},
-	testnet: false,
-	iconUrl: 'https://tassets.koyo.finance/logos/MOVR/512x512.png'
-};
-
 const polygonChain: RainbowKitChain = {
 	id: ChainId.POLYGON,
 	name: CHAIN_INFO[ChainId.POLYGON].label,
@@ -69,7 +39,7 @@ const polygonChain: RainbowKitChain = {
 };
 
 export const { chains, provider, webSocketProvider } = configureChains(
-	[bobaMainnetChain, auroraMainnetChain, moonriverChain, polygonChain], //
+	[bobaMainnetChain, polygonChain], //
 	[jsonRpcProvider({ rpc: (chain) => ({ http: chain.rpcUrls.default }) })]
 );
 
